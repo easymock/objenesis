@@ -1,0 +1,47 @@
+<project name="objenesis" default="all">
+
+    <property name="version" value="SNAPSHOT" description="Version number"/>
+    <property name="build.dir" location="build" description="Where to build project"/>
+
+    <!-- Import useful tasks: java-to-jar, run-tests -->
+    <import file="build-macros.xml"/>
+
+    <target name="all" 
+            depends="clean,core,tck"
+            description="Perform a full (clean) build"/>
+
+    <target name="clean" 
+            description="Clean up all built files">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="core" 
+            description="Build core library">
+        <!-- Core library should be JDK 1.3 friendly -->
+        <java-to-jar srcdir="core/src" 
+                     destjar="${build.dir}/objenesis-core-${version}.jar" 
+                     jdk="1.3"/>
+        <!--<run-tests srcdir="core/test"
+                   classpath="${build.dir}/objenesis-core-${version}.jar"/>-->
+    </target>
+
+    <target name="tck" depends="core" 
+            description="Build and run the Technology Compatability Kit">
+        <java-to-jar srcdir="tck/src" 
+                     destjar="${build.dir}/objenesis-tck-${version}.jar" 
+                     jdk="1.3"
+                     classpath="${build.dir}/objenesis-core-${version}.jar"/>
+        <run-tests   srcdir="tck/test"
+                     classpath="${build.dir}/objenesis-core-${version}.jar;
+                                ${build.dir}/objenesis-tck-${version}.jar"/>
+        <!-- Now run the TCK -->
+        <echo message="-------------------------------------------------"/>
+        <java classname="org.objenesis.tck.Main" fork="no">
+            <classpath>
+                <pathelement path="${build.dir}/objenesis-core-${version}.jar"/>
+                <pathelement path="${build.dir}/objenesis-tck-${version}.jar"/>
+            </classpath>
+        </java>
+    </target>
+    
+</project>
