@@ -12,6 +12,8 @@ public class NewInstanceInstantiator implements ObjectInstantiator {
     public Object instantiate(Class type) {
         try {
             return type.newInstance();
+        } catch (RuntimeException e) {
+            return null;
         } catch (InstantiationException e) {
             return null;
         } catch (IllegalAccessException e) {

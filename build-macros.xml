@@ -22,6 +22,9 @@
             </javac>
             <jar jarfile="@{destjar}">
                 <fileset dir="${tmp.dir}/@{destjar}.contents"/>
+                <fileset dir="@{srcdir}">
+                    <exclude name="**/*.java"/>
+                </fileset>
             </jar>
         </sequential>
     </macrodef>
@@ -48,6 +51,7 @@
                     </fileset>
                     <pathelement path="${tmp.dir}/@{srcdir}.tests"/>
                     <pathelement path="@{classpath}"/>
+                    <pathelement path="@{srcdir}"/>
                 </classpath>
                 <batchtest>
                     <fileset dir="@{srcdir}"/>
