@@ -14,8 +14,8 @@ public class ConstructorInstantiator implements ObjectInstantiator {
 
     public Object instantiate(Class type) {
         try {
-            Constructor constructor = type.getDeclaredConstructor(null);
-            return constructor.newInstance(null);
+            Constructor constructor = type.getDeclaredConstructor((Class[])null);
+            return constructor.newInstance((Object[])null);
         } catch (NoSuchMethodException e) {
             return null;
         } catch (InstantiationException e) {

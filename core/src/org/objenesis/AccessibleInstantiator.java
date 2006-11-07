@@ -16,9 +16,9 @@ public class AccessibleInstantiator implements ObjectInstantiator {
 
     public Object instantiate(Class type) {
         try {
-            Constructor constructor = type.getDeclaredConstructor(null);
+            Constructor constructor = type.getDeclaredConstructor((Class[])null);
             constructor.setAccessible(true);
-            return constructor.newInstance(null);
+            return constructor.newInstance((Object[])null);
         } catch (NoSuchMethodException e) {
             return null;
         } catch (InstantiationException e) {
