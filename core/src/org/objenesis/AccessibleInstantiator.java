@@ -28,6 +28,5 @@ public class AccessibleInstantiator implements ObjectInstantiator {
         } catch (InvocationTargetException e) {
             return null;
         }
-    }
-    
+    }    
 }
