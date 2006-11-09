@@ -18,6 +18,7 @@ public class Main {
         attemptToRegisterInstantiator(tck, "org.objenesis.ConstructorInstantiator", "Constructor");
         attemptToRegisterInstantiator(tck, "org.objenesis.AccessibleInstantiator", "Accessible");
         attemptToRegisterInstantiator(tck, "org.objenesis.SunReflectionFactoryInstantiator", "SunReflection");
+        attemptToRegisterInstantiator(tck, "org.objenesis.Sun13Instantiator", "Sun JDK 1.3");
 
         CandidateLoader candidateLoader = new CandidateLoader(
                 tck,
