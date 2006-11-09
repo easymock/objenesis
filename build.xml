@@ -27,7 +27,9 @@
 
     <target name="platform.check">
         <available property="platform.sun" classname="sun.reflect.ReflectionFactory"/>
+    	<property name="platform.sun1_3" value="false" description="Must find a way to check for Sun JDK 1.3"/>
     </target>
+	
 
     <target name="sun"
             depends="core, platform.check"
@@ -37,6 +39,16 @@
                      destjar="${build.dir}/objenesis-sun-${version}.jar" 
                      jdk="1.4"
                      classpath="${build.dir}/objenesis-core-${version}.jar"/>
+    </target>
+	
+	<target name="sun1.3"
+	            depends="core, platform.check"
+	            description="Build Sun JDK 1.3 specific library"
+	            if="platform.sun1_3">
+	        <java-to-jar srcdir="sun1.3/src"
+	                     destjar="${build.dir}/objenesis-sun1.3-${version}.jar" 
+	                     jdk="1.3"
+	                     classpath="${build.dir}/objenesis-core-${version}.jar"/>
     </target>
 
     <target name="tck" depends="core,sun"
