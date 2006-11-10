@@ -5,6 +5,6 @@ package org.objenesis;
  */
 public interface ObjectInstantiator {
 
-    Object instantiate(Class type);
+    Object newInstance();
     
 }

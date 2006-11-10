@@ -5,6 +5,22 @@ import org.objenesis.ObjectInstantiator;
 
 public class TCKTest extends TestCase {
 
+	
+	
+    public static class StubbedInstantiator1 implements ObjectInstantiator {
+    	public StubbedInstantiator1(Class type) {        		
+    	}
+        public Object newInstance() {
+            return null;
+        }
+    }
+    public static class StubbedInstantiator2 implements ObjectInstantiator {
+    	public StubbedInstantiator2(Class type) {        		
+    	}
+        public Object newInstance() {
+            return null;
+        }
+    }
     public void testReportsAllCandidatesAndInstantiatorCombinationsToReporter() {
         // Given... a TCK with some candidate classes: A, B and C.
         TCK tck = new TCK();
@@ -14,13 +30,8 @@ public class TCKTest extends TestCase {
         tck.registerCandiate(CandidateC.class, "Candidate C");
 
         // And... two ObjectInstantiators registered
-        class StubbedInstantiator implements ObjectInstantiator {
-            public Object instantiate(Class type) {
-                return null;
-            }
-        }
-        tck.registerInstantiator(new StubbedInstantiator(), "Instantiator1");
-        tck.registerInstantiator(new StubbedInstantiator(), "Instantiator2");
+        tck.registerInstantiator(StubbedInstantiator1.class, "Instantiator1");
+        tck.registerInstantiator(StubbedInstantiator2.class, "Instantiator2");
 
         // When... the TCK tests are run
         Reporter reporter = new RecordingReporter();
@@ -54,12 +65,8 @@ public class TCKTest extends TestCase {
         tck.registerCandiate(CandidateB.class, "Candidate B");
 
         // And... a single ObjectInsantiator registered that can instantiate
-        //        A but not B.
-        tck.registerInstantiator(new ObjectInstantiator() {
-            public Object instantiate(Class type) {
-                return type == CandidateA.class ? new CandidateA() : null;
-            }
-        }, "instantiator");
+        //        A but not B.        
+        tck.registerInstantiator(SelectiveInstantiator.class, "instantiator");
 
         // When... the TCK tests are run
         Reporter reporter = new RecordingReporter();
@@ -81,6 +88,16 @@ public class TCKTest extends TestCase {
 
     // Some sample classes used for testing.
 
+    public static class SelectiveInstantiator implements ObjectInstantiator {
+    	private Class type;
+    	public SelectiveInstantiator(Class type) {
+    		this.type = type;
+    	}
+    	public Object newInstance() {
+    		return type == CandidateA.class ? new CandidateA() : null;
+    	}
+    	
+    }
     public static class CandidateA {
     }
 

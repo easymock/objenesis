@@ -15,21 +15,22 @@ public class Sun13Instantiator implements ObjectInstantiator {
 				);
 				allocateNewObjectMethod.setAccessible(true);
 			} catch (SecurityException e) {
-				throw new UnsupportedOperationException("The SecurityManager does not allow the use of "
-						+Sun13Instantiator.class.getName());
+				// Will keep the allocateNewMethod as null
 			} catch (NoSuchMethodException e) {
-				throw new UnsupportedOperationException("This VM does not support "
-						+Sun13Instantiator.class.getName());
+				// Will keep the allocateNewMethod as null
 			}
 		}
 	}
-	
-	static {
+	private final Class type;
+	public Sun13Instantiator(Class type) {
+		this.type = type;
 		initialize();
 	}
 	
-	public Object instantiate(Class type) {
-		
+	public Object newInstance() {
+		if (allocateNewObjectMethod == null) {
+			return null;
+		}
 		try {
 			return allocateNewObjectMethod.invoke(null, new Object[] {type, Object.class});		
 		} catch (IllegalAccessException e) {

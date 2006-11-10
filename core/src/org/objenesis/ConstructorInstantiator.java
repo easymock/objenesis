@@ -12,19 +12,29 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ConstructorInstantiator implements ObjectInstantiator {
 
-    public Object instantiate(Class type) {
+	protected Constructor constructor;
+	public ConstructorInstantiator(Class type) {
+		try {
+			constructor = type.getDeclaredConstructor((Class[])null);
+		} catch (SecurityException e) {
+			constructor = null;
+		} catch (NoSuchMethodException e) {
+			constructor = null;
+		}
+	}
+    public Object newInstance() {
+    	if (constructor == null) {
+    		return null;
+    	}
         try {
-            Constructor constructor = type.getDeclaredConstructor((Class[])null);
-            return constructor.newInstance((Object[])null);
-        } catch (NoSuchMethodException e) {
-            return null;
-        } catch (InstantiationException e) {
-            return null;
-        } catch (IllegalAccessException e) {
-            return null;
-        } catch (InvocationTargetException e) {
-            return null;
-        }
+			return constructor.newInstance((Object[])null);
+		} catch (InstantiationException e) {
+			return null;
+		} catch (IllegalAccessException e) {
+			return null;
+		} catch (InvocationTargetException e) {
+			return null;
+		}
     }
 
 }

@@ -1,5 +1,6 @@
 package org.objenesis.tck;
 
+import org.objenesis.InstantiatorFactory;
 import org.objenesis.ObjectInstantiator;
 
 import java.util.ArrayList;
@@ -52,9 +53,9 @@ public class TCK {
     /**
      * Register an ObjectInstantiator to use when attempting to instantiate a class.
      */
-    public void registerInstantiator(ObjectInstantiator instantiator, String description) {
-        instantiators.add(instantiator);
-        descriptions.put(instantiator, description);
+    public void registerInstantiator(Class instantiatorClass, String description) {
+        instantiators.add(instantiatorClass);
+        descriptions.put(instantiatorClass, description);
     }
 
     /**
@@ -73,10 +74,10 @@ public class TCK {
 
             reporter.startCandidate(candidateDescription);
             for (Iterator j = instantiators.iterator(); j.hasNext();) {
-                ObjectInstantiator instantiator = (ObjectInstantiator) j.next();
-                String instantiatorDescription = (String) descriptions.get(instantiator);
+                Class instantiatorClass = (Class) j.next();
+                String instantiatorDescription = (String) descriptions.get(instantiatorClass);
 
-                runTest(reporter, candidateClass, instantiator, instantiatorDescription);
+                runTest(reporter, candidateClass, instantiatorClass, instantiatorDescription);
             }
             reporter.endCandidate(candidateDescription);
         }
@@ -84,9 +85,10 @@ public class TCK {
     }
 
     private void runTest(Reporter reporter, Class candidate,
-                         ObjectInstantiator instantiator, String instantiatorDescription) {
+                         Class instantiatorClass, String instantiatorDescription) {
         try {
-            Object instance = instantiator.instantiate(candidate);
+        	ObjectInstantiator instantiator = InstantiatorFactory.getInstantiator(instantiatorClass, candidate);
+            Object instance = instantiator.newInstance();
             boolean success = instance != null && instance.getClass() == candidate;
             reporter.result(instantiatorDescription, success);
         } catch (Exception e) {

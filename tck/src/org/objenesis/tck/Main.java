@@ -32,16 +32,20 @@ public class Main {
     private static void attemptToRegisterInstantiator(TCK tck, final String instantiatorClassName, String description) {
         try {
             Class cls = Class.forName(instantiatorClassName);
-            ObjectInstantiator instance = (ObjectInstantiator) cls.newInstance();
-            tck.registerInstantiator(instance, description);
+            tck.registerInstantiator(cls, description);
         } catch (Exception exception) {
-            tck.registerInstantiator(new ObjectInstantiator() {
-                public Object instantiate(Class type) {
-                    return null;
-                }
-            }, description);
+            tck.registerInstantiator(NullInstantiator.class, description);
             System.err.println("Cannot register instantiator '" + description + "' : " + exception);
         }
+    }
+    
+    private static class NullInstantiator implements ObjectInstantiator {
+    	public NullInstantiator(Class type) {			
+		}
+    	
+    	public Object newInstance() {    	
+    		return null;
+    	}    
     }
 
 }

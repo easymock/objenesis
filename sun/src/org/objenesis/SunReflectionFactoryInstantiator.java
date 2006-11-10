@@ -16,24 +16,25 @@ import java.lang.reflect.InvocationTargetException;
  * @see ObjectInstantiator
  */
 public class SunReflectionFactoryInstantiator implements ObjectInstantiator {
+    
+    private final Constructor mungedConstructor;
 
-    private final ReflectionFactory reflectionFactory;
-    private final Constructor javaLangObjectConstructor;
-
-    public SunReflectionFactoryInstantiator() {
-        reflectionFactory = ReflectionFactory.getReflectionFactory();
+    public SunReflectionFactoryInstantiator(Class type) {
+    	
+    	ReflectionFactory reflectionFactory = ReflectionFactory.getReflectionFactory();
+    	Constructor javaLangObjectConstructor;
+    	
         try {
             javaLangObjectConstructor = Object.class.getConstructor((Class[])null);
         } catch (NoSuchMethodException e) {
             throw new Error("Cannot find constructor for java.lang.Object!");
         }
+        mungedConstructor = reflectionFactory.newConstructorForSerialization(type, javaLangObjectConstructor);        
     }
 
-    public Object instantiate(Class type) {
-        Constructor magicConstructor =
-                reflectionFactory.newConstructorForSerialization(type, javaLangObjectConstructor);
+    public Object newInstance() {
         try {
-            return magicConstructor.newInstance((Object[])null);
+            return mungedConstructor.newInstance((Object[])null);
         } catch (InstantiationException e) {
             return null;
         } catch (IllegalAccessException e) {

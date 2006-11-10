@@ -1,9 +1,9 @@
 package org.objenesis.tck;
 
-import junit.framework.TestCase;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+import junit.framework.TestCase;
 
 public class TextReporterTest extends TestCase {
 
@@ -43,15 +43,16 @@ public class TextReporterTest extends TestCase {
 
         textReporter.endTests();
 
-        String expected = "" +
-                "Running TCK on platform: Some platform\n" +
-                "\n" +
-                "            instantiator1 instantiator2 instantiator3 \n" +
-                "candidate A n             n             Y             \n" +
-                "candidate B Y             n             Y             \n" +
-                "candidate C !             n             Y             \n";
+        ByteArrayOutputStream expectedSummaryBuffer = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(expectedSummaryBuffer);
+        out.println("Running TCK on platform: Some platform");
+        out.println();
+   		out.println("            instantiator1 instantiator2 instantiator3 ");
+        out.println("candidate A n             n             Y             ");
+        out.println("candidate B Y             n             Y             ");
+        out.println("candidate C !             n             Y             ");
 
-        assertEquals(expected, summaryBuffer.toString());
+        assertEquals(expectedSummaryBuffer.toString(), summaryBuffer.toString());
     }
 
 }

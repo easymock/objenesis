@@ -1,7 +1,5 @@
 package org.objenesis;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Instantiates a class by grabbing the no-args constructor, making it accessible and then
@@ -12,21 +10,12 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @see ObjectInstantiator
  */
-public class AccessibleInstantiator implements ObjectInstantiator {
+public class AccessibleInstantiator extends ConstructorInstantiator {
 
-    public Object instantiate(Class type) {
-        try {
-            Constructor constructor = type.getDeclaredConstructor((Class[])null);
-            constructor.setAccessible(true);
-            return constructor.newInstance((Object[])null);
-        } catch (NoSuchMethodException e) {
-            return null;
-        } catch (InstantiationException e) {
-            return null;
-        } catch (IllegalAccessException e) {
-            return null;
-        } catch (InvocationTargetException e) {
-            return null;
-        }
-    }    
+	public AccessibleInstantiator(Class type) {
+		super(type);
+		if(constructor != null) {
+			constructor.setAccessible(true);
+		}
+	}	
 }
