@@ -19,6 +19,7 @@ public class Main {
         attemptToRegisterInstantiator(tck, "org.objenesis.AccessibleInstantiator", "Accessible");
         attemptToRegisterInstantiator(tck, "org.objenesis.ObjectInputStreamInstantiator", "ObjectInputStream");
         attemptToRegisterInstantiator(tck, "org.objenesis.SunReflectionFactoryInstantiator", "SunReflection");
+        attemptToRegisterInstantiator(tck, "org.objenesis.SunReflectionFactorySerializationInstantiator", "SunReflection for Serialization");
         attemptToRegisterInstantiator(tck, "org.objenesis.Sun13Instantiator", "Sun JDK 1.3");
 
         CandidateLoader candidateLoader = new CandidateLoader(
