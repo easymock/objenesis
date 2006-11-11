@@ -17,6 +17,7 @@ public class Main {
         attemptToRegisterInstantiator(tck, "org.objenesis.NewInstanceInstantiator", "NewInstance");
         attemptToRegisterInstantiator(tck, "org.objenesis.ConstructorInstantiator", "Constructor");
         attemptToRegisterInstantiator(tck, "org.objenesis.AccessibleInstantiator", "Accessible");
+        attemptToRegisterInstantiator(tck, "org.objenesis.ObjectInputStreamInstantiator", "ObjectInputStream");
         attemptToRegisterInstantiator(tck, "org.objenesis.SunReflectionFactoryInstantiator", "SunReflection");
         attemptToRegisterInstantiator(tck, "org.objenesis.Sun13Instantiator", "Sun JDK 1.3");
 

@@ -1,6 +1,8 @@
 package org.objenesis.tck.candidates;
 
-public class SerializableDefaultPublicConstructor {
+import java.io.Serializable;
+
+public class SerializableDefaultPublicConstructor implements Serializable {
 
     public SerializableDefaultPublicConstructor() {
 
