@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <b>Technology Compatability Kit</b> (TCK) for {@link ObjectInstantiator}s.
+ * <b>Technology Compatibility Kit</b> (TCK) for {@link ObjectInstantiator}s.
  * <p/>
  * This TCK accepts a set of candidate classes (class it attempts to instantiate)
  * and a set of ObjectInstantiators. It then tries instantiating every candidate

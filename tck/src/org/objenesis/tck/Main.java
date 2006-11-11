@@ -5,7 +5,7 @@ import org.objenesis.ObjectInstantiator;
 import java.io.IOException;
 
 /**
- * Command line launcher for Technology Compatability Kit (TCK).
+ * Command line launcher for Technology Compatibility Kit (TCK).
  * 
  * @author Joe Walnes
  * @see TCK
