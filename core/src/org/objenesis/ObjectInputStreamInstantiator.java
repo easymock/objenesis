@@ -141,6 +141,8 @@ public class ObjectInputStreamInstantiator implements ObjectInstantiator {
 			return null;
 		} catch (ClassNotFoundException e) {
 			throw new Error("ClassNotFoundException: "+e.getMessage());
+		} catch (Exception e) {
+			return null;
 		}
 	}
 }
