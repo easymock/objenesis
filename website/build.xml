@@ -1,0 +1,34 @@
+<project name="objenesis-website" default="website">
+
+    <property name="build.dir" location="build"/>
+    <property name="tmp.dir" location="build/tmp"/>
+
+    <path id="website.classpath">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${tmp.dir}"/>
+    </target>
+
+    <target name="website">
+        <mkdir dir="${tmp.dir}/website-classes"/>
+        <javac srcdir="src"
+               destdir="${tmp.dir}/website-classes"
+               classpathref="website.classpath"/>
+
+        <mkdir dir="${build.dir}/website"/>
+        <java classname="org.objenesis.website.BuildWebsite"
+              fork="yes"
+              classpathref="website.classpath"
+              classpath="${tmp.dir}/website-classes">
+            <arg value="content/sitemap.xml"/>
+            <arg value="skin/skin.html"/>
+            <arg value="${build.dir}/website"/>
+        </java>
+    </target>
+
+</project>

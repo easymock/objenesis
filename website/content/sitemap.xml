@@ -1,0 +1,20 @@
+<sitemap>
+    <section>
+        <name>Objenesis</name>
+        <page>index.html</page>
+        <page>license.html</page>
+        <page>download.html</page>
+    </section>
+    <section>
+        <name>Documentation</name>
+        <page>tutorial.html</page>
+        <page>details.html</page>
+        <page>embedding.html</page>
+    </section>
+    <section>
+        <name>Project Details</name>
+        <page>support.html</page>
+        <page>acknowledgements.html</page>
+        <page>source.html</page>
+    </section>
+</sitemap>

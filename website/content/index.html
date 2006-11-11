@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>About</title>
+</head>
+
+<body>
+
+<p>Objenesis is a small Java library that serves one purpose:</p>
+
+<ul>
+    <li><strong>To instantiate a new object of a particular class.</strong></li>
+</ul>
+
+<h1>When would you want this?</h1>
+
+<p>Java already supports this dynamic instantiation of classes using <code>Class.newInstance()</code>.
+    However, this only works if the class has an appropriate constructor. There are many times when a class
+    cannot be instantiated this way, such as when the class contains:</p>
+
+<ul>
+    <li>Constructors that require arguments.</li>
+    <li>Constructors that have side effects.</li>
+    <li>Constructors that throw exceptions.</li>
+</ul>
+
+<p>As a result, it is common to see restrictions in libraries stating that classes must require a
+    default constructor. Objenesis aims to overcomes these restriction by bypassing the constructor on object
+    instantiation.</p>
+
+<h1>Typical uses</h1>
+
+<p>Needing to instantiate an object without calling the constructor is a fairly specialized task, however
+    there are certain cases when this is useful:</p>
+<ul>
+    <li><strong>Serialization, Remoting and Persistence</strong>
+        - Objects need to be instantiated and restored to a specific state, without invoking code.
+    </li>
+    <li><strong>Proxies, AOP Libraries and Mock Objects</strong>
+        - Classes can be subclassed without needing to worry about the super() constructor.
+    </li>
+    <li><strong>Container Frameworks</strong>
+        - Objects can be dynamically instantatiated in non-standard ways.
+    </li>
+</ul>
+
+<h1>Getting Started</h1>
+
+<ol>
+    <li><a href="download.html">Download</a> objenesis.jar.</li>
+    <li>Read the <a href="tutorial.html">twenty second tutorial</a>.</li>
+</ol>
+
+<h1>How it Works</h1>
+
+<p>Objenesis uses a variety of approaches to attempt to instantiate the object, depending on the type of object,
+JVM version, JVM vendor and SecurityManager present. These are described in full in the
+    <a href="details.html">detailed documentation</a>.</p>
+
+<h1>Avoiding the Dependency</h1>
+
+<p>For something as straight forward as instantiating an object, it can be a pain introducing yet another
+    library dependency into your project. Objenesis is easy to <a href="embedding.html">embed in your
+    existing library</a> so your end users don't even know it's there.</p>
+
+
+</body>
+</html>

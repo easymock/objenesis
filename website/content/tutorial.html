@@ -1,0 +1,71 @@
+<html>
+<head>
+    <title>Twenty Second Tutorial</title>
+</head>
+<body>
+
+<p>There are two main interfaces in Objenesis:</p>
+
+<ul>
+    <li><strong><a href="#">ClassInstantiator</a></strong>
+        - Instantiates multiple instances of a single class.
+        <pre>interface ClassInstantiator {
+  Object newInstance();
+}</pre>
+    </li>
+    <li><strong><a href="#">InstantiatorStrategy</a></strong>
+        - A particular strategy for how to instantiate a class (as this differs for different types of classes).
+        <pre>interface InstantiatorStrategy {
+  ClassInstantiator newInstantiatorOf(Class type);
+}</pre>
+    </li>
+</ul>
+
+<p><strong>Note:</strong> All Objeneis classes are in the
+    <strong><code>org.objenesis</code></strong> package.</p>
+
+<h1>Step By Step</h1>
+
+<p>There are many different strategies that Objeness uses for instantiating objects based on the JVM vendor,
+JVM version, SecurityManager and type of class being instantiated.</p>
+
+<p>However, by far the simplest strategy is the
+    <code><a href="#">AutomaticInstantiatorStrategy</a></code>, which automatically determines the best
+    strategy - so you don't have to.
+</p>
+
+<pre>InstantiatorStrategy strategy = new AutomaticInstantiatorStrategy();</pre>
+
+<p>Once you have the strategy, you can then create a <code>ClassInstantiator</code>, for a specific type.</p>
+
+<pre>ClassInstantiator thingyInstantiator = builder.newInstantiatorOf(MyThingy.class);</pre>
+
+<p>Finally, you can use this to instantiate new instances of this type.</p>
+
+<pre>MyThingy thingy1 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();</pre>
+
+<h1>Performance and Threading</h1>
+
+<p>To improve performance, it is best to reuse the <code>InstantiatorStrategy</code> and <code>ClassInstantiator</code>
+    objects as much as possible. For example, if you are instantiating multiple instances of a specific class,
+    do it from the same <code>ClassInstantiator</code>.
+</p>
+
+<p>Both <code>InstantiatorStrategy</code> and <code>ClassInstantiator</code> can be shared between multiple
+    threads and used concurrently. They are thread safe.</p>
+
+<h1>That Code Again</h1>
+
+<p>(For the impatiant)</p>
+
+<pre>InstantiatorStrategy strategy = new AutomaticInstantiatorStrategy();
+ClassInstantiator thingyInstantiator = builder.newInstantiatorOf(MyThingy.class);
+
+MyThingy thingy1 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();</pre>
+
+</body>
+</html>
