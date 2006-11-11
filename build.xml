@@ -1,7 +1,7 @@
 <project name="objenesis" default="all">
 
     <property name="version" value="SNAPSHOT" description="Version number"/>
-    <property name="build.dir" location="build" description="Where to build project"/>
+    <property name="build.dir" value="build" description="Where to build project"/>
 
     <!-- Import useful tasks: java-to-jar, run-tests -->
     <import file="build-macros.xml"/>

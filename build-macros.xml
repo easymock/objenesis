@@ -1,7 +1,7 @@
 <project>
     <!-- Convenient ant macros -->
     
-    <property name="tmp.dir" location="build/tmp" description="Temporary directory"/>
+    <property name="tmp.dir" value="build/tmp" description="Temporary directory"/>
     <property name="haltonfailure" value="true" description="Whether to halt build if tests fail"/>
 
     <macrodef name="java-to-jar"
