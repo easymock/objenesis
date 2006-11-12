@@ -21,12 +21,12 @@
     </li>
 </ul>
 
-<p><strong>Note:</strong> All Objeneis classes are in the
+<p><strong>Note:</strong> All Objenesis classes are in the
     <strong><code>org.objenesis</code></strong> package.</p>
 
 <h1>Step By Step</h1>
 
-<p>There are many different strategies that Objeness uses for instantiating objects based on the JVM vendor,
+<p>There are many different strategies that Objenesis uses for instantiating objects based on the JVM vendor,
 JVM version, SecurityManager and type of class being instantiated.</p>
 
 <p>However, by far the simplest strategy is the
@@ -58,7 +58,7 @@ MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();</pre>
 
 <h1>That Code Again</h1>
 
-<p>(For the impatiant)</p>
+<p>(For the impatient)</p>
 
 <pre>InstantiatorStrategy strategy = new AutomaticInstantiatorStrategy();
 ClassInstantiator thingyInstantiator = builder.newInstantiatorOf(MyThingy.class);
