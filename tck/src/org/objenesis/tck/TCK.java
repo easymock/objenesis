@@ -1,6 +1,5 @@
 package org.objenesis.tck;
 
-import org.objenesis.InstantiatorFactory;
 import org.objenesis.ObjectInstantiator;
 
 import java.util.ArrayList;
