@@ -20,6 +20,7 @@
     <module>core</module>
     <module>sun</module>
     <module>sun1.3</module>
+    <module>gcj</module>
     <module>main</module>
     <module>tck</module>
   </modules>
