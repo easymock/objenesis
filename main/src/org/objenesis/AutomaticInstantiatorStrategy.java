@@ -14,7 +14,9 @@ package org.objenesis;
  */
 public class AutomaticInstantiatorStrategy implements InstantiatorStrategy {
 	
-	private static final String JROCKIT = "BEA JRockit";	
+	private static final String JROCKIT = "BEA JRockit";
+	
+	private static final String GNU = "GNU libgcj";
 	
 	/** JVM version */
 	private static final String VM_VERSION = System.getProperty("java.runtime.version");
@@ -35,6 +37,10 @@ public class AutomaticInstantiatorStrategy implements InstantiatorStrategy {
 				throw new RuntimeException("Unsupported JVM: " + JVM_NAME + "/" + VM_VERSION);
 			}
 			return new Sun13Instantiator(type);
+		}
+		
+		if(JVM_NAME.startsWith(GNU)) {
+			return new GCJInstantiator(type);
 		}
 		// It's JVM 1.4 and above since we are not supporting below 1.3
 		// This instantiator should also work for JRockit except for old 1.4 JVM
