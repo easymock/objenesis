@@ -12,9 +12,9 @@
   <dependencies>
     <dependency>
       <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-core</artifactId>
+      <artifactId>objenesis-main</artifactId>
       <version>0.1-SNAPSHOT</version>
-    </dependency>
+    </dependency>    
   </dependencies>
   
 </project>
