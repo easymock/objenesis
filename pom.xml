@@ -8,14 +8,7 @@
   <artifactId>objenesis</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  
-  <licenses>
-    <license>
-      <name>MIT license</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
-    </license>
-  </licenses>
-  
+
   <modules>
     <module>core</module>    
     <module>sun</module>
@@ -25,7 +18,34 @@
     <module>main</module>
     <module>tck</module>
   </modules>
-
+    
+  <licenses>
+    <license>
+      <name>MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+  
+  <developers>
+    <developer>
+      <id>joe</id>
+      <name>Joe Walnes</name>
+      <timezone>0</timezone>
+    </developer>  
+    <developer>
+      <id>henri</id>
+      <name>Henri Tremblay</name>
+      <organization>Ossia Conseil</organization>
+      <organizationUrl>http://www.ossia-conseil.com</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>leonardo</id>
+      <name>Leonardo Mesquita</name>
+      <timezone>-5</timezone>
+    </developer>    
+  </developers>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
