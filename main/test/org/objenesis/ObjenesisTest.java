@@ -44,29 +44,6 @@ public class ObjenesisTest extends TestCase {
 		Objenesis o = new Objenesis() {};
 		assertEquals("org.objenesis.ObjenesisTest$1 using org.objenesis.AutomaticInstantiatorStrategy with caching", o.toString());
 	}
-
-	public final void testEquals() {
-		Objenesis o1 = new Objenesis();
-		Objenesis o2 = new Objenesis();
-		Objenesis o3 = new Objenesis(new MyStrategy());
-		Objenesis o4 = new Objenesis(false);
-		
-		assertFalse(o1.equals(null));
-		assertFalse(o1.equals(""));
-		assertFalse(o1.equals(o3));
-		assertFalse(o1.equals(o4));
-		assertFalse(o3.equals(o4));
-		
-		assertTrue(o1.equals(o1));
-		assertTrue(o1.equals(o2));
-	}
-	
-	public final void testHashCode() {
-		Objenesis o1 = new Objenesis();
-		Objenesis o2 = new Objenesis();
-		
-		assertEquals(o1.hashCode(), o2.hashCode());
-	}
 }
 
 class MyStrategy implements InstantiatorStrategy {

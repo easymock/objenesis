@@ -7,7 +7,9 @@ import java.io.Serializable;
  */
 public final class ObjenesisHelper {
 
-	private static final InstantiatorStrategy STRATEGY = new AutomaticInstantiatorStrategy();
+	private static final Objenesis OBJENESIS = new Objenesis();
+	
+	private static final ObjenesisSerializer OBJENESIS_SERIALIZER = new ObjenesisSerializer();
 	
 	private ObjenesisHelper() {}
 	
@@ -17,7 +19,7 @@ public final class ObjenesisHelper {
 	 * @return
 	 */
 	public static final Object newInstance(Class clazz) {
-		return STRATEGY.newInstantiatorOf(clazz).newInstance();
+		return OBJENESIS.newInstance(clazz);
 	}
 	
 	/**
@@ -27,7 +29,7 @@ public final class ObjenesisHelper {
 	 * @return
 	 */
 	public static final Serializable newSerializableInstance(Class clazz) {
-		return null;
+		return (Serializable) OBJENESIS_SERIALIZER.newInstance(clazz);
 	}
 	
 	/**
@@ -39,7 +41,7 @@ public final class ObjenesisHelper {
 	 * @return Instantiator dedicated to the class
 	 */
 	public static final ObjectInstantiator newInstantiatorOf(Class clazz) {
-		return STRATEGY.newInstantiatorOf(clazz);	
+		return OBJENESIS.newInstantiatorOf(clazz);	
 	}
 	
 	/**
@@ -52,6 +54,6 @@ public final class ObjenesisHelper {
 	 * @return Instantiator dedicated to the class
 	 */
 	public static final ObjectInstantiator newSerializableObjectInstantiatorOf(Class clazz) {
-		return null;
+		return OBJENESIS_SERIALIZER.newInstantiatorOf(clazz);;
 	}	
 }
