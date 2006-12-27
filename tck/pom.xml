@@ -13,7 +13,7 @@
     <dependency>
       <groupId>org.objenesis</groupId>
       <artifactId>objenesis-main</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>    
   </dependencies>
   
