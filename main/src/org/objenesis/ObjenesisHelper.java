@@ -54,6 +54,6 @@ public final class ObjenesisHelper {
 	 * @return Instantiator dedicated to the class
 	 */
 	public static final ObjectInstantiator newSerializableObjectInstantiatorOf(Class clazz) {
-		return OBJENESIS_SERIALIZER.newInstantiatorOf(clazz);;
+		return OBJENESIS_SERIALIZER.newInstantiatorOf(clazz);
 	}	
 }
