@@ -10,7 +10,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>core</module>    
+    <module>core</module>
     <module>sun</module>
     <module>sun1.3</module>
     <module>jrockit</module>
@@ -18,20 +18,20 @@
     <module>main</module>
     <module>tck</module>
   </modules>
-    
+
   <licenses>
     <license>
       <name>MIT license</name>
       <url>http://www.opensource.org/licenses/mit-license.php</url>
     </license>
   </licenses>
-  
+
   <developers>
     <developer>
       <id>joe</id>
       <name>Joe Walnes</name>
       <timezone>0</timezone>
-    </developer>  
+    </developer>
     <developer>
       <id>henri</id>
       <name>Henri Tremblay</name>
@@ -43,9 +43,9 @@
       <id>leonardo</id>
       <name>Leonardo Mesquita</name>
       <timezone>-5</timezone>
-    </developer>    
+    </developer>
   </developers>
-  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -58,6 +58,16 @@
   <build>
     <sourceDirectory>${basedir}/src</sourceDirectory>
     <testSourceDirectory>${basedir}/test</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <!-- Test resources are in the test source directory -->
+        <directory>${basedir}/test</directory>
+        <includes>
+          <!-- Everything except java files is considered to be a resource -->
+          <exclude>**/*.java</exclude>
+        </includes>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
