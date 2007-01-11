@@ -7,16 +7,16 @@
 <p>There are two main interfaces in Objenesis:</p>
 
 <ul>
-    <li><strong><a href="#">ClassInstantiator</a></strong>
+    <li><strong><a href="#">ObjectInstantiator</a></strong>
         - Instantiates multiple instances of a single class.
-        <pre>interface ClassInstantiator {
+        <pre>interface ObjectInstantiator {
   Object newInstance();
 }</pre>
     </li>
     <li><strong><a href="#">InstantiatorStrategy</a></strong>
         - A particular strategy for how to instantiate a class (as this differs for different types of classes).
         <pre>interface InstantiatorStrategy {
-  ClassInstantiator newInstantiatorOf(Class type);
+  ObjectInstantiator newInstantiatorOf(Class type);
 }</pre>
     </li>
 </ul>
@@ -29,43 +29,64 @@
 <p>There are many different strategies that Objenesis uses for instantiating objects based on the JVM vendor,
 JVM version, SecurityManager and type of class being instantiated.</p>
 
-<p>However, by far the simplest strategy is the
-    <code><a href="#">AutomaticInstantiatorStrategy</a></code>, which automatically determines the best
-    strategy - so you don't have to.
-</p>
+<p>We have defined that two different kinds of instantiation are required:<p>
+   
+<ul>
+    <li><strong>Stardard</strong> - No constructor will be called</li>
+    <li><strong>Serializable compliant</strong> - Acts like an object instantiated by java standard 
+        serialization. It means that the constructor of the first non-serializable parent class will
+        be called. However, readResolve is not called and we never check if the object is serializable.</li>
+</ul>
 
-<pre>InstantiatorStrategy strategy = new AutomaticInstantiatorStrategy();</pre>
-
-<p>Once you have the strategy, you can then create a <code>ClassInstantiator</code>, for a specific type.</p>
-
-<pre>ClassInstantiator thingyInstantiator = builder.newInstantiatorOf(MyThingy.class);</pre>
-
-<p>Finally, you can use this to instantiate new instances of this type.</p>
-
-<pre>MyThingy thingy1 = (MyThingy)thingyInstantiator.newInstance();
-MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
-MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();</pre>
+<p>The simplest way to use Objenesis is by using <a href="#">Objenesis</a> (standard) and 
+<a href="#">ObjenesisSerializer</a> (Serializable compliant) or statically through <a href="#">ObjenesisHelper</a>. 
+The later is wrapping the two others. By default, these classes decide which ObjectInstantiator is needed 
+will cache it for the requested class.</p>
 
 <h1>Performance and Threading</h1>
 
-<p>To improve performance, it is best to reuse the <code>InstantiatorStrategy</code> and <code>ClassInstantiator</code>
+<p>To improve performance, it is best to reuse the <code>ObjectInstantiator</code>
     objects as much as possible. For example, if you are instantiating multiple instances of a specific class,
-    do it from the same <code>ClassInstantiator</code>.
+    do it from the same <code>ObjectInstantiator</code>.
 </p>
 
-<p>Both <code>InstantiatorStrategy</code> and <code>ClassInstantiator</code> can be shared between multiple
+<p>Both <code>InstantiatorStrategy</code> and <code>ObjectInstantiator</code> can be shared between multiple
     threads and used concurrently. They are thread safe.</p>
 
 <h1>That Code Again</h1>
 
 <p>(For the impatient)</p>
 
-<pre>InstantiatorStrategy strategy = new AutomaticInstantiatorStrategy();
-ClassInstantiator thingyInstantiator = builder.newInstantiatorOf(MyThingy.class);
+<p>The static way</p>
 
-MyThingy thingy1 = (MyThingy)thingyInstantiator.newInstance();
+<pre>
+MyThingy thing1 = (MyThingy) ObjenesisHelper.newInstance(MyThingy.class); // or newSerializableInstance;
+
+// or (a little bit more efficient if you need to create many objects)
+
+ObjectInstantiator thingyInstantiator = 
+   ObjenesisHelper.newInstantiatorOf(MyThingy.class); // or newSerializableObjectInstantiatorOf;
+
 MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
-MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();</pre>
+MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy4 = (MyThingy)thingyInstantiator.newInstance();
+</pre>
+
+<p>The normal way</p>
+
+<pre>
+Objenesis objenesis = new Objenesis(); // or ObjenesisSerializer
+MyThingy thingy1 = (MyThingy) objenesis.newInstance();
+
+// or (a little bit more efficient if you need to create many objects)
+
+Objenesis objenesis = new Objenesis(); // or ObjenesisSerializer
+ObjectInstantiator thingyInstantiator = objenesis.newInstantiatorOf(MyThingy.class);
+
+MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy4 = (MyThingy)thingyInstantiator.newInstance();
+</pre>
 
 </body>
 </html>

@@ -4,7 +4,30 @@
 </head>
 <body>
 
-<em>TODO</em>
+Objenesis is <a href="http://tonicsystems.com/products/jarjar/">jarjar</a> compliant.
+
+<h1>Ant</h1>
+
+<p>A jarjar ant task is available. You just need to replace your usual jar task with 
+jarjar. Depending on the complexity of your project, you will then have different
+parameters. Here's an example:</p>
+
+<pre>
+&lt;jarjar jarfile="${temp directory}/easymockclassextension.jar"&gt;
+  &lt;fileset dir="tmp" includes="org/easymock/classextension/*.class
+    org/easymock/classextension/internal/*.class"/&gt;
+  &lt;zipfileset src="lib/objenesis-@VERSION@.jar"/&gt;
+  &lt;rule pattern="org.objenesis.**"
+    result="org.easymock.classextension.internal.objenesis.@1"/&gt;
+&lt;/jarjar&gt;
+</pre>
+
+<h1>Maven</h1>
+   
+<p>For Maven 2, a plugin is currently in under construction at <a href="http://mojo.codehaus.org/">
+Mojo</a>. However, you can use the 
+<a href="http://maven.apache.org/plugins/maven-antrun-plugin/">antrun plugin</a> 
+to call the jarjar ant task.</p>
 
 </body>
 </html>
