@@ -5,8 +5,10 @@ import java.util.WeakHashMap;
 
 /**
  * Base class to extend if you want to have a class providing your own default strategy
+ * 
+ * @author Henri Tremblay
  */
-public abstract class ObjenesisBase {
+public abstract class ObjenesisBase implements Objenesis {
 
 	protected final InstantiatorStrategy strategy;
 	

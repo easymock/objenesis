@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 /**
  * Easiest way to create a new class instance.
+ * 
+ * @author Henri Tremblay
  */
 public final class ObjenesisHelper {
 
-	private static final Objenesis OBJENESIS = new Objenesis();
+	private static final Objenesis OBJENESIS_STD = new ObjenesisStd();
 	
-	private static final ObjenesisSerializer OBJENESIS_SERIALIZER = new ObjenesisSerializer();
+	private static final Objenesis OBJENESIS_SERIALIZER = new ObjenesisSerializer();
 	
 	private ObjenesisHelper() {}
 	
@@ -19,7 +21,7 @@ public final class ObjenesisHelper {
 	 * @return
 	 */
 	public static final Object newInstance(Class clazz) {
-		return OBJENESIS.newInstance(clazz);
+		return OBJENESIS_STD.newInstance(clazz);
 	}
 	
 	/**
@@ -41,7 +43,7 @@ public final class ObjenesisHelper {
 	 * @return Instantiator dedicated to the class
 	 */
 	public static final ObjectInstantiator newInstantiatorOf(Class clazz) {
-		return OBJENESIS.newInstantiatorOf(clazz);	
+		return OBJENESIS_STD.newInstantiatorOf(clazz);	
 	}
 	
 	/**
