@@ -24,9 +24,9 @@ public interface Reporter {
      *
      * @param platformDescription Description the platform being run on (i.e. JVM version, vendor, etc).
      * @param allCandidates Descriptions of all candidates being used in tests.
-     * @param allInstantiators Descriptions of all ObjectInstantiators being used in tests.
+     * @param allObjenesisInstances Descriptions of all Objenesis instances being used in tests.
      */
-    void startTests(String platformDescription, String[] allCandidates, String[] allInstantiators);
+    void startTests(String platformDescription, String[] allCandidates, String[] allObjenesisInstances);
 
     /**
      * Report that tests are about to commence on a particular candidate of class.

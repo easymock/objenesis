@@ -1,30 +1,31 @@
 package org.objenesis.tck;
 
-import org.objenesis.ObjectInstantiator;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.objenesis.ObjectInstantiator;
+import org.objenesis.Objenesis;
+
 /**
- * <b>Technology Compatibility Kit</b> (TCK) for {@link ObjectInstantiator}s.
+ * <b>Technology Compatibility Kit</b> (TCK) for {@link Objenesis}s.
  * <p/>
  * This TCK accepts a set of candidate classes (class it attempts to instantiate)
- * and a set of ObjectInstantiators. It then tries instantiating every candidate
- * with every instantiator, reporting the results to a {@link Reporter}.
+ * and a set of Objenesis implementations. It then tries instantiating every candidate
+ * with every Objenesis implementations, reporting the results to a {@link Reporter}.
  *
  * <h3>Example usage</h3>
  * <pre>
  * TCK tck = new TCK();
  * // register candidate classes.
- * tck.registerCandiate(SomeClass.class, "A basic class");
- * tck.registerCandiate(SomeEvil.class, "Something evil");
- * tck.registerCandiate(NotEvil.class, "Something nice");
- * // register instantiators.
- * tck.registerInstantiator(new MyInstantiator(), "My instantiator");
- * tck.registerInstantiator(new YourInstantiator(), "Yourinstantiator");
+ * tck.registerCandidate(SomeClass.class, "A basic class");
+ * tck.registerCandidate(SomeEvil.class, "Something evil");
+ * tck.registerCandidate(NotEvil.class, "Something nice");
+ * // register Objenesis instances.
+ * tck.registerObjenesisInstance(new ObjenesisStd(), "Objenesis");
+ * tck.registerObjenesisInstance(new ObjenesisSerializaer(), "Objenesis for serialization");
  * // go!
  * Reporter reporter = new TextReporter(System.out, System.err);
  * tck.runTests(reporter);
@@ -37,24 +38,24 @@ import java.util.Map;
  */
 public class TCK {
 
-    private List instantiators = new ArrayList();
+    private List objenesisInstances = new ArrayList();
     private List candidates = new ArrayList();
     private Map descriptions = new HashMap();
 
     /**
      * Register a candidate class to attempt to instantiate.
      */
-    public void registerCandiate(Class candidateClass, String description) {
+    public void registerCandidate(Class candidateClass, String description) {
         candidates.add(candidateClass);
         descriptions.put(candidateClass, description);
     }
 
     /**
-     * Register an ObjectInstantiator to use when attempting to instantiate a class.
+     * Register an Objenesis instance to use when attempting to instantiate a class.
      */
-    public void registerInstantiator(Class instantiatorClass, String description) {
-        instantiators.add(instantiatorClass);
-        descriptions.put(instantiatorClass, description);
+    public void registerObjenesisInstance(Objenesis objenesis, String description) {
+    	objenesisInstances.add(objenesis);
+        descriptions.put(objenesis, description);
     }
 
     /**
@@ -65,18 +66,23 @@ public class TCK {
     public void runTests(Reporter reporter) {
         reporter.startTests(describePlatform(),
                 findAllDescriptions(candidates, descriptions),
-                findAllDescriptions(instantiators, descriptions));
+                findAllDescriptions(objenesisInstances, descriptions));
 
+        /** 
+         * @todo Henri: Need to turn that upside down so the candidates are
+         * inside the loop
+         */
+        
         for (Iterator i = candidates.iterator(); i.hasNext();) {
             Class candidateClass = (Class) i.next();
             String candidateDescription = (String) descriptions.get(candidateClass);
 
             reporter.startCandidate(candidateDescription);
-            for (Iterator j = instantiators.iterator(); j.hasNext();) {
-                Class instantiatorClass = (Class) j.next();
-                String instantiatorDescription = (String) descriptions.get(instantiatorClass);
+            for (Iterator j = objenesisInstances.iterator(); j.hasNext();) {
+                Objenesis objenesis = (Objenesis) j.next();
+                String instantiatorDescription = (String) descriptions.get(objenesis);
 
-                runTest(reporter, candidateClass, instantiatorClass, instantiatorDescription);
+                runTest(reporter, candidateClass, objenesis, instantiatorDescription);
             }
             reporter.endCandidate(candidateDescription);
         }
@@ -84,10 +90,9 @@ public class TCK {
     }
 
     private void runTest(Reporter reporter, Class candidate,
-                         Class instantiatorClass, String instantiatorDescription) {
+    		Objenesis objenesis, String instantiatorDescription) {
         try {
-        	ObjectInstantiator instantiator = InstantiatorFactory.getInstantiator(instantiatorClass, candidate);
-            Object instance = instantiator.newInstance();
+        	Object instance = objenesis.newInstance(candidate);
             boolean success = instance != null && instance.getClass() == candidate;
             reporter.result(instantiatorDescription, success);
         } catch (Exception e) {
@@ -109,8 +114,11 @@ public class TCK {
      */
     protected String describePlatform() {
         return "Java " + System.getProperty("java.specification.version")
-                + " (" + System.getProperty("java.vm.version")
-                + " " + System.getProperty("java.vm.vendor") + ")";
+                + " (" + System.getProperty("java.vm.vendor")
+                + " " + System.getProperty("java.vm.name")
+                + " " + System.getProperty("java.vm.version")
+                + " " + System.getProperty("java.runtime.version")
+                + ")";
     }
 
 }

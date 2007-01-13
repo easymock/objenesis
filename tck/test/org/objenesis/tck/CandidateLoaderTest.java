@@ -15,7 +15,7 @@ public class CandidateLoaderTest extends TestCase {
 
         recordedEvents = new StringBuffer();
         TCK tck = new TCK() {
-            public void registerCandiate(Class candidateClass, String description) {
+            public void registerCandidate(Class candidateClass, String description) {
                 recordedEvents.append("registerCandidate('").append(candidateClass)
                         .append("', '").append(description).append("')\n");
             }

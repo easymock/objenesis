@@ -56,7 +56,7 @@ public class TextReporter implements Reporter {
     public void exception(String instantiatorDescription, Exception exception) {
         summary.print(pad("!", maxInstantiatorWidth) + " ");
         log.println("--- Candidate '" + currentCandidate +
-                "', Insantiator '" + instantiatorDescription + "' ---");
+                "', Instantiator '" + instantiatorDescription + "' ---");
         exception.printStackTrace(log);
     }
 

@@ -77,8 +77,8 @@ public class CandidateLoader {
 
     private void handlePropertyEntry(String key, String value) {
         try {
-            Class candidate = classloader.loadClass(key);
-            tck.registerCandiate(candidate, value);
+            Class candidate = Class.forName(key, true, classloader);
+            tck.registerCandidate(candidate, value);
         } catch (ClassNotFoundException e) {
             errorHandler.classNotFound(key);
         }
