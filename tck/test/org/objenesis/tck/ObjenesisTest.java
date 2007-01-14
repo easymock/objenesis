@@ -1,13 +1,18 @@
 package org.objenesis.tck;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import junit.framework.TestCase;
 
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
 
 /**
- * @author Administrator
- *
+ * Integration test for Objenesis. Should pass successfully on every supported JVM for all
+ * Objenesis interface implementation.
+ * 
+ * @author Henri Tremblay
  */
 public class ObjenesisTest extends TestCase {
 
@@ -19,26 +24,38 @@ public class ObjenesisTest extends TestCase {
  
     public static class JUnitReporter implements Reporter {
 
-    	public void startCandidate(String description) {
-    	}
-
+    	private String currentObjenesis;
+    	private String currentCandidate;
+    	
     	public void startTests(String platformDescription, String[] allCandidates,
     			String[] allInstantiators) {
     	}
-    	
-    	public void endCandidate(String description) {
+ 
+		public void startTest(String candidateDescription, String objenesisDescription) {
+			currentCandidate = candidateDescription;
+			currentObjenesis = objenesisDescription;
+		}
+		
+    	public void endObjenesis(String description) {
     	}
 
     	public void endTests() {
     	}
 
-    	public void exception(String instantiatorDescription, Exception exception) {
-    		fail(instantiatorDescription);
+    	public void exception(Exception exception) {
+    		ByteArrayOutputStream buffer = new ByteArrayOutputStream();    		
+            PrintStream out = new PrintStream(buffer);
+            out.println("Exception when instantiating " + currentCandidate + " with " + currentObjenesis + ": ");
+            exception.printStackTrace(out);
+    		fail(buffer.toString());
     	}
 
-    	public void result(String instantiatorDescription, boolean instantiatedObject) {
-    		assertTrue(instantiatorDescription, instantiatedObject);
+    	public void result(boolean instantiatedObject) {
+    		assertTrue("Instantiating " + currentCandidate + " with " + currentObjenesis + " failed", instantiatedObject);
     	}
+
+		public void endTest() {
+		}		
     }
     
     private TCK tck = null;

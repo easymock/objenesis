@@ -68,35 +68,33 @@ public class TCK {
                 findAllDescriptions(candidates, descriptions),
                 findAllDescriptions(objenesisInstances, descriptions));
 
-        /** 
-         * @todo Henri: Need to turn that upside down so the candidates are
-         * inside the loop
-         */
-        
-        for (Iterator i = candidates.iterator(); i.hasNext();) {
-            Class candidateClass = (Class) i.next();
-            String candidateDescription = (String) descriptions.get(candidateClass);
-
-            reporter.startCandidate(candidateDescription);
+        for (Iterator i = candidates.iterator(); i.hasNext();) {    
+        	Class candidateClass = (Class) i.next();
+        	String candidateDescription = (String) descriptions.get(candidateClass);
+        	
             for (Iterator j = objenesisInstances.iterator(); j.hasNext();) {
-                Objenesis objenesis = (Objenesis) j.next();
-                String instantiatorDescription = (String) descriptions.get(objenesis);
+        	   Objenesis objenesis = (Objenesis) j.next();
+            
+        	   String objenesisDescription = (String) descriptions.get(objenesis);
 
-                runTest(reporter, candidateClass, objenesis, instantiatorDescription);
-            }
-            reporter.endCandidate(candidateDescription);
+        	   reporter.startTest(candidateDescription, objenesisDescription);
+            
+        	   runTest(reporter, candidateClass, objenesis, candidateDescription);
+        	   
+        	   reporter.endTest();
+            }            
         }
         reporter.endTests();
     }
 
     private void runTest(Reporter reporter, Class candidate,
-    		Objenesis objenesis, String instantiatorDescription) {
+    		Objenesis objenesis, String candidateDescription) {
         try {
         	Object instance = objenesis.newInstance(candidate);
             boolean success = instance != null && instance.getClass() == candidate;
-            reporter.result(instantiatorDescription, success);
+            reporter.result(success);
         } catch (Exception e) {
-            reporter.exception(instantiatorDescription, e);
+            reporter.exception(e);
         }
     }
 

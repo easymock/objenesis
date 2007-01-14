@@ -6,9 +6,9 @@ package org.objenesis.tck;
  * <pre>
  * startTests
  * (
- *   startCandidate
+ *   startObjenesis
  *   ( result | exception ) *
- *   endCandidate
+ *   endObjenesis
  * ) *
  * endTests
  * </pre>
@@ -29,38 +29,36 @@ public interface Reporter {
     void startTests(String platformDescription, String[] allCandidates, String[] allObjenesisInstances);
 
     /**
-     * Report that tests are about to commence on a particular candidate of class.
+     * Report that a test between a candidate and an objenesis instance if about to start.
      *
-     * @param description Description of the candidate class.
+     * @param candidateDescription Description of the candidate class.
+     * @param objenesisDescription Description of the objenesis instance.
      */
-    void startCandidate(String description);
+    void startTest(String candidateDescription, String objenesisDescription);
 
     /**
-     * Report details about what happened when an ObjectInstantiator tried to instantiate the current candidate.
+     * Report details about what happened when an Objenesis instance tried to instantiate the current candidate.
      *
-     * @param instantiatorDescription Description of the ObjectInstantiator.
-     * @param instantiatedObject      Whether the ObjectInstantiator successfully instantiated the candidate class.
+     * @param candidateDescription Description of the candidate.
+     * @param instantiatedObject   Whether the ObjectInstantiator successfully instantiated the candidate class.
      */
-    void result(String instantiatorDescription, boolean instantiatedObject);
+    void result(boolean instantiatedObject);
 
     /**
-     * Report that something bad happened.
+     * Report that something bad happened during the test.
      *
-     * @param instantiatorDescription Description of instantiator that caused the exception.
-     * @param exception               Exception thrown by instantiator.
+     * @param candidateDescription Description of the candidate that caused the exception.
+     * @param exception            Exception thrown by instantiator.
      */
-    void exception(String instantiatorDescription, Exception exception);
+    void exception(Exception exception);
 
     /**
-     * Report that tests have been completed for a particular candidate of clas.
-     *
-     * @param description Description of the candidate class.
+     * Report that tests have been completed for a particular Objenesis instance and candidate.
      */
-    void endCandidate(String description);
+    void endTest();
 
     /**
      * Report that all tests have finished. Nothing will be called after this method.
      */
     void endTests();
-
 }

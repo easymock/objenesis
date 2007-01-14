@@ -39,23 +39,29 @@ public class TCKTest extends TestCase {
         // When... the TCK tests are run
         Reporter reporter = new RecordingReporter();
         tck.runTests(reporter);
-
+        
         // Expect... the reporter to have received a sequence of calls
         //           notifying it of what the TCK is doing.
         assertEquals("" +
                 "startTests()\n" +
-                "startCandidate('Candidate A')\n" +
-                "result('Instantiator1', false);\n" +
-                "result('Instantiator2', false);\n" +
-                "endCandidate('Candidate A')\n" +
-                "startCandidate('Candidate B')\n" +
-                "result('Instantiator1', false);\n" +
-                "result('Instantiator2', false);\n" +
-                "endCandidate('Candidate B')\n" +
-                "startCandidate('Candidate C')\n" +
-                "result('Instantiator1', false);\n" +
-                "result('Instantiator2', false);\n" +
-                "endCandidate('Candidate C')\n" +
+                "startTest('Candidate A', 'Instantiator1')\n" +
+                "result(false)\n" +
+                "endTest()\n" +
+                "startTest('Candidate A', 'Instantiator2')\n" +
+                "result(false)\n" +
+                "endTest()\n" +
+                "startTest('Candidate B', 'Instantiator1')\n" +
+                "result(false)\n" +
+                "endTest()\n" +
+                "startTest('Candidate B', 'Instantiator2')\n" +
+                "result(false)\n" +
+                "endTest()\n" +
+                "startTest('Candidate C', 'Instantiator1')\n" +
+                "result(false)\n" +
+                "endTest()\n" +
+                "startTest('Candidate C', 'Instantiator2')\n" +
+                "result(false)\n" +
+                "endTest()\n" +                
                 "endTests()\n",
                 reporter.toString());
     }
@@ -75,16 +81,17 @@ public class TCKTest extends TestCase {
         Reporter reporter = new RecordingReporter();
         tck.runTests(reporter);
 
+        System.out.println(reporter.toString());
         // Expect... the reporter to be notified that A succeeded
         //           but B failed.
         assertEquals("" +
                 "startTests()\n" +
-                "startCandidate('Candidate A')\n" +  // A
-                "result('instantiator', true);\n" +  // true
-                "endCandidate('Candidate A')\n" +
-                "startCandidate('Candidate B')\n" +  // B
-                "result('instantiator', false);\n" + // false
-                "endCandidate('Candidate B')\n" +
+                "startTest('Candidate A', 'instantiator')\n" +  // A
+                "result(true)\n" +  // true
+                "endTest()\n" +
+                "startTest('Candidate B', 'instantiator')\n" +  // B
+                "result(false)\n" + // false
+                "endTest()\n" +
                 "endTests()\n",
                 reporter.toString());
     }
@@ -128,21 +135,21 @@ public class TCKTest extends TestCase {
             log.append("startTests()\n");
         }
 
-        public void startCandidate(String description) {
-            log.append("startCandidate('").append(description).append("')\n");
+        public void startTest(String candidateDescription, String objenesisDescription) {
+            log.append("startTest('").append(candidateDescription).append("', '")
+            		.append(objenesisDescription).append("')\n");
         }
 
-        public void result(String instantiatorDescription, boolean instantiatedObject) {
-            log.append("result('").append(instantiatorDescription)
-                    .append("', ").append(instantiatedObject).append(");\n");
+        public void result(boolean instantiatedObject) {
+            log.append("result(").append(instantiatedObject).append(")\n");
         }
 
-        public void exception(String instantiatorDescription, Exception exception) {
-            log.append("exception('").append(instantiatorDescription).append("')\n");
+        public void exception(Exception exception) {
+            log.append("exception()\n");
         }
 
-        public void endCandidate(String description) {
-            log.append("endCandidate('").append(description).append("')\n");
+        public void endTest() {
+            log.append("endTest()\n");
         }
 
         public void endTests() {

@@ -23,24 +23,27 @@ public class TextReporterTest extends TestCase {
                 new String[]{"instantiator1", "instantiator2", "instantiator3"}
         );
 
-        textReporter.startCandidate("candidate A");
-        textReporter.result("instantiator1", false);
-        textReporter.result("instantiator2", false);
-        textReporter.result("instantiator3", true);
-        textReporter.endCandidate("candidate A");
-
-        textReporter.startCandidate("candidate B");
-        textReporter.result("instantiator1", true);
-        textReporter.result("instantiator2", false);
-        textReporter.result("instantiator3", true);
-        textReporter.endCandidate("candidate B");
-
-        textReporter.startCandidate("candidate C");
-        textReporter.exception("instantiator1", new RuntimeException("Problem"));
-        textReporter.result("instantiator2", false);
-        textReporter.result("instantiator3", true);
-        textReporter.endCandidate("candidate C");
-
+        textReporter.startTest("candidate A", "instantiator1");
+        textReporter.result(false);
+        textReporter.startTest("candidate A", "instantiator2");
+        textReporter.result(false);
+        textReporter.startTest("candidate A", "instantiator3");
+        textReporter.result(true);
+        
+        textReporter.startTest("candidate B", "instantiator1");
+        textReporter.result(true);
+        textReporter.startTest("candidate B", "instantiator2");
+        textReporter.result(false);
+        textReporter.startTest("candidate B", "instantiator3");
+        textReporter.result(true);
+        
+        textReporter.startTest("candidate C", "instantiator1");
+        textReporter.exception(new RuntimeException("Problem"));
+        textReporter.startTest("candidate C", "instantiator2");
+        textReporter.result(false);
+        textReporter.startTest("candidate C", "instantiator3");
+        textReporter.result(true);
+        
         textReporter.endTests();
 
         ByteArrayOutputStream expectedSummaryBuffer = new ByteArrayOutputStream();
@@ -50,8 +53,11 @@ public class TextReporterTest extends TestCase {
    		out.println("            instantiator1 instantiator2 instantiator3 ");
         out.println("candidate A n             n             Y             ");
         out.println("candidate B Y             n             Y             ");
-        out.println("candidate C !             n             Y             ");
-
+        out.println("candidate C n             n             Y             ");
+        out.println();
+        out.println("--- FAILED: 5 error(s) occured ---");
+        out.println();
+        
         assertEquals(expectedSummaryBuffer.toString(), summaryBuffer.toString());
     }
 
