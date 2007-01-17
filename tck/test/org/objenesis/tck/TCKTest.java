@@ -81,7 +81,6 @@ public class TCKTest extends TestCase {
         Reporter reporter = new RecordingReporter();
         tck.runTests(reporter);
 
-        System.out.println(reporter.toString());
         // Expect... the reporter to be notified that A succeeded
         //           but B failed.
         assertEquals("" +
