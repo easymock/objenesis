@@ -21,17 +21,13 @@ public class SunReflectionFactorySerializationInstantiator implements ObjectInst
     private final Constructor mungedConstructor;
 
     public SunReflectionFactorySerializationInstantiator(Class type) {
-    	if(!Serializable.class.isAssignableFrom(type)) {
-    		mungedConstructor = null;
-    		return;
-    	}
-    	
     	ReflectionFactory reflectionFactory = ReflectionFactory.getReflectionFactory();
     	Class nonSerializableAncestor = type.getSuperclass();
     	while(nonSerializableAncestor != null && Serializable.class.isAssignableFrom(nonSerializableAncestor)) {
     		nonSerializableAncestor = nonSerializableAncestor.getSuperclass();
     	}
     	if(nonSerializableAncestor == null) {
+    		/** @todo: (Henri) Can't happen, Object is not Serializable */
     		mungedConstructor = null;
     		return;
     	}
@@ -39,6 +35,9 @@ public class SunReflectionFactorySerializationInstantiator implements ObjectInst
 		try {
 			nonSerializableAncestorConstructor = nonSerializableAncestor.getConstructor((Class[])null);
 		} catch (NoSuchMethodException e) {
+			/** @todo (Henri) I think we should throw a NotSerializableException 
+			 * just to put the same message a ObjectInputStream. Otherwise, the user won't know if the null returned
+			 * if a "Not serializable", a "No default constructor on ancestor" or a "Exception in constructor" */
 			mungedConstructor = null;
     		return;
 		}    	
@@ -47,12 +46,10 @@ public class SunReflectionFactorySerializationInstantiator implements ObjectInst
     }
 
     public Object newInstance() {
-    	if(mungedConstructor == null) {
-    		return null;
-    	}
         try {
             return mungedConstructor.newInstance((Object[])null);
         } catch (InstantiationException e) {
+        	/** @todo (Henri) See todo above */
             return null;
         } catch (IllegalAccessException e) {
             return null;

@@ -1,24 +1,24 @@
 package org.objenesis;
 
 /**
- * Class using the {@link AutomaticInstantiatorStrategy} by default 
+ * Class using the {@link StdInstantiatorStrategy} by default 
  */
 public class ObjenesisStd extends ObjenesisBase {
 
 	/**
-	 * Default constructor using the {@link AutomaticInstantiatorStrategy}
+	 * Default constructor using the {@link StdInstantiatorStrategy}
 	 */
 	public ObjenesisStd() {
-		super(new AutomaticInstantiatorStrategy());
+		super(new StdInstantiatorStrategy());
 	}
 
 	/**
-	 * Instance using the {@link AutomaticInstantiatorStrategy} with or without caching {@link ObjectInstantiator}s
+	 * Instance using the {@link StdInstantiatorStrategy} with or without caching {@link ObjectInstantiator}s
 	 * 
 	 * @param useCache If {@link ObjectInstantiator}s should be cached
 	 */
 	public ObjenesisStd(boolean useCache) {
-		super(new AutomaticInstantiatorStrategy(), useCache);
+		super(new StdInstantiatorStrategy(), useCache);
 	}
 	
 	/**

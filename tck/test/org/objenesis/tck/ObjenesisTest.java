@@ -60,29 +60,33 @@ public class ObjenesisTest extends TestCase {
     
     private TCK tck = null;
 
+    private CandidateLoader candidateLoader = null;
+    
 	protected void setUp() throws Exception {
 		super.setUp();
 		
     	tck = new TCK();
     	
-        CandidateLoader candidateLoader = new CandidateLoader(
+        candidateLoader = new CandidateLoader(
                 tck,
                 getClass().getClassLoader(),
-                new ErrorHandler());
-        candidateLoader.loadFromResource(getClass(), "candidates/candidates.properties");		
+                new ErrorHandler());        		
 	}
 
 	protected void tearDown() throws Exception {
+		candidateLoader = null;
 		tck = null;
 		super.tearDown();
 	}
 
 	public void testObjenesisStd() throws Exception {
+		candidateLoader.loadFromResource(getClass(), "candidates/candidates.properties");
     	tck.registerObjenesisInstance(new ObjenesisStd(), "Objenesis standard");    	
         tck.runTests(new JUnitReporter());		
 	}
 
 	public void testObjenesisSerializer() throws Exception {
+		candidateLoader.loadFromResource(getClass(), "candidates/serializable-candidates.properties");
 		tck.registerObjenesisInstance(new ObjenesisSerializer(), "Objenesis serializer");    	
         tck.runTests(new JUnitReporter());		
 	}

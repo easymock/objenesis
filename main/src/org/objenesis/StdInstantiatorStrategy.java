@@ -8,27 +8,11 @@ package org.objenesis;
  * <li>JVM vendor</li>
  * <li>JVM vendor version</li>
  * </ul>
- * However, instantiator a stateful and so dedicated to their class.
+ * However, instantiators are stateful and so dedicated to their class.
  *
  * @see ObjectInstantiator
  */
-public class AutomaticInstantiatorStrategy implements InstantiatorStrategy {
-	
-	private static final String JROCKIT = "BEA JRockit";
-	
-	private static final String GNU = "GNU libgcj";
-	
-	/** JVM version */
-	private static final String VM_VERSION = System.getProperty("java.runtime.version");
-	
-	/** Vendor version */
-	private static final String VENDOR_VERSION = System.getProperty("java.vm.version");
-	
-	/** Vendor name */
-	private static final String VENDOR = System.getProperty("java.vm.vendor");
-	
-	/** JVM name */
-	private static final String JVM_NAME = System.getProperty("java.vm.name");
+public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
 	
 	public ObjectInstantiator newInstantiatorOf(Class type) {
 

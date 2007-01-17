@@ -6,17 +6,17 @@ public class ObjenesisTest extends TestCase {
 
 	public final void testObjenesis() {
 		Objenesis o = new ObjenesisStd();
-		assertEquals("org.objenesis.ObjenesisStd using org.objenesis.AutomaticInstantiatorStrategy with caching", o.toString());
+		assertEquals("org.objenesis.ObjenesisStd using org.objenesis.StdInstantiatorStrategy with caching", o.toString());
 	}
 
 	public final void testObjenesisBoolean() {
 		Objenesis o = new ObjenesisStd(false);
-		assertEquals("org.objenesis.ObjenesisStd using org.objenesis.AutomaticInstantiatorStrategy without caching", o.toString());
+		assertEquals("org.objenesis.ObjenesisStd using org.objenesis.StdInstantiatorStrategy without caching", o.toString());
 	}
 
 	public final void testObjenesisInstantiatorStrategy() {
 		Objenesis o = new ObjenesisStd(false);
-		assertEquals("org.objenesis.ObjenesisStd using org.objenesis.AutomaticInstantiatorStrategy without caching", o.toString());
+		assertEquals("org.objenesis.ObjenesisStd using org.objenesis.StdInstantiatorStrategy without caching", o.toString());
 	}
 
 	public final void testObjenesisInstantiatorStrategyBoolean() {
@@ -42,7 +42,7 @@ public class ObjenesisTest extends TestCase {
 	
 	public final void testToString() {
 		Objenesis o = new ObjenesisStd() {};
-		assertEquals("org.objenesis.ObjenesisTest$1 using org.objenesis.AutomaticInstantiatorStrategy with caching", o.toString());
+		assertEquals("org.objenesis.ObjenesisTest$1 using org.objenesis.StdInstantiatorStrategy with caching", o.toString());
 	}
 }
 
