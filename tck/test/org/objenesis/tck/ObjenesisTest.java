@@ -2,6 +2,7 @@ package org.objenesis.tck;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -27,8 +28,8 @@ public class ObjenesisTest extends TestCase {
     	private String currentObjenesis;
     	private String currentCandidate;
     	
-    	public void startTests(String platformDescription, String[] allCandidates,
-    			String[] allInstantiators) {
+    	public void startTests(String platformDescription, Collection allCandidates,
+    			Collection allInstantiators) {
     	}
  
 		public void startTest(String candidateDescription, String objenesisDescription) {

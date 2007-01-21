@@ -1,5 +1,7 @@
 package org.objenesis.tck;
 
+import java.util.Collection;
+
 /**
  * Reports results from the TCK back to the user.
  * <p>The sequence these methods are called is described below:</p>
@@ -23,10 +25,10 @@ public interface Reporter {
      * Report that the tests are starting. Provides information that is useful to be reported.
      *
      * @param platformDescription Description the platform being run on (i.e. JVM version, vendor, etc).
-     * @param allCandidates Descriptions of all candidates being used in tests.
+     * @param allCandidates Descriptions (String) of all candidates being used in tests.
      * @param allObjenesisInstances Descriptions of all Objenesis instances being used in tests.
      */
-    void startTests(String platformDescription, String[] allCandidates, String[] allObjenesisInstances);
+    void startTests(String platformDescription, Collection allCandidates, Collection allObjenesisInstances);
 
     /**
      * Report that a test between a candidate and an objenesis instance if about to start.

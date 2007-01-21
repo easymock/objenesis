@@ -2,6 +2,7 @@ package org.objenesis.tck;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
@@ -19,8 +20,8 @@ public class TextReporterTest extends TestCase {
 
     public void testReportsSuccessesInTabularFormat() {
         textReporter.startTests("Some platform",
-                new String[]{"candidate A", "candidate B", "candidate C"},
-                new String[]{"instantiator1", "instantiator2", "instantiator3"}
+                Arrays.asList(new String[]{"candidate A", "candidate B", "candidate C"}),
+                Arrays.asList(new String[]{"instantiator1", "instantiator2", "instantiator3"})
         );
 
         textReporter.startTest("candidate A", "instantiator1");
@@ -45,6 +46,8 @@ public class TextReporterTest extends TestCase {
         textReporter.result(true);
         
         textReporter.endTests();
+        
+        textReporter.printResult();
 
         ByteArrayOutputStream expectedSummaryBuffer = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(expectedSummaryBuffer);

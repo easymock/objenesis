@@ -1,6 +1,9 @@
 package org.objenesis.tck;
 
+import java.util.Collection;
+
 import junit.framework.TestCase;
+
 import org.objenesis.ObjectInstantiator;
 import org.objenesis.Objenesis;
 
@@ -130,7 +133,7 @@ public class TCKTest extends TestCase {
 
         private StringBuffer log = new StringBuffer();
 
-        public void startTests(String platformDescription, String[] allCandidates, String[] allInstantiators) {
+        public void startTests(String platformDescription, Collection allCandidates, Collection allInstantiators) {
             log.append("startTests()\n");
         }
 

@@ -1,6 +1,7 @@
 package org.objenesis.tck;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -98,10 +99,10 @@ public class TCK {
         }
     }
 
-    private String[] findAllDescriptions(List keys, Map descriptions) {
-        String[] results = new String[keys.size()];
-        for (int i = 0; i < results.length; i++) {
-            results[i] = (String)descriptions.get(keys.get(i));
+    private Collection findAllDescriptions(List keys, Map descriptions) {
+        List results = new ArrayList(keys.size());
+        for (int i = 0; i < keys.size(); i++) {
+            results.add(descriptions.get(keys.get(i)));
         }
         return results;
     }
