@@ -72,10 +72,10 @@
       <testResource>
         <!-- Test resources are in the test source directory -->
         <directory>${basedir}/test</directory>
-        <includes>
+        <excludes>
           <!-- Everything except java files is considered to be a resource -->
           <exclude>**/*.java</exclude>
-        </includes>
+        </excludes>
       </testResource>
     </testResources>
     <plugins>
