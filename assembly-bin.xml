@@ -1,0 +1,16 @@
+<assembly>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <moduleSets>
+    <moduleSet>
+      <excludes>
+        <exclude>org.objenesis:objenesis-tck</exclude>
+      </excludes>
+      <binaries>
+        <outputFileNameMapping/>
+      </binaries>
+    </moduleSet>
+  </moduleSets>
+</assembly>
