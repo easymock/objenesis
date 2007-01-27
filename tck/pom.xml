@@ -1,20 +1,50 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>  
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis</artifactId>
     <version>0.1-SNAPSHOT</version>
-  </parent>   
+  </parent>
   <artifactId>objenesis-tck</artifactId>
   <name>Objenesis TCK</name>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.objenesis</groupId>
       <artifactId>objenesis-main</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
   </dependencies>
-  
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <executions>          
+          <execution>
+            <id>JRockit</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <jvm>C:\Program Files\Java\jrockit-R26.4.0-jre1.4.2_11\bin\java.exe</jvm>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Sun</id>
+            <goals>
+              <goal>test</goal>              
+            </goals>
+            <phase>test</phase>
+            <configuration>
+              <jvm>C:\Program Files\Java\jre1.6.0\bin\java.exe</jvm>
+            </configuration>
+          </execution>         
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
