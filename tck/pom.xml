@@ -17,34 +17,39 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <executions>          
-          <execution>
-            <id>JRockit</id>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <phase>test</phase>
-            <configuration>
-              <jvm>C:\Program Files\Java\jrockit-R26.4.0-jre1.4.2_11\bin\java.exe</jvm>
-            </configuration>
-          </execution>
-          <execution>
-            <id>Sun</id>
-            <goals>
-              <goal>test</goal>              
-            </goals>
-            <phase>test</phase>
-            <configuration>
-              <jvm>C:\Program Files\Java\jre1.6.0\bin\java.exe</jvm>
-            </configuration>
-          </execution>         
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
+  <profiles>
+    <profile>
+      <id>jvm-test</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <executions>          
+              <execution>
+                <id>JRockit</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <phase>test</phase>
+                <configuration>
+                  <jvm>${jrockit}</jvm>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Sun</id>
+                <goals>
+                  <goal>test</goal>              
+                </goals>
+                <phase>test</phase>
+                <configuration>
+                  <jvm>${sun_jdk}</jvm>
+                </configuration>
+              </execution>         
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  
 </project>
