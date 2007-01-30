@@ -48,7 +48,7 @@ public abstract class ObjenesisBase implements Objenesis {
 	 * @return
 	 */
 	public Object newInstance(Class clazz) {
-		return newInstantiatorOf(clazz).newInstance();
+		return getInstantiatorOf(clazz).newInstance();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public abstract class ObjenesisBase implements Objenesis {
 	 * @param clazz Class to instantiate
 	 * @return Instantiator dedicated to the class
 	 */
-	public ObjectInstantiator newInstantiatorOf(Class clazz) {
+	public ObjectInstantiator getInstantiatorOf(Class clazz) {
 		ObjectInstantiator instantiator = (ObjectInstantiator) cache.get(clazz);
 		if(instantiator == null) {
 			instantiator = strategy.newInstantiatorOf(clazz);

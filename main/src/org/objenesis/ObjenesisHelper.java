@@ -42,12 +42,12 @@ public final class ObjenesisHelper {
 	 * @param clazz Class to instantiate
 	 * @return Instantiator dedicated to the class
 	 */
-	public static final ObjectInstantiator newInstantiatorOf(Class clazz) {
-		return OBJENESIS_STD.newInstantiatorOf(clazz);	
+	public static final ObjectInstantiator getInstantiatorOf(Class clazz) {
+		return OBJENESIS_STD.getInstantiatorOf(clazz);	
 	}
 	
 	/**
-	 * Same as {@link #newInstantiatorOf(Class)} but providing an instantiator emulating
+	 * Same as {@link #getInstantiatorOf(Class)} but providing an instantiator emulating
 	 * ObjectInputStream.readObject behavior.
 	 * 
 	 * @see #newSerializableInstance(Class)
@@ -56,6 +56,6 @@ public final class ObjenesisHelper {
 	 * @return Instantiator dedicated to the class
 	 */
 	public static final ObjectInstantiator newSerializableObjectInstantiatorOf(Class clazz) {
-		return OBJENESIS_SERIALIZER.newInstantiatorOf(clazz);
+		return OBJENESIS_SERIALIZER.getInstantiatorOf(clazz);
 	}	
 }

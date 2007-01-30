@@ -22,5 +22,5 @@ public interface Objenesis {
 	 * @param clazz Class to instantiate
 	 * @return Instantiator dedicated to the class
 	 */
-	ObjectInstantiator newInstantiatorOf(Class clazz);
+	ObjectInstantiator getInstantiatorOf(Class clazz);
 }

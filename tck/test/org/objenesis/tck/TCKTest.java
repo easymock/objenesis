@@ -13,7 +13,7 @@ public class TCKTest extends TestCase {
 		public Object newInstance(Class clazz) {
 			return null;
 		}
-		public ObjectInstantiator newInstantiatorOf(Class clazz) {
+		public ObjectInstantiator getInstantiatorOf(Class clazz) {
 			return null;
 		}
     }
@@ -22,7 +22,7 @@ public class TCKTest extends TestCase {
 		public Object newInstance(Class clazz) {
 			return null;
 		}
-		public ObjectInstantiator newInstantiatorOf(Class clazz) {
+		public ObjectInstantiator getInstantiatorOf(Class clazz) {
 			return null;
 		}
     }
@@ -104,7 +104,7 @@ public class TCKTest extends TestCase {
 		public Object newInstance(Class clazz) {
 			return clazz == CandidateA.class ? new CandidateA() : null;
 		}
-		public ObjectInstantiator newInstantiatorOf(Class clazz) {
+		public ObjectInstantiator getInstantiatorOf(Class clazz) {
 			return null;
 		}    	
     }

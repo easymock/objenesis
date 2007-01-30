@@ -31,12 +31,12 @@ public class ObjenesisTest extends TestCase {
 
 	public final void testNewInstantiatorOf() {
 		Objenesis o = new ObjenesisStd();
-		ObjectInstantiator i1 = o.newInstantiatorOf(getClass());
+		ObjectInstantiator i1 = o.getInstantiatorOf(getClass());
 		// Test instance creation
 		assertEquals(getClass(), i1.newInstance().getClass());
 		
 		// Test caching
-		ObjectInstantiator i2 = o.newInstantiatorOf(getClass());
+		ObjectInstantiator i2 = o.getInstantiatorOf(getClass());
 		assertSame(i1, i2);
 	}
 	
