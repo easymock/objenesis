@@ -5,6 +5,8 @@ public abstract class BaseInstantiatorStrategy implements InstantiatorStrategy {
 	protected static final String JROCKIT = "BEA JRockit";
 
 	protected static final String GNU = "GNU libgcj";
+   
+   protected static final String SUN = "Java HotSpot";
 
 	/** JVM version */
 	protected static final String VM_VERSION = System.getProperty("java.runtime.version");

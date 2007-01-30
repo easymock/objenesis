@@ -1,6 +1,5 @@
 package org.objenesis;
 
-
 /**
  * Guess the best instantiator for a given class. Currently, the selection doesn't depend on the class. It relies on the
  * <ul>
@@ -13,21 +12,35 @@ package org.objenesis;
  * @see ObjectInstantiator
  */
 public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
-	
+
 	public ObjectInstantiator newInstantiatorOf(Class type) {
 
-		if(VM_VERSION.startsWith("1.3")) {
-			if(JVM_NAME.startsWith(JROCKIT)) {
-				throw new RuntimeException("Unsupported JVM: " + JVM_NAME + "/" + VM_VERSION);
-			}
-			return new Sun13Instantiator(type);
-		}
+      if(JVM_NAME.startsWith(SUN)) {
+         if(VM_VERSION.startsWith("1.3")) {
+            return new Sun13Instantiator(type);
+         }       
+      }
+      else if(JVM_NAME.startsWith(JROCKIT)) {
+         if(VM_VERSION.startsWith("1.3")) {
+            return new JRockit131Instantiator(type);
+         }
+         else if(VM_VERSION.startsWith("1.4")) {
+            // JRockit vendor version will be RXX where XX is the version
+            // Versions prior to 26 need special handling
+            if(Integer.parseInt(VENDOR_VERSION.substring(1, 3)) < 26) {
+               return new JRockitLegacyInstantiator(type);
+            }            
+         }
+      }
+      else if(JVM_NAME.startsWith(GNU)) {
+         return new GCJInstantiator(type);
+      }
 		
-		if(JVM_NAME.startsWith(GNU)) {
-			return new GCJInstantiator(type);
-		}
-		// It's JVM 1.4 and above since we are not supporting below 1.3
-		// This instantiator should also work for JRockit except for old 1.4 JVM
+      // Fallback instantiator, should work with:
+      // - Java Hotspot version 1.4 and higher
+		// - JRockit 1.4-R26 and higher
+		// - IBM and Hitachi JVMs
+      // ... might works for others so we just give it a try 
 		return new SunReflectionFactoryInstantiator(type);
 	}
 }
