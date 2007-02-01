@@ -42,7 +42,8 @@ public class SunReflectionFactorySerializationInstantiator implements ObjectInst
     		return;
 		}    	
         
-        mungedConstructor = reflectionFactory.newConstructorForSerialization(type, nonSerializableAncestorConstructor);        
+        mungedConstructor = reflectionFactory.newConstructorForSerialization(type, nonSerializableAncestorConstructor);
+        mungedConstructor.setAccessible(true);
     }
 
     public Object newInstance() {
