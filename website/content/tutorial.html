@@ -29,7 +29,7 @@
 <p>There are many different strategies that Objenesis uses for instantiating objects based on the JVM vendor,
 JVM version, SecurityManager and type of class being instantiated.</p>
 
-<p>We have defined that two different kinds of instantiation are required:<p>
+<p>We have defined that two different kinds of instantiation are required:</p>
    
 <ul>
     <li><strong>Stardard</strong> - No constructor will be called</li>
@@ -38,10 +38,21 @@ JVM version, SecurityManager and type of class being instantiated.</p>
         be called. However, readResolve is not called and we never check if the object is serializable.</li>
 </ul>
 
-<p>The simplest way to use Objenesis is by using <a href="#">Objenesis</a> (standard) and 
-<a href="#">ObjenesisSerializer</a> (Serializable compliant) or statically through <a href="#">ObjenesisHelper</a>. 
-The later is wrapping the two others. By default, these classes decide which ObjectInstantiator is needed 
-will cache it for the requested class.</p>
+<p>The simplest way to use Objenesis is by using <a href="#">ObjenesisStd</a> (Standard) and 
+<a href="#">ObjenesisSerializer</a> (Serializable compliant). By default, automatically determines the best
+strategy - so you don't have to.</p>
+
+<pre>Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer</pre>
+
+<p>Once you have the Objenesis implementation, you can then create an <code>ObjectInstantiator</code>, for a specific type.</p>
+
+<pre>ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(MyThingy.class);</pre>
+
+<p>Finally, you can use this to instantiate new instances of this type.</p>
+
+<pre>MyThingy thingy1 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();</pre>
 
 <h1>Performance and Threading</h1>
 
@@ -57,31 +68,14 @@ will cache it for the requested class.</p>
 
 <p>(For the impatient)</p>
 
-<p>The static way</p>
-
 <pre>
-MyThingy thing1 = (MyThingy) ObjenesisHelper.newInstance(MyThingy.class); // or newSerializableInstance;
-
-// or (a little bit more efficient if you need to create many objects)
-
-ObjectInstantiator thingyInstantiator = 
-   ObjenesisHelper.newInstantiatorOf(MyThingy.class); // or newSerializableObjectInstantiatorOf;
-
-MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
-MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();
-MyThingy thingy4 = (MyThingy)thingyInstantiator.newInstance();
-</pre>
-
-<p>The normal way</p>
-
-<pre>
-Objenesis objenesis = new Objenesis(); // or ObjenesisSerializer
+Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer
 MyThingy thingy1 = (MyThingy) objenesis.newInstance();
 
 // or (a little bit more efficient if you need to create many objects)
 
-Objenesis objenesis = new Objenesis(); // or ObjenesisSerializer
-ObjectInstantiator thingyInstantiator = objenesis.newInstantiatorOf(MyThingy.class);
+Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer
+ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(MyThingy.class);
 
 MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
 MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();
