@@ -26,7 +26,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
 		if(!Serializable.class.isAssignableFrom(type)) {
 			return new NullInstantiator();
 		}
-		return new SunReflectionFactorySerializationInstantiator(type);
+		return new ObjectStreamClassInstantiator(type);
 	}
 
 }
