@@ -1,9 +1,11 @@
 package org.objenesis;
 import java.lang.reflect.InvocationTargetException;
 
-public class GCJInstantiator extends GCJInstantiatorBase {
-	public GCJInstantiator(Class type) {
+public class GCJSerializationInstantiator extends GCJInstantiatorBase {
+	private Class superType;
+	public GCJSerializationInstantiator(Class type) {
 		super(type);
+		this.superType = SerializationInstantiatorHelper.getNonSerializableSuperClass(type);
 	}
 	
 	public Object newInstance() {
@@ -11,7 +13,7 @@ public class GCJInstantiator extends GCJInstantiatorBase {
 			return null;
 		}
 		try {
-			return newObjectMethod.invoke(dummyStream, new Object[] {type, Object.class});		
+			return newObjectMethod.invoke(dummyStream, new Object[] {type, superType});		
 		} catch (IllegalAccessException e) {
 			return null;
 		} catch (InvocationTargetException e) {

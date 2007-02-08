@@ -4,7 +4,7 @@ import java.io.ObjectInputStream;
 import java.lang.reflect.Method;
 
 public abstract class GCJInstantiatorBase implements ObjectInstantiator {
-	protected static Method allocateObjectMethod = null;
+	protected static Method newObjectMethod = null;
 	protected static ObjectInputStream dummyStream;
 	private static class DummyStream extends ObjectInputStream {
 		public DummyStream() throws IOException {
@@ -12,19 +12,19 @@ public abstract class GCJInstantiatorBase implements ObjectInstantiator {
 		}		
 	}
 	private static void initialize() {
-		if(allocateObjectMethod == null) {
+		if(newObjectMethod == null) {
 			try {
-				allocateObjectMethod = ObjectInputStream.class.getDeclaredMethod(
-						"allocateObject", new Class[] {Class.class}
+				newObjectMethod = ObjectInputStream.class.getDeclaredMethod(
+						"newObject", new Class[] {Class.class, Class.class}
 				);
-				allocateObjectMethod.setAccessible(true);
+				newObjectMethod.setAccessible(true);
 				dummyStream = new DummyStream();
 			} catch (SecurityException e) {
-				allocateObjectMethod = null;
+				newObjectMethod = null;
 			} catch (NoSuchMethodException e) {
-				allocateObjectMethod = null;
+				newObjectMethod = null;
 			} catch (IOException e) {
-				allocateObjectMethod = null;
+				newObjectMethod = null;
 			}
 		}
 	}
