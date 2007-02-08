@@ -1,3 +1,11 @@
+<!--
+
+	To run JVM tests, modify the path values below for each JVM installed
+in your system and copy the contents to ~/.m2/settings.xml 
+( in Windows, "%USERPROFILE%\.m2\settings.xml" )
+
+-->
+
 <settings>
 	<profiles>
 	<profile>
