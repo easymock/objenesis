@@ -30,7 +30,10 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
 	         if(VM_VERSION.startsWith("1.3")) {
 	            return new Sun13SerializationInstantiator(type);
 	         }       
-	      }
+	    }
+		else if(JVM_NAME.startsWith(GNU)) {
+	         return new GCJSerializationInstantiator(type);
+	     }
 		return new ObjectStreamClassInstantiator(type);
 	}
 
