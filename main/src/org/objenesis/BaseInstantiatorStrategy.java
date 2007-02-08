@@ -2,7 +2,7 @@ package org.objenesis;
 
 public abstract class BaseInstantiatorStrategy implements InstantiatorStrategy {
 
-	protected static final String JROCKIT = "BEA JRockit";
+	protected static final String JROCKIT = "BEA";
 
 	protected static final String GNU = "GNU libgcj";
    
@@ -10,6 +10,9 @@ public abstract class BaseInstantiatorStrategy implements InstantiatorStrategy {
 
 	/** JVM version */
 	protected static final String VM_VERSION = System.getProperty("java.runtime.version");
+
+	/** JVM version */
+	protected static final String VM_INFO = System.getProperty("java.vm.info");
 
 	/** Vendor version */
 	protected static final String VENDOR_VERSION = System.getProperty("java.vm.version");

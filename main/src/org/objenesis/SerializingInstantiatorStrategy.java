@@ -26,6 +26,11 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
 		if(!Serializable.class.isAssignableFrom(type)) {
 			return new NullInstantiator();
 		}
+		if(JVM_NAME.startsWith(SUN)) {
+	         if(VM_VERSION.startsWith("1.3")) {
+	            return new Sun13SerializationInstantiator(type);
+	         }       
+	      }
 		return new ObjectStreamClassInstantiator(type);
 	}
 

@@ -1,5 +1,7 @@
 package org.objenesis;
 
+import java.rmi.dgc.VMID;
+
 /**
  * Guess the best instantiator for a given class. Currently, the selection doesn't depend on the class. It relies on the
  * <ul>
@@ -25,11 +27,15 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
             return new JRockit131Instantiator(type);
          }
          else if(VM_VERSION.startsWith("1.4")) {
-            // JRockit vendor version will be RXX where XX is the version
+        	 // JRockit vendor version will be RXX where XX is the version
             // Versions prior to 26 need special handling
-            if(Integer.parseInt(VENDOR_VERSION.substring(1, 3)) < 26) {
-               return new JRockitLegacyInstantiator(type);
-            }            
+        	// From R26 on, java.vm.version starts with R
+        	if(!VENDOR_VERSION.startsWith("R")) {
+        		// On R25.1 and R25.2, ReflectionFactory should work. Otherwise, we must use the Legacy instantiator.
+        		if(VM_INFO == null || !VM_INFO.startsWith("R25.1") || !VM_INFO.startsWith("R25.2")) {
+        			return new JRockitLegacyInstantiator(type);	
+        		}
+        	}
          }
       }
       else if(JVM_NAME.startsWith(GNU)) {
