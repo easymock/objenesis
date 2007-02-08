@@ -1,0 +1,17 @@
+<settings>
+	<profiles>
+	<profile>
+		<id>test</id>
+		<activation>
+			<activeByDefault>true</activeByDefault>
+		</activation>
+		<properties>
+			<sun_jdk1_3.jvm>c:\jdk1.3.1_19\bin\java.exe</sun_jdk1_3.jvm>
+			<sun_jdk1_4.jvm>c:\j2sdk1.4.2_12\bin\java.exe</sun_jdk1_4.jvm>
+			<sun_jdk1_5.jvm>c:\Arquivos de Programas\Java\jre1.5.0_10\bin\java.exe</sun_jdk1_5.jvm>
+			<jrockit1_3.jvm>c:\Arquivos de programas\JRockit\7.0SP6\1.3.1\bin\java.exe</jrockit1_3.jvm>
+			<jrockit1_4.jvm>c:\jrockit-j2sdk1.4.2_08\bin\java.exe</jrockit1_4.jvm>
+		</properties>
+	</profile>
+	</profiles>
+</settings>
