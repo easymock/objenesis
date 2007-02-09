@@ -55,7 +55,7 @@ public final class ObjenesisHelper {
 	 * @param clazz Class to instantiate
 	 * @return Instantiator dedicated to the class
 	 */
-	public static final ObjectInstantiator newSerializableObjectInstantiatorOf(Class clazz) {
+	public static final ObjectInstantiator getSerializableObjectInstantiatorOf(Class clazz) {
 		return OBJENESIS_SERIALIZER.getInstantiatorOf(clazz);
 	}	
 }
