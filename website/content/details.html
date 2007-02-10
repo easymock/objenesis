@@ -32,18 +32,27 @@ and to call <code>org.objenesis.tck.Main.main()</code> from your code.</p>
 
 <h1>Exception Handling</h1>
 
-<em>TODO</em>
-Exceptions if not serializable, failed to instantiate...
+<p>If something wrong occurs using Objenesis, you will normally get an <a href="#">ObjenesisException</a>
+wrapping (for JVM 1.4 and more) the real exception. It is a RuntimeException so you don't have to
+catch it. Some reasons why it fails:</p>
+
+<ul>
+    <li>Using ObjenesisSerializer with a class that isn't <code>Serializable</code>.</li>
+    <li>Using ObjenesisSerializer, the constructor of the first parent class that isn't
+        <code>Serializable</code> throws an exception.</li>
+    <li>Your SecurityManager prevents Objenesis from working normally.</li>
+    <li>Objenesis isn't able to work for some reason. Please <a href="support.html">tell us</a>
+</ul>
 
 <h1>ObjectInstantiator caching</h1>
 
-<p><a href="#">ObjenesisBase</a> provide a built-in cache that is activated by default. This
+<p><a href="#">ObjenesisBase</a> provides a built-in cache that is activated by default. This
 cache keeps ObjectInstantior instances per Class. This improves performance quite a lot when
 the same Class is frequently instantiated. For this reason, it is recommended to reuse
 Objenesis instances whenever posssibly or to keep is as a singleton in your favorite
 dependency injection framework.</p>
 
-<p>However, you can always disable the cache if needed</p>
+<p>However, you can always disable the cache if needed.</p>
 <pre>
     Objenesis o = new ObjenesisStd(false); // cache disabled
 </pre>
