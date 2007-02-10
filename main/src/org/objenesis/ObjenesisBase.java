@@ -4,11 +4,12 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Base class to extend if you want to have a class providing your own default strategy
+ * Base class to extend if you want to have a class providing your own default strategy.
+ * Can also be instantiated directly.
  * 
  * @author Henri Tremblay
  */
-public abstract class ObjenesisBase implements Objenesis {
+public class ObjenesisBase implements Objenesis {
 
 	protected final InstantiatorStrategy strategy;
 	

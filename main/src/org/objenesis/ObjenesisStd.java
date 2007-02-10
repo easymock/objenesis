@@ -20,23 +20,4 @@ public class ObjenesisStd extends ObjenesisBase {
 	public ObjenesisStd(boolean useCache) {
 		super(new StdInstantiatorStrategy(), useCache);
 	}
-	
-	/**
-	 * Constructor allowing to pick your own strategy and using cache
-	 * 
-	 * @param strategy Strategy to use
-	 */
-	public ObjenesisStd(InstantiatorStrategy strategy) {
-		super(strategy);
-	}
-	
-	/**
-	 * Flexible constructor allowing to pick the strategy and if caching should be used
-	 * 
-	 * @param strategy Strategy to use
-	 * @param useCache If {@link ObjectInstantiator}s should be cached
-	 */
-	public ObjenesisStd(InstantiatorStrategy strategy, boolean useCache) {
-		super(strategy, useCache); 
-	}	
 }
