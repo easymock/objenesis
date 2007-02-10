@@ -1,7 +1,6 @@
 package org.objenesis;
 
 import java.io.ObjectInputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public abstract class Sun13InstantiatorBase implements ObjectInstantiator {
