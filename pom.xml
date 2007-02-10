@@ -6,7 +6,7 @@
   <name>Objenesis</name>
   <groupId>org.objenesis</groupId>
   <artifactId>objenesis</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -98,6 +98,26 @@
           <siteDirectory>${basedir}/website</siteDirectory>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <downloadSources>true</downloadSources>
+          <additionalConfig>
+            <file>
+              <name>allo.checkstyle</name>
+              <content>
+                <![CDATA[
+<fileset-config file-format-version="1.2.0" simple-config="true">
+  <fileset name="all" enabled="true" check-config-name="acme corporate style" local="false">
+    <file-match-pattern match-pattern="." include-pattern="true"/>
+  </fileset>
+  <filter name="NonSrcDirs" enabled="true"/>
+</fileset-config>]]>
+              </content>
+            </file>
+          </additionalConfig>
+        </configuration>
+      </plugin>      
     </plugins>
   </build>
 

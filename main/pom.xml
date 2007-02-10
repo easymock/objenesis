@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>objenesis-main</artifactId>
   <name>Objenesis main</name>
