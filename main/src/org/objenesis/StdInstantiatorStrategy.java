@@ -1,7 +1,5 @@
 package org.objenesis;
 
-import java.rmi.dgc.VMID;
-
 /**
  * Guess the best instantiator for a given class. Currently, the selection doesn't depend on the class. It relies on the
  * <ul>
