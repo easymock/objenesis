@@ -19,11 +19,6 @@ public class ObjenesisTest extends TestCase {
 		assertEquals("org.objenesis.ObjenesisStd using org.objenesis.StdInstantiatorStrategy without caching", o.toString());
 	}
 
-	public final void testObjenesisInstantiatorStrategyBoolean() {
-		Objenesis o = new ObjenesisStd(new MyStrategy(), false);
-		assertEquals("org.objenesis.ObjenesisStd using org.objenesis.MyStrategy without caching", o.toString());
-	}
-
 	public final void testNewInstance() {
 		Objenesis o = new ObjenesisStd();
 		assertEquals(getClass(), o.newInstance(getClass()).getClass());
