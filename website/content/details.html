@@ -4,7 +4,110 @@
 </head>
 <body>
 
+<p>The <a href="tutorial.html">Tutorial</a> allows you to perfectly use Objenesis.
+However, if you want implementation details, tools and more power, you're at 
+the right place.</p>
+
+<h1>Test your environment</h1>
+
+<p>Depending on you JVM and security manager, Objenesis might not be able to
+instantiate some of your classes. If that's the case, first, we are highly
+interested in <a href="support.html">knowing this limitation</a>.</p>
+
+<p>Then, to prevent this, we provide a TCK to run in your environment. You can
+find it in our <a href="download.html">download page</a>. It will print a report 
+to the standard output. Exceptions, if they occur, will be printed out to
+the standard error. Tests are run <code>ObjenesisStd</code> and <code>ObjenesisSerializer</code>
+and are made of every kind of class types you might want to instantiate. So you can check if all
+of them or at least the kind you want are correctly instantiated.</p>
+
+<p>To launch from the command line, just type</p>
+   
+<pre>java -jar objenesis-@VERSION@-tck.jar</pre>
+
+<p>Note that objenesis jar is bundled in the TCK so no special classpath is needed.</p>
+
+<p>To launch from within an application server, the easiest is to bundle it in your application
+and to call <code>org.objenesis.tck.Main.main()</code> from your code.</p>
+
+<h1>Exception Handling</h1>
+
 <em>TODO</em>
+Exceptions if not serializable, failed to instantiate...
+
+<h1>ObjectInstantiator caching</h1>
+
+<p><a href="#">ObjenesisBase</a> provide a built-in cache that is activated by default. This
+cache keeps ObjectInstantior instances per Class. This improves performance quite a lot when
+the same Class is frequently instantiated. For this reason, it is recommended to reuse
+Objenesis instances whenever posssibly or to keep is as a singleton in your favorite
+dependency injection framework.</p>
+
+<p>However, you can always disable the cache if needed</p>
+<pre>
+    Objenesis o = new ObjenesisStd(false); // cache disabled
+</pre>
+
+<p>The cache should behave correctly in an application server and not cause any memory leaks.</p>
+
+<h1>Use you own strategy</h1>
+
+<p>As you've seen in the <a href="tutorial.html">Tutorial</a>, Objenesis implementations
+are determining the best instantiator using a strategy. It might occurs that you need
+to implement your own strategy. Two possible reasons I can think of are that</p>
+
+<ul>
+   <li><strong>You want to specialize in a given JVM.</strong> Default strategies are
+       supporting all JVMs. This has a little performance cost so you might want to
+       provide a strategy that is optimized for your JVM.
+<pre>
+public class Sun14Strategy implements InstantiatorStrategy {
+    public ObjectInstantiator newInstantiatorOf(Class type) {
+        // return sun dedicated instantiator
+        return new SunReflectionFactoryInstantiator(type);
+    }
+}
+</pre></li>
+    <li><strong>Objenesis doesn't support your environment by default.</strong> In that
+        case, we would be really happy to add this support in our next version and
+        meanwhile, you can use your own strategy and instantiator to fix this.</li>
+</ul>
+
+<p>From there, you can use this new strategy.</p>
+<pre>
+// Directly
+Objenesis o = new ObjenesisBase(new Sun14Strategy());
+
+// Or inside your Objenesis own implementation
+public class ObjenesisSun14 extends ObjenesisBase {
+    public ObjenesisSun14() {
+       super(new Sun14Strategy());
+    }
+}
+</pre>
+
+<h1>The Evil ObjenesisHelper</h1>
+
+<p>Static methods are considered a really bad practice. They can't be mocked or
+replace easily. Worst, if the class keep a static state, you will fell in
+class loading issues, memory leaks, module dependencies and so on. <strong>We 
+strongly recommend you not to use them.</strong></p>
+
+<p>However, if for some reason that we prefer ignore, you still want to use Objenesis
+in a static way, you can do so. It's called <code>ObjenesisHelper</code>.</p>
+
+<p>We prefer to provide it knowing that some of you will code it anyway. It a wrapper
+over an <code>ObjenesisStd</code> and <code>ObjenesisSerializer</code> instance which
+are kept statically.</p>
+
+<p>It can't be more straightforward to use:</p>
+
+<pre>
+   Object o1 = ObjenesisHelper.newInstance(MyClass.class);
+   Object o2 = ObjenesisHelper.newSerializableInstance(MyClass.class);
+   ObjectInstantiator o3 = ObjenesisHelper.getInstantiatorOf(MyClass.class);
+   ObjectInstantiator o4 = ObjenesisHelper.getSerializableObjectInstantiatorOf(MyClass.class);
+</pre>
 
 </body>
 </html>
