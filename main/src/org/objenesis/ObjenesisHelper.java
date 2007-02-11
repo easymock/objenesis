@@ -5,7 +5,8 @@ import java.io.Serializable;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
- * Easiest way to create a new class instance.
+ * Use Objenesis in a static way. <strong>It is strongly not recommended to use
+ * this class.</strong>
  * 
  * @author Henri Tremblay
  */
@@ -20,7 +21,9 @@ public final class ObjenesisHelper {
 	/**
 	 * Will create a new object without any constructor being called
 	 * 
-	 * @return
+	 * @param clazz Class to instantiate
+	 * 
+	 * @return New instance of clazz
 	 */
 	public static final Object newInstance(Class clazz) {
 		return OBJENESIS_STD.newInstance(clazz);
@@ -30,7 +33,9 @@ public final class ObjenesisHelper {
 	 * Will create an object just like it's done by ObjectInputStream.readObject
 	 * (the default constructor of the first non serializable class will be called)
 	 * 
-	 * @return
+	 * @param clazz Class to instantiate 
+	 * 
+	 * @return New instance of clazz
 	 */
 	public static final Serializable newSerializableInstance(Class clazz) {
 		return (Serializable) OBJENESIS_SERIALIZER.newInstance(clazz);

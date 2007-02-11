@@ -23,6 +23,12 @@ public class CandidateLoader {
      * Handler for reporting errors from the CandidateLoader.
      */
     public static interface ErrorHandler {
+        /**
+         * Called whenever, trying to retrieve a candidate class from its name,
+         * a ClassNotFoundException is thrown
+         * 
+         * @param name Candidate class name
+         */
         void classNotFound(String name);
     }
 
@@ -33,6 +39,9 @@ public class CandidateLoader {
 
         private final PrintStream out;
 
+        /**
+         * @param out Stream in which to log
+         */
         public LoggingErrorHandler(PrintStream out) {
             this.out = out;
         }
@@ -43,12 +52,21 @@ public class CandidateLoader {
 
     }
 
+    /**
+     * @param tck TCK that will use the candidates
+     * @param classloader ClassLoader from which candidates classes are loaded
+     * @param errorHandler Handler called in case of error
+     */
     public CandidateLoader(TCK tck, ClassLoader classloader, ErrorHandler errorHandler) {
         this.tck = tck;
         this.classloader = classloader;
         this.errorHandler = errorHandler;
     }
 
+    /**
+     * @param inputStream Stream containing the properties
+     * @throws IOException If something goes wrong while reading the stream
+     */
     public void loadFrom(InputStream inputStream) throws IOException {
         // Properties contains a convenient key=value parser, however it stores
         // the entries in a Hashtable which loses the original order.
@@ -63,6 +81,13 @@ public class CandidateLoader {
         properties.load(inputStream);
     }
 
+    /**
+     * Load a candidate property file
+     *  
+     * @param cls Class on which <code>getResourceAsStream</code> is called
+     * @param resource File name
+     * @throws IOException If there's problem reading the file
+     */
     public void loadFromResource(Class cls, String resource) throws IOException {
         InputStream candidatesConfig = cls.getResourceAsStream(resource);
         if (candidatesConfig == null) {

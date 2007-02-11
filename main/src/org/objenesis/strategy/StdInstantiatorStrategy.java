@@ -8,7 +8,9 @@ import org.objenesis.instantiator.sun.Sun13Instantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
 
 /**
- * Guess the best instantiator for a given class. Currently, the selection doesn't depend on the class. It relies on the
+ * Guess the best instantiator for a given class. The instantiator will
+ * instantiate the class without calling any constructor. Currently, 
+ * the selection doesn't depend on the class. It relies on the
  * <ul>
  * <li>JVM version</li>
  * <li>JVM vendor</li>
@@ -20,6 +22,13 @@ import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
  */
 public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
 
+	/**
+	 * Return an {@link ObjectInstantiator} allowing to create instance without
+	 * any constructor being called.
+	 * 
+	 * @param type Class to instantiate
+	 * @return The ObjectInstantiator for the class
+	 */
 	public ObjectInstantiator newInstantiatorOf(Class type) {
 
       if(JVM_NAME.startsWith(SUN)) {

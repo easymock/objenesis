@@ -4,7 +4,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.SerializingInstantiatorStrategy;
 
 /**
- * Class using the {@link SerializingInstantiatorStrategy} by default 
+ * Objenesis implementation using the {@link SerializingInstantiatorStrategy}. 
  * 
  * @author Henri Tremblay
  */

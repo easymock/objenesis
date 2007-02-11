@@ -41,16 +41,14 @@ public interface Reporter {
     /**
      * Report details about what happened when an Objenesis instance tried to instantiate the current candidate.
      *
-     * @param candidateDescription Description of the candidate.
-     * @param instantiatedObject   Whether the ObjectInstantiator successfully instantiated the candidate class.
+     * @param instantiatedObject Whether the ObjectInstantiator successfully instantiated the candidate class.
      */
     void result(boolean instantiatedObject);
 
     /**
      * Report that something bad happened during the test.
      *
-     * @param candidateDescription Description of the candidate that caused the exception.
-     * @param exception            Exception thrown by instantiator.
+     * @param exception Exception thrown by instantiator.
      */
     void exception(Exception exception);
 

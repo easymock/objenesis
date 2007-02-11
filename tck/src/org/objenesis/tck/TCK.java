@@ -45,6 +45,8 @@ public class TCK {
 
     /**
      * Register a candidate class to attempt to instantiate.
+     * @param candidateClass Class to attempt to instantiate
+     * @param description Description of the class
      */
     public void registerCandidate(Class candidateClass, String description) {
         candidates.add(candidateClass);
@@ -53,6 +55,8 @@ public class TCK {
 
     /**
      * Register an Objenesis instance to use when attempting to instantiate a class.
+     * @param objenesis Tested Objenesis instance
+     * @param description Description of the Objenesis instance
      */
     public void registerObjenesisInstance(Objenesis objenesis, String description) {
     	objenesisInstances.add(objenesis);
@@ -110,6 +114,8 @@ public class TCK {
     /**
      * Describes the platform. Outputs Java version and vendor.
      * To change this behavior, override this method.
+     * 
+     * @return Description of the current platform 
      */
     protected String describePlatform() {
         return "Java " + System.getProperty("java.specification.version")

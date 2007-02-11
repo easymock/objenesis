@@ -13,6 +13,14 @@ import org.objenesis.ObjenesisStd;
  * @see TCK
  */
 public class Main {
+	
+	/**
+	 * Main class of the TCK. Can also be called as a normal method from
+	 * an application server.
+	 * 
+	 * @param args No parameters are required
+	 * @throws IOException When the TCK fails to read properties' files.
+	 */
 	public static void main(String[] args) throws IOException {
 
 		TextReporter reporter = new TextReporter(System.out, System.err);

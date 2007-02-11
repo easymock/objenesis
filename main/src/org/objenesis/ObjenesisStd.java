@@ -4,7 +4,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
 /**
- * Class using the {@link StdInstantiatorStrategy} by default 
+ * Objenesis implementation using the {@link StdInstantiatorStrategy}. 
  */
 public class ObjenesisStd extends ObjenesisBase {
 

@@ -12,7 +12,9 @@ public interface Objenesis {
 	/**
 	 * Will create a new object without any constructor being called
 	 * 
-	 * @return
+	 * @param clazz Class to instantiate
+	 * 
+	 * @return New instance of clazz
 	 */
 	Object newInstance(Class clazz);
 

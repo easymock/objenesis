@@ -13,13 +13,16 @@ public class ObjenesisException extends RuntimeException {
 	private static final boolean jdk14 = (Double.parseDouble(System
 			.getProperty("java.specification.version")) > 1.3);
 
-	public ObjenesisException() {
-	}
-
+	/**
+	 * @param msg Error message
+	 */
 	public ObjenesisException(String msg) {
 		super(msg);
 	}
 
+	/**
+	 * @param cause Wrapped exception. The message will be the one of the cause.
+	 */
 	public ObjenesisException(Throwable cause) {
 		super(cause == null ? null : cause.toString());
 		if (jdk14) {
@@ -27,6 +30,10 @@ public class ObjenesisException extends RuntimeException {
 		}
 	}
 
+	/**
+	 * @param msg Error message
+	 * @param cause Wrapped exception
+	 */
 	public ObjenesisException(String msg, Throwable cause) {
 		super(msg);
 		if (jdk14) {

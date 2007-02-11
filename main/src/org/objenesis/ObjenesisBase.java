@@ -14,8 +14,10 @@ import org.objenesis.strategy.InstantiatorStrategy;
  */
 public class ObjenesisBase implements Objenesis {
 
+	/** Strategy used by this Objenesi implementation to create classes */
 	protected final InstantiatorStrategy strategy;
 	
+	/** Strategy cache. Key = Class, Value = InstantiatorStrategy */
 	protected Map cache;
 	
 	/**
@@ -49,7 +51,9 @@ public class ObjenesisBase implements Objenesis {
 	/**
 	 * Will create a new object without any constructor being called
 	 * 
-	 * @return
+	 * @param clazz Class to instantiate
+	 * 
+	 * @return New instance of clazz
 	 */
 	public Object newInstance(Class clazz) {
 		return getInstantiatorOf(clazz).newInstance();

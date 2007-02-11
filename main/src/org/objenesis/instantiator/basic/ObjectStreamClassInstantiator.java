@@ -19,6 +19,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 public class ObjectStreamClassInstantiator implements ObjectInstantiator {
 	
 	private static Method newInstanceMethod;
+	
 	private static void initialize() {
 		if (newInstanceMethod == null) {
 			try {
@@ -32,7 +33,8 @@ public class ObjectStreamClassInstantiator implements ObjectInstantiator {
 		}
 	}
 	
-	ObjectStreamClass objStreamClass;
+	private ObjectStreamClass objStreamClass;
+	
 	public ObjectStreamClassInstantiator(Class type) {
 		initialize();
 		objStreamClass = ObjectStreamClass.lookup(type);

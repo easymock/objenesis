@@ -34,6 +34,12 @@ public class TextReporter implements Reporter {
 
 		Exception exception;
 
+		/**
+		 * @param objenesisDescription Description of the tested Objenesis instance
+		 * @param candidateDescription Description of the tested candidate
+		 * @param result If the test is successful or not
+		 * @param exception Exception that might have occured during the test
+		 */
 		public Result(String objenesisDescription, String candidateDescription,
 				boolean result, Exception exception) {
 			this.objenesisDescription = objenesisDescription;
