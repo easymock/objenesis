@@ -9,9 +9,11 @@ import java.lang.reflect.InvocationTargetException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
- * Instantiates an object, WITHOUT calling it's constructor, using internal
- * sun.reflect.ReflectionFactory - a class only available on JDK's that use
- * Sun's 1.4 (or later) Java implementation.
+ * Instantiates an object using internal sun.reflect.ReflectionFactory - a class
+ * only available on JDK's that use Sun's 1.4 (or later) Java implementation.
+ *
+ * This instantiator will create classes in a way compatible with serialization,
+ * calling the first non-serializable superclass' no-arg constructor.
  *
  * This is the best way to instantiate an object without any side effects
  * caused by the constructor - however it is not available on every platform.

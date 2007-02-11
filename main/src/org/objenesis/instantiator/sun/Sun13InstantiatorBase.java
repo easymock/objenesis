@@ -5,6 +5,12 @@ import java.lang.reflect.Method;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 
+/**
+ * Base class for Sun 1.3 based instantiators. It initializes reflection access 
+ * to static method ObjectInputStream.allocateNewObject. 
+ * 
+ * @author Leonardo Mesquita
+ */
 public abstract class Sun13InstantiatorBase implements ObjectInstantiator {
 	protected static Method allocateNewObjectMethod = null;
 	

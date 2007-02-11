@@ -18,6 +18,15 @@ import java.lang.reflect.Method;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 
+/**
+ * Instantiates a class by making a call to internal JRockit private methods.
+ * It is only supposed to work on JRockit 7.0 JVMs, which are compatible with
+ * Java API 1.3.1.
+ * This instantiator will not call any constructors.
+ * 
+ * @author Leonardo Mesquita
+ * @see org.objenesis.instantiator.ObjectInstantiator
+ */
 public class JRockit131Instantiator implements ObjectInstantiator {
     
     private Constructor mungedConstructor;

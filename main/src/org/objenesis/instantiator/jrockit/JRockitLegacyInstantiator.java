@@ -18,6 +18,17 @@ import java.lang.reflect.Method;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 
+/**
+ * Instantiates a class by making a call to internal JRockit private methods.
+ * It is only supposed to work on JRockit 1.4.2 JVMs prior to release R25.1.
+ * From release R25.1 on, JRockit supports sun.reflect.ReflectionFactory, making
+ * this "trick" unnecessary.
+ * This instantiator will not call any constructors.
+ * 
+ * @author Leonardo Mesquita
+ * @see org.objenesis.instantiator.ObjectInstantiator
+ * @see org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator
+ */
 public class JRockitLegacyInstantiator implements ObjectInstantiator {
 	private static Method safeAllocObjectMethod = null;
 	private static void initialize() {

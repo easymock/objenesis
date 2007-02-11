@@ -12,6 +12,18 @@ import java.io.Serializable;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 
+/**
+ * Instantiates a class by using a dummy input stream that always feeds data for 
+ * an empty object of the same kind.
+ * 
+ * NOTE: This instantiator may not work properly if the class being instantiated
+ * defines a "readResolve" method, since it may return objects that have been
+ * returned previously (i.e., there's no guarantee that the returned object is
+ * a new one), or even objects from a completely different class.  
+ * 
+ * @author Leonardo Mesquita
+ * @see org.objenesis.instantiator.ObjectInstantiator
+ */
 public class ObjectInputStreamInstantiator implements ObjectInstantiator {
 	private static class MockStream extends InputStream {
 		

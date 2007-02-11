@@ -5,6 +5,13 @@ import java.lang.reflect.Method;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 
+/**
+ * Base class for GCJ-based instantiators. It initializes reflection access to
+ * method ObjectInputStream.newObject, as well as creating a dummy ObjectInputStream
+ * to be used as the "this" argument for the method. 
+ * 
+ * @author Leonardo Mesquita
+ */
 public abstract class GCJInstantiatorBase implements ObjectInstantiator {
 	protected static Method newObjectMethod = null;
 	protected static ObjectInputStream dummyStream;
