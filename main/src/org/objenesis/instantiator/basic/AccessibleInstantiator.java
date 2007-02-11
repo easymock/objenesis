@@ -1,23 +1,18 @@
 package org.objenesis.instantiator.basic;
 
-import org.objenesis.instantiator.ObjectInstantiator;
-
-
 /**
- * Instantiates a class by grabbing the no-args constructor, making it accessible and then
- * calling Constructor.newInstance().
- *
- * Although this still requires no-arg constructors, it can call non-public constructors
- * (if the security manager allows it).
- *
+ * Instantiates a class by grabbing the no-args constructor, making it accessible and then calling
+ * Constructor.newInstance(). Although this still requires no-arg constructors, it can call
+ * non-public constructors (if the security manager allows it).
+ * 
  * @see ObjectInstantiator
  */
 public class AccessibleInstantiator extends ConstructorInstantiator {
 
-	public AccessibleInstantiator(Class type) {
-		super(type);
-		if(constructor != null) {
-			constructor.setAccessible(true);
-		}
-	}	
+   public AccessibleInstantiator(Class type) {
+      super(type);
+      if(constructor != null) {
+         constructor.setAccessible(true);
+      }
+   }
 }

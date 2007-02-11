@@ -1,6 +1,5 @@
 package org.objenesis.instantiator;
 
-
 /**
  * The instantiator that always return a null instance
  * 
@@ -8,10 +7,10 @@ package org.objenesis.instantiator;
  */
 public class NullInstantiator implements ObjectInstantiator {
 
-	/**
-	 * @return Always null
-	 */
-	public Object newInstance() {
-		return null;
-	}
+   /**
+    * @return Always null
+    */
+   public Object newInstance() {
+      return null;
+   }
 }

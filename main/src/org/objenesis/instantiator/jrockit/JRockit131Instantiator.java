@@ -19,73 +19,83 @@ import java.lang.reflect.Method;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
- * Instantiates a class by making a call to internal JRockit private methods.
- * It is only supposed to work on JRockit 7.0 JVMs, which are compatible with
- * Java API 1.3.1.
- * This instantiator will not call any constructors.
+ * Instantiates a class by making a call to internal JRockit private methods. It is only supposed to
+ * work on JRockit 7.0 JVMs, which are compatible with Java API 1.3.1. This instantiator will not
+ * call any constructors.
  * 
  * @author Leonardo Mesquita
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
 public class JRockit131Instantiator implements ObjectInstantiator {
-    
-    private Constructor mungedConstructor;
 
-    private static Method newConstructorForSerializationMethod;
-    
-    private static void initialize() {
-    	if(newConstructorForSerializationMethod == null) {
-    		Class cl;
-			try {
-				cl = Class.forName("COM.jrockit.reflect.MemberAccess");
-				newConstructorForSerializationMethod = cl.getDeclaredMethod("newConstructorForSerialization", new Class[] {Constructor.class, Class.class});
-				newConstructorForSerializationMethod.setAccessible(true);
-			} catch (ClassNotFoundException e) {
-				newConstructorForSerializationMethod = null;
-			} catch (SecurityException e) {
-				newConstructorForSerializationMethod = null;
-			} catch (NoSuchMethodException e) {
-				newConstructorForSerializationMethod = null;
-			}
-    	}
-    }
-    
-    public JRockit131Instantiator(Class type) {
-    	initialize();
+   private Constructor mungedConstructor;
 
-    	if(newConstructorForSerializationMethod != null) {
-    		
-	    	Constructor javaLangObjectConstructor;
-	    	
-	        try {
-	            javaLangObjectConstructor = Object.class.getConstructor((Class[])null);
-	        } catch (NoSuchMethodException e) {
-	            throw new Error("Cannot find constructor for java.lang.Object!");
-	        }
-	    	
-	        try {
-	        	mungedConstructor = (Constructor) newConstructorForSerializationMethod.invoke(null, new Object[] {javaLangObjectConstructor, type});
-			} catch (IllegalAccessException e) {
-				mungedConstructor = null;
-			} catch (InvocationTargetException e) {
-				mungedConstructor = null;
-			}
-    	}
+   private static Method newConstructorForSerializationMethod;
 
-    }
+   private static void initialize() {
+      if(newConstructorForSerializationMethod == null) {
+         Class cl;
+         try {
+            cl = Class.forName("COM.jrockit.reflect.MemberAccess");
+            newConstructorForSerializationMethod = cl.getDeclaredMethod(
+               "newConstructorForSerialization", new Class[] {Constructor.class, Class.class});
+            newConstructorForSerializationMethod.setAccessible(true);
+         }
+         catch(ClassNotFoundException e) {
+            newConstructorForSerializationMethod = null;
+         }
+         catch(SecurityException e) {
+            newConstructorForSerializationMethod = null;
+         }
+         catch(NoSuchMethodException e) {
+            newConstructorForSerializationMethod = null;
+         }
+      }
+   }
 
-    public Object newInstance() {
-    	if(mungedConstructor == null) {
-    		return null;
-    	}
-        try {
-            return mungedConstructor.newInstance((Object[])null);
-        } catch (InstantiationException e) {
-            return null;
-        } catch (IllegalAccessException e) {
-            return null;
-        } catch (InvocationTargetException e) {
-            return null;
-        }
-    }
+   public JRockit131Instantiator(Class type) {
+      initialize();
+
+      if(newConstructorForSerializationMethod != null) {
+
+         Constructor javaLangObjectConstructor;
+
+         try {
+            javaLangObjectConstructor = Object.class.getConstructor((Class[]) null);
+         }
+         catch(NoSuchMethodException e) {
+            throw new Error("Cannot find constructor for java.lang.Object!");
+         }
+
+         try {
+            mungedConstructor = (Constructor) newConstructorForSerializationMethod.invoke(null,
+               new Object[] {javaLangObjectConstructor, type});
+         }
+         catch(IllegalAccessException e) {
+            mungedConstructor = null;
+         }
+         catch(InvocationTargetException e) {
+            mungedConstructor = null;
+         }
+      }
+
+   }
+
+   public Object newInstance() {
+      if(mungedConstructor == null) {
+         return null;
+      }
+      try {
+         return mungedConstructor.newInstance((Object[]) null);
+      }
+      catch(InstantiationException e) {
+         return null;
+      }
+      catch(IllegalAccessException e) {
+         return null;
+      }
+      catch(InvocationTargetException e) {
+         return null;
+      }
+   }
 }

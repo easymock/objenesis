@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class SerializableDefaultPublicConstructor implements Serializable {
 
-    public SerializableDefaultPublicConstructor() {
+   public SerializableDefaultPublicConstructor() {
 
-    }
+   }
 }

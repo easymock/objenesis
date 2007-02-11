@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class SerializableDefaultPackageConstructor implements Serializable {
 
-    SerializableDefaultPackageConstructor() {
+   SerializableDefaultPackageConstructor() {
 
-    }
+   }
 }

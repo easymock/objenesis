@@ -19,50 +19,58 @@ import java.lang.reflect.Method;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
- * Instantiates a class by making a call to internal JRockit private methods.
- * It is only supposed to work on JRockit 1.4.2 JVMs prior to release R25.1.
- * From release R25.1 on, JRockit supports sun.reflect.ReflectionFactory, making
- * this "trick" unnecessary.
- * This instantiator will not call any constructors.
+ * Instantiates a class by making a call to internal JRockit private methods. It is only supposed to
+ * work on JRockit 1.4.2 JVMs prior to release R25.1. From release R25.1 on, JRockit supports
+ * sun.reflect.ReflectionFactory, making this "trick" unnecessary. This instantiator will not call
+ * any constructors.
  * 
  * @author Leonardo Mesquita
  * @see org.objenesis.instantiator.ObjectInstantiator
  * @see org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator
  */
 public class JRockitLegacyInstantiator implements ObjectInstantiator {
-	private static Method safeAllocObjectMethod = null;
-	private static void initialize() {
-		if(safeAllocObjectMethod == null) {
-			Class memSystem;
-			try {
-				memSystem = Class.forName("jrockit.vm.MemSystem");
-				safeAllocObjectMethod = memSystem.getDeclaredMethod("safeAllocObject", new Class[] {Class.class});
-				safeAllocObjectMethod.setAccessible(true);
-			} catch (ClassNotFoundException e) {
-				safeAllocObjectMethod = null;
-			} catch (SecurityException e) {
-				safeAllocObjectMethod = null;
-			} catch (NoSuchMethodException e) {
-				safeAllocObjectMethod = null;
-			}
-		}
-	}
-	private Class type;
-	public JRockitLegacyInstantiator(Class type) {
-		initialize();
-		this.type = type;
-	}
-	
-	public Object newInstance() {
-		if(safeAllocObjectMethod == null) {
-			return null;
-		}
-		try {
-			return safeAllocObjectMethod.invoke(null, new Object[]{type});
-		} catch (IllegalAccessException e) {
-			return null;
-		} catch (InvocationTargetException e) {
-			return null;
-		}
-	}
+   private static Method safeAllocObjectMethod = null;
+
+   private static void initialize() {
+      if(safeAllocObjectMethod == null) {
+         Class memSystem;
+         try {
+            memSystem = Class.forName("jrockit.vm.MemSystem");
+            safeAllocObjectMethod = memSystem.getDeclaredMethod("safeAllocObject",
+               new Class[] {Class.class});
+            safeAllocObjectMethod.setAccessible(true);
+         }
+         catch(ClassNotFoundException e) {
+            safeAllocObjectMethod = null;
+         }
+         catch(SecurityException e) {
+            safeAllocObjectMethod = null;
+         }
+         catch(NoSuchMethodException e) {
+            safeAllocObjectMethod = null;
+         }
+      }
+   }
+
+   private Class type;
+
+   public JRockitLegacyInstantiator(Class type) {
+      initialize();
+      this.type = type;
+   }
+
+   public Object newInstance() {
+      if(safeAllocObjectMethod == null) {
+         return null;
+      }
+      try {
+         return safeAllocObjectMethod.invoke(null, new Object[] {type});
+      }
+      catch(IllegalAccessException e) {
+         return null;
+      }
+      catch(InvocationTargetException e) {
+         return null;
+      }
+   }
 }

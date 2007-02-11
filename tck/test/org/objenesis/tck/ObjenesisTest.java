@@ -11,99 +11,91 @@ import org.objenesis.ObjenesisStd;
 import org.objenesis.tck.candidates.SerializableWithAncestorThrowingException;
 
 /**
- * Integration test for Objenesis. Should pass successfully on every supported
- * JVM for all Objenesis interface implementation.
+ * Integration test for Objenesis. Should pass successfully on every supported JVM for all Objenesis
+ * interface implementation.
  * 
  * @author Henri Tremblay
  */
 public class ObjenesisTest extends TestCase {
 
-	public static class ErrorHandler implements CandidateLoader.ErrorHandler {
-		public void classNotFound(String name) {
-			fail("Class not found : " + name);
-		}
-	}
+   public static class ErrorHandler implements CandidateLoader.ErrorHandler {
+      public void classNotFound(String name) {
+         fail("Class not found : " + name);
+      }
+   }
 
-	public static class JUnitReporter implements Reporter {
+   public static class JUnitReporter implements Reporter {
 
-		private String currentObjenesis;
+      private String currentObjenesis;
 
-		private String currentCandidate;
+      private String currentCandidate;
 
-		public void startTests(String platformDescription,
-				Collection allCandidates, Collection allInstantiators) {
-		}
+      public void startTests(String platformDescription, Collection allCandidates,
+         Collection allInstantiators) {
+      }
 
-		public void startTest(String candidateDescription,
-				String objenesisDescription) {
-			currentCandidate = candidateDescription;
-			currentObjenesis = objenesisDescription;
-		}
+      public void startTest(String candidateDescription, String objenesisDescription) {
+         currentCandidate = candidateDescription;
+         currentObjenesis = objenesisDescription;
+      }
 
-		public void endObjenesis(String description) {
-		}
+      public void endObjenesis(String description) {
+      }
 
-		public void endTests() {
-		}
+      public void endTests() {
+      }
 
-		public void exception(Exception exception) {
-			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-			PrintStream out = new PrintStream(buffer);
-			out.println("Exception when instantiating " + currentCandidate
-					+ " with " + currentObjenesis + ": ");
-			exception.printStackTrace(out);
-			fail(buffer.toString());
-		}
+      public void exception(Exception exception) {
+         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+         PrintStream out = new PrintStream(buffer);
+         out.println("Exception when instantiating " + currentCandidate + " with "
+            + currentObjenesis + ": ");
+         exception.printStackTrace(out);
+         fail(buffer.toString());
+      }
 
-		public void result(boolean instantiatedObject) {
-			assertTrue("Instantiating " + currentCandidate + " with "
-					+ currentObjenesis + " failed", instantiatedObject);
-		}
+      public void result(boolean instantiatedObject) {
+         assertTrue("Instantiating " + currentCandidate + " with " + currentObjenesis + " failed",
+            instantiatedObject);
+      }
 
-		public void endTest() {
-		}
-	}
+      public void endTest() {
+      }
+   }
 
-	private TCK tck = null;
+   private TCK tck = null;
 
-	private CandidateLoader candidateLoader = null;
+   private CandidateLoader candidateLoader = null;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+   protected void setUp() throws Exception {
+      super.setUp();
 
-		tck = new TCK();
+      tck = new TCK();
 
-		candidateLoader = new CandidateLoader(tck, getClass().getClassLoader(),
-				new ErrorHandler());
-	}
+      candidateLoader = new CandidateLoader(tck, getClass().getClassLoader(), new ErrorHandler());
+   }
 
-	protected void tearDown() throws Exception {
-		candidateLoader = null;
-		tck = null;
-		super.tearDown();
-	}
+   protected void tearDown() throws Exception {
+      candidateLoader = null;
+      tck = null;
+      super.tearDown();
+   }
 
-	public void testObjenesisStd() throws Exception {
-		candidateLoader.loadFromResource(getClass(),
-				"candidates/candidates.properties");
-		tck.registerObjenesisInstance(new ObjenesisStd(), "Objenesis standard");
-		tck.runTests(new JUnitReporter());
-	}
+   public void testObjenesisStd() throws Exception {
+      candidateLoader.loadFromResource(getClass(), "candidates/candidates.properties");
+      tck.registerObjenesisInstance(new ObjenesisStd(), "Objenesis standard");
+      tck.runTests(new JUnitReporter());
+   }
 
-	public void testObjenesisSerializer() throws Exception {
-		candidateLoader.loadFromResource(getClass(),
-				"candidates/serializable-candidates.properties");
-		tck.registerObjenesisInstance(new ObjenesisSerializer(),
-				"Objenesis serializer");
-		tck.runTests(new JUnitReporter());
-	}
+   public void testObjenesisSerializer() throws Exception {
+      candidateLoader.loadFromResource(getClass(), "candidates/serializable-candidates.properties");
+      tck.registerObjenesisInstance(new ObjenesisSerializer(), "Objenesis serializer");
+      tck.runTests(new JUnitReporter());
+   }
 
-	public void testObjenesisSerializerParentConstructorCalled()
-			throws Exception {
-		// TODO: Should throw an ObjenesisException
-		assertNull(
-				"Parent constructor wasn't called",
-				new ObjenesisSerializer()
-						.newInstance(SerializableWithAncestorThrowingException.class));
-	}
+   public void testObjenesisSerializerParentConstructorCalled() throws Exception {
+      // TODO: Should throw an ObjenesisException
+      assertNull("Parent constructor wasn't called", new ObjenesisSerializer()
+         .newInstance(SerializableWithAncestorThrowingException.class));
+   }
 }
