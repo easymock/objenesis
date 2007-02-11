@@ -19,7 +19,8 @@
             <copy todir="${project.build.directory}/content" filtering="true" overwrite="true">
               <fileset dir="${basedir}/content"/>
                 <filterset>
-                 <filter token="VERSION" value="${project.version}"/>
+                  <filter token="VERSION" value="${project.version}"/>
+                  <filter token="JAVADOC" value="apidocs"/>
                 </filterset>
             </copy>
           </tasks>

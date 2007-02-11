@@ -17,7 +17,8 @@ interested in <a href="support.html">knowing this limitation</a>.</p>
 <p>Then, to prevent this, we provide a TCK to run in your environment. You can
 find it in our <a href="download.html">download page</a>. It will print a report 
 to the standard output. Exceptions, if they occur, will be printed out to
-the standard error. Tests are run <code>ObjenesisStd</code> and <code>ObjenesisSerializer</code>
+the standard error. Tests are run <a href="@JAVADOC@/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> 
+and <a href="@JAVADOC@/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a>
 and are made of every kind of class types you might want to instantiate. So you can check if all
 of them or at least the kind you want are correctly instantiated.</p>
 
@@ -32,7 +33,8 @@ and to call <code>org.objenesis.tck.Main.main()</code> from your code.</p>
 
 <h1>Exception Handling</h1>
 
-<p>If something wrong occurs using Objenesis, you will normally get an <a href="#">ObjenesisException</a>
+<p>If something wrong occurs using Objenesis, you will normally get an 
+<a href="@JAVADOC@/org/objenesis/ObjenesisException.html">ObjenesisException</a>
 wrapping (for JVM 1.4 and more) the real exception. It is a RuntimeException so you don't have to
 catch it. Some reasons why it fails:</p>
 
@@ -41,16 +43,16 @@ catch it. Some reasons why it fails:</p>
     <li>Using ObjenesisSerializer, the constructor of the first parent class that isn't
         <code>Serializable</code> throws an exception.</li>
     <li>Your SecurityManager prevents Objenesis from working normally.</li>
-    <li>Objenesis isn't able to work for some reason. Please <a href="support.html">tell us</a>
+    <li>Objenesis isn't able to work for some reason. Please <a href="support.html">tell us</a></li>
 </ul>
 
 <h1>ObjectInstantiator caching</h1>
 
-<p><a href="#">ObjenesisBase</a> provides a built-in cache that is activated by default. This
-cache keeps ObjectInstantior instances per Class. This improves performance quite a lot when
-the same Class is frequently instantiated. For this reason, it is recommended to reuse
-Objenesis instances whenever posssibly or to keep is as a singleton in your favorite
-dependency injection framework.</p>
+<p><a href="@JAVADOC@/org/objenesis/ObjenesisBase.html">ObjenesisBase</a> provides a built-in cache 
+that is activated by default. This cache keeps <a href="@JAVADOC@/org/objenesis/instantiator/ObjectInstantiator.html">
+ObjectInstantiator</a> instances per Class. This improves performance quite a lot when the same Class 
+is frequently instantiated. For this reason, it is recommended to reuse Objenesis instances whenever 
+posssibly or to keep is as a singleton in your favorite dependency injection framework.</p>
 
 <p>However, you can always disable the cache if needed.</p>
 <pre>
@@ -103,11 +105,12 @@ class loading issues, memory leaks, module dependencies and so on. <strong>We
 strongly recommend you not to use them.</strong></p>
 
 <p>However, if for some reason that we prefer ignore, you still want to use Objenesis
-in a static way, you can do so. It's called <code>ObjenesisHelper</code>.</p>
+in a static way, you can do so. It's called <a href="@JAVADOC@/org/objenesis/ObjenesisHelper.html">ObjenesisHelper</a>.</p>
 
 <p>We prefer to provide it knowing that some of you will code it anyway. It a wrapper
-over an <code>ObjenesisStd</code> and <code>ObjenesisSerializer</code> instance which
-are kept statically.</p>
+over an <a href="@JAVADOC@/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> 
+and <a href="@JAVADOC@/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a> 
+instance which are kept statically.</p>
 
 <p>It can't be more straightforward to use:</p>
 
