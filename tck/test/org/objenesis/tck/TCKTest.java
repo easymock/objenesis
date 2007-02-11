@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.objenesis.ObjectInstantiator;
 import org.objenesis.Objenesis;
+import org.objenesis.instantiator.ObjectInstantiator;
 
 public class TCKTest extends TestCase {
 	

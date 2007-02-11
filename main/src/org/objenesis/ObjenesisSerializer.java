@@ -1,5 +1,8 @@
 package org.objenesis;
 
+import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.strategy.SerializingInstantiatorStrategy;
+
 /**
  * Class using the {@link SerializingInstantiatorStrategy} by default 
  * 

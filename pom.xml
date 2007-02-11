@@ -10,11 +10,6 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>core</module>
-    <module>sun</module>
-    <module>sun1.3</module>
-    <module>jrockit</module>
-    <module>gcj</module>
     <module>main</module>
     <module>tck</module>
   </modules>

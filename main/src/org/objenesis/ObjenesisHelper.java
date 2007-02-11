@@ -2,6 +2,8 @@ package org.objenesis;
 
 import java.io.Serializable;
 
+import org.objenesis.instantiator.ObjectInstantiator;
+
 /**
  * Easiest way to create a new class instance.
  * 

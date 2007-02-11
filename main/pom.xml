@@ -9,32 +9,6 @@
   <artifactId>objenesis-main</artifactId>
   <name>Objenesis main</name>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-sun</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-sun1.3</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-gcj</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-jrockit</artifactId>
-      <version>${project.version}</version>
-    </dependency>    
-  </dependencies>
+  <dependencies/>
 
 </project>

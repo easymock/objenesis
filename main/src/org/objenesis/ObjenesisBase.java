@@ -3,6 +3,9 @@ package org.objenesis;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.strategy.InstantiatorStrategy;
+
 /**
  * Base class to extend if you want to have a class providing your own default strategy.
  * Can also be instantiated directly.

@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.objenesis.ObjectInstantiator;
 import org.objenesis.Objenesis;
+import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
  * <b>Technology Compatibility Kit</b> (TCK) for {@link Objenesis}s.

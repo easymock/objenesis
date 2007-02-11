@@ -1,5 +1,7 @@
 package org.objenesis;
 
+import org.objenesis.instantiator.ObjectInstantiator;
+
 /**
  * Common interface to all kind of Objenesis objects
  * 
