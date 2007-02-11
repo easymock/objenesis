@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.objenesis</groupId>
-    <artifactId>objenesis</artifactId>
+    <artifactId>objenesis-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>objenesis-tck</artifactId>
@@ -12,7 +12,7 @@
   <dependencies>
     <dependency>
       <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-main</artifactId>
+      <artifactId>objenesis</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
