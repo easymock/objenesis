@@ -24,7 +24,7 @@ public class GCJSerializationInstantiator extends GCJInstantiatorBase {
          return newObjectMethod.invoke(dummyStream, new Object[] {type, superType});
       }
       catch(Exception e) {
-         return new ObjenesisException(e);
+         throw new ObjenesisException(e);
       }
    }
 
