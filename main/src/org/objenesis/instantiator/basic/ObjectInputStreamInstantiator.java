@@ -4,11 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 import java.io.ObjectStreamConstants;
 import java.io.Serializable;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
@@ -144,25 +146,19 @@ public class ObjectInputStreamInstantiator implements ObjectInstantiator {
          }
       }
       else {
-         this.inputStream = null;
+    	  throw new ObjenesisException(new NotSerializableException(clazz+" not serializable"));
       }
    }
 
    public Object newInstance() {
-      if(this.inputStream == null) {
-         return null;
-      }
       try {
          return inputStream.readObject();
-      }
-      catch(IOException e) {
-         return null;
-      }
+      }      
       catch(ClassNotFoundException e) {
          throw new Error("ClassNotFoundException: " + e.getMessage());
       }
       catch(Exception e) {
-         return null;
+         throw new ObjenesisException(e);
       }
    }
 }

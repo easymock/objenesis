@@ -1,5 +1,7 @@
 package org.objenesis;
 
+import java.io.NotSerializableException;
+
 import junit.framework.TestCase;
 
 public class SerializingInstantiatorTest extends TestCase {
@@ -14,6 +16,11 @@ public class SerializingInstantiatorTest extends TestCase {
 
    public void testNotSerializable() {
       ObjenesisSerializer o = new ObjenesisSerializer();
-      assertNull(o.newInstance(Object.class));
+      try {
+    	  o.newInstance(Object.class);
+    	  fail("Should have thrown an exception");
+      } catch (ObjenesisException e) {
+    	  assertTrue(e.getCause() instanceof NotSerializableException);
+      }
    }
 }

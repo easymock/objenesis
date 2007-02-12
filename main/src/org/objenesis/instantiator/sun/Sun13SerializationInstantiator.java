@@ -1,7 +1,6 @@
 package org.objenesis.instantiator.sun;
 
-import java.lang.reflect.InvocationTargetException;
-
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.SerializationInstantiatorHelper;
 
 /**
@@ -21,17 +20,11 @@ public class Sun13SerializationInstantiator extends Sun13InstantiatorBase {
    }
 
    public Object newInstance() {
-      if(allocateNewObjectMethod == null) {
-         return null;
-      }
       try {
          return allocateNewObjectMethod.invoke(null, new Object[] {type, superType});
       }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
    }
 

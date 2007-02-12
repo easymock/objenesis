@@ -1,12 +1,13 @@
 package org.objenesis.instantiator.sun;
 
-import sun.reflect.ReflectionFactory;
-
-import java.io.Serializable;
+import java.io.NotSerializableException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.SerializationInstantiatorHelper;
+
+import sun.reflect.ReflectionFactory;
 
 /**
  * Instantiates an object using internal sun.reflect.ReflectionFactory - a class only available on
@@ -22,17 +23,9 @@ public class SunReflectionFactorySerializationInstantiator implements ObjectInst
    private final Constructor mungedConstructor;
 
    public SunReflectionFactorySerializationInstantiator(Class type) {
+	   
+	  Class nonSerializableAncestor = SerializationInstantiatorHelper.getNonSerializableSuperClass(type);
       ReflectionFactory reflectionFactory = ReflectionFactory.getReflectionFactory();
-      Class nonSerializableAncestor = type.getSuperclass();
-      while(nonSerializableAncestor != null
-         && Serializable.class.isAssignableFrom(nonSerializableAncestor)) {
-         nonSerializableAncestor = nonSerializableAncestor.getSuperclass();
-      }
-      if(nonSerializableAncestor == null) {
-         /** @todo: (Henri) Can't happen, Object is not Serializable */
-         mungedConstructor = null;
-         return;
-      }
       Constructor nonSerializableAncestorConstructor;
       try {
          nonSerializableAncestorConstructor = nonSerializableAncestor
@@ -45,8 +38,7 @@ public class SunReflectionFactorySerializationInstantiator implements ObjectInst
           *       if a "Not serializable", a "No default constructor on ancestor" or a "Exception in
           *       constructor"
           */
-         mungedConstructor = null;
-         return;
+         throw new ObjenesisException(new NotSerializableException(type+" has no suitable superclass constructor"));         
       }
 
       mungedConstructor = reflectionFactory.newConstructorForSerialization(type,
@@ -58,15 +50,8 @@ public class SunReflectionFactorySerializationInstantiator implements ObjectInst
       try {
          return mungedConstructor.newInstance((Object[]) null);
       }
-      catch(InstantiationException e) {
-         /** @todo (Henri) See todo above */
-         return null;
-      }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
    }
 }

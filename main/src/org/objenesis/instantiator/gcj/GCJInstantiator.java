@@ -1,6 +1,6 @@
 package org.objenesis.instantiator.gcj;
 
-import java.lang.reflect.InvocationTargetException;
+import org.objenesis.ObjenesisException;
 
 /**
  * Instantiates a class by making a call to internal GCJ private methods. It is only supposed to
@@ -15,18 +15,11 @@ public class GCJInstantiator extends GCJInstantiatorBase {
    }
 
    public Object newInstance() {
-      if(newObjectMethod == null) {
-         return null;
-      }
       try {
          return newObjectMethod.invoke(dummyStream, new Object[] {type, Object.class});
       }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
    }
-
 }

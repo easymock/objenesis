@@ -1,8 +1,9 @@
 package org.objenesis.strategy;
 
+import java.io.NotSerializableException;
 import java.io.Serializable;
 
-import org.objenesis.instantiator.NullInstantiator;
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
@@ -33,7 +34,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
     */
    public ObjectInstantiator newInstantiatorOf(Class type) {
       if(!Serializable.class.isAssignableFrom(type)) {
-         return new NullInstantiator();
+         throw new ObjenesisException(new NotSerializableException(type+" not serializable"));
       }
       if(JVM_NAME.startsWith(SUN)) {
          if(VM_VERSION.startsWith("1.3")) {

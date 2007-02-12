@@ -1,9 +1,9 @@
 package org.objenesis.instantiator.basic;
 
 import java.io.ObjectStreamClass;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
@@ -27,12 +27,9 @@ public class ObjectStreamClassInstantiator implements ObjectInstantiator {
                new Class[] {});
             newInstanceMethod.setAccessible(true);
          }
-         catch(SecurityException e) {
-            newInstanceMethod = null;
-         }
-         catch(NoSuchMethodException e) {
-            newInstanceMethod = null;
-         }
+         catch(Exception e) {
+            throw new ObjenesisException(e);
+         }         
       }
    }
 
@@ -44,21 +41,14 @@ public class ObjectStreamClassInstantiator implements ObjectInstantiator {
    }
 
    public Object newInstance() {
-      if(newInstanceMethod == null) {
-         return null;
-      }
+	   
       try {
          return newInstanceMethod.invoke(objStreamClass, new Object[] {});
       }
-      catch(IllegalArgumentException e) {
-         return null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
-      }
+      
    }
 
 }

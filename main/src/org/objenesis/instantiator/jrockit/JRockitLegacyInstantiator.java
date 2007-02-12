@@ -13,9 +13,9 @@
 
 package org.objenesis.instantiator.jrockit;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
@@ -40,14 +40,8 @@ public class JRockitLegacyInstantiator implements ObjectInstantiator {
                new Class[] {Class.class});
             safeAllocObjectMethod.setAccessible(true);
          }
-         catch(ClassNotFoundException e) {
-            safeAllocObjectMethod = null;
-         }
-         catch(SecurityException e) {
-            safeAllocObjectMethod = null;
-         }
-         catch(NoSuchMethodException e) {
-            safeAllocObjectMethod = null;
+         catch(Exception e) {
+            throw new ObjenesisException(e);
          }
       }
    }
@@ -59,18 +53,12 @@ public class JRockitLegacyInstantiator implements ObjectInstantiator {
       this.type = type;
    }
 
-   public Object newInstance() {
-      if(safeAllocObjectMethod == null) {
-         return null;
-      }
+   public Object newInstance() {      
       try {
          return safeAllocObjectMethod.invoke(null, new Object[] {type});
       }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
    }
 }

@@ -2,10 +2,12 @@ package org.objenesis.tck;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
 import org.objenesis.tck.candidates.SerializableWithAncestorThrowingException;
@@ -94,8 +96,11 @@ public class ObjenesisTest extends TestCase {
    }
 
    public void testObjenesisSerializerParentConstructorCalled() throws Exception {
-      // TODO: Should throw an ObjenesisException
-      assertNull("Parent constructor wasn't called", new ObjenesisSerializer()
-         .newInstance(SerializableWithAncestorThrowingException.class));
+      try {
+    	  new ObjenesisSerializer().newInstance(SerializableWithAncestorThrowingException.class);
+    	  fail("Parent constructor not called");
+      } catch(ObjenesisException e) {
+    	  assertTrue(e.getCause() instanceof InvocationTargetException);
+      }
    }
 }

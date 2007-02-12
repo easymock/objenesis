@@ -13,9 +13,9 @@
 package org.objenesis.instantiator.jrockit;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
@@ -41,14 +41,8 @@ public class JRockit131Instantiator implements ObjectInstantiator {
                "newConstructorForSerialization", new Class[] {Constructor.class, Class.class});
             newConstructorForSerializationMethod.setAccessible(true);
          }
-         catch(ClassNotFoundException e) {
-            newConstructorForSerializationMethod = null;
-         }
-         catch(SecurityException e) {
-            newConstructorForSerializationMethod = null;
-         }
-         catch(NoSuchMethodException e) {
-            newConstructorForSerializationMethod = null;
+         catch(Exception e) {
+            throw new ObjenesisException(e);
          }
       }
    }
@@ -71,31 +65,19 @@ public class JRockit131Instantiator implements ObjectInstantiator {
             mungedConstructor = (Constructor) newConstructorForSerializationMethod.invoke(null,
                new Object[] {javaLangObjectConstructor, type});
          }
-         catch(IllegalAccessException e) {
-            mungedConstructor = null;
-         }
-         catch(InvocationTargetException e) {
-            mungedConstructor = null;
+         catch(Exception e) {
+        	 throw new ObjenesisException(e);
          }
       }
 
    }
 
    public Object newInstance() {
-      if(mungedConstructor == null) {
-         return null;
-      }
       try {
          return mungedConstructor.newInstance((Object[]) null);
       }
-      catch(InstantiationException e) {
-         return null;
-      }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
    }
 }

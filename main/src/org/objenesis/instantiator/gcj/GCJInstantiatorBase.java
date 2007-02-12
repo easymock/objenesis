@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.Method;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
@@ -31,14 +32,8 @@ public abstract class GCJInstantiatorBase implements ObjectInstantiator {
             newObjectMethod.setAccessible(true);
             dummyStream = new DummyStream();
          }
-         catch(SecurityException e) {
-            newObjectMethod = null;
-         }
-         catch(NoSuchMethodException e) {
-            newObjectMethod = null;
-         }
-         catch(IOException e) {
-            newObjectMethod = null;
+         catch(Exception e) {
+            throw new ObjenesisException(e);
          }
       }
    }

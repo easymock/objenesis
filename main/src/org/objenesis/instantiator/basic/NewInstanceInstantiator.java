@@ -1,5 +1,6 @@
 package org.objenesis.instantiator.basic;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
@@ -19,17 +20,9 @@ public class NewInstanceInstantiator implements ObjectInstantiator {
    public Object newInstance() {
       try {
          return type.newInstance();
-      }
-      catch(InstantiationException e) {
-         return null;
-      }
-      catch(IllegalAccessException e) {
-         return null;
-      }
+      }      
       catch(Exception e) {
-         // java.lang.Class#newInstance() does not throw InvocationTargetException.
-         // Instead, it will throw the exception that was thrown originally by the constructor.
-         return null;
+         throw new ObjenesisException(e);
       }
    }
 

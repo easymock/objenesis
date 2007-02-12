@@ -1,11 +1,11 @@
 package org.objenesis.instantiator.sun;
 
-import sun.reflect.ReflectionFactory;
-
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+
+import sun.reflect.ReflectionFactory;
 
 /**
  * Instantiates an object, WITHOUT calling it's constructor, using internal
@@ -32,20 +32,15 @@ public class SunReflectionFactoryInstantiator implements ObjectInstantiator {
       }
       mungedConstructor = reflectionFactory.newConstructorForSerialization(type,
          javaLangObjectConstructor);
+      mungedConstructor.setAccessible(true);
    }
 
    public Object newInstance() {
       try {
          return mungedConstructor.newInstance((Object[]) null);
       }
-      catch(InstantiationException e) {
-         return null;
-      }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
    }
 }

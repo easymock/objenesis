@@ -1,7 +1,6 @@
 package org.objenesis.instantiator.gcj;
 
-import java.lang.reflect.InvocationTargetException;
-
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.SerializationInstantiatorHelper;
 
 /**
@@ -21,17 +20,11 @@ public class GCJSerializationInstantiator extends GCJInstantiatorBase {
    }
 
    public Object newInstance() {
-      if(newObjectMethod == null) {
-         return null;
-      }
       try {
          return newObjectMethod.invoke(dummyStream, new Object[] {type, superType});
       }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+         return new ObjenesisException(e);
       }
    }
 

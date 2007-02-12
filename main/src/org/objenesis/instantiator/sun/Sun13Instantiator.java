@@ -1,6 +1,6 @@
 package org.objenesis.instantiator.sun;
 
-import java.lang.reflect.InvocationTargetException;
+import org.objenesis.ObjenesisException;
 
 /**
  * Instantiates a class by making a call to internal Sun private methods. It is only supposed to
@@ -15,17 +15,11 @@ public class Sun13Instantiator extends Sun13InstantiatorBase {
    }
 
    public Object newInstance() {
-      if(allocateNewObjectMethod == null) {
-         return null;
-      }
       try {
          return allocateNewObjectMethod.invoke(null, new Object[] {type, Object.class});
       }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
    }
 

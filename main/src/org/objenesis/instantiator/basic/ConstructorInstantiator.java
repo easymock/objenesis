@@ -1,8 +1,8 @@
 package org.objenesis.instantiator.basic;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
@@ -19,29 +19,17 @@ public class ConstructorInstantiator implements ObjectInstantiator {
       try {
          constructor = type.getDeclaredConstructor((Class[]) null);
       }
-      catch(SecurityException e) {
-         constructor = null;
-      }
-      catch(NoSuchMethodException e) {
-         constructor = null;
+      catch(Exception e) {
+         throw new ObjenesisException(e);
       }
    }
 
    public Object newInstance() {
-      if(constructor == null) {
-         return null;
-      }
       try {
          return constructor.newInstance((Object[]) null);
       }
-      catch(InstantiationException e) {
-         return null;
-      }
-      catch(IllegalAccessException e) {
-         return null;
-      }
-      catch(InvocationTargetException e) {
-         return null;
+      catch(Exception e) {
+          throw new ObjenesisException(e);
       }
    }
 
