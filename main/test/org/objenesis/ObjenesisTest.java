@@ -2,6 +2,7 @@ package org.objenesis;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
+import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import junit.framework.TestCase;
 
@@ -14,18 +15,13 @@ public class ObjenesisTest extends TestCase {
          o.toString());
    }
 
-   public final void testObjenesisBoolean() {
+   public final void testObjenesis_WithoutCache() {
       Objenesis o = new ObjenesisStd(false);
       assertEquals(
          "org.objenesis.ObjenesisStd using org.objenesis.strategy.StdInstantiatorStrategy without caching",
          o.toString());
-   }
 
-   public final void testObjenesisInstantiatorStrategy() {
-      Objenesis o = new ObjenesisStd(false);
-      assertEquals(
-         "org.objenesis.ObjenesisStd using org.objenesis.strategy.StdInstantiatorStrategy without caching",
-         o.toString());
+      assertEquals(o.getInstantiatorOf(getClass()).newInstance().getClass(), getClass());
    }
 
    public final void testNewInstance() {
@@ -33,7 +29,7 @@ public class ObjenesisTest extends TestCase {
       assertEquals(getClass(), o.newInstance(getClass()).getClass());
    }
 
-   public final void testNewInstantiatorOf() {
+   public final void testGetInstantiatorOf() {
       Objenesis o = new ObjenesisStd();
       ObjectInstantiator i1 = o.getInstantiatorOf(getClass());
       // Test instance creation

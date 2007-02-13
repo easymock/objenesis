@@ -1,5 +1,6 @@
 package org.objenesis;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -40,7 +41,7 @@ public class ObjenesisBase implements Objenesis {
          throw new IllegalArgumentException("A strategy can't be null");
       }
       this.strategy = strategy;
-      this.cache = useCache ? new WeakHashMap() : null;
+      this.cache = useCache ? new HashMap() : null;
    }
 
    public String toString() {
@@ -66,11 +67,14 @@ public class ObjenesisBase implements Objenesis {
     * @param clazz Class to instantiate
     * @return Instantiator dedicated to the class
     */
-   public ObjectInstantiator getInstantiatorOf(Class clazz) {
-      ObjectInstantiator instantiator = (ObjectInstantiator) cache.get(clazz);
+   public synchronized ObjectInstantiator getInstantiatorOf(Class clazz) {
+      if(cache == null) {
+         return strategy.newInstantiatorOf(clazz);
+      }
+      ObjectInstantiator instantiator = (ObjectInstantiator) cache.get(clazz.getName());
       if(instantiator == null) {
          instantiator = strategy.newInstantiatorOf(clazz);
-         cache.put(clazz, instantiator);
+         cache.put(clazz.getName(), instantiator);
       }
       return instantiator;
    }
