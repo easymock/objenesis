@@ -2,7 +2,6 @@ package org.objenesis.tck;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import junit.framework.TestCase;
