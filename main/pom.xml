@@ -8,7 +8,14 @@
   </parent>
   <artifactId>objenesis</artifactId>
   <name>Objenesis</name>
+  <description>A library for instantiating Java objects</description>
+  <url>http://objenesis.googlecode.com/svn/docs/index.html</url>
 
   <dependencies/>
 
+  <scm>
+    <connection>scm:svn:http://objenesis.googlecode.com/svn/trunk/main</connection>
+    <developerConnection>scm:svn:https://objenesis.googlecode.com/svn/trunk/main</developerConnection>
+    <url>http://objenesis.googlecode.com/svn/trunk/main</url>
+  </scm>
 </project>
