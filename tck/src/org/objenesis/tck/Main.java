@@ -1,6 +1,7 @@
 package org.objenesis.tck;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisSerializer;
@@ -13,6 +14,30 @@ import org.objenesis.ObjenesisStd;
  * @see TCK
  */
 public class Main {
+
+   private static class MockSuperClass {
+      private boolean superConstructorCalled;
+
+      public MockSuperClass() {
+         superConstructorCalled = true;
+      }
+
+      public boolean isSuperConstructorCalled() {
+         return superConstructorCalled;
+      }
+   }
+
+   private static class MockClass extends MockSuperClass implements Serializable {
+      private boolean constructorCalled;
+
+      public MockClass() {
+         constructorCalled = true;
+      }
+
+      public boolean isConstructorCalled() {
+         return constructorCalled;
+      }
+   }
 
    /**
     * Main class of the TCK. Can also be called as a normal method from an application server.
@@ -28,7 +53,22 @@ public class Main {
       runTest(new ObjenesisSerializer(), reporter, "Objenesis serializer",
          "candidates/serializable-candidates.properties");
 
-      reporter.printResult();
+      boolean result = runParentConstructorTest();
+
+      reporter.printResult(result);
+   }
+
+   private static boolean runParentConstructorTest() {
+      try {
+         Object result = new ObjenesisSerializer().newInstance(MockClass.class);
+         MockClass mockObject = (MockClass) result;
+         return mockObject.isSuperConstructorCalled() && !mockObject.isConstructorCalled();
+      }
+      catch(Exception e) {
+         System.err.println("--- Not serializable parent constructor called ---");
+         e.printStackTrace(System.err);
+         return false;
+      }
    }
 
    private static void runTest(Objenesis objenesis, Reporter reporter, String description,

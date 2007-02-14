@@ -46,11 +46,13 @@ public class TextReporterTest extends TestCase {
 
       textReporter.endTests();
 
-      textReporter.printResult();
+      textReporter.printResult(true);
 
       ByteArrayOutputStream expectedSummaryBuffer = new ByteArrayOutputStream();
       PrintStream out = new PrintStream(expectedSummaryBuffer);
       out.println("Running TCK on platform: Some platform");
+      out.println();
+      out.println("Not serializable parent constructor called: Y");
       out.println();
       out.println("            instantiator1 instantiator2 instantiator3 ");
       out.println("candidate A n             n             Y             ");

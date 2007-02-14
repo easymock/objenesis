@@ -81,7 +81,7 @@ public class TextReporter implements Reporter {
    public void startTests(String platformDescription, Collection allCandidates,
       Collection allInstantiators) {
 
-      // HT: in case the same reporteris reused, I'm guessing that it will
+      // HT: in case the same reporter is reused, I'm guessing that it will
       // always be the
       // same platform
       this.platformDescription = platformDescription;
@@ -126,11 +126,19 @@ public class TextReporter implements Reporter {
    /**
     * Print the final summary report
     */
-   public void printResult() {
+   public void printResult(boolean parentConstructorTest) {
       // Platform
       summary.println("Running TCK on platform: " + platformDescription);
       summary.println();
 
+      summary.println("Not serializable parent constructor called: "
+         + (parentConstructorTest ? 'Y' : 'N'));
+      summary.println();
+      
+      if(!parentConstructorTest) {
+         errorCount++;
+      }
+      
       int maxObjenesisWidth = lengthOfLongestStringIn(allInstantiators);
       int maxCandidateWidth = lengthOfLongestStringIn(allCandidates);
 
