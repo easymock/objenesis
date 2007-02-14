@@ -2,14 +2,13 @@ package org.objenesis.tck;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.objenesis.ObjenesisException;
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
-import org.objenesis.tck.candidates.SerializableWithAncestorThrowingException;
 
 /**
  * Integration test for Objenesis. Should pass successfully on every supported JVM for all Objenesis
@@ -63,6 +62,27 @@ public class ObjenesisTest extends TestCase {
       public void endTest() {
       }
    }
+   
+   static class MockSuperClass {
+	   private boolean superConstructorCalled;
+	   public MockSuperClass() {
+		   superConstructorCalled = true;
+	   }
+	   public boolean isSuperConstructorCalled() {
+		   return superConstructorCalled;
+	   }
+   }
+   
+   static class MockClass extends MockSuperClass implements Serializable {
+	   private boolean constructorCalled;
+	   public MockClass() {
+		   super();
+		   constructorCalled = true;
+	   }
+	   public boolean isConstructorCalled() {
+		   return constructorCalled;
+	   }
+   }
 
    private TCK tck = null;
 
@@ -95,13 +115,10 @@ public class ObjenesisTest extends TestCase {
    }
 
    public void testObjenesisSerializerParentConstructorCalled() throws Exception {
-      try {
-    	  new ObjenesisSerializer().newInstance(SerializableWithAncestorThrowingException.class);
-    	  fail("Parent constructor not called");
-      } catch(ObjenesisException e) {
-    	  // Exception was expected here
-    	  // TODO: check that the exception is the one expected.
-    	  // On Java 1.3, we cannot rely on the "cause" for the exception
-      }
+   	  Object result = new ObjenesisSerializer().newInstance(MockClass.class);
+   	  assertEquals(MockClass.class, result.getClass());
+   	  MockClass mockObject = (MockClass) result;
+   	  assertTrue(mockObject.isSuperConstructorCalled());
+   	  assertFalse(mockObject.isConstructorCalled());   	  
    }
 }
