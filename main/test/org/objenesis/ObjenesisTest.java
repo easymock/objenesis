@@ -2,7 +2,6 @@ package org.objenesis;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
-import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import junit.framework.TestCase;
 
