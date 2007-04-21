@@ -4,6 +4,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.jrockit.JRockit131Instantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
+import org.objenesis.instantiator.perc.PercInstantiator;
 import org.objenesis.instantiator.sun.Sun13Instantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
 
@@ -55,6 +56,9 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
       }
       else if(JVM_NAME.startsWith(GNU)) {
          return new GCJInstantiator(type);
+      }
+      else if(JVM_NAME.startsWith(PERC)) {
+    	  return new PercInstantiator(type);
       }
 
       // Fallback instantiator, should work with:

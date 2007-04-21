@@ -7,6 +7,7 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
+import org.objenesis.instantiator.perc.PercInstantiator;
 import org.objenesis.instantiator.sun.Sun13SerializationInstantiator;
 
 /**
@@ -44,6 +45,11 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
       else if(JVM_NAME.startsWith(GNU)) {
          return new GCJSerializationInstantiator(type);
       }
+      else if(JVM_NAME.startsWith(PERC)) {
+    	  // Watch out!!! Doesn't call the parent!!!
+    	  return new PercInstantiator(type);
+      }
+      
       return new ObjectStreamClassInstantiator(type);
    }
 

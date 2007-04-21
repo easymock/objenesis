@@ -16,6 +16,9 @@ public abstract class BaseInstantiatorStrategy implements InstantiatorStrategy {
    /** JVM_NAME prefix for Sun Java HotSpot */
    protected static final String SUN = "Java HotSpot";
 
+   /** JVM_NAME prefix for Aonix PERC */
+   protected static final String PERC = "PERC";
+   
    /** JVM version */
    protected static final String VM_VERSION = System.getProperty("java.runtime.version");
 
