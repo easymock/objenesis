@@ -70,7 +70,7 @@ MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();</pre>
 
 <pre>
 Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer
-MyThingy thingy1 = (MyThingy) objenesis.newInstance();
+MyThingy thingy1 = (MyThingy) objenesis.newInstance(MyThingy.class);
 
 // or (a little bit more efficient if you need to create many objects)
 
