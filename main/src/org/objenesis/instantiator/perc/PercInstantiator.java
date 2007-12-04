@@ -7,8 +7,9 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
- * Instantiates a class by making a call to internal Aonix PERC private methods. 
- * This instantiator will not call any constructors. Tested with perc-linux-5.0.0667.i386
+ * Instantiates a class by making a call to internal Perc private methods. It is only supposed to
+ * work on Perc JVMs. This instantiator will not call any constructors. The code was provided by
+ * Aonix Perc support team.
  * 
  * @author Henri Tremblay
  * @see org.objenesis.instantiator.ObjectInstantiator
