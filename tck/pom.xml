@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis-parent</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
   </parent>
   <artifactId>objenesis-tck</artifactId>
   <name>Objenesis TCK</name>
