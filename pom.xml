@@ -110,6 +110,7 @@
 
   <profiles>
     <profile>
+      <!-- Activate to generate the standalone tck -->
       <id>tck</id>
       <build>
         <plugins>
@@ -130,5 +131,12 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+    	<!-- Activate to generate the website -->
+      <id>website</id>
+  		<modules>
+    		<module>website</module>
+  		</modules>      
+    </profile>    
   </profiles>
 </project>
