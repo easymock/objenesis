@@ -1,12 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <name>Objenesis parent project</name>
   <groupId>org.objenesis</groupId>
   <artifactId>objenesis-parent</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -22,9 +19,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:http://objenesis.googlecode.com/svn/trunk</connection>
-    <developerConnection>scm:svn:https://objenesis.googlecode.com/svn/trunk</developerConnection>
-    <url>http://objenesis.googlecode.com/svn/trunk</url>
+    <connection>scm:svn:http://objenesis.googlecode.com/svn/tags/1_1</connection>
+    <developerConnection>scm:svn:https://objenesis.googlecode.com/svn/tags/1_1</developerConnection>
+    <url>http://objenesis.googlecode.com/svn/tags/1_1</url>
   </scm>
   
   <developers>
@@ -88,11 +85,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2-beta-1</version>
-        <inherited>false</inherited>
-      </plugin>
-      <plugin>
         <artifactId>maven-site-plugin</artifactId>
         <inherited>false</inherited>
         <configuration>
@@ -110,11 +102,14 @@
 
   <profiles>
     <profile>
+      <!-- Activate to generate the standalone tck -->
       <id>tck</id>
       <build>
         <plugins>
           <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.2-beta-1</version>
+            <inherited>false</inherited>
             <configuration>
               <finalName>objenesis-tck-${project.version}</finalName>
               <descriptors>
@@ -130,5 +125,12 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+    	<!-- Activate to generate the website -->
+      <id>website</id>
+  		<modules>
+    		<module>website</module>
+  		</modules>      
+    </profile>    
   </profiles>
 </project>
