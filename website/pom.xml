@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis-parent</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
   </parent>
   <artifactId>objenesis-website</artifactId>
   <name>Objenesis website</name>
@@ -15,12 +14,12 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <configuration>
           <tasks>
-            <mkdir dir="${project.build.directory}/content"/>
+            <mkdir dir="${project.build.directory}/content" />
             <copy todir="${project.build.directory}/content" filtering="true" overwrite="true">
-              <fileset dir="${basedir}/content"/>
+              <fileset dir="${basedir}/content" />
                 <filterset>
-                  <filter token="VERSION" value="${project.version}"/>
-                  <filter token="JAVADOC" value="apidocs"/>
+                  <filter token="VERSION" value="${project.version}" />
+                  <filter token="JAVADOC" value="apidocs" />
                 </filterset>
             </copy>
           </tasks>
