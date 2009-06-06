@@ -4,6 +4,7 @@
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis-parent</artifactId>
     <version>1.2-SNAPSHOT</version>
+    <relativePath>..</relativePath>
   </parent>
   <artifactId>objenesis-tck</artifactId>
   <name>Objenesis TCK</name>
@@ -12,7 +13,7 @@
     <dependency>
       <groupId>org.objenesis</groupId>
       <artifactId>objenesis</artifactId>
-      <version>${project.version}</version>
+      <version>${project.version}</version>     
     </dependency>
   </dependencies>
 
