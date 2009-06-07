@@ -16,7 +16,7 @@ import org.objenesis.ObjenesisStd;
 public class Main {
 
    private static class MockSuperClass {
-      private boolean superConstructorCalled;
+      private final boolean superConstructorCalled;
 
       public MockSuperClass() {
          superConstructorCalled = true;
@@ -28,7 +28,9 @@ public class Main {
    }
 
    private static class MockClass extends MockSuperClass implements Serializable {
-      private boolean constructorCalled;
+      private static final long serialVersionUID = 1L;
+      
+      private final boolean constructorCalled;
 
       public MockClass() {
          constructorCalled = true;

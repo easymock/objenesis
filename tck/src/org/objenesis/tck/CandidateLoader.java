@@ -72,6 +72,7 @@ public class CandidateLoader {
       // So, we create a special Properties instance that writes its
       // entries directly to the TCK (which retains order).
       Properties properties = new Properties() {
+         private static final long serialVersionUID = 1L;
          public Object put(Object key, Object value) {
             handlePropertyEntry((String) key, (String) value);
             return null;

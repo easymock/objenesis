@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class SerializableConstructorWithArguments implements Serializable {
 
+   private static final long serialVersionUID = 1L;
+   
    private final String something;
    private final int another;
 
