@@ -4,6 +4,8 @@ import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
  * Defines a strategy to determine the best instantiator for a class.
+ * 
+ * @author Henri Tremblay
  */
 public interface InstantiatorStrategy {
 

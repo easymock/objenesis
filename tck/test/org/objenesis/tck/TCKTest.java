@@ -7,6 +7,10 @@ import junit.framework.TestCase;
 import org.objenesis.Objenesis;
 import org.objenesis.instantiator.ObjectInstantiator;
 
+/**
+ * @author Joe Walnes
+ * @author Henri Tremblay
+ */
 public class TCKTest extends TestCase {
 
    public static class StubbedInstantiator1 implements Objenesis {
@@ -109,7 +113,7 @@ public class TCKTest extends TestCase {
     */
    private static class RecordingReporter implements Reporter {
 
-      private StringBuffer log = new StringBuffer();
+      private final StringBuffer log = new StringBuffer();
 
       public void startTests(String platformDescription, Collection allCandidates,
          Collection allInstantiators) {

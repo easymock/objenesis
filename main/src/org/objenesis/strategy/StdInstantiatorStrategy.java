@@ -19,6 +19,7 @@ import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
  * </ul>
  * However, instantiators are stateful and so dedicated to their class.
  * 
+ * @author Henri Tremblay
  * @see ObjectInstantiator
  */
 public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {

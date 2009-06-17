@@ -2,6 +2,8 @@ package org.objenesis.instantiator;
 
 /**
  * Instantiates a new object.
+ * 
+ * @author Leonardo Mesquita
  */
 public interface ObjectInstantiator {
 

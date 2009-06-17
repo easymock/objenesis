@@ -9,6 +9,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * Instantiates a class by grabbing the no args constructor and calling Constructor.newInstance().
  * This can deal with default public constructors, but that's about it.
  * 
+ * @author Joe Walnes
  * @see ObjectInstantiator
  */
 public class ConstructorInstantiator implements ObjectInstantiator {

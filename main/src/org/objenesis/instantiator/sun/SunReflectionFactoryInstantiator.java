@@ -13,6 +13,7 @@ import sun.reflect.ReflectionFactory;
  * Java implementation. This is the best way to instantiate an object without any side effects
  * caused by the constructor - however it is not available on every platform.
  * 
+ * @author Joe Walnes
  * @see ObjectInstantiator
  */
 public class SunReflectionFactoryInstantiator implements ObjectInstantiator {

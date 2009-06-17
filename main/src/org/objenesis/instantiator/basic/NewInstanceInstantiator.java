@@ -7,6 +7,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * The simplest instantiator - simply calls Class.newInstance(). This can deal with default public
  * constructors, but that's about it.
  * 
+ * @author Joe Walnes
  * @see ObjectInstantiator
  */
 public class NewInstanceInstantiator implements ObjectInstantiator {

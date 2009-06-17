@@ -6,6 +6,10 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+/**
+ * @author Joe Walnes
+ * @author Henri Tremblay
+ */
 public class TextReporterTest extends TestCase {
 
    private TextReporter textReporter;

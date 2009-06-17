@@ -1,10 +1,13 @@
 package org.objenesis;
 
+import junit.framework.TestCase;
+
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
 
-import junit.framework.TestCase;
-
+/**
+ * @author Henri Tremblay
+ */
 public class ObjenesisTest extends TestCase {
 
    public final void testObjenesis() {

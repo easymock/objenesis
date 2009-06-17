@@ -22,6 +22,7 @@ import org.objenesis.instantiator.sun.Sun13SerializationInstantiator;
  * </ul>
  * However, instantiators are stateful and so dedicated to their class.
  * 
+ * @author Henri Tremblay
  * @see ObjectInstantiator
  */
 public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {

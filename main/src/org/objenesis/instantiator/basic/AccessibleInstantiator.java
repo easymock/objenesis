@@ -5,6 +5,7 @@ package org.objenesis.instantiator.basic;
  * Constructor.newInstance(). Although this still requires no-arg constructors, it can call
  * non-public constructors (if the security manager allows it).
  * 
+ * @author Joe Walnes
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
 public class AccessibleInstantiator extends ConstructorInstantiator {

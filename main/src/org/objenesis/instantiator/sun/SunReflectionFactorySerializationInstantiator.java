@@ -16,6 +16,7 @@ import sun.reflect.ReflectionFactory;
  * constructor. This is the best way to instantiate an object without any side effects caused by the
  * constructor - however it is not available on every platform.
  * 
+ * @author Leonardo Mesquita
  * @see ObjectInstantiator
  */
 public class SunReflectionFactorySerializationInstantiator implements ObjectInstantiator {

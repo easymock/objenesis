@@ -2,6 +2,9 @@ package org.objenesis;
 
 import junit.framework.TestCase;
 
+/**
+ * @author Henri Tremblay
+ */
 public class ObjenesisExceptionTest extends TestCase {
 
    public final void testObjenesisExceptionString() {

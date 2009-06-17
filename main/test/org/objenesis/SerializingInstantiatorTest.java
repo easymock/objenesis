@@ -4,6 +4,10 @@ import java.io.NotSerializableException;
 
 import junit.framework.TestCase;
 
+/**
+ * @author Henri Tremblay
+ * @author Leonardo Mesquita
+ */
 public class SerializingInstantiatorTest extends TestCase {
 
    protected void setUp() throws Exception {

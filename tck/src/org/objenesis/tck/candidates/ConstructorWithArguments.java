@@ -1,5 +1,8 @@
 package org.objenesis.tck.candidates;
 
+/**
+ * @author Joe Walnes
+ */
 public class ConstructorWithArguments {
 
    private final String something;

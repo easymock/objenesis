@@ -1,10 +1,13 @@
 package org.objenesis.tck;
 
-import junit.framework.TestCase;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import junit.framework.TestCase;
+
+/**
+ * @author Joe Walnes
+ */
 public class CandidateLoaderTest extends TestCase {
 
    private StringBuffer recordedEvents;
