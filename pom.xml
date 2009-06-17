@@ -147,29 +147,69 @@ limitations under the License.
           <downloadSources>true</downloadSources>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>com.google.code.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <version>1.4.0</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>process</goal>
-            </goals>
-            <configuration>
-              <resourceBundles>
-                <resourceBundle>org.apache:apache-jar-resource-bundle:1.3</resourceBundle>
-              </resourceBundles>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.keyboardsamurais.maven</groupId>
+          <artifactId>maven-timestamp-plugin</artifactId>
+          <version>1.0</version>
+          <executions>
+            <execution>
+              <id>year</id>
+              <goals>
+                <goal>create</goal>
+              </goals>
+              <configuration>
+                <propertyName>year</propertyName>
+                <timestampPattern>yyyy</timestampPattern>
+              </configuration>
+            </execution>          
+          </executions>
+        </plugin>      
+        <plugin>
+          <groupId>com.google.code.maven-license-plugin</groupId>
+          <artifactId>maven-license-plugin</artifactId>
+          <version>1.4.0</version>
+          <configuration>
+            <header>${basedir}/../header.txt</header>
+            <excludes>
+              <!-- copyrights to BEA -->
+              <exclude>src/org/objenesis/instantiator/jrockit/*.java</exclude>
+            </excludes>            
+            <properties>
+              <inceptionYear>${project.inceptionYear}</inceptionYear>
+              <year>${year}</year>
+            </properties>
+          </configuration>
+          <executions>          
+            <execution>
+              <id>check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>        
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-remote-resources-plugin</artifactId>
+          <version>1.0</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>process</goal>
+              </goals>
+              <configuration>
+                <resourceBundles>
+                  <resourceBundle>org.apache:apache-jar-resource-bundle:1.3</resourceBundle>
+                </resourceBundles>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>      
+      </plugins>
+    </pluginManagement>
   </build>
 
   <profiles>
@@ -197,6 +237,29 @@ limitations under the License.
         </plugins>
       </build>
     </profile>
+    <profile>
+      <!-- Activate to generate the standalone tck -->
+      <id>license</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>com.google.code.maven-license-plugin</groupId>
+              <artifactId>maven-license-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>format</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                    <goal>format</goal>
+                  </goals>
+                </execution>          
+              </executions>        
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>    
     <profile>
       <!-- Activate to generate the website -->
       <id>website</id>

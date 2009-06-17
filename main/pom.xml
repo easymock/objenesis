@@ -31,4 +31,20 @@ limitations under the License.
 
   <dependencies />
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.keyboardsamurais.maven</groupId>
+        <artifactId>maven-timestamp-plugin</artifactId>
+      </plugin>      
+      <plugin>
+        <groupId>com.google.code.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+      </plugin>    
+    </plugins>
+  </build>
 </project>
