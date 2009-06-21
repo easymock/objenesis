@@ -1,3 +1,3 @@
 @echo off
 
-%M2_HOME%\bin\mvn.bat antrun:run xsite:run
+%M2_HOME%\bin\mvn.bat clean resources:copy-resources xsite:run

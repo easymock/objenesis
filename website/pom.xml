@@ -26,29 +26,35 @@ limitations under the License.
   <artifactId>objenesis-website</artifactId>
   <name>Objenesis website</name>
 
+  <properties>
+    <javadoc>apidocs</javadoc>
+  </properties>
+  
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
+        <artifactId>maven-resources-plugin</artifactId>
         <configuration>
-          <tasks>
-            <mkdir dir="${project.build.directory}/content" />
-            <copy todir="${project.build.directory}/content" filtering="true" overwrite="true">
-              <fileset dir="${basedir}/content" />
-                <filterset>
-                  <filter token="VERSION" value="${project.version}" />
-                  <filter token="JAVADOC" value="apidocs" />
-                </filterset>
-            </copy>
-          </tasks>
-        </configuration>
+          <outputDirectory>${project.build.directory}/site</outputDirectory>
+          <escapeString>\</escapeString>
+          <encoding>ISO-8859-1</encoding>
+          <resources>
+            <resource>
+              <directory>${basedir}/site</directory>
+              <filtering>true</filtering>                            
+            </resource>
+          </resources>
+        </configuration>            
       </plugin>
       <plugin>
         <groupId>org.codehaus.xsite</groupId>
         <artifactId>xsite-maven-plugin</artifactId>
+        <version>1.0</version>
         <configuration>
-          <siteMapPath>${project.build.directory}/content/sitemap.xml</siteMapPath>
-          <skinPath>${basedir}/skin/skin.html</skinPath>
+          <sourceDirectoryPath>${project.build.directory}/site</sourceDirectoryPath>
+          <sitemapPath>content/sitemap.xml</sitemapPath>
+          <skinPath>templates/skin.html</skinPath>
+          <resourcePaths>resources</resourcePaths>          
           <outputDirectoryPath>${project.build.directory}/xsite</outputDirectoryPath>
         </configuration>
       </plugin>      

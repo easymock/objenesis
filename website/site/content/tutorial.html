@@ -7,13 +7,13 @@
 <p>There are two main interfaces in Objenesis:</p>
 
 <ul>
-    <li><strong><a href="@JAVADOC@/org/objenesis/instantiator/ObjectInstantiator.html">ObjectInstantiator</a></strong>
+    <li><strong><a href="${javadoc}/org/objenesis/instantiator/ObjectInstantiator.html">ObjectInstantiator</a></strong>
         - Instantiates multiple instances of a single class.
         <pre>interface ObjectInstantiator {
   Object newInstance();
 }</pre>
     </li>
-    <li><strong><a href="@JAVADOC@/org/objenesis/strategy/InstantiatorStrategy.html">InstantiatorStrategy</a></strong>
+    <li><strong><a href="${javadoc}/org/objenesis/strategy/InstantiatorStrategy.html">InstantiatorStrategy</a></strong>
         - A particular strategy for how to instantiate a class (as this differs for different types of classes).
         <pre>interface InstantiatorStrategy {
   ObjectInstantiator newInstantiatorOf(Class type);
@@ -38,8 +38,8 @@ JVM version, SecurityManager and type of class being instantiated.</p>
         be called. However, readResolve is not called and we never check if the object is serializable.</li>
 </ul>
 
-<p>The simplest way to use Objenesis is by using <a href="@JAVADOC@/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> (Standard) and 
-<a href="@JAVADOC@/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a> (Serializable compliant). By default, 
+<p>The simplest way to use Objenesis is by using <a href="${javadoc}/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> (Standard) and 
+<a href="${javadoc}/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a> (Serializable compliant). By default, 
 automatically determines the best strategy - so you don't have to.</p>
 
 <pre>Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer</pre>
