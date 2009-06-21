@@ -17,8 +17,11 @@ in your system and copy the contents to ~/.m2/settings.xml
 			<sun_jdk1_3.jvm>c:\jdk1.3.1_19\bin\java.exe</sun_jdk1_3.jvm>
 			<sun_jdk1_4.jvm>c:\j2sdk1.4.2_12\bin\java.exe</sun_jdk1_4.jvm>
 			<sun_jdk1_5.jvm>c:\Arquivos de Programas\Java\jre1.5.0_10\bin\java.exe</sun_jdk1_5.jvm>
+			<sun_jdk1_6.jvm>c:\Arquivos de Programas\Java\jre1.6.0_13\bin\java.exe</sun_jdk1_6.jvm>
 			<jrockit1_3.jvm>c:\Arquivos de programas\JRockit\7.0SP6\1.3.1\bin\java.exe</jrockit1_3.jvm>
 			<jrockit1_4.jvm>c:\jrockit-j2sdk1.4.2_08\bin\java.exe</jrockit1_4.jvm>
+			<jrockit1_5.jvm>c:\jrrt-3.1.0-1.5.0\bin\java.exe</jrockit1_5.jvm>
+			<jrockit1_6.jvm>c:\jrrt-3.1.0-1.6.0\bin\java.exe</jrockit1_6.jvm>
 		</properties>
 	</profile>
 	</profiles>
