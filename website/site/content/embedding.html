@@ -4,7 +4,8 @@
 </head>
 <body>
 
-Objenesis is <a href="http://tonicsystems.com/products/jarjar/">jarjar</a> compliant.
+Objenesis is <a href="http://tonicsystems.com/products/jarjar/">jarjar</a> and 
+<a href="http://maven.apache.org/plugins/maven-shade-plugin/">maven-shade-plugin</a> compliant.
 
 <h1>Ant</h1>
 
@@ -13,21 +14,53 @@ jarjar. Depending on the complexity of your project, you will then have differen
 parameters. Here's an example:</p>
 
 <pre>
-&lt;jarjar jarfile="${temp directory}/easymockclassextension.jar"&gt;
-  &lt;fileset dir="tmp" includes="org/easymock/classextension/*.class
-    org/easymock/classextension/internal/*.class"/&gt;
-  &lt;zipfileset src="lib/objenesis-${project.version}.jar"/&gt;
-  &lt;rule pattern="org.objenesis.**"
-    result="org.easymock.classextension.internal.objenesis.@1"/&gt;
-&lt;/jarjar&gt;
+	&lt;jarjar jarfile="${temp directory}/easymockclassextension.jar"&gt;
+	  &lt;fileset dir="tmp" includes="org/easymock/classextension/*.class
+	    org/easymock/classextension/internal/*.class"/&gt;
+	  &lt;zipfileset src="lib/objenesis-${project.version}.jar"/&gt;
+	  &lt;rule pattern="org.objenesis.**"
+	    result="org.easymock.classextension.internal.objenesis.@1"/&gt;
+	&lt;/jarjar&gt;
 </pre>
 
 <h1>Maven</h1>
    
-<p>For Maven 2, a plugin is currently in under construction at <a href="http://mojo.codehaus.org/">
-Mojo</a>. However, you can use the 
-<a href="http://maven.apache.org/plugins/maven-antrun-plugin/">antrun plugin</a> 
-to call the jarjar ant task.</p>
+<p>For jarjar, multiple unofficial plugins exist (<a href="http://mojo.codehaus.org/">here</a>, 
+<a href="http://boss.bekk.no/maven-jarjar-plugin/">here</a> and 
+<a href="http://docs.atlassian.com/jarjar-maven-plugin/">here</a>). However, you can use 
+the <a href="http://maven.apache.org/plugins/maven-antrun-plugin/">antrun plugin</a> to call 
+the jarjar ant task.</p>
+
+<p>Or you can use the <a href="http://maven.apache.org/plugins/maven-shade-plugin/">maven-shade-plugin</a>. 
+Here's an example:</p>
+
+<pre>
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;shade&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+        &lt;configuration&gt;
+          &lt;keepDependenciesWithProvidedScope&gt;true&lt;/keepDependenciesWithProvidedScope&gt;
+          &lt;artifactSet&gt;
+            &lt;includes&gt;
+              &lt;include&gt;org.objenesis:objenesis&lt;/include&gt;
+            &lt;/includes&gt;
+          &lt;/artifactSet&gt;
+          &lt;relocations&gt;
+            &lt;relocation&gt;
+              &lt;pattern&gt;org.objenesis&lt;/pattern&gt;
+              &lt;shadedPattern&gt;org.easymock.classextension.internal.objenesis&lt;/shadedPattern&gt;
+            &lt;/relocation&gt;
+          &lt;/relocations&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+</pre>
 
 </body>
 </html>
