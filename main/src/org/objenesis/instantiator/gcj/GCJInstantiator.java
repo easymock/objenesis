@@ -15,6 +15,8 @@
  */
 package org.objenesis.instantiator.gcj;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.objenesis.ObjenesisException;
 
 /**
@@ -33,7 +35,13 @@ public class GCJInstantiator extends GCJInstantiatorBase {
       try {
          return newObjectMethod.invoke(dummyStream, new Object[] {type, Object.class});
       }
-      catch(Exception e) {
+      catch(RuntimeException e) {
+         throw new ObjenesisException(e);
+      }
+      catch(IllegalAccessException e) {
+         throw new ObjenesisException(e);
+      }
+      catch(InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }

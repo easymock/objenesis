@@ -37,7 +37,10 @@ public abstract class Sun13InstantiatorBase implements ObjectInstantiator {
                "allocateNewObject", new Class[] {Class.class, Class.class});
             allocateNewObjectMethod.setAccessible(true);
          }
-         catch(Exception e) {
+         catch(RuntimeException e) {
+            throw new ObjenesisException(e);
+         }
+         catch(NoSuchMethodException e) {
             throw new ObjenesisException(e);
          }
       }

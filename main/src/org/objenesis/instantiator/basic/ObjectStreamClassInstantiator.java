@@ -42,13 +42,16 @@ public class ObjectStreamClassInstantiator implements ObjectInstantiator {
                new Class[] {});
             newInstanceMethod.setAccessible(true);
          }
-         catch(Exception e) {
+         catch(RuntimeException e) {
+            throw new ObjenesisException(e);
+         }
+         catch(NoSuchMethodException e) {
             throw new ObjenesisException(e);
          }         
       }
    }
 
-   private ObjectStreamClass objStreamClass;
+   private final ObjectStreamClass objStreamClass;
 
    public ObjectStreamClassInstantiator(Class type) {
       initialize();

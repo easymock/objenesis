@@ -35,7 +35,6 @@ public abstract class GCJInstantiatorBase implements ObjectInstantiator {
 
    private static class DummyStream extends ObjectInputStream {
       public DummyStream() throws IOException {
-         super();
       }
    }
 
@@ -47,7 +46,13 @@ public abstract class GCJInstantiatorBase implements ObjectInstantiator {
             newObjectMethod.setAccessible(true);
             dummyStream = new DummyStream();
          }
-         catch(Exception e) {
+         catch(RuntimeException e) {
+            throw new ObjenesisException(e);
+         }
+         catch(NoSuchMethodException e) {
+            throw new ObjenesisException(e);
+         }
+         catch(IOException e) {
             throw new ObjenesisException(e);
          }
       }

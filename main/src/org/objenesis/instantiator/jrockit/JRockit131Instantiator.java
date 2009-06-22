@@ -41,7 +41,13 @@ public class JRockit131Instantiator implements ObjectInstantiator {
                "newConstructorForSerialization", new Class[] {Constructor.class, Class.class});
             newConstructorForSerializationMethod.setAccessible(true);
          }
-         catch(Exception e) {
+         catch(RuntimeException e) {
+            throw new ObjenesisException(e);
+         }
+         catch(ClassNotFoundException e) {
+            throw new ObjenesisException(e);
+         }
+         catch(NoSuchMethodException e) {
             throw new ObjenesisException(e);
          }
       }

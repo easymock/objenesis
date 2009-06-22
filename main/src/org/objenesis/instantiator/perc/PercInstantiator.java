@@ -43,9 +43,13 @@ public class PercInstantiator implements ObjectInstantiator {
 			newInstanceMethod = ObjectInputStream.class.getDeclaredMethod("newInstance",
 					new Class[] { Class.class, Boolean.TYPE });
 			newInstanceMethod.setAccessible(true);
-		} catch (Exception e) {
+		}
+      catch(RuntimeException e) {
 			throw new ObjenesisException(e);
 		}
+      catch(NoSuchMethodException e) {
+         throw new ObjenesisException(e);
+      }
 	}
 
 	public Object newInstance() {
