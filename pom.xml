@@ -176,6 +176,8 @@ limitations under the License.
             <excludes>
               <!-- copyrights to BEA -->
               <exclude>src/org/objenesis/instantiator/jrockit/*.java</exclude>
+              <!-- generated pom by maven-shade-plugin -->
+              <exclude>dependency-reduced-pom.xml</exclude>
             </excludes>
             <properties>
               <inceptionYear>${project.inceptionYear}</inceptionYear>
@@ -207,7 +209,7 @@ limitations under the License.
               </configuration>
             </execution>
           </executions>
-        </plugin>
+        </plugin>        
       </plugins>
     </pluginManagement>
   </build>
@@ -229,33 +231,22 @@ limitations under the License.
     </plugins>
   </reporting>
 
+  <distributionManagement>
+    <repository>
+      <id>easymock-release</id>
+      <name>EasyMock Repository</name>
+      <url>scpexe://shell.sf.net/home/groups/e/ea/easymock/htdocs/maven/repository</url>
+    </repository>
+    <snapshotRepository>
+      <id>easymock-snapshot</id>
+      <name>EasyMock Snapshot Repository</name>
+      <url>scpexe://shell.sf.net/home/groups/e/ea/easymock/htdocs/maven/repository-snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
   <profiles>
     <profile>
-      <!-- Activate to generate the standalone tck -->
-      <id>tck</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>2.2-beta-3</version>
-            <inherited>false</inherited>
-            <configuration>
-              <finalName>objenesis-tck-${project.version}</finalName>
-              <descriptors>
-                <descriptor>${basedir}/assembly-tck.xml</descriptor>
-              </descriptors>
-              <archive>
-                <manifest>
-                  <mainClass>org.objenesis.tck.Main</mainClass>
-                </manifest>
-              </archive>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- Activate to generate the standalone tck -->
+      <!-- Activate to update the license -->
       <id>license</id>
       <build>
         <pluginManagement>
@@ -283,6 +274,6 @@ limitations under the License.
       <modules>
         <module>website</module>
       </modules>
-    </profile>
+    </profile>    
   </profiles>
 </project>

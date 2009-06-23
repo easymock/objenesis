@@ -47,4 +47,27 @@ limitations under the License.
       </plugin>    
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <!-- Activate to create the release bundle -->
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-repository-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>format</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>bundle-create</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>        
+      </build>
+    </profile>
+  </profiles>
 </project>

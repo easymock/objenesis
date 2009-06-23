@@ -29,22 +29,57 @@ limitations under the License.
   <properties>
     <javadoc>apidocs</javadoc>
   </properties>
+
+  <dependencies>
+    <!-- Just to make sure the Website is always after (for the javadoc) -->
+    <dependency>
+      <groupId>org.objenesis</groupId>
+      <artifactId>objenesis</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
   
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
-        <configuration>
-          <outputDirectory>${project.build.directory}/site</outputDirectory>
-          <escapeString>\</escapeString>
-          <encoding>ISO-8859-1</encoding>
-          <resources>
-            <resource>
-              <directory>${basedir}/site</directory>
-              <filtering>true</filtering>                            
-            </resource>
-          </resources>
-        </configuration>            
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/site</outputDirectory>
+              <escapeString>\</escapeString>
+              <encoding>ISO-8859-1</encoding>
+              <resources>
+                <resource>
+                  <directory>${basedir}/site</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-javadoc</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/xsite/apidocs</outputDirectory>
+              <encoding>UTF-8</encoding>
+              <resources>
+                <resource>
+                  <directory>${basedir}/../main/target/apidocs</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>          
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.xsite</groupId>
@@ -54,10 +89,18 @@ limitations under the License.
           <sourceDirectoryPath>${project.build.directory}/site</sourceDirectoryPath>
           <sitemapPath>content/sitemap.xml</sitemapPath>
           <skinPath>templates/skin.html</skinPath>
-          <resourcePaths>resources</resourcePaths>          
+          <resourcePaths>resources</resourcePaths>
           <outputDirectoryPath>${project.build.directory}/xsite</outputDirectoryPath>
         </configuration>
-      </plugin>      
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
