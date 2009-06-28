@@ -148,6 +148,13 @@ limitations under the License.
         </configuration>
       </plugin>
     </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-beta-5</version>
+      </extension>
+    </extensions>     
     <pluginManagement>
       <plugins>
         <plugin>
@@ -210,7 +217,7 @@ limitations under the License.
             </execution>
           </executions>
         </plugin>        
-      </plugins>
+      </plugins>     
     </pluginManagement>
   </build>
   <reporting>
