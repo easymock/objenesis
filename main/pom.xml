@@ -44,7 +44,17 @@ limitations under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
-      </plugin>    
+      </plugin>   
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Export-Package>org.objenesis.*</Export-Package>
+            <Import-Package>org.objenesis.*</Import-Package>
+          </instructions>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
