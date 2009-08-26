@@ -137,7 +137,16 @@ limitations under the License.
             </goals>
           </execution>
         </executions>
-      </plugin>       
+      </plugin> 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <links>
+            <link>http://objenesis.googlecode.com/svn/docs/apidocs/</link>
+          </links>
+        </configuration>
+      </plugin>      
     </plugins>
   </build>
 

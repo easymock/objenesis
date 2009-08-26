@@ -25,10 +25,11 @@ import java.util.Map;
 import org.objenesis.Objenesis;
 
 /**
- * <b>Technology Compatibility Kit</b> (TCK) for {@link Objenesis}s. <p/> This TCK accepts a set
- * of candidate classes (class it attempts to instantiate) and a set of Objenesis implementations.
- * It then tries instantiating every candidate with every Objenesis implementations, reporting the
- * results to a {@link Reporter}.
+ * <b>Technology Compatibility Kit</b> (TCK) for {@link Objenesis}s.
+ * <p/>
+ * This TCK accepts a set of candidate classes (class it attempts to instantiate) and a set of
+ * Objenesis implementations. It then tries instantiating every candidate with every Objenesis
+ * implementations, reporting the results to a {@link Reporter}.
  * <h3>Example usage</h3>
  * 
  * <pre>
@@ -46,15 +47,15 @@ import org.objenesis.Objenesis;
  * </pre>
  * 
  * @author Joe Walnes
- * @see ObjectInstantiator
+ * @see org.objenesis.instantiator.ObjectInstantiator
  * @see Reporter
  * @see Main
  */
 public class TCK {
 
-   private List objenesisInstances = new ArrayList();
-   private List candidates = new ArrayList();
-   private Map descriptions = new HashMap();
+   private final List objenesisInstances = new ArrayList();
+   private final List candidates = new ArrayList();
+   private final Map descriptions = new HashMap();
 
    /**
     * Register a candidate class to attempt to instantiate.
