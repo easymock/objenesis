@@ -65,16 +65,22 @@ limitations under the License.
       <build>
         <plugins>
           <plugin>
-            <artifactId>maven-repository-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>      
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+              <descriptors>
+                <descriptor>assembly.xml</descriptor>
+              </descriptors>          
+            </configuration>
             <executions>
               <execution>
-                <id>format</id>
+                <id>make-assembly</id>
                 <phase>package</phase>
                 <goals>
-                  <goal>bundle-create</goal>
+                  <goal>single</goal>
                 </goals>
               </execution>
-            </executions>
+            </executions>        
           </plugin>
         </plugins>        
       </build>
