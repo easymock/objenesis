@@ -1,1 +1,1 @@
-%M2_HOME%\bin\mvn.bat install -Plicense
+%M2_HOME%\bin\mvn.bat install -Plicense -Dmaven.test.skip=true
