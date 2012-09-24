@@ -1,4 +1,5 @@
 target/
+eclipse_config/
 .classpath
 .project
 
