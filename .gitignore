@@ -2,4 +2,5 @@ target/
 eclipse_config/
 .classpath
 .project
-
+org.eclipse.m2e.core.prefs
+org.eclipse.core.resources.prefs
