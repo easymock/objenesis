@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--
-Copyright 2006-2009 Henri Tremblay
+Copyright 2006-2012 Henri Tremblay
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,6 +26,13 @@ limitations under the License.
   </parent>
   <artifactId>objenesis-tck</artifactId>
   <name>Objenesis TCK</name>
+  
+  <properties>
+    <!-- These versions are also used to filter boot-bundles.properties -->
+    <log4j.version>1.2.16</log4j.version>
+    <spring.osgi.version>1.2.1</spring.osgi.version>
+    <slf4j.version>1.6.1</slf4j.version>  
+  </properties>
 
   <dependencies>
     <dependency>
@@ -39,19 +46,19 @@ limitations under the License.
     <dependency>
       <groupId>org.springframework.osgi</groupId>
       <artifactId>spring-osgi-test</artifactId>
-      <version>1.2.0</version>
+      <version>${spring.osgi.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.osgi</groupId>
       <artifactId>spring-osgi-annotation</artifactId>
-      <version>1.2.0</version>
+      <version>${spring.osgi.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.osgi</groupId>
       <artifactId>spring-osgi-extender</artifactId>
-      <version>1.2.0</version>
+      <version>${spring.osgi.version}</version>
       <scope>test</scope>
     </dependency>
     
@@ -59,19 +66,19 @@ limitations under the License.
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
-      <version>1.5.0</version>
+      <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>com.springsource.slf4j.api</artifactId>
-      <version>1.5.0</version>
+      <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>com.springsource.slf4j.log4j</artifactId>
-      <version>1.5.0</version>
+      <version>${slf4j.version}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -87,7 +94,7 @@ limitations under the License.
     <dependency>
       <groupId>org.apache.log4j</groupId>
       <artifactId>com.springsource.org.apache.log4j</artifactId>
-      <version>1.2.16</version>
+      <version>${log4j.version}</version>
       <scope>test</scope>
     </dependency>
     
@@ -95,12 +102,18 @@ limitations under the License.
     <dependency>
       <groupId>org.eclipse.osgi</groupId>
       <artifactId>org.eclipse.osgi</artifactId>
-      <version>3.2.2</version>
+      <version>3.7.1.R37x_v20110808-1106</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
   
   <build>
+    <testResources>
+      <testResource>
+        <directory>test</directory>   
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>  
     <plugins>
       <plugin>
         <groupId>com.keyboardsamurais.maven</groupId>

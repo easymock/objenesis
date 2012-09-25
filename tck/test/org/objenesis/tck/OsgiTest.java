@@ -1,5 +1,5 @@
 /**
- * Copyright 2006-2010 the original author or authors.
+ * Copyright 2006-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,32 +30,19 @@ public class OsgiTest extends AbstractConfigurableBundleCreatorTests implements 
    private static final long serialVersionUID = 1L;
 
    protected String[] getTestBundlesNames() {
-      final String version = Objenesis.class.getPackage()
-              .getImplementationVersion();
-
+      final String version = getImplementationVersion(Objenesis.class);
       return new String[] {"org.objenesis, objenesis, " + version};
-  }
+   }
 
-   // protected Manifest getManifest() {
-   // Manifest mf = super.getManifest();
-   //
-   // String imports = mf.getMainAttributes().getValue(
-   // Constants.IMPORT_PACKAGE);
-   // imports = imports.replace("org.easymock.internal,",
-   // "org.easymock.internal;poweruser=true,");
-   // imports = imports.replace("org.easymock.internal.matchers,",
-   // "org.easymock.internal.matchers;poweruser=true,");
-   //
-   // mf.getMainAttributes().putValue(Constants.IMPORT_PACKAGE, imports);
-   //
-   // return mf;
-   // }
-  
    public void testCanInstantiate() throws IOException {
       assertSame(OsgiTest.class, ObjenesisHelper.newInstance(getClass()).getClass());
-  }
+   }
 
    public void testCanInstantiateSerialize() throws IOException {
       assertSame(OsgiTest.class, ObjenesisHelper.newSerializableInstance(getClass()).getClass());
+   }
+
+   protected String getImplementationVersion(final Class c) {
+      return c.getPackage().getImplementationVersion();
    }
 }
