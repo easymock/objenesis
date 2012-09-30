@@ -36,7 +36,7 @@ limitations under the License.
       <plugin>
         <groupId>com.keyboardsamurais.maven</groupId>
         <artifactId>maven-timestamp-plugin</artifactId>
-      </plugin>      
+      </plugin>
       <plugin>
         <groupId>com.google.code.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
@@ -44,14 +44,19 @@ limitations under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
-      </plugin>   
+      </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Export-Package>org.objenesis.*</Export-Package>
-            <Import-Package>org.objenesis.*</Import-Package>
+            <Import-Package>
+            COM.jrockit.reflect;resolution:=optional,
+            jrockit.vm;resolution:=optional,
+            COM.newmonics.PercClassloader;resolution:=optional,
+            sun.reflect;resolution:=optional
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>
@@ -65,12 +70,12 @@ limitations under the License.
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>      
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
             <configuration>
               <descriptors>
                 <descriptor>assembly.xml</descriptor>
-              </descriptors>          
+              </descriptors>
             </configuration>
             <executions>
               <execution>
@@ -80,9 +85,9 @@ limitations under the License.
                   <goal>single</goal>
                 </goals>
               </execution>
-            </executions>        
+            </executions>
           </plugin>
-        </plugins>        
+        </plugins>
       </build>
     </profile>
   </profiles>

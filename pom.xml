@@ -135,7 +135,7 @@ limitations under the License.
             </manifest>
           </archive>
         </configuration>
-      </plugin>      
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -214,7 +214,7 @@ limitations under the License.
               </goals>
             </execution>
           </executions>
-        </plugin>      
+        </plugin>
         <plugin>
           <groupId>com.keyboardsamurais.maven</groupId>
           <artifactId>maven-timestamp-plugin</artifactId>
@@ -350,7 +350,7 @@ limitations under the License.
       <url>scpexe://shell.sf.net/home/groups/e/ea/easymock/htdocs/maven/repository-snapshot</url>
     </snapshotRepository>
   </distributionManagement>
-  
+
   <profiles>
     <profile>
       <!-- Activate to update the license -->
@@ -381,6 +381,6 @@ limitations under the License.
       <modules>
         <module>website</module>
       </modules>
-    </profile>    
+    </profile>
   </profiles>
 </project>
