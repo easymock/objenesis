@@ -141,7 +141,7 @@ limitations under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>        
-        <version>1.2.1</version>
+        <version>1.6</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -264,6 +264,7 @@ limitations under the License.
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
             <inherited>false</inherited>
             <configuration>
               <executable>java</executable>
