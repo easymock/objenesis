@@ -34,6 +34,9 @@ public abstract class BaseInstantiatorStrategy implements InstantiatorStrategy {
    /** JVM_NAME prefix for Aonix PERC */
    protected static final String PERC = "PERC";
    
+   /** JVM_NAME prefix for Dalvik/Android */
+   protected static final String DALVIK = "Dalvik";
+   
    /** JVM version */
    protected static final String VM_VERSION = System.getProperty("java.runtime.version");
 

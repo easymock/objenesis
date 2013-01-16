@@ -16,6 +16,7 @@
 package org.objenesis.strategy;
 
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.android.AndroidInstantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.jrockit.JRockit131Instantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
@@ -69,6 +70,9 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
                }
             }
          }
+      }
+      else if(JVM_NAME.startsWith(DALVIK)) {
+         return new AndroidInstantiator(type);
       }
       else if(JVM_NAME.startsWith(GNU)) {
          return new GCJInstantiator(type);

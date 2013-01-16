@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.android.AndroidSerializationInstantiator;
 import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
 import org.objenesis.instantiator.perc.PercSerializationInstantiator;
@@ -57,6 +58,9 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          if(VM_VERSION.startsWith("1.3")) {
             return new Sun13SerializationInstantiator(type);
          }
+      }
+      else if(JVM_NAME.startsWith(DALVIK)) {
+         return new AndroidSerializationInstantiator(type);
       }
       else if(JVM_NAME.startsWith(GNU)) {
          return new GCJSerializationInstantiator(type);
