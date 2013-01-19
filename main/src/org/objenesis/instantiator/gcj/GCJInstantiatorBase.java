@@ -30,8 +30,8 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @author Leonardo Mesquita
  */
 public abstract class GCJInstantiatorBase implements ObjectInstantiator {
-   protected static Method newObjectMethod = null;
-   protected static ObjectInputStream dummyStream;
+   static Method newObjectMethod = null;
+   static ObjectInputStream dummyStream;
 
    private static class DummyStream extends ObjectInputStream {
       public DummyStream() throws IOException {

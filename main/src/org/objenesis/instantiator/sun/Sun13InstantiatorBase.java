@@ -28,7 +28,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @author Leonardo Mesquita
  */
 public abstract class Sun13InstantiatorBase implements ObjectInstantiator {
-   protected static Method allocateNewObjectMethod = null;
+   static Method allocateNewObjectMethod = null;
 
    private static void initialize() {
       if(allocateNewObjectMethod == null) {
