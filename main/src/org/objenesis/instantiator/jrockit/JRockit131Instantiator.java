@@ -7,7 +7,7 @@
  *
  * BEA does not guarantee that the code works, and provides no support for it. Use at your own risk.
  *
- * Originally developed by Leonardo Mesquita. Copyright notice added by Henrik Ståhl, BEA JRockit Product Manager.
+ * Originally developed by Leonardo Mesquita. Copyright notice added by Henrik StÃ¥hl, BEA JRockit Product Manager.
  *  
  */
 package org.objenesis.instantiator.jrockit;
