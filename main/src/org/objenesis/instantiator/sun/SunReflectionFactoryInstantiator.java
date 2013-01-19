@@ -20,8 +20,6 @@ import java.lang.reflect.Constructor;
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
-import sun.reflect.ReflectionFactory;
-
 /**
  * Instantiates an object, WITHOUT calling it's constructor, using internal
  * sun.reflect.ReflectionFactory - a class only available on JDK's that use Sun's 1.4 (or later)
@@ -36,18 +34,9 @@ public class SunReflectionFactoryInstantiator implements ObjectInstantiator {
    private final Constructor mungedConstructor;
 
    public SunReflectionFactoryInstantiator(Class type) {
-
-      ReflectionFactory reflectionFactory = ReflectionFactory.getReflectionFactory();
-      Constructor javaLangObjectConstructor;
-
-      try {
-         javaLangObjectConstructor = Object.class.getConstructor((Class[]) null);
-      }
-      catch(NoSuchMethodException e) {
-         throw new Error("Cannot find constructor for java.lang.Object!");
-      }
-      mungedConstructor = reflectionFactory.newConstructorForSerialization(type,
-         javaLangObjectConstructor);
+      Constructor javaLangObjectConstructor = getJavaLangObjectConstructor();
+      mungedConstructor = SunReflectionFactoryHelper.newConstructorForSerialization(
+          type, javaLangObjectConstructor);
       mungedConstructor.setAccessible(true);
    }
 
@@ -56,6 +45,15 @@ public class SunReflectionFactoryInstantiator implements ObjectInstantiator {
          return mungedConstructor.newInstance((Object[]) null);
       }
       catch(Exception e) {
+         throw new ObjenesisException(e);
+      }
+   }
+
+   private static Constructor getJavaLangObjectConstructor() {
+      try {
+         return Object.class.getConstructor((Class[]) null);
+      }
+      catch(NoSuchMethodException e) {
          throw new ObjenesisException(e);
       }
    }
