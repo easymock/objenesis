@@ -1,7 +1,6 @@
-#Sun Feb 11 23:43:16 CET 2007
 eclipse.preferences.version=1
 formatter_profile=_Objenesis
-formatter_settings_version=10
+formatter_settings_version=12
 org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.gettersetter.use.is=true
 org.eclipse.jdt.ui.javadoc=false
