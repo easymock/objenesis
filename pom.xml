@@ -380,5 +380,12 @@ limitations under the License.
         <module>website</module>
       </modules>
     </profile>
+    <profile>
+      <!-- Activate to execute the tck on Android -->
+      <id>android</id>
+      <modules>
+        <module>tck-android</module>
+      </modules>
+    </profile>    
   </profiles>
 </project>
