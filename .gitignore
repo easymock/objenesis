@@ -7,3 +7,4 @@ org.eclipse.core.resources.prefs
 org.eclipse.pde.core.prefs
 *.iml
 .idea/
+sys$command
