@@ -45,7 +45,7 @@ public class TckInstrumentation extends Instrumentation {
       }
     
       Bundle bundle = new Bundle();
-      String fromStdout = new String(outputStream.toString());
+      String fromStdout = outputStream.toString();
       bundle.putString(Instrumentation.REPORT_KEY_STREAMRESULT, fromStdout);
       finish(Activity.RESULT_OK, bundle);
    }
