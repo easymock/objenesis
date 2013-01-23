@@ -10,12 +10,12 @@ the right place.</p>
 
 <h1>Test your environment</h1>
 
-<p>Depending on you JVM and security manager, Objenesis might not be able to
+<p>Depending on your JVM and security manager, Objenesis might not be able to
 instantiate some of your classes. If that's the case, first, we are highly
 interested in <a href="support.html">knowing this limitation</a>.</p>
 
 <p>Then, to prevent this, we provide a TCK to run in your environment. You can
-find it in our <a href="download.html">download page</a>. It will print a report 
+find it on our <a href="download.html">download page</a>. It will print a report 
 to the standard output. Exceptions, if they occur, will be printed out to
 the standard error. Tests are run <a href="${javadoc}/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> 
 and <a href="${javadoc}/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a>
@@ -30,6 +30,17 @@ of them or at least the kind you want are correctly instantiated.</p>
 
 <p>To launch from within an application server, the easiest is to bundle it in your application
 and to call <code>org.objenesis.tck.Main.main()</code> from your code.</p>
+
+<h2>Android</h2>
+
+<p>Objenesis also works on Dalvik, the Android VM. So a TCK is also provided for it in the form of an apk. You
+can also find it on <a href="download.html">download page</a>. Just use the following command to install and run
+it.</p>
+
+<pre>
+adb install -r objenesis-tck-android-${project.version}.apk
+adb shell am instrument -w org.objenesis.tck.android/.TckInstrumentation
+</pre>
 
 <h1>Exception Handling</h1>
 
