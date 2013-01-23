@@ -11,9 +11,9 @@
   
   <properties>
     <!-- These versions are also used to filter boot-bundles.properties -->
-    <log4j.version>1.2.16</log4j.version>
+    <log4j.version>1.2.17</log4j.version>
     <spring.osgi.version>1.2.1</spring.osgi.version>
-    <slf4j.version>1.6.1</slf4j.version>  
+    <slf4j.version>1.7.2</slf4j.version>  
   </properties>
 
   <dependencies>
@@ -47,46 +47,36 @@
     <!-- These are just to have a nice logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>
+      <artifactId>jcl-over-slf4j</artifactId>
       <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>com.springsource.slf4j.api</artifactId>
+      <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>com.springsource.slf4j.log4j</artifactId>
+      <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j.version}</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>log4j</artifactId>
-          <groupId>log4j</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>com.springsource.org.apache.log4j</artifactId>
-          <groupId>org.apache.log4j</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.log4j</groupId>
-      <artifactId>com.springsource.org.apache.log4j</artifactId>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
       <version>${log4j.version}</version>
       <scope>test</scope>
     </dependency>
     
     <!-- And this is our Equinox implementation -->
     <dependency>
-      <groupId>org.eclipse.osgi</groupId>
+      <groupId>org.eclipse</groupId>
       <artifactId>org.eclipse.osgi</artifactId>
-      <version>3.7.1.R37x_v20110808-1106</version>
-      <scope>test</scope>
-    </dependency>
+      <version>3.8.0.v20120529-1548</version>
+      <scope>test</scope>      
+    </dependency>    
   </dependencies>
   
   <build>
@@ -279,11 +269,4 @@
       </build>
     </profile>    
   </profiles>
-  <repositories>
-    <repository>
-      <id>com.springsource.repository.bundles.external</id>
-      <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
-      <url>http://repository.springsource.com/maven/bundles/external</url>
-    </repository>
-  </repositories>
 </project>
