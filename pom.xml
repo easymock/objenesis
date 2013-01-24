@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.objenesis</groupId>
   <artifactId>objenesis-parent</artifactId>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.3</version>
   <packaging>pom</packaging>
 
   <name>Objenesis parent project</name>  
@@ -30,9 +30,9 @@
   </organization>
 
   <scm>
-    <connection>scm:svn:http://objenesis.googlecode.com/svn/trunk</connection>
-    <developerConnection>scm:svn:https://objenesis.googlecode.com/svn/trunk</developerConnection>
-    <url>http://objenesis.googlecode.com/svn/trunk</url>
+    <connection>scm:svn:http://objenesis.googlecode.com/svn/tags/1_3</connection>
+    <developerConnection>scm:svn:https://objenesis.googlecode.com/svn/tags/1_3</developerConnection>
+    <url>http://objenesis.googlecode.com/svn/tags/1_3</url>
   </scm>
 
   <developers>
