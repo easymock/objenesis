@@ -37,7 +37,19 @@ public class AndroidSerializationInstantiator implements ObjectInstantiator {
    public AndroidSerializationInstantiator(Class type) {
       this.type = type;
       newInstanceMethod = getNewInstanceMethod();
-      objectStreamClass = ObjectStreamClass.lookupAny(type);
+      Method m = null;
+      try {
+         m = ObjectStreamClass.class.getMethod("lookupAny", new Class[] { Class.class });
+      } catch (NoSuchMethodException e) {
+         throw new ObjenesisException(e);
+      }
+      try {
+         objectStreamClass = (ObjectStreamClass) m.invoke(null, new Object[]{type});
+      } catch (IllegalAccessException e) {
+         throw new ObjenesisException(e);
+      } catch (InvocationTargetException e) {
+         throw new ObjenesisException(e);
+      }
    }
 
    public Object newInstance() {
