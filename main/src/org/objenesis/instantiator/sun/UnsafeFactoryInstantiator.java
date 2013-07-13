@@ -15,12 +15,11 @@
  */
 package org.objenesis.instantiator.sun;
 
-import java.lang.reflect.Field;
-
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
-
 import sun.misc.Unsafe;
+
+import java.lang.reflect.Field;
 
 /**
  * Instantiates an object, WITHOUT calling it's constructor, using
@@ -32,32 +31,32 @@ import sun.misc.Unsafe;
  */
 public class UnsafeFactoryInstantiator implements ObjectInstantiator {
 
-    private static Unsafe unsafe;
-    private final Class type;
+   private static Unsafe unsafe;
+   private final Class type;
 
-    public UnsafeFactoryInstantiator(Class type) {
-        if(unsafe == null) {
-            Field f;
-            try {
-                f = Unsafe.class.getDeclaredField("theUnsafe");
-            } catch (NoSuchFieldException e) {
-                throw new ObjenesisException(e);
-            }
-            f.setAccessible(true);
-            try {
-                unsafe = (Unsafe) f.get(null);
-            } catch (IllegalAccessException e) {
-                throw new ObjenesisException(e);
-            }
-        }
-        this.type = type;
-    }
-
-    public Object newInstance() {
-        try {
-            return unsafe.allocateInstance(type);
-        } catch (InstantiationException e) {
+   public UnsafeFactoryInstantiator(Class type) {
+      if (unsafe == null) {
+         Field f;
+         try {
+            f = Unsafe.class.getDeclaredField("theUnsafe");
+         } catch (NoSuchFieldException e) {
             throw new ObjenesisException(e);
-        }
-    }
+         }
+         f.setAccessible(true);
+         try {
+            unsafe = (Unsafe) f.get(null);
+         } catch (IllegalAccessException e) {
+            throw new ObjenesisException(e);
+         }
+      }
+      this.type = type;
+   }
+
+   public Object newInstance() {
+      try {
+         return unsafe.allocateInstance(type);
+      } catch (InstantiationException e) {
+         throw new ObjenesisException(e);
+      }
+   }
 }
