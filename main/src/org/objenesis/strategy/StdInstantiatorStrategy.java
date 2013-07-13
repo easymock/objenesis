@@ -23,6 +23,7 @@ import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
 import org.objenesis.instantiator.sun.Sun13Instantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
+import org.objenesis.instantiator.sun.UnsafeFactoryInstantiator;
 
 /**
  * Guess the best instantiator for a given class. The instantiator will instantiate the class
@@ -53,6 +54,9 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          if(VM_VERSION.startsWith("1.3")) {
             return new Sun13Instantiator(type);
          }
+         else if(VM_VERSION.startsWith("1.4")) {
+             return new SunReflectionFactoryInstantiator(type);
+         }
       }
       else if(JVM_NAME.startsWith(JROCKIT)) {
          if(VM_VERSION.startsWith("1.3")) {
@@ -81,11 +85,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
     	  return new PercInstantiator(type);
       }
 
-      // Fallback instantiator, should work with:
-      // - Java Hotspot version 1.4 and higher
-      // - JRockit 1.4-R26 and higher
-      // - IBM and Hitachi JVMs
-      // ... might works for others so we just give it a try
-      return new SunReflectionFactoryInstantiator(type);
+      // Fallback instantiator, should work with most modern JVM
+      return new UnsafeFactoryInstantiator(type);
    }
 }
