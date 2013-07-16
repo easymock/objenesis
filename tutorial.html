@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Objenesis : Twenty Second Tutorial</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        
+    
+
+    </head>
+    <body>
+
+        <div id="banner">
+            <a href="index.html"><img id="logo" src="objenesis.png" alt="Objenesis" width="300" height="75"/></a>
+        </div>
+
+        <div id="center" class="Content2Column">
+            <div id="content">
+                <h1 class="FirstChild">Twenty Second Tutorial</h1>
+                
+
+<p>There are two main interfaces in Objenesis:</p>
+
+<ul>
+    <li><strong><a href="apidocs/org/objenesis/instantiator/ObjectInstantiator.html">ObjectInstantiator</a></strong>
+        - Instantiates multiple instances of a single class.
+        <pre>interface ObjectInstantiator {
+  Object newInstance();
+}</pre>
+    </li>
+    <li><strong><a href="apidocs/org/objenesis/strategy/InstantiatorStrategy.html">InstantiatorStrategy</a></strong>
+        - A particular strategy for how to instantiate a class (as this differs for different types of classes).
+        <pre>interface InstantiatorStrategy {
+  ObjectInstantiator newInstantiatorOf(Class type);
+}</pre>
+    </li>
+</ul>
+
+<p><strong>Note:</strong> All Objenesis classes are in the
+    <strong><code>org.objenesis</code></strong> package.</p>
+
+<h1>Step By Step</h1>
+
+<p>There are many different strategies that Objenesis uses for instantiating objects based on the JVM vendor,
+JVM version, SecurityManager and type of class being instantiated.</p>
+
+<p>We have defined that two different kinds of instantiation are required:</p>
+   
+<ul>
+    <li><strong>Stardard</strong> - No constructor will be called</li>
+    <li><strong>Serializable compliant</strong> - Acts like an object instantiated by java standard 
+        serialization. It means that the constructor of the first non-serializable parent class will
+        be called. However, readResolve is not called and we never check if the object is serializable.</li>
+</ul>
+
+<p>The simplest way to use Objenesis is by using <a href="apidocs/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> (Standard) and 
+<a href="apidocs/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a> (Serializable compliant). By default, 
+automatically determines the best strategy - so you don't have to.</p>
+
+<pre>Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer</pre>
+
+<p>Once you have the Objenesis implementation, you can then create an <code>ObjectInstantiator</code>, for a specific type.</p>
+
+<pre>ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(MyThingy.class);</pre>
+
+<p>Finally, you can use this to instantiate new instances of this type.</p>
+
+<pre>MyThingy thingy1 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();</pre>
+
+<h1>Performance and Threading</h1>
+
+<p>To improve performance, it is best to reuse the <code>ObjectInstantiator</code>
+    objects as much as possible. For example, if you are instantiating multiple instances of a specific class,
+    do it from the same <code>ObjectInstantiator</code>.
+</p>
+
+<p>Both <code>InstantiatorStrategy</code> and <code>ObjectInstantiator</code> can be shared between multiple
+    threads and used concurrently. They are thread safe.</p>
+
+<h1>That Code Again</h1>
+
+<p>(For the impatient)</p>
+
+<pre>
+Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer
+MyThingy thingy1 = (MyThingy) objenesis.newInstance(MyThingy.class);
+
+// or (a little bit more efficient if you need to create many objects)
+
+Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer
+ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(MyThingy.class);
+
+MyThingy thingy2 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy3 = (MyThingy)thingyInstantiator.newInstance();
+MyThingy thingy4 = (MyThingy)thingyInstantiator.newInstance();
+</pre>
+
+
+                <br/><br/>
+            </div>
+        </div>
+
+        <div class="SidePanel" id="left">
+                <div class="MenuGroup">
+                    <h1>Objenesis</h1>
+                    <ul>
+                                <li><a href="index.html">About</a></li>
+                                <li><a href="license.html">License</a></li>
+                                <li><a href="download.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Documentation</h1>
+                    <ul>
+                                <li class="currentLink">Twenty Second Tutorial</li>
+                                <li><a href="details.html">The Details</a></li>
+                                <li><a href="embedding.html">Embedding</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Project Details</h1>
+                    <ul>
+                                <li><a href="support.html">Getting Support</a></li>
+                                <li><a href="acknowledgements.html">Acknowledgements</a></li>
+                                <li><a href="source.html">Source Repository</a></li>
+                                <li><a href="notes.html">Release notes</a></li>
+                    </ul>
+                </div>
+        </div>
+
+  </body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Objenesis : The Details</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        
+    
+
+    </head>
+    <body>
+
+        <div id="banner">
+            <a href="index.html"><img id="logo" src="objenesis.png" alt="Objenesis" width="300" height="75"/></a>
+        </div>
+
+        <div id="center" class="Content2Column">
+            <div id="content">
+                <h1 class="FirstChild">The Details</h1>
+                
+
+<p>The <a href="tutorial.html">Tutorial</a> allows you to perfectly use Objenesis.
+However, if you want implementation details, tools and more power, you're at 
+the right place.</p>
+
+<h1>Test your environment</h1>
+
+<p>Depending on your JVM and security manager, Objenesis might not be able to
+instantiate some of your classes. If that's the case, first, we are highly
+interested in <a href="support.html">knowing this limitation</a>.</p>
+
+<p>Then, to prevent this, we provide a TCK to run in your environment. You can
+find it on our <a href="download.html">download page</a>. It will print a report 
+to the standard output. Exceptions, if they occur, will be printed out to
+the standard error. Tests are run <a href="apidocs/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> 
+and <a href="apidocs/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a>
+and are made of every kind of class types you might want to instantiate. So you can check if all
+of them or at least the kind you want are correctly instantiated.</p>
+
+<p>To launch from the command line, just type</p>
+   
+<pre>java -jar objenesis-1.3-tck.jar</pre>
+
+<p>Note that objenesis jar is bundled in the TCK so no special classpath is needed.</p>
+
+<p>To launch from within an application server, the easiest is to bundle it in your application
+and to call <code>org.objenesis.tck.Main.main()</code> from your code.</p>
+
+<h2>Android</h2>
+
+<p>Objenesis also works on Dalvik, the Android VM. So a TCK is also provided for it in the form of an apk. You
+can also find it on <a href="download.html">download page</a>. Just use the following command to install and run
+it.</p>
+
+<pre>
+adb install -r objenesis-tck-android-1.3.apk
+adb shell am instrument -w org.objenesis.tck.android/.TckInstrumentation
+</pre>
+
+<h1>Exception Handling</h1>
+
+<p>If something wrong occurs using Objenesis, you will normally get an 
+<a href="apidocs/org/objenesis/ObjenesisException.html">ObjenesisException</a>
+wrapping (for JVM 1.4 and more) the real exception. It is a RuntimeException so you don't have to
+catch it. Some reasons why it fails:</p>
+
+<ul>
+    <li>Using ObjenesisSerializer with a class that isn't <code>Serializable</code>.</li>
+    <li>Using ObjenesisSerializer, the constructor of the first parent class that isn't
+        <code>Serializable</code> throws an exception.</li>
+    <li>Your SecurityManager prevents Objenesis from working normally.</li>
+    <li>Objenesis isn't able to work for some reason. Please <a href="support.html">tell us</a></li>
+</ul>
+
+<h1>ObjectInstantiator caching</h1>
+
+<p><a href="apidocs/org/objenesis/ObjenesisBase.html">ObjenesisBase</a> provides a built-in cache 
+that is activated by default. This cache keeps <a href="apidocs/org/objenesis/instantiator/ObjectInstantiator.html">
+ObjectInstantiator</a> instances per Class. This improves performance quite a lot when the same Class 
+is frequently instantiated. For this reason, it is recommended to reuse Objenesis instances whenever 
+posssibly or to keep is as a singleton in your favorite dependency injection framework.</p>
+
+<p>However, you can always disable the cache if needed.</p>
+<pre>
+    Objenesis o = new ObjenesisStd(false); // cache disabled
+</pre>
+
+<p>The cache should behave correctly in an application server and not cause any memory leaks.</p>
+
+<h1>Use you own strategy</h1>
+
+<p>As you've seen in the <a href="tutorial.html">Tutorial</a>, Objenesis implementations
+are determining the best instantiator using a strategy. It might occurs that you need
+to implement your own strategy. Two possible reasons I can think of are that</p>
+
+<ul>
+   <li><strong>You want to specialize in a given JVM.</strong> Default strategies are
+       supporting all JVMs. This has a little performance cost so you might want to
+       provide a strategy that is optimized for your JVM.
+<pre>
+public class Sun14Strategy implements InstantiatorStrategy {
+    public ObjectInstantiator newInstantiatorOf(Class type) {
+        // return sun dedicated instantiator
+        return new SunReflectionFactoryInstantiator(type);
+    }
+}
+</pre></li>
+    <li><strong>Objenesis doesn't support your environment by default.</strong> In that
+        case, we would be really happy to add this support in our next version and
+        meanwhile, you can use your own strategy and instantiator to fix this.</li>
+</ul>
+
+<p>From there, you can use this new strategy.</p>
+<pre>
+// Directly
+Objenesis o = new ObjenesisBase(new Sun14Strategy());
+
+// Or inside your Objenesis own implementation
+public class ObjenesisSun14 extends ObjenesisBase {
+    public ObjenesisSun14() {
+       super(new Sun14Strategy());
+    }
+}
+</pre>
+
+<h1>The Evil ObjenesisHelper</h1>
+
+<p>Static methods are considered a really bad practice. They can't be mocked or
+replace easily. Worst, if the class keep a static state, you will fell in
+class loading issues, memory leaks, module dependencies and so on. <strong>We 
+strongly recommend you not to use them.</strong></p>
+
+<p>However, if for some reason that we prefer ignore, you still want to use Objenesis
+in a static way, you can do so. It's called <a href="apidocs/org/objenesis/ObjenesisHelper.html">ObjenesisHelper</a>.</p>
+
+<p>We prefer to provide it knowing that some of you will code it anyway. It a wrapper
+over an <a href="apidocs/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> 
+and <a href="apidocs/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a> 
+instance which are kept statically.</p>
+
+<p>It can't be more straightforward to use:</p>
+
+<pre>
+   Object o1 = ObjenesisHelper.newInstance(MyClass.class);
+   Object o2 = ObjenesisHelper.newSerializableInstance(MyClass.class);
+   ObjectInstantiator o3 = ObjenesisHelper.getInstantiatorOf(MyClass.class);
+   ObjectInstantiator o4 = ObjenesisHelper.getSerializableObjectInstantiatorOf(MyClass.class);
+</pre>
+
+
+                <br/><br/>
+            </div>
+        </div>
+
+        <div class="SidePanel" id="left">
+                <div class="MenuGroup">
+                    <h1>Objenesis</h1>
+                    <ul>
+                                <li><a href="index.html">About</a></li>
+                                <li><a href="license.html">License</a></li>
+                                <li><a href="download.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Documentation</h1>
+                    <ul>
+                                <li><a href="tutorial.html">Twenty Second Tutorial</a></li>
+                                <li class="currentLink">The Details</li>
+                                <li><a href="embedding.html">Embedding</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Project Details</h1>
+                    <ul>
+                                <li><a href="support.html">Getting Support</a></li>
+                                <li><a href="acknowledgements.html">Acknowledgements</a></li>
+                                <li><a href="source.html">Source Repository</a></li>
+                                <li><a href="notes.html">Release notes</a></li>
+                    </ul>
+                </div>
+        </div>
+
+  </body>
+</html>
