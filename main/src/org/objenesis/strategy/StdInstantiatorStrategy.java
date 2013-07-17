@@ -54,9 +54,9 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          if(VM_VERSION.startsWith("1.3")) {
             return new Sun13Instantiator(type);
          }
-         else if(VM_VERSION.startsWith("1.4")) {
-             return new SunReflectionFactoryInstantiator(type);
-         }
+         // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5 times slower. So
+         // I prefer to use this one
+         return new SunReflectionFactoryInstantiator(type);
       }
       else if(JVM_NAME.startsWith(JROCKIT)) {
          if(VM_VERSION.startsWith("1.3")) {
