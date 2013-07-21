@@ -15,10 +15,6 @@
  */
 package org.objenesis.strategy;
 
-import java.lang.reflect.Field;
-
-import org.objenesis.ObjenesisException;
-
 /**
  * List of constants describing the currently used platform.
  *
@@ -59,9 +55,6 @@ public final class PlatformDescription {
     /** JVM name */
     public static final String JVM_NAME = System.getProperty("java.vm.name");
 
-    /** Version Specific to Android */
-    public static final String ANDROID_API_LEVEL = androidApiLevel();
-
     /**
      * Check if the current JVM is of the type passed in parameter. Normally, this will be a constant from this
      * class. We basically do <code>System.getProperty("java.vm.name").startWith(name)</code>.
@@ -71,29 +64,6 @@ public final class PlatformDescription {
      */
     public static boolean isThisJVM(String name) {
         return JVM_NAME.startsWith(name);
-    }
-
-    private static String androidApiLevel() {
-        if(!isThisJVM(DALVIK)) {
-            return null;
-        }
-        Class version;
-        try {
-            version = Class.forName("android.os.Build$VERSION");
-        } catch (ClassNotFoundException e) {
-            throw new ObjenesisException(e);
-        }
-        Field f;
-        try {
-            f = version.getField("SDK");
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            return (String) f.get(null);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private PlatformDescription() {}

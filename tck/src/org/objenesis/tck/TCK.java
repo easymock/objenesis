@@ -135,17 +135,13 @@ public class TCK {
     * @return Description of the current platform
     */
    protected String describePlatform() {
-      String description = "Java " + PlatformDescription.SPECIFICATION_VERSION + " ("
+      return "Java " + PlatformDescription.SPECIFICATION_VERSION + " ("
          + "vendor=\"" + PlatformDescription.VENDOR + "\", "
          + "vendor version=" + PlatformDescription.VENDOR_VERSION + ", "
          + "JVM name=\"" + PlatformDescription.JVM_NAME + "\", "
          + "JVM version=" + PlatformDescription.VM_VERSION + ", "
-         + "JVM info=" + PlatformDescription.VM_VERSION;
-
-       if(PlatformDescription.ANDROID_API_LEVEL != null) {
-           description += ", API level=" + PlatformDescription.ANDROID_API_LEVEL;
-       }
-       return description  + ")";
+         + "JVM info=" + PlatformDescription.VM_VERSION
+         + ")";       
    }
 
 }
