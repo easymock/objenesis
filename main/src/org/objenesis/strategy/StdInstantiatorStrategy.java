@@ -50,7 +50,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
     */
    public ObjectInstantiator newInstantiatorOf(Class type) {
 
-      if(JVM_NAME.startsWith(SUN)) {
+      if(PlatformDescription.isThisJVM(SUN)) {
          if(VM_VERSION.startsWith("1.3")) {
             return new Sun13Instantiator(type);
          }
@@ -58,7 +58,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          // I prefer to use this one
          return new SunReflectionFactoryInstantiator(type);
       }
-      else if(JVM_NAME.startsWith(JROCKIT)) {
+      else if(PlatformDescription.isThisJVM(JROCKIT)) {
          if(VM_VERSION.startsWith("1.3")) {
             return new JRockit131Instantiator(type);
          }
@@ -75,13 +75,13 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
             }
          }
       }
-      else if(JVM_NAME.startsWith(DALVIK)) {
+      else if(PlatformDescription.isThisJVM(PlatformDescription.DALVIK)) {
          return new AndroidInstantiator(type);
       }
-      else if(JVM_NAME.startsWith(GNU)) {
+      else if(PlatformDescription.isThisJVM(PlatformDescription.GNU)) {
          return new GCJInstantiator(type);
       }
-      else if(JVM_NAME.startsWith(PERC)) {
+      else if(PlatformDescription.isThisJVM(PlatformDescription.PERC)) {
     	  return new PercInstantiator(type);
       }
 

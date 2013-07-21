@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.objenesis.Objenesis;
+import org.objenesis.strategy.PlatformDescription;
 
 /**
  * <b>Technology Compatibility Kit</b> (TCK) for {@link Objenesis}s.
@@ -134,10 +135,17 @@ public class TCK {
     * @return Description of the current platform
     */
    protected String describePlatform() {
-      return "Java " + System.getProperty("java.specification.version") + " ("
-         + System.getProperty("java.vm.vendor") + " " + System.getProperty("java.vm.name") + " "
-         + System.getProperty("java.vm.version") + " " + System.getProperty("java.runtime.version")
-         + ")";
+      String description = "Java " + PlatformDescription.SPECIFICATION_VERSION + " ("
+         + "vendor=\"" + PlatformDescription.VENDOR + "\", "
+         + "vendor version=" + PlatformDescription.VENDOR_VERSION + ", "
+         + "JVM name=\"" + PlatformDescription.JVM_NAME + "\", "
+         + "JVM version=" + PlatformDescription.VM_VERSION + ", "
+         + "JVM info=" + PlatformDescription.VM_VERSION;
+
+       if(PlatformDescription.ANDROID_API_LEVEL != null) {
+           description += ", API level=" + PlatformDescription.ANDROID_API_LEVEL;
+       }
+       return description  + ")";
    }
 
 }
