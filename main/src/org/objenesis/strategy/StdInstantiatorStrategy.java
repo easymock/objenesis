@@ -16,7 +16,8 @@
 package org.objenesis.strategy;
 
 import org.objenesis.instantiator.ObjectInstantiator;
-import org.objenesis.instantiator.android.AndroidInstantiator;
+import org.objenesis.instantiator.android.Android23Instantiator;
+import org.objenesis.instantiator.android.Android30Instantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.jrockit.JRockit131Instantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
@@ -76,7 +77,15 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          }
       }
       else if(JVM_NAME.startsWith(DALVIK)) {
-         return new AndroidInstantiator(type);
+        // System property "java.vm.version" seems to be 1.4.0 for Android 2.3 and 1.5.0 for Android 3.0
+        // so we use it here to choose the relevant implementation.
+        if(VENDOR_VERSION.compareTo("1.5.0") < 0) {
+          // Android 2.3 Gingerbread and lower
+          return new Android23Instantiator(type);
+        } else {
+          // Android 3.0 Honeycomb and higher
+          return new Android30Instantiator(type);
+        }
       }
       else if(JVM_NAME.startsWith(GNU)) {
          return new GCJInstantiator(type);

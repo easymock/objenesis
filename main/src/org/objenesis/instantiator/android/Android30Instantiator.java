@@ -23,17 +23,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Instantiator for Android which creates objects without driving their constructors, using internal
+ * Instantiator for Android >= 3.0 which creates objects without driving their constructors, using internal
  * methods on the Dalvik implementation of {@link ObjectStreamClass}.
  * 
  * @author Ian Parkinson (Google Inc.)
  */
-public class AndroidInstantiator implements ObjectInstantiator {
+public class Android30Instantiator implements ObjectInstantiator {
    private final Class type;
    private final Method newInstanceMethod;
    private final Integer objectConstructorId;
 
-   public AndroidInstantiator(Class type) {
+   public Android30Instantiator(Class type) {
       this.type = type;
       newInstanceMethod = getNewInstanceMethod();
       objectConstructorId = findConstructorIdForJavaLangObjectConstructor();
