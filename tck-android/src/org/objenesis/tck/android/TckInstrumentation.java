@@ -16,15 +16,15 @@
 
 package org.objenesis.tck.android;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.os.Bundle;
-
-import org.objenesis.tck.Main;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import org.objenesis.tck.Main;
+
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.os.Bundle;
 
 /**
  * Wraps the Objenesis TCK so that it can be invoked on Android as an {@link Instrumentation}.
@@ -37,6 +37,7 @@ public class TckInstrumentation extends Instrumentation {
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       PrintStream printStream = new PrintStream(outputStream);
       System.setOut(printStream);
+      System.setErr(printStream);
 
       try {
          Main.main(new String[0]);
@@ -50,4 +51,3 @@ public class TckInstrumentation extends Instrumentation {
       finish(Activity.RESULT_OK, bundle);
    }
 }
-
