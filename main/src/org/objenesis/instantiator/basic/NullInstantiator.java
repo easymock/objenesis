@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator;
+package org.objenesis.instantiator.basic;
+
+import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
  * The instantiator that always return a null instance
