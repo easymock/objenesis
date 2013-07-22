@@ -237,14 +237,6 @@
               <year>${year}</year>
             </properties>
           </configuration>
-          <executions>
-            <execution>
-              <id>check</id>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -380,6 +372,18 @@
                 <id>attach-javadocs</id>
                 <goals>
                   <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.google.code.maven-license-plugin</groupId>
+            <artifactId>maven-license-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>check</id>
+                <goals>
+                  <goal>check</goal>
                 </goals>
               </execution>
             </executions>
