@@ -76,7 +76,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
             }
          }
       }
-      else if(PlatformDescription.isThisJVM(PlatformDescription.DALVIK)) {
+      else if(PlatformDescription.isThisJVM(DALVIK)) {
         // System property "java.vm.version" seems to be 1.4.0 for Android 2.3 and 1.5.0 for Android 3.0
         // so we use it here to choose the relevant implementation.
         if(VENDOR_VERSION.compareTo("1.5.0") < 0) {
@@ -87,10 +87,10 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
           return new Android30Instantiator(type);
         }
       }
-      else if(PlatformDescription.isThisJVM(PlatformDescription.GNU)) {
+      else if(PlatformDescription.isThisJVM(GNU)) {
          return new GCJInstantiator(type);
       }
-      else if(PlatformDescription.isThisJVM(PlatformDescription.PERC)) {
+      else if(PlatformDescription.isThisJVM(PERC)) {
     	  return new PercInstantiator(type);
       }
 
