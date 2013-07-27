@@ -42,12 +42,17 @@ import org.openjdk.jmh.logic.BlackHole;
 @State(Scope.Thread)
 public class CreateObject {
 
-    ObjectInstantiator sun = new SunReflectionFactoryInstantiator(CreateObject.class);
+    ObjectInstantiator sun = new SunReflectionFactoryInstantiator(Object.class);
 
-    ObjectInstantiator unsafe = new UnsafeFactoryInstantiator(CreateObject.class);
+    ObjectInstantiator unsafe = new UnsafeFactoryInstantiator(Object.class);
+
+   @GenerateMicroBenchmark
+   public void createObjectWithConstructor(BlackHole bh) {
+      bh.consume(new Object());
+   }
 
     @GenerateMicroBenchmark
-    public void createObjectWithSun(BlackHole bh) {
+    public void createObjectWithMungedConstructor(BlackHole bh) {
         bh.consume(sun.newInstance());
     }
 
