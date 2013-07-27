@@ -81,16 +81,17 @@ public class ObjenesisBase implements Objenesis {
     * @param clazz Class to instantiate
     * @return Instantiator dedicated to the class
     */
-   public synchronized ObjectInstantiator getInstantiatorOf(Class clazz) {
+   public ObjectInstantiator getInstantiatorOf(Class clazz) {
       if(cache == null) {
          return strategy.newInstantiatorOf(clazz);
       }
-      ObjectInstantiator instantiator = (ObjectInstantiator) cache.get(clazz.getName());
-      if(instantiator == null) {
-         instantiator = strategy.newInstantiatorOf(clazz);
-         cache.put(clazz.getName(), instantiator);
+      synchronized (cache) {
+         ObjectInstantiator instantiator = (ObjectInstantiator) cache.get(clazz.getName());
+         if(instantiator == null) {
+            instantiator = strategy.newInstantiatorOf(clazz);
+            cache.put(clazz.getName(), instantiator);
+         }
+         return instantiator;
       }
-      return instantiator;
    }
-
 }
