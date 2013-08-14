@@ -75,6 +75,8 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
                }
             }
          }
+         // After that, JRockit became compliant with HotSpot
+         return new SunReflectionFactoryInstantiator(type);
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
         // System property "java.vm.version" seems to be 1.4.0 for Android 2.3 and 1.5.0 for Android 3.0
