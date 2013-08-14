@@ -37,7 +37,7 @@
             <configuration>
               <outputDirectory>${project.build.directory}/site</outputDirectory>
               <escapeString>\</escapeString>
-              <encoding>ISO-8859-1</encoding>
+              <encoding>UTF-8</encoding>
               <resources>
                 <resource>
                   <directory>${basedir}/site</directory>
@@ -68,7 +68,7 @@
       <plugin>
         <groupId>org.codehaus.xsite</groupId>
         <artifactId>xsite-maven-plugin</artifactId>
-        <version>1.2.3</version>
+        <version>1.3</version>
         <configuration>
           <sourceDirectoryPath>${project.build.directory}/site</sourceDirectoryPath>
           <sitemapPath>content/sitemap.xml</sitemapPath>
