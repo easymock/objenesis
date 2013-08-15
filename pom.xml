@@ -242,6 +242,8 @@
               <exclude>eclipse_config/**</exclude>
               <!-- no header wanted on the website -->
               <exclude>website/**</exclude>
+              <!-- no header on batch files wanted -->
+              <exclude>**/*.bat</exclude>
             </excludes>
             <properties>
               <inceptionYear>${project.inceptionYear}</inceptionYear>

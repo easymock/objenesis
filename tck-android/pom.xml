@@ -47,10 +47,18 @@
       </plugin>
       
       <plugin>
+        <groupId>com.keyboardsamurais.maven</groupId>
+        <artifactId>maven-timestamp-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>com.mycila.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
-      </plugin>        
-
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+      </plugin>
+       
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
         <artifactId>android-maven-plugin</artifactId>
