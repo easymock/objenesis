@@ -117,6 +117,10 @@
         <configuration>
           <!-- Required to let release with the benchmark project using snapshots. I can't put it directly in the benchmark project. It doesn't work -->
           <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+          <!-- Renamed because the default would be objenesis-parent-x.y -->
+          <tagNameFormat>@{project.version}</tagNameFormat>
+          <!-- Quite annoying in case of error that the changes were pushed -->
+          <pushChanges>false</pushChanges>
         </configuration>        
       </plugin>      
       <plugin>
