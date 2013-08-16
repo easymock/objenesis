@@ -44,12 +44,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>com.keyboardsamurais.maven</groupId>
         <artifactId>maven-timestamp-plugin</artifactId>
       </plugin>
