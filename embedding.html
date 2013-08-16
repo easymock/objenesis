@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
     <head>
         <title>Objenesis : Embedding</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+        <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="style.css"/>
         
     
@@ -32,7 +32,7 @@ parameters. Here's an example:</p>
 	&lt;jarjar jarfile="${temp directory}/easymockclassextension.jar"&gt;
 	  &lt;fileset dir="tmp" includes="org/easymock/classextension/*.class
 	    org/easymock/classextension/internal/*.class"/&gt;
-	  &lt;zipfileset src="lib/objenesis-1.3.jar"/&gt;
+	  &lt;zipfileset src="lib/objenesis-1.4.jar"/&gt;
 	  &lt;rule pattern="org.objenesis.**"
 	    result="org.easymock.classextension.internal.objenesis.@1"/&gt;
 	&lt;/jarjar&gt;
