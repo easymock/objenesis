@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
     <head>
         <title>Objenesis : The Details</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+        <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="style.css"/>
         
     
@@ -23,7 +23,7 @@
 However, if you want implementation details, tools and more power, you're at 
 the right place.</p>
 
-<h1>Test your environment</h1>
+<h1 id="testYourEnvironment">Test your environment</h1>
 
 <p>Depending on your JVM and security manager, Objenesis might not be able to
 instantiate some of your classes. If that's the case, first, we are highly
@@ -39,7 +39,7 @@ of them or at least the kind you want are correctly instantiated.</p>
 
 <p>To launch from the command line, just type</p>
    
-<pre>java -jar objenesis-1.3-tck.jar</pre>
+<pre>java -jar objenesis-1.4-tck.jar</pre>
 
 <p>Note that objenesis jar is bundled in the TCK so no special classpath is needed.</p>
 
@@ -53,7 +53,7 @@ can also find it on <a href="download.html">download page</a>. Just use the foll
 it.</p>
 
 <pre>
-adb install -r objenesis-tck-android-1.3.apk
+adb install -r objenesis-tck-android-1.4.apk
 adb shell am instrument -w org.objenesis.tck.android/.TckInstrumentation
 </pre>
 
