@@ -114,6 +114,10 @@
       </plugin>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <!-- Required to let release with the benchmark project using snapshots. I can't put it directly in the benchmark project. It doesn't work -->
+          <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+        </configuration>        
       </plugin>      
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
