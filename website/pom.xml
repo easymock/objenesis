@@ -22,7 +22,7 @@
       <version>${project.version}</version>
     </dependency>
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
@@ -90,7 +90,7 @@
         <configuration>
           <skip>true</skip>
         </configuration>
-      </plugin>      
+      </plugin>
     </plugins>
   </build>
 
