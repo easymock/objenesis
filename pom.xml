@@ -30,9 +30,9 @@
   </organization>
 
   <scm>
-    <connection>scm:svn:http://objenesis.googlecode.com/svn/trunk</connection>
-    <developerConnection>scm:svn:https://objenesis.googlecode.com/svn/trunk</developerConnection>
-    <url>http://objenesis.googlecode.com/svn/trunk</url>
+    <url>https://github.com/easymock/easymock</url>
+    <developerConnection>scm:git:git@github.com:easymock/objenesis.git</developerConnection>
+    <connection>scm:git:git://github.com/easymock/objenesis.git</connection>
   </scm>
 
   <developers>
