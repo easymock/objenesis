@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.objenesis</groupId>
   <artifactId>objenesis-parent</artifactId>
-  <version>1.4</version>
+  <version>1.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Objenesis parent project</name>  
@@ -33,7 +33,7 @@
     <url>https://github.com/easymock/easymock</url>
     <developerConnection>scm:git:git@github.com:easymock/objenesis.git</developerConnection>
     <connection>scm:git:git://github.com/easymock/objenesis.git</connection>
-    <tag>objenesis-parent-1.4</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <developers>
