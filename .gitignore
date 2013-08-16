@@ -8,3 +8,9 @@ org.eclipse.pde.core.prefs
 *.iml
 .idea/
 sys$command
+
+# maven-release-plugin
+release.properties
+pom.xml.next
+pom.xml.releaseBackup
+pom.xml.tag
