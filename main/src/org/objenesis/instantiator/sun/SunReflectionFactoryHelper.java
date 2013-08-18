@@ -40,7 +40,7 @@ class SunReflectionFactoryHelper {
 
       try {
          return (Constructor) newConstructorForSerializationMethod.invoke(
-            reflectionFactory, new Object[] {type, constructor});
+            reflectionFactory, type, constructor);
       }
       catch(IllegalArgumentException e) {
          throw new ObjenesisException(e);
@@ -65,8 +65,8 @@ class SunReflectionFactoryHelper {
    private static Object createReflectionFactory(Class reflectionFactoryClass) {
       try {
          Method method = reflectionFactoryClass.getDeclaredMethod(
-            "getReflectionFactory", new Class[] {});
-         return method.invoke(null, new Object[] {});
+            "getReflectionFactory");
+         return method.invoke(null);
       }
       catch(NoSuchMethodException e) {
          throw new ObjenesisException(e);
@@ -85,7 +85,7 @@ class SunReflectionFactoryHelper {
    private static Method getNewConstructorForSerializationMethod(Class reflectionFactoryClass) {
       try {
          return reflectionFactoryClass.getDeclaredMethod(
-            "newConstructorForSerialization", new Class[] {Class.class, Constructor.class});
+            "newConstructorForSerialization", Class.class, Constructor.class);
       }
       catch(NoSuchMethodException e) {
          throw new ObjenesisException(e);

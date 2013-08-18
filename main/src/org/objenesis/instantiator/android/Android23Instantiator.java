@@ -15,11 +15,11 @@
  */
 package org.objenesis.instantiator.android;
 
-import org.objenesis.ObjenesisException;
-import org.objenesis.instantiator.ObjectInstantiator;
-
 import java.io.ObjectInputStream;
 import java.lang.reflect.Method;
+
+import org.objenesis.ObjenesisException;
+import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
  * Instantiator for Android <= 2.3 which creates objects without driving their constructors, using internal
@@ -38,7 +38,7 @@ public class Android23Instantiator implements ObjectInstantiator {
 
    public Object newInstance() {
       try {
-         return newStaticMethod.invoke(null, new Object[]{type, Object.class});
+         return newStaticMethod.invoke(null, type, Object.class);
       }
       catch(Exception e) {
          throw new ObjenesisException(e);
@@ -48,7 +48,7 @@ public class Android23Instantiator implements ObjectInstantiator {
    private static Method getNewStaticMethod() {
       try {
          Method newStaticMethod = ObjectInputStream.class.getDeclaredMethod(
-           "newInstance", new Class[]{Class.class, Class.class});
+           "newInstance", Class.class, Class.class);
          newStaticMethod.setAccessible(true);
          return newStaticMethod;
       }

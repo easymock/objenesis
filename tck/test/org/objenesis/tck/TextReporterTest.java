@@ -38,9 +38,9 @@ public class TextReporterTest extends TestCase {
    }
 
    public void testReportsSuccessesInTabularFormat() {
-      textReporter.startTests("Some platform", Arrays.asList(new String[] {"candidate A",
-         "candidate B", "candidate C"}), Arrays.asList(new String[] {"instantiator1",
-         "instantiator2", "instantiator3"}));
+      textReporter.startTests("Some platform", Arrays.asList("candidate A",
+         "candidate B", "candidate C"), Arrays.asList("instantiator1",
+         "instantiator2", "instantiator3"));
 
       textReporter.startTest("candidate A", "instantiator1");
       textReporter.result(false);

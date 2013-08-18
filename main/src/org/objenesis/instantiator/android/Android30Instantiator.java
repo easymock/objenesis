@@ -15,12 +15,12 @@
  */
 package org.objenesis.instantiator.android;
 
-import org.objenesis.ObjenesisException;
-import org.objenesis.instantiator.ObjectInstantiator;
-
 import java.io.ObjectStreamClass;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import org.objenesis.ObjenesisException;
+import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
  * Instantiator for Android >= 3.0 which creates objects without driving their constructors, using internal
@@ -41,7 +41,7 @@ public class Android30Instantiator implements ObjectInstantiator {
 
    public Object newInstance() {
       try {
-         return newInstanceMethod.invoke(null, new Object[] {type, objectConstructorId});
+         return newInstanceMethod.invoke(null, type, objectConstructorId);
       }
       catch(Exception e) {
          throw new ObjenesisException(e);
@@ -51,7 +51,7 @@ public class Android30Instantiator implements ObjectInstantiator {
    private static Method getNewInstanceMethod() {
       try {
          Method newInstanceMethod = ObjectStreamClass.class.getDeclaredMethod(
-            "newInstance", new Class[] {Class.class, Integer.TYPE});
+            "newInstance", Class.class, Integer.TYPE);
          newInstanceMethod.setAccessible(true);
          return newInstanceMethod;
       }
@@ -66,10 +66,10 @@ public class Android30Instantiator implements ObjectInstantiator {
    private static Integer findConstructorIdForJavaLangObjectConstructor() {
       try {
          Method newInstanceMethod = ObjectStreamClass.class.getDeclaredMethod(
-            "getConstructorId", new Class[] {Class.class});
+            "getConstructorId", Class.class);
          newInstanceMethod.setAccessible(true);
 
-         return (Integer) newInstanceMethod.invoke(null, new Object[] {Object.class});
+         return (Integer) newInstanceMethod.invoke(null, Object.class);
       }
       catch(RuntimeException e) {
          throw new ObjenesisException(e);
