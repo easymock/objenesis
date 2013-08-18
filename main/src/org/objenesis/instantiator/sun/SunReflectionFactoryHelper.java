@@ -29,6 +29,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * 
  * @author Henri Tremblay
  */
+@SuppressWarnings("restriction")
 class SunReflectionFactoryHelper {
 
    public static Constructor newConstructorForSerialization(Class type, Constructor constructor) {
