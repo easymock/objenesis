@@ -29,6 +29,7 @@ import java.lang.reflect.Field;
  * @author Henri Tremblay
  * @see ObjectInstantiator
  */
+@SuppressWarnings("restriction")
 public class UnsafeFactoryInstantiator implements ObjectInstantiator {
 
    private static Unsafe unsafe;
