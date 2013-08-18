@@ -39,7 +39,7 @@ public class SingleInstantiatorStrategy implements InstantiatorStrategy {
     */
    public SingleInstantiatorStrategy(Class instantiator) {
       try {
-         constructor = instantiator.getConstructor(new Class[] { Class.class });
+         constructor = instantiator.getConstructor(Class.class);
       } catch (NoSuchMethodException e) {
          throw new ObjenesisException(e);
       }
@@ -47,7 +47,7 @@ public class SingleInstantiatorStrategy implements InstantiatorStrategy {
 
    public ObjectInstantiator newInstantiatorOf(Class type) {
       try {
-         return (ObjectInstantiator) constructor.newInstance(new Object[] { type });
+         return (ObjectInstantiator) constructor.newInstance(type);
       } catch (InstantiationException e) {
          throw new ObjenesisException(e);
       } catch (IllegalAccessException e) {

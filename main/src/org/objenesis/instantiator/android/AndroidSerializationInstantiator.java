@@ -15,12 +15,12 @@
  */
 package org.objenesis.instantiator.android;
 
-import org.objenesis.ObjenesisException;
-import org.objenesis.instantiator.ObjectInstantiator;
-
 import java.io.ObjectStreamClass;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import org.objenesis.ObjenesisException;
+import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
  * {@link ObjectInstantiator} for Android which creates objects using the constructor from the first
@@ -39,12 +39,12 @@ public class AndroidSerializationInstantiator implements ObjectInstantiator {
       newInstanceMethod = getNewInstanceMethod();
       Method m = null;
       try {
-         m = ObjectStreamClass.class.getMethod("lookupAny", new Class[] { Class.class });
+         m = ObjectStreamClass.class.getMethod("lookupAny", Class.class);
       } catch (NoSuchMethodException e) {
          throw new ObjenesisException(e);
       }
       try {
-         objectStreamClass = (ObjectStreamClass) m.invoke(null, new Object[]{type});
+         objectStreamClass = (ObjectStreamClass) m.invoke(null, type);
       } catch (IllegalAccessException e) {
          throw new ObjenesisException(e);
       } catch (InvocationTargetException e) {
@@ -54,7 +54,7 @@ public class AndroidSerializationInstantiator implements ObjectInstantiator {
 
    public Object newInstance() {
       try {
-         return newInstanceMethod.invoke(objectStreamClass, new Object[] {type});
+         return newInstanceMethod.invoke(objectStreamClass, type);
       }
       catch(IllegalAccessException e) {
          throw new ObjenesisException(e);
@@ -70,7 +70,7 @@ public class AndroidSerializationInstantiator implements ObjectInstantiator {
    private static Method getNewInstanceMethod() {
       try {
          Method newInstanceMethod = ObjectStreamClass.class.getDeclaredMethod(
-            "newInstance", new Class[] {Class.class});
+            "newInstance", Class.class);
          newInstanceMethod.setAccessible(true);
          return newInstanceMethod;
       }
