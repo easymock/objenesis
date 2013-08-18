@@ -221,7 +221,7 @@ public class TextReporter implements Reporter {
          return text.substring(0, width);
       }
       else {
-         StringBuffer padded = new StringBuffer(text);
+         StringBuilder padded = new StringBuilder(text);
          while(padded.length() < width) {
             padded.append(' ');
          }
