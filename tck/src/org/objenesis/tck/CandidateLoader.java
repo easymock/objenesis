@@ -36,7 +36,7 @@ public class CandidateLoader {
    /**
     * Handler for reporting errors from the CandidateLoader.
     */
-   public static interface ErrorHandler {
+   public interface ErrorHandler {
       /**
        * Called whenever, trying to retrieve a candidate class from its name, a
        * ClassNotFoundException is thrown
