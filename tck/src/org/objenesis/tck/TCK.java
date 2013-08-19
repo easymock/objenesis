@@ -100,7 +100,7 @@ public class TCK {
 
             reporter.startTest(candidateDescription, objenesisDescription);
 
-            runTest(reporter, candidateClass, objenesis, candidateDescription);
+            runTest(reporter, candidateClass, objenesis);
 
             reporter.endTest();
          }
@@ -108,8 +108,7 @@ public class TCK {
       reporter.endTests();
    }
 
-   private void runTest(Reporter reporter, Class<?> candidate, Objenesis objenesis,
-      String candidateDescription) {
+   private void runTest(Reporter reporter, Class<?> candidate, Objenesis objenesis) {
       try {
          Object instance = objenesis.newInstance(candidate);
          boolean success = instance != null && instance.getClass() == candidate;
