@@ -25,15 +25,17 @@ import junit.framework.TestCase;
  */
 public class CandidateLoaderTest extends TestCase {
 
-   private StringBuffer recordedEvents;
+   private StringBuilder recordedEvents;
    private CandidateLoader candidateLoader;
 
+   @Override
    protected void setUp() throws Exception {
       super.setUp();
 
-      recordedEvents = new StringBuffer();
+      recordedEvents = new StringBuilder();
       TCK tck = new TCK() {
-         public void registerCandidate(Class candidateClass, String description) {
+         @Override
+         public void registerCandidate(Class<?> candidateClass, String description) {
             recordedEvents.append("registerCandidate('").append(candidateClass).append("', '")
                .append(description).append("')\n");
          }

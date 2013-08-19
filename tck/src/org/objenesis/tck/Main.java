@@ -47,6 +47,7 @@ public class Main {
       
       private final boolean constructorCalled;
 
+      @SuppressWarnings("unused")
       public MockClass() {
          constructorCalled = true;
       }

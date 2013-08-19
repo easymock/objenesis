@@ -24,7 +24,6 @@ import org.objenesis.instantiator.android.AndroidSerializationInstantiator;
 import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
 import org.objenesis.instantiator.perc.PercSerializationInstantiator;
-import org.objenesis.instantiator.sun.Sun13SerializationInstantiator;
 
 /**
  * Guess the best serializing instantiator for a given class. The returned instantiator will
@@ -50,26 +49,24 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
     * @param type Class to instantiate
     * @return The ObjectInstantiator for the class
     */
-   public ObjectInstantiator newInstantiatorOf(Class type) {
+   public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       if(!Serializable.class.isAssignableFrom(type)) {
          throw new ObjenesisException(new NotSerializableException(type+" not serializable"));
       }
       if(JVM_NAME.startsWith(SUN)) {
-         if(VM_VERSION.startsWith("1.3")) {
-            return new Sun13SerializationInstantiator(type);
-         }
+         return new ObjectStreamClassInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {
-         return new AndroidSerializationInstantiator(type);
+         return new AndroidSerializationInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(GNU)) {
-         return new GCJSerializationInstantiator(type);
+         return new GCJSerializationInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(PERC)) {
-    	  return new PercSerializationInstantiator(type);
+         return new PercSerializationInstantiator<T>(type);
       }
       
-      return new ObjectStreamClassInstantiator(type);
+      return new ObjectStreamClassInstantiator<T>(type);
    }
 
 }

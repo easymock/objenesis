@@ -29,7 +29,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  */
 public class SingleInstantiatorStrategy implements InstantiatorStrategy {
 
-   private Constructor constructor;
+   private Constructor<?> constructor;
 
    /**
     * Create a strategy that will return always the same instantiator type. We assume this instantiator
@@ -37,7 +37,7 @@ public class SingleInstantiatorStrategy implements InstantiatorStrategy {
     *
     * @param instantiator the instantiator type
     */
-   public SingleInstantiatorStrategy(Class instantiator) {
+   public SingleInstantiatorStrategy(Class<?> instantiator) {
       try {
          constructor = instantiator.getConstructor(Class.class);
       } catch (NoSuchMethodException e) {
@@ -45,9 +45,10 @@ public class SingleInstantiatorStrategy implements InstantiatorStrategy {
       }
    }
 
-   public ObjectInstantiator newInstantiatorOf(Class type) {
+   @SuppressWarnings("unchecked")
+   public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       try {
-         return (ObjectInstantiator) constructor.newInstance(type);
+         return (ObjectInstantiator<T>) constructor.newInstance(type);
       } catch (InstantiationException e) {
          throw new ObjenesisException(e);
       } catch (IllegalAccessException e) {

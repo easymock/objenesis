@@ -38,7 +38,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @author Leonardo Mesquita
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
-public class ObjectInputStreamInstantiator implements ObjectInstantiator {
+public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
    private static class MockStream extends InputStream {
 
       private int pointer;
@@ -77,7 +77,7 @@ public class ObjectInputStreamInstantiator implements ObjectInstantiator {
 
       }
 
-      public MockStream(Class clazz) {
+      public MockStream(Class<?> clazz) {
          this.pointer = 0;
          this.sequence = 0;
          this.data = HEADER;
@@ -116,6 +116,7 @@ public class ObjectInputStreamInstantiator implements ObjectInstantiator {
          data = buffers[sequence];
       }
 
+      @Override
       public int read() throws IOException {
          int result = data[pointer++];
          if(pointer >= data.length) {
@@ -125,10 +126,12 @@ public class ObjectInputStreamInstantiator implements ObjectInstantiator {
          return result;
       }
 
+      @Override
       public int available() throws IOException {
          return Integer.MAX_VALUE;
       }
 
+      @Override
       public int read(byte[] b, int off, int len) throws IOException {
          int left = len;
          int remaining = data.length - pointer;
@@ -151,7 +154,7 @@ public class ObjectInputStreamInstantiator implements ObjectInstantiator {
 
    private ObjectInputStream inputStream;
 
-   public ObjectInputStreamInstantiator(Class clazz) {
+   public ObjectInputStreamInstantiator(Class<T> clazz) {
       if(Serializable.class.isAssignableFrom(clazz)) {
          try {
             this.inputStream = new ObjectInputStream(new MockStream(clazz));
@@ -165,9 +168,10 @@ public class ObjectInputStreamInstantiator implements ObjectInstantiator {
       }
    }
 
-   public Object newInstance() {
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
       try {
-         return inputStream.readObject();
+         return (T) inputStream.readObject();
       }      
       catch(ClassNotFoundException e) {
          throw new Error("ClassNotFoundException: " + e.getMessage());

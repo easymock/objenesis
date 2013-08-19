@@ -38,6 +38,7 @@ public class OsgiTest extends AbstractConfigurableBundleCreatorTests implements 
 
    private static final long serialVersionUID = 1L;
 
+   @Override
    protected String[] getTestBundlesNames() {
       String version = getImplementationVersion(Objenesis.class);
       // Null means we are an IDE, not in Maven. So we have an IDE project dependency instead
@@ -77,7 +78,7 @@ public class OsgiTest extends AbstractConfigurableBundleCreatorTests implements 
       assertSame(OsgiTest.class, ObjenesisHelper.newSerializableInstance(getClass()).getClass());
    }
 
-   protected String getImplementationVersion(final Class c) {
+   protected String getImplementationVersion(final Class<?> c) {
       return c.getPackage().getImplementationVersion();
    }
 }

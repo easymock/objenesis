@@ -28,20 +28,21 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * 
  * @author Ian Parkinson (Google Inc.)
  */
-public class Android30Instantiator implements ObjectInstantiator {
-   private final Class type;
+public class Android30Instantiator<T> implements ObjectInstantiator<T> {
+   private final Class<T> type;
    private final Method newInstanceMethod;
    private final Integer objectConstructorId;
 
-   public Android30Instantiator(Class type) {
+   public Android30Instantiator(Class<T> type) {
       this.type = type;
       newInstanceMethod = getNewInstanceMethod();
       objectConstructorId = findConstructorIdForJavaLangObjectConstructor();
    }
 
-   public Object newInstance() {
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
       try {
-         return newInstanceMethod.invoke(null, type, objectConstructorId);
+         return (T) newInstanceMethod.invoke(null, type, objectConstructorId);
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

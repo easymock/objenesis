@@ -32,16 +32,16 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @author Henri Tremblay
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
-public class PercSerializationInstantiator implements ObjectInstantiator {
+public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
 
    private Object[] typeArgs;
 
    private final java.lang.reflect.Method newInstanceMethod;
 
-   public PercSerializationInstantiator(Class type) {
+   public PercSerializationInstantiator(Class<T> type) {
 
       // Find the first unserializable parent class
-      Class unserializableType = type;
+      Class<? super T> unserializableType = type;
 
       while(Serializable.class.isAssignableFrom(unserializableType)) {
          unserializableType = unserializableType.getSuperclass();
@@ -49,14 +49,14 @@ public class PercSerializationInstantiator implements ObjectInstantiator {
 
       try {
          // Get the special Perc method to call
-         Class percMethodClass = Class.forName("COM.newmonics.PercClassLoader.Method");
+         Class<?> percMethodClass = Class.forName("COM.newmonics.PercClassLoader.Method");
 
          newInstanceMethod = ObjectInputStream.class.getDeclaredMethod("noArgConstruct",
             new Class[] {Class.class, Object.class, percMethodClass});
          newInstanceMethod.setAccessible(true);
 
          // Create invoke params
-         Class percClassClass = Class.forName("COM.newmonics.PercClassLoader.PercClass");
+         Class<?> percClassClass = Class.forName("COM.newmonics.PercClassLoader.PercClass");
          Method getPercClassMethod = percClassClass.getDeclaredMethod("getPercClass",
             new Class[] {Class.class});
          Object someObject = getPercClassMethod.invoke(null, new Object[] {unserializableType});
@@ -81,9 +81,10 @@ public class PercSerializationInstantiator implements ObjectInstantiator {
       }
    }
 
-   public Object newInstance() {
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
       try {
-         return newInstanceMethod.invoke(null, typeArgs);
+         return (T) newInstanceMethod.invoke(null, typeArgs);
       }
       catch(IllegalAccessException e) {
          throw new ObjenesisException(e);

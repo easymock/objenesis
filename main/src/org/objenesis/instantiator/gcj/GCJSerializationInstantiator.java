@@ -26,17 +26,18 @@ import org.objenesis.instantiator.SerializationInstantiatorHelper;
  * @author Leonardo Mesquita
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
-public class GCJSerializationInstantiator extends GCJInstantiatorBase {
-   private Class superType;
+public class GCJSerializationInstantiator<T> extends GCJInstantiatorBase<T> {
+   private Class<? super T> superType;
 
-   public GCJSerializationInstantiator(Class type) {
+   public GCJSerializationInstantiator(Class<T> type) {
       super(type);
       this.superType = SerializationInstantiatorHelper.getNonSerializableSuperClass(type);
    }
 
-   public Object newInstance() {
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
       try {
-         return newObjectMethod.invoke(dummyStream, new Object[] {type, superType});
+         return (T) newObjectMethod.invoke(dummyStream, new Object[] {type, superType});
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

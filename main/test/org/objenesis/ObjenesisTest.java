@@ -48,12 +48,12 @@ public class ObjenesisTest extends TestCase {
 
    public final void testGetInstantiatorOf() {
       Objenesis o = new ObjenesisStd();
-      ObjectInstantiator i1 = o.getInstantiatorOf(getClass());
+      ObjectInstantiator<?> i1 = o.getInstantiatorOf(getClass());
       // Test instance creation
       assertEquals(getClass(), i1.newInstance().getClass());
 
       // Test caching
-      ObjectInstantiator i2 = o.getInstantiatorOf(getClass());
+      ObjectInstantiator<?> i2 = o.getInstantiatorOf(getClass());
       assertSame(i1, i2);
    }
 
@@ -66,7 +66,7 @@ public class ObjenesisTest extends TestCase {
 }
 
 class MyStrategy implements InstantiatorStrategy {
-   public ObjectInstantiator newInstantiatorOf(Class type) {
+   public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       return null;
    }
 }

@@ -27,18 +27,19 @@ import org.objenesis.instantiator.ObjectInstantiator;
  *
  * @author Piotr 'Qertoip' Włodarek
  */
-public class Android23Instantiator implements ObjectInstantiator {
-   private final Class type;
+public class Android23Instantiator<T> implements ObjectInstantiator<T> {
+   private final Class<T> type;
    private final Method newStaticMethod;
 
-   public Android23Instantiator(Class type) {
+   public Android23Instantiator(Class<T> type) {
       this.type = type;
       newStaticMethod = getNewStaticMethod();
    }
 
-   public Object newInstance() {
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
       try {
-         return newStaticMethod.invoke(null, type, Object.class);
+         return (T) newStaticMethod.invoke(null, type, Object.class);
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

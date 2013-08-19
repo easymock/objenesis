@@ -29,21 +29,21 @@ import org.objenesis.instantiator.ObjectInstantiator;
 public class TCKTest extends TestCase {
 
    public static class StubbedInstantiator1 implements Objenesis {
-      public Object newInstance(Class clazz) {
+      public <T> T newInstance(Class<T> clazz) {
          return null;
       }
 
-      public ObjectInstantiator getInstantiatorOf(Class clazz) {
+      public <T> ObjectInstantiator<T> getInstantiatorOf(Class<T> clazz) {
          return null;
       }
    }
 
    public static class StubbedInstantiator2 implements Objenesis {
-      public Object newInstance(Class clazz) {
+      public <T> T newInstance(Class<T> clazz) {
          return null;
       }
 
-      public ObjectInstantiator getInstantiatorOf(Class clazz) {
+      public <T> ObjectInstantiator<T> getInstantiatorOf(Class<T> clazz) {
          return null;
       }
    }
@@ -102,11 +102,11 @@ public class TCKTest extends TestCase {
    // Some sample classes used for testing.
 
    public static class SelectiveInstantiator implements Objenesis {
-      public Object newInstance(Class clazz) {
-         return clazz == CandidateA.class ? new CandidateA() : null;
+      public <T> T newInstance(Class<T> clazz) {
+         return clazz.cast(clazz == CandidateA.class ? new CandidateA() : null);
       }
 
-      public ObjectInstantiator getInstantiatorOf(Class clazz) {
+      public <T> ObjectInstantiator<T> getInstantiatorOf(Class<T> clazz) {
          return null;
       }
    }
@@ -128,10 +128,10 @@ public class TCKTest extends TestCase {
     */
    private static class RecordingReporter implements Reporter {
 
-      private final StringBuffer log = new StringBuffer();
+      private final StringBuilder log = new StringBuilder();
 
-      public void startTests(String platformDescription, Collection allCandidates,
-         Collection allInstantiators) {
+      public void startTests(String platformDescription, Collection<String> allCandidates,
+         Collection<String> allInstantiators) {
          log.append("startTests()\n");
       }
 
@@ -156,6 +156,7 @@ public class TCKTest extends TestCase {
          log.append("endTests()\n");
       }
 
+      @Override
       public String toString() {
          return log.toString();
       }

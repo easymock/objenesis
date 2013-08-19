@@ -32,14 +32,15 @@ import org.objenesis.instantiator.SerializationInstantiatorHelper;
  * @author Leonardo Mesquita
  * @see ObjectInstantiator
  */
-public class SunReflectionFactorySerializationInstantiator implements ObjectInstantiator {
+public class SunReflectionFactorySerializationInstantiator<T> implements ObjectInstantiator<T> {
 
-   private final Constructor mungedConstructor;
+   private final Constructor<T> mungedConstructor;
 
-   public SunReflectionFactorySerializationInstantiator(Class type) {
-	  Class nonSerializableAncestor = SerializationInstantiatorHelper.getNonSerializableSuperClass(type);
+   public SunReflectionFactorySerializationInstantiator(Class<T> type) {
+      Class<? super T> nonSerializableAncestor = SerializationInstantiatorHelper
+         .getNonSerializableSuperClass(type);
       
-      Constructor nonSerializableAncestorConstructor;
+      Constructor<? super T> nonSerializableAncestorConstructor;
       try {
          nonSerializableAncestorConstructor = nonSerializableAncestor
             .getConstructor((Class[]) null);
@@ -53,7 +54,7 @@ public class SunReflectionFactorySerializationInstantiator implements ObjectInst
       mungedConstructor.setAccessible(true);
    }
 
-   public Object newInstance() {
+   public T newInstance() {
       try {
          return mungedConstructor.newInstance((Object[]) null);
       }

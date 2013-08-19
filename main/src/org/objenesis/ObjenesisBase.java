@@ -33,7 +33,7 @@ public class ObjenesisBase implements Objenesis {
    protected final InstantiatorStrategy strategy;
 
    /** Strategy cache. Key = Class, Value = InstantiatorStrategy */
-   protected Map cache;
+   protected Map<String, ObjectInstantiator<?>> cache;
 
    /**
     * Constructor allowing to pick a strategy and using cache
@@ -55,9 +55,10 @@ public class ObjenesisBase implements Objenesis {
          throw new IllegalArgumentException("A strategy can't be null");
       }
       this.strategy = strategy;
-      this.cache = useCache ? new HashMap() : null;
+      this.cache = useCache ? new HashMap<String, ObjectInstantiator<?>>() : null;
    }
 
+   @Override
    public String toString() {
       return getClass().getName() + " using " + strategy.getClass().getName()
          + (cache == null ? " without" : " with") + " caching";
@@ -69,7 +70,7 @@ public class ObjenesisBase implements Objenesis {
     * @param clazz Class to instantiate
     * @return New instance of clazz
     */
-   public Object newInstance(Class clazz) {
+   public <T> T newInstance(Class<T> clazz) {
       return getInstantiatorOf(clazz).newInstance();
    }
 
@@ -81,17 +82,18 @@ public class ObjenesisBase implements Objenesis {
     * @param clazz Class to instantiate
     * @return Instantiator dedicated to the class
     */
-   public ObjectInstantiator getInstantiatorOf(Class clazz) {
+   @SuppressWarnings("unchecked")
+   public <T> ObjectInstantiator<T> getInstantiatorOf(Class<T> clazz) {
       if(cache == null) {
          return strategy.newInstantiatorOf(clazz);
       }
       synchronized (cache) {
-         ObjectInstantiator instantiator = (ObjectInstantiator) cache.get(clazz.getName());
+         ObjectInstantiator<?> instantiator = cache.get(clazz.getName());
          if(instantiator == null) {
             instantiator = strategy.newInstantiatorOf(clazz);
             cache.put(clazz.getName(), instantiator);
          }
-         return instantiator;
+         return (ObjectInstantiator<T>) instantiator;
       }
    }
 }

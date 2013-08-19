@@ -29,7 +29,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * 
  * @author Leonardo Mesquita
  */
-public abstract class GCJInstantiatorBase implements ObjectInstantiator {
+public abstract class GCJInstantiatorBase<T> implements ObjectInstantiator<T> {
    static Method newObjectMethod = null;
    static ObjectInputStream dummyStream;
 
@@ -58,12 +58,12 @@ public abstract class GCJInstantiatorBase implements ObjectInstantiator {
       }
    }
 
-   protected final Class type;
+   protected final Class<T> type;
 
-   public GCJInstantiatorBase(Class type) {
+   public GCJInstantiatorBase(Class<T> type) {
       this.type = type;
       initialize();
    }
 
-   public abstract Object newInstance();
+   public abstract T newInstance();
 }

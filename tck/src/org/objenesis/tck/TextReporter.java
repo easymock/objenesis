@@ -72,15 +72,15 @@ public class TextReporter implements Reporter {
 
    private int errorCount = 0;
 
-   private SortedSet allCandidates = new TreeSet();
+   private SortedSet<String> allCandidates = new TreeSet<String>();
 
-   private SortedSet allInstantiators = new TreeSet();
+   private SortedSet<String> allInstantiators = new TreeSet<String>();
 
    private String currentObjenesis;
 
    private String currentCandidate;
 
-   private Map objenesisResults = new HashMap();
+   private Map<String, Map<String, Result>> objenesisResults = new HashMap<String, Map<String, Result>>();
 
    private String platformDescription;
 
@@ -93,8 +93,8 @@ public class TextReporter implements Reporter {
       this.log = log;
    }
 
-   public void startTests(String platformDescription, Collection allCandidates,
-      Collection allInstantiators) {
+   public void startTests(String platformDescription, Collection<String> allCandidates,
+      Collection<String> allInstantiators) {
 
       // HT: in case the same reporter is reused, I'm guessing that it will
       // always be the
@@ -103,8 +103,8 @@ public class TextReporter implements Reporter {
       this.allCandidates.addAll(allCandidates);
       this.allInstantiators.addAll(allInstantiators);
 
-      for(Iterator it = allInstantiators.iterator(); it.hasNext();) {
-         objenesisResults.put(it.next(), new HashMap());
+      for(Iterator<String> it = allInstantiators.iterator(); it.hasNext();) {
+         objenesisResults.put(it.next(), new HashMap<String, Result>());
       }
 
       startTime = System.currentTimeMillis();
@@ -119,7 +119,8 @@ public class TextReporter implements Reporter {
       if(!instantiatedObject) {
          errorCount++;
       }
-      ((Map) objenesisResults.get(currentObjenesis)).put(currentCandidate, new Result(
+      objenesisResults.get(currentObjenesis).put(currentCandidate,
+         new Result(
          currentObjenesis, currentCandidate, instantiatedObject, null));
    }
 
@@ -127,7 +128,8 @@ public class TextReporter implements Reporter {
 
       errorCount++;
 
-      ((Map) objenesisResults.get(currentObjenesis)).put(currentCandidate, new Result(
+      objenesisResults.get(currentObjenesis).put(currentCandidate,
+         new Result(
          currentObjenesis, currentCandidate, false, exception));
    }
 
@@ -159,22 +161,22 @@ public class TextReporter implements Reporter {
 
       // Header
       summary.print(pad("", maxCandidateWidth) + ' ');
-      for(Iterator it = allInstantiators.iterator(); it.hasNext();) {
-         String desc = (String) it.next();
+      for(Iterator<String> it = allInstantiators.iterator(); it.hasNext();) {
+         String desc = it.next();
          summary.print(pad(desc, maxObjenesisWidth) + ' ');
       }
       summary.println();
 
-      List exceptions = new ArrayList();
+      List<Result> exceptions = new ArrayList<Result>();
 
       // Candidates (and keep the exceptions meanwhile)
-      for(Iterator it = allCandidates.iterator(); it.hasNext();) {
-         String candidateDesc = (String) it.next();
+      for(Iterator<String> it = allCandidates.iterator(); it.hasNext();) {
+         String candidateDesc = it.next();
          summary.print(pad(candidateDesc, maxCandidateWidth) + ' ');
 
-         for(Iterator itInst = allInstantiators.iterator(); itInst.hasNext();) {
-            String instDesc = (String) itInst.next();
-            Result result = (Result) ((Map) objenesisResults.get(instDesc)).get(candidateDesc);
+         for(Iterator<String> itInst = allInstantiators.iterator(); itInst.hasNext();) {
+            String instDesc = itInst.next();
+            Result result = objenesisResults.get(instDesc).get(candidateDesc);
             if(result == null) {
                summary.print(pad("N/A", maxObjenesisWidth) + " ");
             }
@@ -194,8 +196,8 @@ public class TextReporter implements Reporter {
       // Final
       if(errorCount != 0) {
 
-         for(Iterator it = exceptions.iterator(); it.hasNext();) {
-            Result element = (Result) it.next();
+         for(Iterator<Result> it = exceptions.iterator(); it.hasNext();) {
+            Result element = it.next();
             log.println("--- Candidate '" + element.candidateDescription + "', Instantiator '"
                + element.objenesisDescription + "' ---");
             element.exception.printStackTrace(log);
@@ -229,10 +231,10 @@ public class TextReporter implements Reporter {
       }
    }
 
-   private int lengthOfLongestStringIn(Collection descriptions) {
+   private int lengthOfLongestStringIn(Collection<String> descriptions) {
       int result = 0;
-      for(Iterator it = descriptions.iterator(); it.hasNext();) {
-         result = Math.max(result, ((String) it.next()).length());
+      for(Iterator<String> it = descriptions.iterator(); it.hasNext();) {
+         result = Math.max(result, it.next().length());
       }
       return result;
    }

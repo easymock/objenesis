@@ -31,7 +31,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @see ObjectInstantiator
  * @see java.io.Serializable
  */
-public class ObjectStreamClassInstantiator implements ObjectInstantiator {
+public class ObjectStreamClassInstantiator<T> implements ObjectInstantiator<T> {
 
    private static Method newInstanceMethod;
 
@@ -53,15 +53,16 @@ public class ObjectStreamClassInstantiator implements ObjectInstantiator {
 
    private final ObjectStreamClass objStreamClass;
 
-   public ObjectStreamClassInstantiator(Class type) {
+   public ObjectStreamClassInstantiator(Class<T> type) {
       initialize();
       objStreamClass = ObjectStreamClass.lookup(type);
    }
 
-   public Object newInstance() {
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
 	   
       try {
-         return newInstanceMethod.invoke(objStreamClass, new Object[] {});
+         return (T) newInstanceMethod.invoke(objStreamClass, new Object[] {});
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

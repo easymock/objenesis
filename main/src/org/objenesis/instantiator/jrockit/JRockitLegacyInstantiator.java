@@ -28,12 +28,12 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @see org.objenesis.instantiator.ObjectInstantiator
  * @see org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator
  */
-public class JRockitLegacyInstantiator implements ObjectInstantiator {
+public class JRockitLegacyInstantiator<T> implements ObjectInstantiator<T> {
    private static Method safeAllocObjectMethod = null;
 
    private static void initialize() {
       if(safeAllocObjectMethod == null) {
-         Class memSystem;
+         Class<?> memSystem;
          try {
             memSystem = Class.forName("jrockit.vm.MemSystem");
             safeAllocObjectMethod = memSystem.getDeclaredMethod("safeAllocObject",
@@ -52,16 +52,17 @@ public class JRockitLegacyInstantiator implements ObjectInstantiator {
       }
    }
 
-   private final Class type;
+   private final Class<T> type;
 
-   public JRockitLegacyInstantiator(Class type) {
+   public JRockitLegacyInstantiator(Class<T> type) {
       initialize();
       this.type = type;
    }
 
-   public Object newInstance() {      
+   @SuppressWarnings("unchecked")
+   public T newInstance() {      
       try {
-         return safeAllocObjectMethod.invoke(null, new Object[] {type});
+         return (T) safeAllocObjectMethod.invoke(null, new Object[] {type});
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

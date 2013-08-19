@@ -29,12 +29,12 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * 
  * @author Ian Parkinson (Google Inc.)
  */
-public class AndroidSerializationInstantiator implements ObjectInstantiator {
-   private final Class type;
+public class AndroidSerializationInstantiator<T> implements ObjectInstantiator<T> {
+   private final Class<T> type;
    private final ObjectStreamClass objectStreamClass;
    private final Method newInstanceMethod;
 
-   public AndroidSerializationInstantiator(Class type) {
+   public AndroidSerializationInstantiator(Class<T> type) {
       this.type = type;
       newInstanceMethod = getNewInstanceMethod();
       Method m = null;
@@ -52,9 +52,10 @@ public class AndroidSerializationInstantiator implements ObjectInstantiator {
       }
    }
 
-   public Object newInstance() {
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
       try {
-         return newInstanceMethod.invoke(objectStreamClass, type);
+         return (T) newInstanceMethod.invoke(objectStreamClass, type);
       }
       catch(IllegalAccessException e) {
          throw new ObjenesisException(e);

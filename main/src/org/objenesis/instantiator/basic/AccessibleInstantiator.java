@@ -23,9 +23,9 @@ package org.objenesis.instantiator.basic;
  * @author Joe Walnes
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
-public class AccessibleInstantiator extends ConstructorInstantiator {
+public class AccessibleInstantiator<T> extends ConstructorInstantiator<T> {
 
-   public AccessibleInstantiator(Class type) {
+   public AccessibleInstantiator(Class<T> type) {
       super(type);
       if(constructor != null) {
          constructor.setAccessible(true);
