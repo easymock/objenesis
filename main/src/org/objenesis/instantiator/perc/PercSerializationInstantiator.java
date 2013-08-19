@@ -36,7 +36,7 @@ public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
 
    private Object[] typeArgs;
 
-   private final java.lang.reflect.Method newInstanceMethod;
+   private final Method newInstanceMethod;
 
    public PercSerializationInstantiator(Class<T> type) {
 
