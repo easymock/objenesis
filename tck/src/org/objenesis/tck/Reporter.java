@@ -41,8 +41,8 @@ public interface Reporter {
     * @param allCandidates Descriptions (String) of all candidates being used in tests.
     * @param allObjenesisInstances Descriptions of all Objenesis instances being used in tests.
     */
-   void startTests(String platformDescription, Collection allCandidates,
-      Collection allObjenesisInstances);
+   void startTests(String platformDescription, Collection<String> allCandidates,
+      Collection<String> allObjenesisInstances);
 
    /**
     * Report that a test between a candidate and an objenesis instance if about to start.

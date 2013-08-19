@@ -29,18 +29,18 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @author Joe Walnes
  * @see ObjectInstantiator
  */
-public class SunReflectionFactoryInstantiator implements ObjectInstantiator {
+public class SunReflectionFactoryInstantiator<T> implements ObjectInstantiator<T> {
 
-   private final Constructor mungedConstructor;
+   private final Constructor<T> mungedConstructor;
 
-   public SunReflectionFactoryInstantiator(Class type) {
-      Constructor javaLangObjectConstructor = getJavaLangObjectConstructor();
+   public SunReflectionFactoryInstantiator(Class<T> type) {
+      Constructor<Object> javaLangObjectConstructor = getJavaLangObjectConstructor();
       mungedConstructor = SunReflectionFactoryHelper.newConstructorForSerialization(
           type, javaLangObjectConstructor);
       mungedConstructor.setAccessible(true);
    }
 
-   public Object newInstance() {
+   public T newInstance() {
       try {
          return mungedConstructor.newInstance((Object[]) null);
       }
@@ -49,7 +49,7 @@ public class SunReflectionFactoryInstantiator implements ObjectInstantiator {
       }
    }
 
-   private static Constructor getJavaLangObjectConstructor() {
+   private static Constructor<Object> getJavaLangObjectConstructor() {
       try {
          return Object.class.getConstructor((Class[]) null);
       }

@@ -25,13 +25,14 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * This can deal with default public constructors, but that's about it.
  * 
  * @author Joe Walnes
+ * @param <T>
  * @see ObjectInstantiator
  */
-public class ConstructorInstantiator implements ObjectInstantiator {
+public class ConstructorInstantiator<T> implements ObjectInstantiator<T> {
 
-   protected Constructor constructor;
+   protected Constructor<T> constructor;
 
-   public ConstructorInstantiator(Class type) {
+   public ConstructorInstantiator(Class<T> type) {
       try {
          constructor = type.getDeclaredConstructor((Class[]) null);
       }
@@ -40,7 +41,7 @@ public class ConstructorInstantiator implements ObjectInstantiator {
       }
    }
 
-   public Object newInstance() {
+   public T newInstance() {
       try {
          return constructor.newInstance((Object[]) null);
       }

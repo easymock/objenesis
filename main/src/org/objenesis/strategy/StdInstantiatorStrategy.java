@@ -19,10 +19,8 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.Android23Instantiator;
 import org.objenesis.instantiator.android.Android30Instantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
-import org.objenesis.instantiator.jrockit.JRockit131Instantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
-import org.objenesis.instantiator.sun.Sun13Instantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
 import org.objenesis.instantiator.sun.UnsafeFactoryInstantiator;
 
@@ -49,21 +47,15 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
     * @param type Class to instantiate
     * @return The ObjectInstantiator for the class
     */
-   public ObjectInstantiator newInstantiatorOf(Class type) {
+   public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
       if(PlatformDescription.isThisJVM(SUN)) {
-         if(VM_VERSION.startsWith("1.3")) {
-            return new Sun13Instantiator(type);
-         }
          // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5 times slower. So
          // I prefer to use this one
-         return new SunReflectionFactoryInstantiator(type);
+         return new SunReflectionFactoryInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(JROCKIT)) {
-         if(VM_VERSION.startsWith("1.3")) {
-            return new JRockit131Instantiator(type);
-         }
-         else if(VM_VERSION.startsWith("1.4")) {
+         if(VM_VERSION.startsWith("1.4")) {
             // JRockit vendor version will be RXX where XX is the version
             // Versions prior to 26 need special handling
             // From R26 on, java.vm.version starts with R
@@ -71,32 +63,32 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
                // On R25.1 and R25.2, ReflectionFactory should work. Otherwise, we must use the
                // Legacy instantiator.
                if(VM_INFO == null || !VM_INFO.startsWith("R25.1") || !VM_INFO.startsWith("R25.2")) {
-                  return new JRockitLegacyInstantiator(type);
+                  return new JRockitLegacyInstantiator<T>(type);
                }
             }
          }
          // After that, JRockit became compliant with HotSpot
-         return new SunReflectionFactoryInstantiator(type);
+         return new SunReflectionFactoryInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
         // System property "java.vm.version" seems to be 1.4.0 for Android 2.3 and 1.5.0 for Android 3.0
         // so we use it here to choose the relevant implementation.
         if(VENDOR_VERSION.compareTo("1.5.0") < 0) {
           // Android 2.3 Gingerbread and lower
-          return new Android23Instantiator(type);
+          return new Android23Instantiator<T>(type);
         } else {
           // Android 3.0 Honeycomb and higher
-          return new Android30Instantiator(type);
+          return new Android30Instantiator<T>(type);
         }
       }
       else if(PlatformDescription.isThisJVM(GNU)) {
-         return new GCJInstantiator(type);
+         return new GCJInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(PERC)) {
-    	  return new PercInstantiator(type);
+         return new PercInstantiator<T>(type);
       }
 
       // Fallback instantiator, should work with most modern JVM
-      return new UnsafeFactoryInstantiator(type);
+      return new UnsafeFactoryInstantiator<T>(type);
    }
 }

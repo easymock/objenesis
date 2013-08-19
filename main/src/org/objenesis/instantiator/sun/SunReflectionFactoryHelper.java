@@ -32,15 +32,17 @@ import org.objenesis.instantiator.ObjectInstantiator;
 @SuppressWarnings("restriction")
 class SunReflectionFactoryHelper {
 
-   public static Constructor newConstructorForSerialization(Class type, Constructor constructor) {
-      Class reflectionFactoryClass = getReflectionFactoryClass();
+   @SuppressWarnings("unchecked")
+   public static <T> Constructor<T> newConstructorForSerialization(Class<T> type,
+      Constructor<?> constructor) {
+      Class<?> reflectionFactoryClass = getReflectionFactoryClass();
       Object reflectionFactory = createReflectionFactory(reflectionFactoryClass);
 
       Method newConstructorForSerializationMethod = getNewConstructorForSerializationMethod(
          reflectionFactoryClass);
 
       try {
-         return (Constructor) newConstructorForSerializationMethod.invoke(
+         return (Constructor<T>) newConstructorForSerializationMethod.invoke(
             reflectionFactory, type, constructor);
       }
       catch(IllegalArgumentException e) {
@@ -54,7 +56,7 @@ class SunReflectionFactoryHelper {
       }
    }
 
-   private static Class getReflectionFactoryClass() {
+   private static Class<?> getReflectionFactoryClass() {
       try {
          return Class.forName("sun.reflect.ReflectionFactory");
       }
@@ -63,7 +65,7 @@ class SunReflectionFactoryHelper {
       }
    }
 
-   private static Object createReflectionFactory(Class reflectionFactoryClass) {
+   private static Object createReflectionFactory(Class<?> reflectionFactoryClass) {
       try {
          Method method = reflectionFactoryClass.getDeclaredMethod(
             "getReflectionFactory");
@@ -83,7 +85,7 @@ class SunReflectionFactoryHelper {
       }
    }
 
-   private static Method getNewConstructorForSerializationMethod(Class reflectionFactoryClass) {
+   private static Method getNewConstructorForSerializationMethod(Class<?> reflectionFactoryClass) {
       try {
          return reflectionFactoryClass.getDeclaredMethod(
             "newConstructorForSerialization", Class.class, Constructor.class);

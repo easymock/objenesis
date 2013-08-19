@@ -25,15 +25,15 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @author Joe Walnes
  * @see ObjectInstantiator
  */
-public class NewInstanceInstantiator implements ObjectInstantiator {
+public class NewInstanceInstantiator<T> implements ObjectInstantiator<T> {
 
-   private final Class type;
+   private final Class<T> type;
 
-   public NewInstanceInstantiator(Class type) {
+   public NewInstanceInstantiator(Class<T> type) {
       this.type = type;
    }
 
-   public Object newInstance() {
+   public T newInstance() {
       try {
          return type.newInstance();
       }      

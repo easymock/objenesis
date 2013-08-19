@@ -29,13 +29,13 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @author Henri Tremblay
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
-public class PercInstantiator implements ObjectInstantiator {
+public class PercInstantiator<T> implements ObjectInstantiator<T> {
 
 	private final Method newInstanceMethod;
 
 	private final Object[] typeArgs = new Object[] { null, Boolean.FALSE };
 
-	public PercInstantiator(Class type) {
+	public PercInstantiator(Class<T> type) {
 
 		typeArgs[0] = type;
 
@@ -52,9 +52,10 @@ public class PercInstantiator implements ObjectInstantiator {
       }
 	}
 
-	public Object newInstance() {
+	@SuppressWarnings("unchecked")
+   public T newInstance() {
 		try {
-			return newInstanceMethod.invoke(null, typeArgs);
+			return (T) newInstanceMethod.invoke(null, typeArgs);
 		} catch (Exception e) {
 			throw new ObjenesisException(e);
 		}

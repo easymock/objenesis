@@ -26,14 +26,15 @@ import org.objenesis.ObjenesisException;
  * @author Leonardo Mesquita
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
-public class GCJInstantiator extends GCJInstantiatorBase {
-   public GCJInstantiator(Class type) {
+public class GCJInstantiator<T> extends GCJInstantiatorBase<T> {
+   public GCJInstantiator(Class<T> type) {
       super(type);
    }
 
-   public Object newInstance() {
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
       try {
-         return newObjectMethod.invoke(dummyStream, new Object[] {type, Object.class});
+         return (T) newObjectMethod.invoke(dummyStream, new Object[] {type, Object.class});
       }
       catch(RuntimeException e) {
          throw new ObjenesisException(e);

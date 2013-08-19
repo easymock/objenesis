@@ -45,8 +45,8 @@ public class ObjenesisTest extends TestCase {
 
       private String currentCandidate;
 
-      public void startTests(String platformDescription, Collection allCandidates,
-         Collection allInstantiators) {
+      public void startTests(String platformDescription, Collection<String> allCandidates,
+         Collection<String> allInstantiators) {
       }
 
       public void startTest(String candidateDescription, String objenesisDescription) {
@@ -104,6 +104,7 @@ public class ObjenesisTest extends TestCase {
 
    private CandidateLoader candidateLoader = null;
 
+   @Override
    protected void setUp() throws Exception {
       super.setUp();
 
@@ -112,6 +113,7 @@ public class ObjenesisTest extends TestCase {
       candidateLoader = new CandidateLoader(tck, getClass().getClassLoader(), new ErrorHandler());
    }
 
+   @Override
    protected void tearDown() throws Exception {
       candidateLoader = null;
       tck = null;

@@ -22,12 +22,12 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * 
  * @author Henri Tremblay
  */
-public class NullInstantiator implements ObjectInstantiator {
+public class NullInstantiator<T> implements ObjectInstantiator<T> {
 
    /**
     * @return Always null
     */
-   public Object newInstance() {
+   public T newInstance() {
       return null;
    }
 }

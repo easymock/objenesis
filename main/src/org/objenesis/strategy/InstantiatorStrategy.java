@@ -27,8 +27,8 @@ public interface InstantiatorStrategy {
    /**
     * Create a dedicated instantiator for the given class
     * 
-    * @param type Class that will be instantiate
+    * @param type Class that will be instantiated
     * @return Dedicated instantiator
     */
-   ObjectInstantiator newInstantiatorOf(Class type);
+   <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type);
 }

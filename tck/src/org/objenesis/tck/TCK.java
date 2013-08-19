@@ -54,9 +54,9 @@ import org.objenesis.strategy.PlatformDescription;
  */
 public class TCK {
 
-   private final List objenesisInstances = new ArrayList();
-   private final List candidates = new ArrayList();
-   private final Map descriptions = new HashMap();
+   private final List<Objenesis> objenesisInstances = new ArrayList<Objenesis>();
+   private final List<Class<?>> candidates = new ArrayList<Class<?>>();
+   private final Map<Object, String> descriptions = new HashMap<Object, String>();
 
    /**
     * Register a candidate class to attempt to instantiate.
@@ -64,7 +64,7 @@ public class TCK {
     * @param candidateClass Class to attempt to instantiate
     * @param description Description of the class
     */
-   public void registerCandidate(Class candidateClass, String description) {
+   public void registerCandidate(Class<?> candidateClass, String description) {
       candidates.add(candidateClass);
       descriptions.put(candidateClass, description);
    }
@@ -89,14 +89,14 @@ public class TCK {
       reporter.startTests(describePlatform(), findAllDescriptions(candidates, descriptions),
          findAllDescriptions(objenesisInstances, descriptions));
 
-      for(Iterator i = candidates.iterator(); i.hasNext();) {
-         Class candidateClass = (Class) i.next();
-         String candidateDescription = (String) descriptions.get(candidateClass);
+      for(Iterator<Class<?>> i = candidates.iterator(); i.hasNext();) {
+         Class<?> candidateClass = i.next();
+         String candidateDescription = descriptions.get(candidateClass);
 
-         for(Iterator j = objenesisInstances.iterator(); j.hasNext();) {
-            Objenesis objenesis = (Objenesis) j.next();
+         for(Iterator<Objenesis> j = objenesisInstances.iterator(); j.hasNext();) {
+            Objenesis objenesis = j.next();
 
-            String objenesisDescription = (String) descriptions.get(objenesis);
+            String objenesisDescription = descriptions.get(objenesis);
 
             reporter.startTest(candidateDescription, objenesisDescription);
 
@@ -108,7 +108,7 @@ public class TCK {
       reporter.endTests();
    }
 
-   private void runTest(Reporter reporter, Class candidate, Objenesis objenesis,
+   private void runTest(Reporter reporter, Class<?> candidate, Objenesis objenesis,
       String candidateDescription) {
       try {
          Object instance = objenesis.newInstance(candidate);
@@ -120,8 +120,8 @@ public class TCK {
       }
    }
 
-   private Collection findAllDescriptions(List keys, Map descriptions) {
-      List results = new ArrayList(keys.size());
+   private Collection<String> findAllDescriptions(List<?> keys, Map<?, String> descriptions) {
+      List<String> results = new ArrayList<String>(keys.size());
       for(int i = 0; i < keys.size(); i++) {
          results.add(descriptions.get(keys.get(i)));
       }

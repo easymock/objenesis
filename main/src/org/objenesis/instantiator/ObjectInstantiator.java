@@ -20,7 +20,7 @@ package org.objenesis.instantiator;
  * 
  * @author Leonardo Mesquita
  */
-public interface ObjectInstantiator {
+public interface ObjectInstantiator<T> {
 
    /**
     * Returns a new instance of an object. The returned object's class is defined by the
@@ -28,6 +28,6 @@ public interface ObjectInstantiator {
     * 
     * @return A new instance of an object.
     */
-   Object newInstance();
+   T newInstance();
 
 }

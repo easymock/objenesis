@@ -80,26 +80,28 @@ public class ConcurrentGetInstantiator {
 
    @GenerateMicroBenchmark
    public void std(ThreadState state, BlackHole bh) {
-     ObjectInstantiator inst = std.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
+      ObjectInstantiator<?> inst = std.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
      bh.consume(inst);
    }
 
    @GenerateMicroBenchmark
    public void single(ThreadState state, BlackHole bh) {
-      ObjectInstantiator inst = single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
+      ObjectInstantiator<?> inst = single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
       bh.consume(inst);
    }
    
    @GenerateMicroBenchmark
    public void cachedStd(ThreadState state, BlackHole bh) {
       System.out.println(Thread.currentThread() + ": " + cachedStd.hashCode()); 
-      ObjectInstantiator inst = cachedStd.getInstantiatorOf(toInstantiate[state.index++ % COUNT]);
+      ObjectInstantiator<?> inst = cachedStd
+         .getInstantiatorOf(toInstantiate[state.index++ % COUNT]);
       bh.consume(inst);
    }
    
    @GenerateMicroBenchmark
    public void uncachedStd(ThreadState state, BlackHole bh) {
-      ObjectInstantiator inst = uncachedStd.getInstantiatorOf(toInstantiate[state.index++ % COUNT]);
+      ObjectInstantiator<?> inst = uncachedStd.getInstantiatorOf(toInstantiate[state.index++
+         % COUNT]);
       bh.consume(inst);
    }
 }

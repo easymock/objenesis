@@ -15,11 +15,12 @@
  */
 package org.objenesis.instantiator.sun;
 
+import java.lang.reflect.Field;
+
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
+import sun.misc.Unsafe;
 
 /**
  * Instantiates an object, WITHOUT calling it's constructor, using
@@ -30,12 +31,12 @@ import java.lang.reflect.Field;
  * @see ObjectInstantiator
  */
 @SuppressWarnings("restriction")
-public class UnsafeFactoryInstantiator implements ObjectInstantiator {
+public class UnsafeFactoryInstantiator<T> implements ObjectInstantiator<T> {
 
    private static Unsafe unsafe;
-   private final Class type;
+   private final Class<T> type;
 
-   public UnsafeFactoryInstantiator(Class type) {
+   public UnsafeFactoryInstantiator(Class<T> type) {
       if (unsafe == null) {
          Field f;
          try {
@@ -53,9 +54,9 @@ public class UnsafeFactoryInstantiator implements ObjectInstantiator {
       this.type = type;
    }
 
-   public Object newInstance() {
+   public T newInstance() {
       try {
-         return unsafe.allocateInstance(type);
+         return type.cast(unsafe.allocateInstance(type));
       } catch (InstantiationException e) {
          throw new ObjenesisException(e);
       }
