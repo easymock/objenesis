@@ -59,10 +59,9 @@ public class JRockitLegacyInstantiator<T> implements ObjectInstantiator<T> {
       this.type = type;
    }
 
-   @SuppressWarnings("unchecked")
    public T newInstance() {      
       try {
-         return (T) safeAllocObjectMethod.invoke(null, new Object[] {type});
+         return type.cast(safeAllocObjectMethod.invoke(null, type));
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

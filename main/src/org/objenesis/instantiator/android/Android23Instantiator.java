@@ -22,9 +22,9 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
- * Instantiator for Android <= 2.3 which creates objects without driving their constructors, using internal
- * methods on the Dalvik implementation of {@link java.io.ObjectInputStream}.
- *
+ * Instantiator for Android <= 2.3 which creates objects without driving their constructors, using
+ * internal methods on the Dalvik implementation of {@link java.io.ObjectInputStream}.
+ * 
  * @author Piotr 'Qertoip' Włodarek
  */
 public class Android23Instantiator<T> implements ObjectInstantiator<T> {
@@ -36,10 +36,9 @@ public class Android23Instantiator<T> implements ObjectInstantiator<T> {
       newStaticMethod = getNewStaticMethod();
    }
 
-   @SuppressWarnings("unchecked")
    public T newInstance() {
       try {
-         return (T) newStaticMethod.invoke(null, type, Object.class);
+         return type.cast(newStaticMethod.invoke(null, type, Object.class));
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

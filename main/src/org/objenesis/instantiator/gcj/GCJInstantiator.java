@@ -31,10 +31,10 @@ public class GCJInstantiator<T> extends GCJInstantiatorBase<T> {
       super(type);
    }
 
-   @SuppressWarnings("unchecked")
+   @Override
    public T newInstance() {
       try {
-         return (T) newObjectMethod.invoke(dummyStream, new Object[] {type, Object.class});
+         return type.cast(newObjectMethod.invoke(dummyStream, type, Object.class));
       }
       catch(RuntimeException e) {
          throw new ObjenesisException(e);

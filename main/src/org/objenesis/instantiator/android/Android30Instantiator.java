@@ -39,10 +39,9 @@ public class Android30Instantiator<T> implements ObjectInstantiator<T> {
       objectConstructorId = findConstructorIdForJavaLangObjectConstructor();
    }
 
-   @SuppressWarnings("unchecked")
    public T newInstance() {
       try {
-         return (T) newInstanceMethod.invoke(null, type, objectConstructorId);
+         return type.cast(newInstanceMethod.invoke(null, type, objectConstructorId));
       }
       catch(Exception e) {
          throw new ObjenesisException(e);
