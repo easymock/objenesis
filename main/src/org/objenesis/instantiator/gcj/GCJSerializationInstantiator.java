@@ -34,10 +34,10 @@ public class GCJSerializationInstantiator<T> extends GCJInstantiatorBase<T> {
       this.superType = SerializationInstantiatorHelper.getNonSerializableSuperClass(type);
    }
 
-   @SuppressWarnings("unchecked")
+   @Override
    public T newInstance() {
       try {
-         return (T) newObjectMethod.invoke(dummyStream, new Object[] {type, superType});
+         return type.cast(newObjectMethod.invoke(dummyStream, type, superType));
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

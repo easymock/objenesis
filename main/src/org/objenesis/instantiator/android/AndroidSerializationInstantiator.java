@@ -52,10 +52,9 @@ public class AndroidSerializationInstantiator<T> implements ObjectInstantiator<T
       }
    }
 
-   @SuppressWarnings("unchecked")
    public T newInstance() {
       try {
-         return (T) newInstanceMethod.invoke(objectStreamClass, type);
+         return type.cast(newInstanceMethod.invoke(objectStreamClass, type));
       }
       catch(IllegalAccessException e) {
          throw new ObjenesisException(e);
