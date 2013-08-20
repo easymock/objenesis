@@ -40,8 +40,8 @@ public class PercInstantiator<T> implements ObjectInstantiator<T> {
 		typeArgs[0] = type;
 
 		try {
-			newInstanceMethod = ObjectInputStream.class.getDeclaredMethod("newInstance",
-					new Class[] { Class.class, Boolean.TYPE });
+         newInstanceMethod = ObjectInputStream.class.getDeclaredMethod("newInstance", Class.class,
+            Boolean.TYPE);
 			newInstanceMethod.setAccessible(true);
 		}
       catch(RuntimeException e) {
@@ -55,7 +55,7 @@ public class PercInstantiator<T> implements ObjectInstantiator<T> {
 	@SuppressWarnings("unchecked")
    public T newInstance() {
 		try {
-			return (T) newInstanceMethod.invoke(null, typeArgs);
+         return (T) newInstanceMethod.invoke(null, typeArgs);
 		} catch (Exception e) {
 			throw new ObjenesisException(e);
 		}

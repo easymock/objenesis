@@ -38,8 +38,7 @@ public class ObjectStreamClassInstantiator<T> implements ObjectInstantiator<T> {
    private static void initialize() {
       if(newInstanceMethod == null) {
          try {
-            newInstanceMethod = ObjectStreamClass.class.getDeclaredMethod("newInstance",
-               new Class[] {});
+            newInstanceMethod = ObjectStreamClass.class.getDeclaredMethod("newInstance");
             newInstanceMethod.setAccessible(true);
          }
          catch(RuntimeException e) {
@@ -62,7 +61,7 @@ public class ObjectStreamClassInstantiator<T> implements ObjectInstantiator<T> {
    public T newInstance() {
 	   
       try {
-         return (T) newInstanceMethod.invoke(objStreamClass, new Object[] {});
+         return (T) newInstanceMethod.invoke(objStreamClass);
       }
       catch(Exception e) {
          throw new ObjenesisException(e);
