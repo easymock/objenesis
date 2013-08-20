@@ -57,12 +57,11 @@ public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
 
          // Create invoke params
          Class<?> percClassClass = Class.forName("COM.newmonics.PercClassLoader.PercClass");
-         Method getPercClassMethod = percClassClass.getDeclaredMethod("getPercClass",
-            new Class[] {Class.class});
-         Object someObject = getPercClassMethod.invoke(null, new Object[] {unserializableType});
+         Method getPercClassMethod = percClassClass.getDeclaredMethod("getPercClass", Class.class);
+         Object someObject = getPercClassMethod.invoke(null, unserializableType);
          Method findMethodMethod = someObject.getClass().getDeclaredMethod("findMethod",
             new Class[] {String.class});
-         Object percMethod = findMethodMethod.invoke(someObject, new Object[] {"<init>()V"});
+         Object percMethod = findMethodMethod.invoke(someObject, "<init>()V");
 
          typeArgs = new Object[] {unserializableType, type, percMethod};
 
