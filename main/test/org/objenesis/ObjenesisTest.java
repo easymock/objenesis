@@ -15,16 +15,18 @@
  */
 package org.objenesis;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
+import org.junit.Test;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
 
 /**
  * @author Henri Tremblay
  */
-public class ObjenesisTest extends TestCase {
+public class ObjenesisTest {
 
+   @Test
    public final void testObjenesis() {
       Objenesis o = new ObjenesisStd();
       assertEquals(
@@ -32,6 +34,7 @@ public class ObjenesisTest extends TestCase {
          o.toString());
    }
 
+   @Test
    public final void testObjenesis_WithoutCache() {
       Objenesis o = new ObjenesisStd(false);
       assertEquals(
@@ -41,11 +44,13 @@ public class ObjenesisTest extends TestCase {
       assertEquals(o.getInstantiatorOf(getClass()).newInstance().getClass(), getClass());
    }
 
+   @Test
    public final void testNewInstance() {
       Objenesis o = new ObjenesisStd();
       assertEquals(getClass(), o.newInstance(getClass()).getClass());
    }
 
+   @Test
    public final void testGetInstantiatorOf() {
       Objenesis o = new ObjenesisStd();
       ObjectInstantiator<?> i1 = o.getInstantiatorOf(getClass());
@@ -57,6 +62,7 @@ public class ObjenesisTest extends TestCase {
       assertSame(i1, i2);
    }
 
+   @Test
    public final void testToString() {
       Objenesis o = new ObjenesisStd() {};
       assertEquals(

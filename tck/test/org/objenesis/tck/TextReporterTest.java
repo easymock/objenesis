@@ -15,28 +15,32 @@
  */
 package org.objenesis.tck;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Joe Walnes
  * @author Henri Tremblay
  */
-public class TextReporterTest extends TestCase {
+public class TextReporterTest {
 
    private TextReporter textReporter;
    private ByteArrayOutputStream summaryBuffer;
 
-   protected void setUp() throws Exception {
-      super.setUp();
+   @Before
+   public void setUp() throws Exception {
       summaryBuffer = new ByteArrayOutputStream();
       ByteArrayOutputStream logBuffer = new ByteArrayOutputStream();
       textReporter = new TextReporter(new PrintStream(summaryBuffer), new PrintStream(logBuffer));
    }
 
+   @Test
    public void testReportsSuccessesInTabularFormat() {
       textReporter.startTests("Some platform", Arrays.asList("candidate A",
          "candidate B", "candidate C"), Arrays.asList("instantiator1",

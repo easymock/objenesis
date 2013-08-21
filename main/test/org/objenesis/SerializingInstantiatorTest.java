@@ -15,24 +15,19 @@
  */
 package org.objenesis;
 
+import static org.junit.Assert.*;
+
 import java.io.NotSerializableException;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * @author Henri Tremblay
  * @author Leonardo Mesquita
  */
-public class SerializingInstantiatorTest extends TestCase {
+public class SerializingInstantiatorTest {
 
-   protected void setUp() throws Exception {
-      super.setUp();
-   }
-
-   protected void tearDown() throws Exception {
-      super.tearDown();
-   }
-
+   @Test
    public void testNotSerializable() {
       ObjenesisSerializer o = new ObjenesisSerializer();
       try {

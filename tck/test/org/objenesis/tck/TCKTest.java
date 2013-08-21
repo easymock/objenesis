@@ -15,10 +15,11 @@
  */
 package org.objenesis.tck;
 
+import static org.junit.Assert.*;
+
 import java.util.Collection;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.instantiator.ObjectInstantiator;
 
@@ -26,7 +27,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * @author Joe Walnes
  * @author Henri Tremblay
  */
-public class TCKTest extends TestCase {
+public class TCKTest {
 
    public static class StubbedInstantiator1 implements Objenesis {
       public <T> T newInstance(Class<T> clazz) {
@@ -48,6 +49,7 @@ public class TCKTest extends TestCase {
       }
    }
 
+   @Test
    public void testReportsAllCandidatesAndInstantiatorCombinationsToReporter() {
       // Given... a TCK with some candidate classes: A, B and C.
       TCK tck = new TCK();
@@ -75,6 +77,7 @@ public class TCKTest extends TestCase {
          + "result(false)\n" + "endTest()\n" + "endTests()\n", reporter.toString());
    }
 
+   @Test
    public void testReportsSuccessIfCandidateCanBeInstantiated() {
       // Given... a TCK with some candidate classes: A, B and C.
       TCK tck = new TCK();
