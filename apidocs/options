@@ -1,0 +1,24 @@
+-classpath
+'D:/dev/github/objenesis-git/main/target/classes'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'D:/dev/github/objenesis-git/main/src'
+-author
+-bottom
+'Copyright &#169; 2006-2013 Joe Walnes, Henri Tremblay, Leonardo Mesquita. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'D:/dev/github/objenesis-git/main/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Objenesis 2.0 API'
+-linkoffline
+'http://download.oracle.com/javase/1.5.0/docs/api' 'D:/dev/github/objenesis-git/main/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Objenesis 2.0 API'
