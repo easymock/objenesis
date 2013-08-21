@@ -92,7 +92,6 @@ public class ConcurrentGetInstantiator {
    
    @GenerateMicroBenchmark
    public void cachedStd(ThreadState state, BlackHole bh) {
-      System.out.println(Thread.currentThread() + ": " + cachedStd.hashCode()); 
       ObjectInstantiator<?> inst = cachedStd
          .getInstantiatorOf(toInstantiate[state.index++ % COUNT]);
       bh.consume(inst);
