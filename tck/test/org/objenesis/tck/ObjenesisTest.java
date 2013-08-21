@@ -15,13 +15,16 @@
  */
 package org.objenesis.tck;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Collection;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
 
@@ -31,7 +34,7 @@ import org.objenesis.ObjenesisStd;
  * 
  * @author Henri Tremblay
  */
-public class ObjenesisTest extends TestCase {
+public class ObjenesisTest {
 
    public static class ErrorHandler implements CandidateLoader.ErrorHandler {
       public void classNotFound(String name) {
@@ -104,34 +107,34 @@ public class ObjenesisTest extends TestCase {
 
    private CandidateLoader candidateLoader = null;
 
-   @Override
-   protected void setUp() throws Exception {
-      super.setUp();
-
+   @Before
+   public void setUp() throws Exception {
       tck = new TCK();
 
       candidateLoader = new CandidateLoader(tck, getClass().getClassLoader(), new ErrorHandler());
    }
 
-   @Override
-   protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
       candidateLoader = null;
       tck = null;
-      super.tearDown();
    }
 
+   @Test
    public void testObjenesisStd() throws Exception {
       candidateLoader.loadFromResource(getClass(), "candidates/candidates.properties");
       tck.registerObjenesisInstance(new ObjenesisStd(), "Objenesis standard");
       tck.runTests(new JUnitReporter());
    }
 
+   @Test
    public void testObjenesisSerializer() throws Exception {
       candidateLoader.loadFromResource(getClass(), "candidates/serializable-candidates.properties");
       tck.registerObjenesisInstance(new ObjenesisSerializer(), "Objenesis serializer");
       tck.runTests(new JUnitReporter());
    }
 
+   @Test
    public void testObjenesisSerializerParentConstructorCalled() throws Exception {
    	  Object result = new ObjenesisSerializer().newInstance(MockClass.class);
    	  assertEquals(MockClass.class, result.getClass());

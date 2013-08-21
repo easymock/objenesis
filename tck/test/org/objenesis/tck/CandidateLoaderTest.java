@@ -15,22 +15,24 @@
  */
 package org.objenesis.tck;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Joe Walnes
  */
-public class CandidateLoaderTest extends TestCase {
+public class CandidateLoaderTest {
 
    private StringBuilder recordedEvents;
    private CandidateLoader candidateLoader;
 
-   @Override
-   protected void setUp() throws Exception {
-      super.setUp();
+   @Before
+   public void setUp() throws Exception {
 
       recordedEvents = new StringBuilder();
       TCK tck = new TCK() {
@@ -49,6 +51,7 @@ public class CandidateLoaderTest extends TestCase {
       candidateLoader = new CandidateLoader(tck, getClass().getClassLoader(), errorHandler);
    }
 
+   @Test
    public void testReadsClassesAndDescriptionsFromPropertiesFile() throws IOException {
       String input = "" + "org.objenesis.tck.CandidateLoaderTest$A = A candidate\n" + "\n"
          + "# a comment and some whitespace\n" + "\n"
@@ -64,6 +67,7 @@ public class CandidateLoaderTest extends TestCase {
          recordedEvents.toString());
    }
 
+   @Test
    public void testReportsMissingClassesToErrorHandler() throws IOException {
       String input = "" + "org.objenesis.tck.CandidateLoaderTest$A = A candidate\n"
          + "org.objenesis.tck.CandidateLoaderTest$NonExistant = Dodgy candidate\n"
@@ -78,6 +82,7 @@ public class CandidateLoaderTest extends TestCase {
          recordedEvents.toString());
    }
 
+   @Test
    public void testLoadsFromResourceInClassPath() throws IOException {
       // See CandidateLoaderTest-sample.properties.
 
@@ -89,6 +94,7 @@ public class CandidateLoaderTest extends TestCase {
          recordedEvents.toString());
    }
 
+   @Test
    public void testThrowsIOExceptionIfResourceNotInClassPath() throws IOException {
       try {
          candidateLoader.loadFromResource(getClass(), "Blatently-Bogus.properties");

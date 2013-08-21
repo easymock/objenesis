@@ -15,18 +15,22 @@
  */
 package org.objenesis;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
  * @author Henri Tremblay
  */
-public class ObjenesisExceptionTest extends TestCase {
+public class ObjenesisExceptionTest {
 
+   @Test
    public final void testObjenesisExceptionString() {
       Exception e = new ObjenesisException("test");
       assertEquals("test", e.getMessage());
    }
 
+   @Test
    public final void testObjenesisExceptionThrowable() {
       Exception cause = new RuntimeException("test");
       Exception e = new ObjenesisException(cause);
@@ -39,6 +43,7 @@ public class ObjenesisExceptionTest extends TestCase {
       assertEquals(null, e.getMessage());
    }
 
+   @Test
    public final void testObjenesisExceptionStringThrowable() {
       Exception cause = new RuntimeException("test");
       Exception e = new ObjenesisException("msg", cause);
