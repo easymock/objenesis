@@ -24,6 +24,7 @@ import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
+import org.objenesis.strategy.BaseInstantiatorStrategy;
 import org.objenesis.strategy.InstantiatorStrategy;
 import org.objenesis.strategy.SingleInstantiatorStrategy;
 import org.objenesis.strategy.StdInstantiatorStrategy;
@@ -54,8 +55,16 @@ public class ConcurrentGetInstantiator {
 
    private static final int COUNT = 1000;
    
+   public static class SunInstantiatorStrategy extends BaseInstantiatorStrategy {
+      @Override
+      public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
+         return new SunReflectionFactoryInstantiator<>(type);
+      }
+   }
+
    InstantiatorStrategy std = new StdInstantiatorStrategy();
    InstantiatorStrategy single = new SingleInstantiatorStrategy(SunReflectionFactoryInstantiator.class);
+   InstantiatorStrategy custom = new SunInstantiatorStrategy();
    
    Objenesis cachedStd = new ObjenesisStd();
    Objenesis uncachedStd = new ObjenesisStd(false);
@@ -86,6 +95,12 @@ public class ConcurrentGetInstantiator {
 
    @GenerateMicroBenchmark
    public void single(ThreadState state, BlackHole bh) {
+      ObjectInstantiator<?> inst = single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
+      bh.consume(inst);
+   }
+
+   @GenerateMicroBenchmark
+   public void custom(ThreadState state, BlackHole bh) {
       ObjectInstantiator<?> inst = single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
       bh.consume(inst);
    }
