@@ -242,8 +242,8 @@
       </build>
     </profile>
     <profile>
-      <!-- Activate to create a complete release -->
-      <id>release</id>
+      <!-- Activate to perform integration tests -->
+      <id>full</id>
       <build>
         <plugins>
           <plugin>
