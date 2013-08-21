@@ -15,8 +15,7 @@
  */
 package org.objenesis;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
@@ -33,7 +32,7 @@ public class ObjenesisBase implements Objenesis {
    protected final InstantiatorStrategy strategy;
 
    /** Strategy cache. Key = Class, Value = InstantiatorStrategy */
-   protected Map<String, ObjectInstantiator<?>> cache;
+   protected ConcurrentHashMap<String, ObjectInstantiator<?>> cache;
 
    /**
     * Constructor allowing to pick a strategy and using cache
@@ -55,7 +54,7 @@ public class ObjenesisBase implements Objenesis {
          throw new IllegalArgumentException("A strategy can't be null");
       }
       this.strategy = strategy;
-      this.cache = useCache ? new HashMap<String, ObjectInstantiator<?>>() : null;
+      this.cache = useCache ? new ConcurrentHashMap<String, ObjectInstantiator<?>>() : null;
    }
 
    @Override
@@ -87,13 +86,11 @@ public class ObjenesisBase implements Objenesis {
       if(cache == null) {
          return strategy.newInstantiatorOf(clazz);
       }
-      synchronized (cache) {
-         ObjectInstantiator<?> instantiator = cache.get(clazz.getName());
-         if(instantiator == null) {
-            instantiator = strategy.newInstantiatorOf(clazz);
-            cache.put(clazz.getName(), instantiator);
-         }
-         return (ObjectInstantiator<T>) instantiator;
+      ObjectInstantiator<?> instantiator = cache.get(clazz.getName());
+      if(instantiator == null) {
+         instantiator = strategy.newInstantiatorOf(clazz);
+         cache.putIfAbsent(clazz.getName(), instantiator);
       }
+      return (ObjectInstantiator<T>) instantiator;
    }
 }
