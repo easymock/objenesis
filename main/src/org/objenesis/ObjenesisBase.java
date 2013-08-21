@@ -88,8 +88,11 @@ public class ObjenesisBase implements Objenesis {
       }
       ObjectInstantiator<?> instantiator = cache.get(clazz.getName());
       if(instantiator == null) {
-         instantiator = strategy.newInstantiatorOf(clazz);
-         cache.putIfAbsent(clazz.getName(), instantiator);
+         ObjectInstantiator<?> newInstantiator = strategy.newInstantiatorOf(clazz);
+         instantiator = cache.putIfAbsent(clazz.getName(), newInstantiator);
+         if(instantiator == null) {
+            instantiator = newInstantiator;
+         }
       }
       return (ObjectInstantiator<T>) instantiator;
    }
