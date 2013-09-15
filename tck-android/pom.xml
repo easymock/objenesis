@@ -10,7 +10,11 @@
   <name>Objenesis Android TCK</name>
   <description>Objenesis' TCK built for Android devices</description>
   <packaging>apk</packaging>
-
+  
+  <properties>
+    <android.home>${env.ANDROID_HOME}</android.home>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>org.objenesis</groupId>
@@ -83,7 +87,7 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>adb</executable>
+              <executable>${android.home}/platform-tools/adb</executable>
               <arguments>
                 <argument>install</argument>
                 <argument>-r</argument>
@@ -98,7 +102,7 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>adb</executable>
+              <executable>${android.home}/platform-tools/adb</executable>
               <arguments>
                 <argument>shell</argument>
                 <argument>am</argument>
