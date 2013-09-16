@@ -241,6 +241,8 @@
             <header>${project.basedir}/../header.txt</header>
             <strictCheck>true</strictCheck>
             <excludes>
+              <!-- Not being ignore by default -->
+              <exclude>.gitignore</exclude>
               <!-- Nothing is copyrighted in target -->
               <exclude>target/**</exclude>
               <!-- copyrights to BEA -->
@@ -253,6 +255,8 @@
               <exclude>website/**</exclude>
               <!-- no header on batch files wanted -->
               <exclude>**/*.bat</exclude>
+              <!-- generated Android file -->
+              <exclude>project.properties</exclude>
             </excludes>
             <properties>
               <inceptionYear>${project.inceptionYear}</inceptionYear>
