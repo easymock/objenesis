@@ -16,8 +16,9 @@
 package org.objenesis.strategy;
 
 import org.objenesis.instantiator.ObjectInstantiator;
-import org.objenesis.instantiator.android.Android23Instantiator;
-import org.objenesis.instantiator.android.Android30Instantiator;
+import org.objenesis.instantiator.android.Android10Instantiator;
+import org.objenesis.instantiator.android.Android17Instantiator;
+import org.objenesis.instantiator.android.Android18Instantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
@@ -50,7 +51,8 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
       if(PlatformDescription.isThisJVM(SUN)) {
-         // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5 times slower. So
+         // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
+         // times slower. So
          // I prefer to use this one
          return new SunReflectionFactoryInstantiator<T>(type);
       }
@@ -71,15 +73,16 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          return new SunReflectionFactoryInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
-        // System property "java.vm.version" seems to be 1.4.0 for Android 2.3 and 1.5.0 for Android 3.0
-        // so we use it here to choose the relevant implementation.
-        if(VENDOR_VERSION.compareTo("1.5.0") < 0) {
-          // Android 2.3 Gingerbread and lower
-          return new Android23Instantiator<T>(type);
-        } else {
-          // Android 3.0 Honeycomb and higher
-          return new Android30Instantiator<T>(type);
-        }
+         if(ANDROID_VERSION <= 10) {
+            // Android 2.3 Gingerbread and lower
+            return new Android10Instantiator<T>(type);
+         }
+         if(ANDROID_VERSION <= 17) {
+            // Android 3.0 Honeycomb to 4.2 Jelly Bean
+            return new Android17Instantiator<T>(type);
+         }
+         // Android 4.3 and higher (hopefully)
+         return new Android18Instantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(GNU)) {
          return new GCJInstantiator<T>(type);
@@ -90,5 +93,6 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
 
       // Fallback instantiator, should work with most modern JVM
       return new UnsafeFactoryInstantiator<T>(type);
+
    }
 }
