@@ -259,6 +259,7 @@
               <exclude>project.properties</exclude>
               <exclude>lint.xml</exclude>
               <exclude>gen/**</exclude>
+              <exclude>bin/**</exclude>
             </excludes>
             <properties>
               <inceptionYear>${project.inceptionYear}</inceptionYear>
