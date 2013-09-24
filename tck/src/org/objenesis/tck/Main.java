@@ -74,6 +74,10 @@ public class Main {
       boolean result = runParentConstructorTest();
 
       reporter.printResult(result);
+
+      if(reporter.hasErrors()) {
+         System.exit(1);
+      }
    }
 
    private static boolean runParentConstructorTest() {

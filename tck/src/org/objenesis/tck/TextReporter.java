@@ -215,6 +215,15 @@ public class TextReporter implements Reporter {
       summary.println();
    }
 
+   /**
+    * Return true if the reporter has registered some errors
+    * 
+    * @return if there was errors during execution
+    */
+   public boolean hasErrors() {
+      return errorCount != 0;
+   }
+
    private String pad(String text, int width) {
       if(text.length() == width) {
          return text;
