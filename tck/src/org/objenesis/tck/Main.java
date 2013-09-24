@@ -67,17 +67,22 @@ public class Main {
 
       TextReporter reporter = new TextReporter(System.out, System.err);
 
-      runTest(new ObjenesisStd(), reporter, "Objenesis std", "candidates/candidates.properties");
-      runTest(new ObjenesisSerializer(), reporter, "Objenesis serializer",
-         "candidates/serializable-candidates.properties");
-
-      boolean result = runParentConstructorTest();
+      boolean result = run(reporter);
 
       reporter.printResult(result);
 
       if(reporter.hasErrors()) {
          System.exit(1);
       }
+   }
+
+   public static boolean run(Reporter reporter) throws IOException {
+      runTest(new ObjenesisStd(), reporter, "Objenesis std", "candidates/candidates.properties");
+      runTest(new ObjenesisSerializer(), reporter, "Objenesis serializer",
+         "candidates/serializable-candidates.properties");
+
+      boolean result = runParentConstructorTest();
+      return result;
    }
 
    private static boolean runParentConstructorTest() {

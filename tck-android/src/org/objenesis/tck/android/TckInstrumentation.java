@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.objenesis.tck.Main;
+import org.objenesis.tck.TextReporter;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -32,6 +33,7 @@ import android.os.Bundle;
  */
 public class TckInstrumentation extends Instrumentation {
 
+   @Override
    public void onCreate(Bundle arguments) {
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       PrintStream printStream = new PrintStream(outputStream);
@@ -39,7 +41,7 @@ public class TckInstrumentation extends Instrumentation {
       System.setErr(printStream);
 
       try {
-         Main.main(new String[0]);
+         launch();
       } catch (IOException e) {
          e.printStackTrace();
       }
@@ -48,5 +50,14 @@ public class TckInstrumentation extends Instrumentation {
       String fromStdout = outputStream.toString();
       bundle.putString(Instrumentation.REPORT_KEY_STREAMRESULT, fromStdout);
       finish(Activity.RESULT_OK, bundle);
+   }
+
+   private void launch() throws IOException {
+      TextReporter reporter = new TextReporter(System.out, System.err);
+
+      boolean result = Main.run(reporter);
+
+      reporter.printResult(result);
+
    }
 }
