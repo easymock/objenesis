@@ -30,7 +30,7 @@
 
     <uses-sdk
         android:minSdkVersion="1"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <application android:allowBackup="false">
         <uses-library android:name="android.test.runner" />
