@@ -255,8 +255,10 @@
               <exclude>website/**</exclude>
               <!-- no header on batch files wanted -->
               <exclude>**/*.bat</exclude>
-              <!-- generated Android file -->
+              <!-- generated Android files -->
               <exclude>project.properties</exclude>
+              <exclude>lint.xml</exclude>
+              <exclude>gen/**</exclude>
             </excludes>
             <properties>
               <inceptionYear>${project.inceptionYear}</inceptionYear>
