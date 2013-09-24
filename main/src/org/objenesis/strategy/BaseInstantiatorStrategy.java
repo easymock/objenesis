@@ -51,4 +51,7 @@ public abstract class BaseInstantiatorStrategy implements InstantiatorStrategy {
 
    /** JVM name */
    protected static final String JVM_NAME = PlatformDescription.JVM_NAME;
+
+   /** Android API level */
+   protected static final int ANDROID_VERSION = PlatformDescription.ANDROID_VERSION;
 }

@@ -23,17 +23,17 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
- * Instantiator for Android >= 3.0 which creates objects without driving their constructors, using internal
- * methods on the Dalvik implementation of {@link ObjectStreamClass}.
+ * Instantiator for Android API level 11 to 17 which creates objects without driving their
+ * constructors, using internal methods on the Dalvik implementation of {@link ObjectStreamClass}.
  * 
  * @author Ian Parkinson (Google Inc.)
  */
-public class Android30Instantiator<T> implements ObjectInstantiator<T> {
+public class Android17Instantiator<T> implements ObjectInstantiator<T> {
    private final Class<T> type;
    private final Method newInstanceMethod;
    private final Integer objectConstructorId;
 
-   public Android30Instantiator(Class<T> type) {
+   public Android17Instantiator(Class<T> type) {
       this.type = type;
       newInstanceMethod = getNewInstanceMethod();
       objectConstructorId = findConstructorIdForJavaLangObjectConstructor();
