@@ -33,12 +33,6 @@ import org.objenesis.ObjenesisStd;
  */
 public class ObjenesisTest {
 
-   public static class ErrorHandler implements CandidateLoader.ErrorHandler {
-      public void classNotFound(String name) {
-         fail("Class not found : " + name);
-      }
-   }
-
    public static class JUnitReporter implements Reporter {
 
       private String currentObjenesis;
