@@ -19,11 +19,8 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.io.Serializable;
 import java.util.Collection;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
@@ -80,66 +77,20 @@ public class ObjenesisTest {
       public void endTest() {
       }
    }
-   
-   static class MockSuperClass {
-	   private final boolean superConstructorCalled;
-	   public MockSuperClass() {
-		   superConstructorCalled = true;
-	   }
-	   public boolean isSuperConstructorCalled() {
-		   return superConstructorCalled;
-	   }
-   }
-   
-   static class MockClass extends MockSuperClass implements Serializable {
-      private static final long serialVersionUID = 1L;
-      private final boolean constructorCalled;
-	   public MockClass() {
-		   super();
-		   constructorCalled = true;
-	   }
-	   public boolean isConstructorCalled() {
-		   return constructorCalled;
-	   }
-   }
-
-   private TCK tck = null;
-
-   private CandidateLoader candidateLoader = null;
-
-   @Before
-   public void setUp() throws Exception {
-      tck = new TCK();
-
-      candidateLoader = new CandidateLoader(tck, getClass().getClassLoader(), new ErrorHandler());
-   }
-
-   @After
-   public void tearDown() throws Exception {
-      candidateLoader = null;
-      tck = null;
-   }
 
    @Test
    public void testObjenesisStd() throws Exception {
-      candidateLoader.loadFromResource(getClass(), "candidates/candidates.properties");
-      tck.registerObjenesisInstance(new ObjenesisStd(), "Objenesis standard");
-      tck.runTests(new JUnitReporter());
+      Main.runStandardTest(new ObjenesisStd(), new JUnitReporter());
    }
 
    @Test
    public void testObjenesisSerializer() throws Exception {
-      candidateLoader.loadFromResource(getClass(), "candidates/serializable-candidates.properties");
-      tck.registerObjenesisInstance(new ObjenesisSerializer(), "Objenesis serializer");
-      tck.runTests(new JUnitReporter());
+      Main.runSerializerTest(new ObjenesisSerializer(), new JUnitReporter());
    }
 
    @Test
    public void testObjenesisSerializerParentConstructorCalled() throws Exception {
-   	  Object result = new ObjenesisSerializer().newInstance(MockClass.class);
-   	  assertEquals(MockClass.class, result.getClass());
-   	  MockClass mockObject = (MockClass) result;
-   	  assertTrue(mockObject.isSuperConstructorCalled());
-   	  assertFalse(mockObject.isConstructorCalled());   	  
+      boolean result = Main.runParentConstructorTest(new ObjenesisSerializer());
+      assertTrue(result);
    }
 }
