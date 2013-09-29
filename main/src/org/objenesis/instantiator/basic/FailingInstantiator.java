@@ -15,22 +15,23 @@
  */
 package org.objenesis.instantiator.basic;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 /**
- * The instantiator that always return a null instance
+ * The instantiator that always throws an exception. Mainly used for tests
  * 
  * @author Henri Tremblay
  */
-public class NullInstantiator<T> implements ObjectInstantiator<T> {
+public class FailingInstantiator<T> implements ObjectInstantiator<T> {
 
-   public NullInstantiator(Class<T> type) {
+   public FailingInstantiator(Class<T> type) {
    }
 
    /**
-    * @return Always null
+    * @return Always throwing an exception
     */
    public T newInstance() {
-      return null;
+      throw new ObjenesisException("Always failing");
    }
 }
