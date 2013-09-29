@@ -76,18 +76,54 @@ public class Main {
       }
    }
 
-   public static boolean run(Reporter reporter) throws IOException {
-      runTest(new ObjenesisStd(), reporter, "Objenesis std", "candidates/candidates.properties");
-      runTest(new ObjenesisSerializer(), reporter, "Objenesis serializer",
-         "candidates/serializable-candidates.properties");
+   /**
+    * Run the full test suite using standard Objenesis instances
+    * 
+    * @param reporter result are recorded in the reporter
+    * @return if the parent constructor test was successful
+    * @throws IOException
+    */
+   public static boolean run(Reporter reporter) {
+      runStandardTest(new ObjenesisStd(), reporter);
+      runSerializerTest(new ObjenesisSerializer(), reporter);
 
-      boolean result = runParentConstructorTest();
+      boolean result = runParentConstructorTest(new ObjenesisSerializer());
       return result;
    }
 
-   private static boolean runParentConstructorTest() {
+   /**
+    * Run the serializing suite on the provided Objenesis instance
+    * 
+    * @param reporter result are recorded in the reporter
+    * @param objenesis Objenesis instance to test
+    * @throws IOException
+    */
+   public static void runSerializerTest(Objenesis objenesis, Reporter reporter) {
+      runTest(objenesis, reporter, "Objenesis serializer",
+         "candidates/serializable-candidates.properties");
+   }
+
+   /**
+    * Run the standard suite on the provided Objenesis instance
+    * 
+    * @param reporter result are recorded in the reporter
+    * @param objenesis Objenesis instance to test
+    * @throws IOException
+    */
+   public static void runStandardTest(Objenesis objenesis, Reporter reporter) {
+      runTest(objenesis, reporter, "Objenesis std", "candidates/candidates.properties");
+   }
+
+   /**
+    * A special test making sure the first none serializable class no-args constructor is called
+    * 
+    * @param objenesis Objenesis instance to test
+    * @throws IOException
+    * @return if the test was successful
+    */
+   public static boolean runParentConstructorTest(Objenesis objenesis) {
       try {
-         Object result = new ObjenesisSerializer().newInstance(MockClass.class);
+         Object result = objenesis.newInstance(MockClass.class);
          MockClass mockObject = (MockClass) result;
          return mockObject.isSuperConstructorCalled() && !mockObject.isConstructorCalled();
       }
@@ -98,15 +134,30 @@ public class Main {
       }
    }
 
-   private static void runTest(Objenesis objenesis, Reporter reporter, String description,
-      String candidates) throws IOException {
+   /**
+    * Run a suite of tests (candidates) on the Objenesis instance, sending the results to the
+    * reporter
+    * 
+    * @param objenesis Objenesis instance to test
+    * @param reporter result are recorded in the reporter
+    * @param description description of the ran suite
+    * @param candidates property file containing a list of classes to test (key) and their
+    *        description (value)
+    */
+   public static void runTest(Objenesis objenesis, Reporter reporter, String description,
+      String candidates) {
       TCK tck = new TCK();
       tck.registerObjenesisInstance(objenesis, description);
 
       CandidateLoader candidateLoader = new CandidateLoader(tck, Main.class.getClassLoader(),
          new CandidateLoader.LoggingErrorHandler(System.err));
 
-      candidateLoader.loadFromResource(Main.class, candidates);
+      try {
+         candidateLoader.loadFromResource(Main.class, candidates);
+      }
+      catch(IOException e) {
+         throw new RuntimeException(e);
+      }
 
       tck.runTests(reporter);
    }
