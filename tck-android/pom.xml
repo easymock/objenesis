@@ -56,13 +56,9 @@
           <version>3.7.0</version>
           <extensions>true</extensions>
           <configuration>
-            <test><!-- 
+            <test> 
               <instrumentationPackage>org.objenesis.tck.android</instrumentationPackage>
-              <instrumentationRunner>TckInstrumentation</instrumentationRunner>
-              <debug>false</debug>
-              <coverage>false</coverage>
-              <logonly>false</logonly>
-              <createreport>true</createreport>-->
+              <instrumentationRunner>android.test.InstrumentationTestRunner</instrumentationRunner>
             </test>
           </configuration>
         </plugin>
