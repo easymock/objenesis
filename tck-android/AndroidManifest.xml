@@ -38,6 +38,9 @@
 
     <instrumentation
         android:name=".TckInstrumentation"
-        android:targetPackage="org.objenesis.tck.android">
-    </instrumentation>
+        android:targetPackage="org.objenesis.tck.android" />
+
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+                     android:targetPackage="org.objenesis.tck.android"
+                     android:label="Objenesis Android TCK."/>
 </manifest>
