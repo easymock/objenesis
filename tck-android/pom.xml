@@ -10,11 +10,11 @@
   <name>Objenesis Android TCK</name>
   <description>Objenesis' TCK built for Android devices</description>
   <packaging>apk</packaging>
-  
+
   <properties>
     <android.home>${env.ANDROID_HOME}</android.home>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.objenesis</groupId>
@@ -26,7 +26,24 @@
       <artifactId>android</artifactId>
       <version>4.1.1.4</version>
       <scope>provided</scope>
-    </dependency>  
+    </dependency>
+    <dependency>
+        <groupId>com.google.android</groupId>
+        <artifactId>android-test</artifactId>
+        <version>4.1.1.4</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>      
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -38,6 +55,16 @@
           <artifactId>android-maven-plugin</artifactId>
           <version>3.7.0</version>
           <extensions>true</extensions>
+          <configuration>
+            <test><!-- 
+              <instrumentationPackage>org.objenesis.tck.android</instrumentationPackage>
+              <instrumentationRunner>TckInstrumentation</instrumentationRunner>
+              <debug>false</debug>
+              <coverage>false</coverage>
+              <logonly>false</logonly>
+              <createreport>true</createreport>-->
+            </test>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -49,7 +76,7 @@
           <target>1.5</target>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>com.keyboardsamurais.maven</groupId>
         <artifactId>maven-timestamp-plugin</artifactId>
@@ -62,7 +89,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
       </plugin>
-       
+
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
         <artifactId>android-maven-plugin</artifactId>
@@ -74,27 +101,12 @@
         <extensions>true</extensions>
       </plugin>
       
-      <plugin>
+     <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.2.1</version>
         <inherited>false</inherited>
         <executions>
-          <execution>
-            <id>install</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>${android.home}/platform-tools/adb</executable>
-              <arguments>
-                <argument>install</argument>
-                <argument>-r</argument>
-                <argument>${project.build.directory}/${project.build.finalName}.apk</argument>
-              </arguments>
-            </configuration>
-          </execution>
           <execution>
             <id>execute</id>
             <phase>integration-test</phase>
@@ -114,6 +126,7 @@
           </execution>          
         </executions>
       </plugin>      
+      
     </plugins>
   </build>
 
