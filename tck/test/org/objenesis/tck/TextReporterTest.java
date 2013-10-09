@@ -26,8 +26,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisBase;
-import org.objenesis.ObjenesisSerializer;
-import org.objenesis.ObjenesisStd;
+import org.objenesis.instantiator.basic.ConstructorInstantiator;
+import org.objenesis.instantiator.basic.FailingInstantiator;
 import org.objenesis.instantiator.basic.NullInstantiator;
 import org.objenesis.strategy.SingleInstantiatorStrategy;
 
@@ -55,8 +55,10 @@ public class TextReporterTest {
       candidates.put("candidate C", "C");
       Map<String, Object> instantiators = new HashMap<String, Object>();
       
-      Objenesis instantiator1 = new ObjenesisStd();
-      Objenesis instantiator2 = new ObjenesisSerializer();
+      Objenesis instantiator1 = new ObjenesisBase(new SingleInstantiatorStrategy(
+         ConstructorInstantiator.class));
+      Objenesis instantiator2 = new ObjenesisBase(new SingleInstantiatorStrategy(
+         FailingInstantiator.class));
       Objenesis instantiator3 = new ObjenesisBase(new SingleInstantiatorStrategy(
          NullInstantiator.class));
       
@@ -96,9 +98,9 @@ public class TextReporterTest {
       out.println("Running TCK on platform: Some platform");
       out.println();
       out.println("Instantiators used: ");
-      out.println("   instantiator1: " + instantiator1);
-      out.println("   instantiator2: " + instantiator2);
-      out.println("   instantiator3: " + instantiator3);
+      out.println("   instantiator1: ConstructorInstantiator");
+      out.println("   instantiator2: FailingInstantiator");
+      out.println("   instantiator3: NullInstantiator");
       out.println();
       out.println("Not serializable parent constructor called: Y");
       out.println();
