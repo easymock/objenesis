@@ -17,7 +17,7 @@ package org.objenesis.tck.android;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Collection;
+import java.util.Map;
 
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
@@ -40,8 +40,8 @@ public class ObjenesisTest extends AndroidTestCase {
 
       private String currentCandidate;
 
-      public void startTests(String platformDescription, Collection<String> allCandidates,
-         Collection<String> allInstantiators) {
+      public void startTests(String platformDescription, Map<String, Object> allCandidates,
+         Map<String, Object> allInstantiators) {
       }
 
       public void startTest(String candidateDescription, String objenesisDescription) {

@@ -16,9 +16,7 @@
 package org.objenesis.tck;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -89,13 +87,10 @@ public class TCK {
       reporter.startTests(describePlatform(), findAllDescriptions(candidates, descriptions),
          findAllDescriptions(objenesisInstances, descriptions));
 
-      for(Iterator<Class<?>> i = candidates.iterator(); i.hasNext();) {
-         Class<?> candidateClass = i.next();
+      for(Class<?> candidateClass : candidates) {
          String candidateDescription = descriptions.get(candidateClass);
 
-         for(Iterator<Objenesis> j = objenesisInstances.iterator(); j.hasNext();) {
-            Objenesis objenesis = j.next();
-
+         for(Objenesis objenesis : objenesisInstances) {
             String objenesisDescription = descriptions.get(objenesis);
 
             reporter.startTest(candidateDescription, objenesisDescription);
@@ -119,10 +114,19 @@ public class TCK {
       }
    }
 
-   private Collection<String> findAllDescriptions(List<?> keys, Map<?, String> descriptions) {
-      List<String> results = new ArrayList<String>(keys.size());
-      for(int i = 0; i < keys.size(); i++) {
-         results.add(descriptions.get(keys.get(i)));
+   /**
+    * Return the human readable description for list of TCK items (Objenesis instances or test
+    * candidates)
+    * 
+    * @param keys list of items for which we are searching for a description
+    * @param descriptions all descriptions
+    * @return map of items with their description. Will contain one entry per entry in the original
+    *         key list
+    */
+   private Map<String, Object> findAllDescriptions(List<?> keys, Map<?, String> descriptions) {
+      Map<String, Object> results = new HashMap<String, Object>(keys.size());
+      for(Object o : keys) {
+         results.put(descriptions.get(o), o);
       }
       return results;
    }
