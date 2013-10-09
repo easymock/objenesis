@@ -17,7 +17,7 @@ package org.objenesis.tck;
 
 import static org.junit.Assert.*;
 
-import java.util.Collection;
+import java.util.Map;
 
 import org.junit.Test;
 import org.objenesis.Objenesis;
@@ -133,8 +133,8 @@ public class TCKTest {
 
       private final StringBuilder log = new StringBuilder();
 
-      public void startTests(String platformDescription, Collection<String> allCandidates,
-         Collection<String> allInstantiators) {
+      public void startTests(String platformDescription, Map<String, Object> allCandidates,
+         Map<String, Object> allInstantiators) {
          log.append("startTests()\n");
       }
 

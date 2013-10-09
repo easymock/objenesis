@@ -22,8 +22,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Reports results from TCK as tabulated text, suitable for dumping to the console or a file and
@@ -72,15 +73,15 @@ public class TextReporter implements Reporter {
 
    private int errorCount = 0;
 
-   private SortedSet<String> allCandidates = new TreeSet<String>();
+   private SortedMap<String, Object> allCandidates;
 
-   private SortedSet<String> allInstantiators = new TreeSet<String>();
+   private SortedMap<String, Object> allInstantiators;
 
    private String currentObjenesis;
 
    private String currentCandidate;
 
-   private Map<String, Map<String, Result>> objenesisResults = new HashMap<String, Map<String, Result>>();
+   private Map<Object, Map<String, Result>> objenesisResults = new HashMap<Object, Map<String, Result>>();
 
    private String platformDescription;
 
@@ -93,18 +94,17 @@ public class TextReporter implements Reporter {
       this.log = log;
    }
 
-   public void startTests(String platformDescription, Collection<String> allCandidates,
-      Collection<String> allInstantiators) {
+   public void startTests(String platformDescription, Map<String, Object> allCandidates,
+      Map<String, Object> allInstantiators) {
 
       // HT: in case the same reporter is reused, I'm guessing that it will
-      // always be the
-      // same platform
+      // always be the same platform
       this.platformDescription = platformDescription;
-      this.allCandidates.addAll(allCandidates);
-      this.allInstantiators.addAll(allInstantiators);
+      this.allCandidates = new TreeMap<String, Object>(allCandidates);
+      this.allInstantiators = new TreeMap<String, Object>(allInstantiators);
 
-      for(Iterator<String> it = allInstantiators.iterator(); it.hasNext();) {
-         objenesisResults.put(it.next(), new HashMap<String, Result>());
+      for(String desc : allInstantiators.keySet()) {
+         objenesisResults.put(desc, new HashMap<String, Result>());
       }
 
       startTime = System.currentTimeMillis();
@@ -148,6 +148,14 @@ public class TextReporter implements Reporter {
       summary.println("Running TCK on platform: " + platformDescription);
       summary.println();
 
+      // Instantiator implementations
+      summary.println("Instantiators used: ");
+      for(Map.Entry<String, Object> o : allInstantiators.entrySet()) {
+         summary.println("   " + o.getKey() + ": " + o.getValue());
+      }
+      summary.println();
+
+      // Parent constructor special test
       summary.println("Not serializable parent constructor called: "
          + (parentConstructorTest ? 'Y' : 'N'));
       summary.println();
@@ -156,13 +164,15 @@ public class TextReporter implements Reporter {
          errorCount++;
       }
       
-      int maxObjenesisWidth = lengthOfLongestStringIn(allInstantiators);
-      int maxCandidateWidth = lengthOfLongestStringIn(allCandidates);
+      Set<String> instantiators = this.allInstantiators.keySet();
+      Set<String> candidates = this.allCandidates.keySet();
 
-      // Header
+      int maxObjenesisWidth = lengthOfLongestStringIn(instantiators);
+      int maxCandidateWidth = lengthOfLongestStringIn(candidates);
+
+      // Strategy used
       summary.print(pad("", maxCandidateWidth) + ' ');
-      for(Iterator<String> it = allInstantiators.iterator(); it.hasNext();) {
-         String desc = it.next();
+      for(String desc : instantiators) {
          summary.print(pad(desc, maxObjenesisWidth) + ' ');
       }
       summary.println();
@@ -170,12 +180,10 @@ public class TextReporter implements Reporter {
       List<Result> exceptions = new ArrayList<Result>();
 
       // Candidates (and keep the exceptions meanwhile)
-      for(Iterator<String> it = allCandidates.iterator(); it.hasNext();) {
-         String candidateDesc = it.next();
+      for(String candidateDesc : candidates) {
          summary.print(pad(candidateDesc, maxCandidateWidth) + ' ');
 
-         for(Iterator<String> itInst = allInstantiators.iterator(); itInst.hasNext();) {
-            String instDesc = itInst.next();
+         for(String instDesc : instantiators) {
             Result result = objenesisResults.get(instDesc).get(candidateDesc);
             if(result == null) {
                summary.print(pad("N/A", maxObjenesisWidth) + " ");
@@ -196,8 +204,7 @@ public class TextReporter implements Reporter {
       // Final
       if(errorCount != 0) {
 
-         for(Iterator<Result> it = exceptions.iterator(); it.hasNext();) {
-            Result element = it.next();
+         for(Result element : exceptions) {
             log.println("--- Candidate '" + element.candidateDescription + "', Instantiator '"
                + element.objenesisDescription + "' ---");
             element.exception.printStackTrace(log);

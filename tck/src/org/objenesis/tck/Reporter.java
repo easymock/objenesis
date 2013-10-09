@@ -15,7 +15,7 @@
  */
 package org.objenesis.tck;
 
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * Reports results from the TCK back to the user.
@@ -38,11 +38,12 @@ public interface Reporter {
     * 
     * @param platformDescription Description the platform being run on (i.e. JVM version, vendor,
     *        etc).
-    * @param allCandidates Descriptions (String) of all candidates being used in tests.
-    * @param allObjenesisInstances Descriptions of all Objenesis instances being used in tests.
+    * @param allCandidates Descriptions (String) of all candidates (Object) being used in tests.
+    * @param allObjenesisInstances Descriptions (String) of all Objenesis instances (Object) being
+    *        used in tests.
     */
-   void startTests(String platformDescription, Collection<String> allCandidates,
-      Collection<String> allObjenesisInstances);
+   void startTests(String platformDescription, Map<String, Object> allCandidates,
+      Map<String, Object> allObjenesisInstances);
 
    /**
     * Report that a test between a candidate and an objenesis instance if about to start.

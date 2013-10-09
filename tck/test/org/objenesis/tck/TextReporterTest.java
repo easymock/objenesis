@@ -19,10 +19,17 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.objenesis.Objenesis;
+import org.objenesis.ObjenesisBase;
+import org.objenesis.ObjenesisSerializer;
+import org.objenesis.ObjenesisStd;
+import org.objenesis.instantiator.basic.NullInstantiator;
+import org.objenesis.strategy.SingleInstantiatorStrategy;
 
 /**
  * @author Joe Walnes
@@ -42,9 +49,22 @@ public class TextReporterTest {
 
    @Test
    public void testReportsSuccessesInTabularFormat() {
-      textReporter.startTests("Some platform", Arrays.asList("candidate A",
-         "candidate B", "candidate C"), Arrays.asList("instantiator1",
-         "instantiator2", "instantiator3"));
+      Map<String, Object> candidates = new HashMap<String, Object>();
+      candidates.put("candidate A", "A");
+      candidates.put("candidate B", "B");
+      candidates.put("candidate C", "C");
+      Map<String, Object> instantiators = new HashMap<String, Object>();
+      
+      Objenesis instantiator1 = new ObjenesisStd();
+      Objenesis instantiator2 = new ObjenesisSerializer();
+      Objenesis instantiator3 = new ObjenesisBase(new SingleInstantiatorStrategy(
+         NullInstantiator.class));
+      
+      instantiators.put("instantiator1", instantiator1);
+      instantiators.put("instantiator2", instantiator2);
+      instantiators.put("instantiator3", instantiator3);
+
+      textReporter.startTests("Some platform", candidates, instantiators);
 
       textReporter.startTest("candidate A", "instantiator1");
       textReporter.result(false);
@@ -74,6 +94,11 @@ public class TextReporterTest {
       ByteArrayOutputStream expectedSummaryBuffer = new ByteArrayOutputStream();
       PrintStream out = new PrintStream(expectedSummaryBuffer);
       out.println("Running TCK on platform: Some platform");
+      out.println();
+      out.println("Instantiators used: ");
+      out.println("   instantiator1: " + instantiator1);
+      out.println("   instantiator2: " + instantiator2);
+      out.println("   instantiator3: " + instantiator3);
       out.println();
       out.println("Not serializable parent constructor called: Y");
       out.println();

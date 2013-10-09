@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Collection;
+import java.util.Map;
 
 import org.junit.Test;
 import org.objenesis.ObjenesisSerializer;
@@ -39,8 +39,8 @@ public class ObjenesisTest {
 
       private String currentCandidate;
 
-      public void startTests(String platformDescription, Collection<String> allCandidates,
-         Collection<String> allInstantiators) {
+      public void startTests(String platformDescription, Map<String, Object> allCandidates,
+         Map<String, Object> allInstantiators) {
       }
 
       public void startTest(String candidateDescription, String objenesisDescription) {
