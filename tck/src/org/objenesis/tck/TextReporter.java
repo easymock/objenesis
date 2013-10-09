@@ -26,6 +26,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.objenesis.Objenesis;
+
 /**
  * Reports results from TCK as tabulated text, suitable for dumping to the console or a file and
  * being read by a human. If can be reused to provide a summary reports of different candidates as
@@ -151,7 +153,9 @@ public class TextReporter implements Reporter {
       // Instantiator implementations
       summary.println("Instantiators used: ");
       for(Map.Entry<String, Object> o : allInstantiators.entrySet()) {
-         summary.println("   " + o.getKey() + ": " + o.getValue());
+         String inst = ((Objenesis) o.getValue()).getInstantiatorOf(String.class).getClass()
+            .getSimpleName();
+         summary.println("   " + o.getKey() + ": " + inst);
       }
       summary.println();
 
