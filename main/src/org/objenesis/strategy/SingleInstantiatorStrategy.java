@@ -37,10 +37,11 @@ public class SingleInstantiatorStrategy implements InstantiatorStrategy {
     *
     * @param instantiator the instantiator type
     */
-   public SingleInstantiatorStrategy(Class<?> instantiator) {
+   public <T extends ObjectInstantiator<?>> SingleInstantiatorStrategy(Class<T> instantiator) {
       try {
          constructor = instantiator.getConstructor(Class.class);
-      } catch (NoSuchMethodException e) {
+      }
+      catch(NoSuchMethodException e) {
          throw new ObjenesisException(e);
       }
    }
