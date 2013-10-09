@@ -73,9 +73,9 @@ public class TextReporter implements Reporter {
 
    private int errorCount = 0;
 
-   private SortedMap<String, Object> allCandidates;
+   private SortedMap<String, Object> allCandidates = new TreeMap<String, Object>();
 
-   private SortedMap<String, Object> allInstantiators;
+   private SortedMap<String, Object> allInstantiators = new TreeMap<String, Object>();
 
    private String currentObjenesis;
 
@@ -100,8 +100,8 @@ public class TextReporter implements Reporter {
       // HT: in case the same reporter is reused, I'm guessing that it will
       // always be the same platform
       this.platformDescription = platformDescription;
-      this.allCandidates = new TreeMap<String, Object>(allCandidates);
-      this.allInstantiators = new TreeMap<String, Object>(allInstantiators);
+      this.allCandidates.putAll(allCandidates);
+      this.allInstantiators.putAll(allInstantiators);
 
       for(String desc : allInstantiators.keySet()) {
          objenesisResults.put(desc, new HashMap<String, Result>());
