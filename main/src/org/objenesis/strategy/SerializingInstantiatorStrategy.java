@@ -15,6 +15,8 @@
  */
 package org.objenesis.strategy;
 
+import static org.objenesis.strategy.PlatformDescription.*;
+
 import java.io.NotSerializableException;
 import java.io.Serializable;
 
@@ -53,7 +55,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
       if(!Serializable.class.isAssignableFrom(type)) {
          throw new ObjenesisException(new NotSerializableException(type+" not serializable"));
       }
-      if(JVM_NAME.startsWith(SUN)) {
+      if(JVM_NAME.startsWith(SUN) || PlatformDescription.isThisJVM(OPENJDK)) {
          return new ObjectStreamClassInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {
