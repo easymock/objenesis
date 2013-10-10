@@ -15,6 +15,8 @@
  */
 package org.objenesis.strategy;
 
+import static org.objenesis.strategy.PlatformDescription.*;
+
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.Android10Instantiator;
 import org.objenesis.instantiator.android.Android17Instantiator;
@@ -50,10 +52,9 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
     */
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
-      if(PlatformDescription.isThisJVM(SUN)) {
+      if(PlatformDescription.isThisJVM(SUN) || PlatformDescription.isThisJVM(OPENJDK)) {
          // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
-         // times slower. So
-         // I prefer to use this one
+         // times slower. So I prefer to use this one
          return new SunReflectionFactoryInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(JROCKIT)) {
