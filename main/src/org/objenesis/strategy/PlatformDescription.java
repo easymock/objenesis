@@ -35,6 +35,9 @@ public final class PlatformDescription {
    /** JVM_NAME prefix for Sun Java HotSpot */
    public static final String SUN = "Java HotSpot";
 
+   /** JVM_NAME prefix for the OpenJDK */
+   public static final String OPENJDK = "OpenJDK";
+
    /** JVM_NAME prefix for Aonix PERC */
    public static final String PERC = "PERC";
 
