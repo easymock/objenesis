@@ -253,13 +253,15 @@
               <exclude>eclipse_config/**</exclude>
               <!-- no header wanted on the website -->
               <exclude>website/**</exclude>
-              <!-- no header on batch files wanted -->
+              <!-- no header on batch files -->
               <exclude>**/*.bat</exclude>
               <!-- generated Android files -->
               <exclude>project.properties</exclude>
               <exclude>lint.xml</exclude>
               <exclude>gen/**</exclude>
               <exclude>bin/**</exclude>
+              <!-- no header on text files -->
+              <exclude>**/*.txt</exclude>
             </excludes>
             <properties>
               <inceptionYear>${project.inceptionYear}</inceptionYear>
