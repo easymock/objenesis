@@ -12,10 +12,16 @@
   <description>Objenesis' Benchmark</description>
   <url>http://objenesis.org</url>
 
+  <properties>
+    <!-- Minimum for this module is 1.6 -->
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-tck</artifactId>
+      <artifactId>objenesis</artifactId>
       <version>${project.version}</version>
     </dependency>
 
