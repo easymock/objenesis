@@ -1,5 +1,5 @@
 /**
- * Copyright 2006-2013 the original author or authors.
+ * Copyright 2006-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,11 @@
  */
 package org.objenesis.instantiator.sun;
 
-import java.lang.reflect.Field;
-
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
-
 import sun.misc.Unsafe;
+
+import java.lang.reflect.Field;
 
 /**
  * Instantiates an object, WITHOUT calling it's constructor, using
@@ -56,7 +55,7 @@ public class UnsafeFactoryInstantiator<T> implements ObjectInstantiator<T> {
 
    public T newInstance() {
       try {
-         return type.cast(unsafe.allocateInstance(type));
+         return (T) unsafe.allocateInstance(type);
       } catch (InstantiationException e) {
          throw new ObjenesisException(e);
       }
