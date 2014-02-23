@@ -55,7 +55,7 @@ public class UnsafeFactoryInstantiator<T> implements ObjectInstantiator<T> {
 
    public T newInstance() {
       try {
-         return (T) unsafe.allocateInstance(type);
+         return type.cast(unsafe.allocateInstance(type));
       } catch (InstantiationException e) {
          throw new ObjenesisException(e);
       }
