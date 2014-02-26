@@ -86,54 +86,54 @@ public class CreateObject {
    }
 
    @GenerateMicroBenchmark
-   public void createObjectWithConstructor(BlackHole bh) {
-      bh.consume(new Object());
+   public Object createObjectWithConstructor() {
+      return new Object();
    }
 
    @GenerateMicroBenchmark
-   public void createObjectWithMungedConstructor(BlackHole bh) {
-      bh.consume(sunInstantiator.newInstance());
+   public Object createObjectWithMungedConstructor() {
+      return sunInstantiator.newInstance();
    }
    
    @GenerateMicroBenchmark
-   public void createObjectWithMungedConstructorRaw(BlackHole bh) throws Exception {
-      bh.consume(constructor.newInstance());
+   public Object createObjectWithMungedConstructorRaw() throws Exception {
+      return constructor.newInstance();
    }
 
    @GenerateMicroBenchmark
-   public void createObjectWithMungedConstructorRawAndCast(BlackHole bh) throws Exception {
-      bh.consume(type.cast(constructor.newInstance()));
+   public Object createObjectWithMungedConstructorRawAndCast() throws Exception {
+      return type.cast(constructor.newInstance());
    }
 
    @GenerateMicroBenchmark
-   public void createObjectWithUnsafe(BlackHole bh) {
-      bh.consume(unsafeInstantiator.newInstance());
+   public Object createObjectWithUnsafe() {
+      return unsafeInstantiator.newInstance();
    }
 
    @GenerateMicroBenchmark
-   public void createObjectWithUnsafeRaw(BlackHole bh) throws Exception {
-      bh.consume(unsafe.allocateInstance(type));
+   public Object createObjectWithUnsafeRaw() throws Exception {
+      return unsafe.allocateInstance(type);
    }
    
    @GenerateMicroBenchmark
-   public void createObjectWithUnsafeRawInline(BlackHole bh) throws Exception {
-      bh.consume(unsafe.allocateInstance(Object.class));
+   public Object createObjectWithUnsafeRawInline() throws Exception {
+      return unsafe.allocateInstance(Object.class);
    }
 
    @GenerateMicroBenchmark
-   public void createObjectWithUnsafeRawAndCast(BlackHole bh) throws Exception{
-      bh.consume(type.cast(unsafe.allocateInstance(type)));
+   public Object createObjectWithUnsafeRawAndCast() throws Exception{
+      return type.cast(unsafe.allocateInstance(type));
    }
 
    @GenerateMicroBenchmark
-   public void createObjectWithUnsafeRawAndCastInline(BlackHole bh) throws Exception {
-      bh.consume(type.cast(unsafe.allocateInstance(Object.class)));
+   public Object createObjectWithUnsafeRawAndCastInline() throws Exception {
+      return type.cast(unsafe.allocateInstance(Object.class));
    }
      
    @GenerateMicroBenchmark
-   public void createObjectWithUnsafeRawException(BlackHole bh) {
+   public Object createObjectWithUnsafeRawException() {
       try {
-         bh.consume(unsafe.allocateInstance(type));
+         return unsafe.allocateInstance(type);
       }
       catch(InstantiationException e) {
          throw new ObjenesisException(e);
@@ -141,9 +141,9 @@ public class CreateObject {
    }
    
    @GenerateMicroBenchmark
-   public void createObjectWithUnsafeRawExceptionInline(BlackHole bh) {
+   public Object createObjectWithUnsafeRawExceptionInline() {
       try {
-         bh.consume(unsafe.allocateInstance(Object.class));
+         return unsafe.allocateInstance(Object.class);
       }
       catch(InstantiationException e) {
          throw new ObjenesisException(e);
