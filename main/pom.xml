@@ -38,6 +38,7 @@
             COM.jrockit.reflect;resolution:=optional,
             jrockit.vm;resolution:=optional,
             COM.newmonics.PercClassloader;resolution:=optional,
+            sun.misc;resolution:=optional,
             sun.reflect;resolution:=optional
             </Import-Package>
           </instructions>
