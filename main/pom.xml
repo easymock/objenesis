@@ -7,7 +7,7 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
   <artifactId>objenesis</artifactId>
-  
+
   <name>Objenesis</name>
   <description>A library for instantiating Java objects</description>
   <url>http://objenesis.org</url>
@@ -38,8 +38,8 @@
             COM.jrockit.reflect;resolution:=optional,
             jrockit.vm;resolution:=optional,
             COM.newmonics.PercClassloader;resolution:=optional,
-            sun.reflect;resolution:=optional,
-            sun.misc;resolution:=optional
+            sun.misc;resolution:=optional,
+            sun.reflect;resolution:=optional
             </Import-Package>
           </instructions>
         </configuration>
