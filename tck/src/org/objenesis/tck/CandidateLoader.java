@@ -21,8 +21,9 @@ import java.io.PrintStream;
 import java.util.Properties;
 
 /**
- * Loads a set of candidate classes from a properties file into the TCK. <p/> The properties file
- * takes the form of candidateClassName=shortDescription.
+ * Loads a set of candidate classes from a properties file into the TCK.
+ * <p>
+ * The properties file takes the form of candidateClassName=shortDescription.
  * 
  * @author Joe Walnes
  * @see TCK

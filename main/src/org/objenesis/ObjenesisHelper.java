@@ -35,7 +35,8 @@ public final class ObjenesisHelper {
 
    /**
     * Will create a new object without any constructor being called
-    * 
+    *
+    * @param <T> Type instantiated
     * @param clazz Class to instantiate
     * @return New instance of clazz
     */
@@ -46,7 +47,8 @@ public final class ObjenesisHelper {
    /**
     * Will create an object just like it's done by ObjectInputStream.readObject (the default
     * constructor of the first non serializable class will be called)
-    * 
+    *
+    * @param <T> Type instantiated
     * @param clazz Class to instantiate
     * @return New instance of clazz
     */
@@ -58,7 +60,8 @@ public final class ObjenesisHelper {
     * Will pick the best instantiator for the provided class. If you need to create a lot of
     * instances from the same class, it is way more efficient to create them from the same
     * ObjectInstantiator than calling {@link #newInstance(Class)}.
-    * 
+    *
+    * @param <T> Type to instantiate
     * @param clazz Class to instantiate
     * @return Instantiator dedicated to the class
     */
@@ -71,6 +74,7 @@ public final class ObjenesisHelper {
     * ObjectInputStream.readObject behavior.
     * 
     * @see #newSerializableInstance(Class)
+    * @param <T> Type to instantiate
     * @param clazz Class to instantiate
     * @return Instantiator dedicated to the class
     */

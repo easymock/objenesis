@@ -25,7 +25,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * This can deal with default public constructors, but that's about it.
  * 
  * @author Joe Walnes
- * @param <T>
+ * @param <T> Type instantiated
  * @see ObjectInstantiator
  */
 public class ConstructorInstantiator<T> implements ObjectInstantiator<T> {

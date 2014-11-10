@@ -25,10 +25,11 @@ import org.objenesis.strategy.PlatformDescription;
 
 /**
  * <b>Technology Compatibility Kit</b> (TCK) for {@link Objenesis}s.
- * <p/>
+ * <p>
  * This TCK accepts a set of candidate classes (class it attempts to instantiate) and a set of
  * Objenesis implementations. It then tries instantiating every candidate with every Objenesis
  * implementations, reporting the results to a {@link Reporter}.
+ * 
  * <h3>Example usage</h3>
  * 
  * <pre>

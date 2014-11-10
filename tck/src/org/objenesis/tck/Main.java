@@ -81,7 +81,6 @@ public class Main {
     * 
     * @param reporter result are recorded in the reporter
     * @return if the parent constructor test was successful
-    * @throws IOException
     */
    public static boolean run(Reporter reporter) {
       runStandardTest(new ObjenesisStd(), reporter);
@@ -96,7 +95,6 @@ public class Main {
     * 
     * @param reporter result are recorded in the reporter
     * @param objenesis Objenesis instance to test
-    * @throws IOException
     */
    public static void runSerializerTest(Objenesis objenesis, Reporter reporter) {
       runTest(objenesis, reporter, "Objenesis serializer",
@@ -108,7 +106,6 @@ public class Main {
     * 
     * @param reporter result are recorded in the reporter
     * @param objenesis Objenesis instance to test
-    * @throws IOException
     */
    public static void runStandardTest(Objenesis objenesis, Reporter reporter) {
       runTest(objenesis, reporter, "Objenesis std", "candidates/candidates.properties");
@@ -118,7 +115,6 @@ public class Main {
     * A special test making sure the first none serializable class no-args constructor is called
     * 
     * @param objenesis Objenesis instance to test
-    * @throws IOException
     * @return if the test was successful
     */
    public static boolean runParentConstructorTest(Objenesis objenesis) {

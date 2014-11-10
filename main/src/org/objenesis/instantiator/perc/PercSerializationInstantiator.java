@@ -26,8 +26,9 @@ import org.objenesis.instantiator.ObjectInstantiator;
 /**
  * Instantiates a class by making a call to internal Perc private methods. It is only supposed to
  * work on Perc JVMs. This instantiator will create classes in a way compatible with serialization,
- * calling the first non-serializable superclass' no-arg constructor. <p/> Based on code provided by
- * Aonix but <b>doesn't work right now</b>
+ * calling the first non-serializable superclass' no-arg constructor.
+ * <p>
+ * Based on code provided by Aonix but <b>doesn't work right now</b>
  * 
  * @author Henri Tremblay
  * @see org.objenesis.instantiator.ObjectInstantiator

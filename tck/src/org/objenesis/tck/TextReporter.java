@@ -30,8 +30,8 @@ import org.objenesis.Objenesis;
 
 /**
  * Reports results from TCK as tabulated text, suitable for dumping to the console or a file and
- * being read by a human. If can be reused to provide a summary reports of different candidates as
- * long as the same objenesisDescription is not used twice.
+ * being read by a human. It can be reused to provide a summary reports of different candidates as
+ * long as the same <code>objenesisDescription</code> is not used twice.
  * 
  * @author Joe Walnes
  * @author Henri Tremblay
@@ -144,6 +144,8 @@ public class TextReporter implements Reporter {
 
    /**
     * Print the final summary report
+    *
+    * @param parentConstructorTest If the test checking that the none serializable constructor was called was successful
     */
    public void printResult(boolean parentConstructorTest) {
       // Platform
