@@ -504,5 +504,13 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>all</id>
+      <modules>
+        <module>benchmark</module>
+        <module>tck-android</module>
+        <module>website</module>
+      </modules>
+    </profile>
   </profiles>
 </project>
