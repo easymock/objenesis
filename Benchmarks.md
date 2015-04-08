@@ -1,12 +1,12 @@
-Here are multiple benchmark that are meant to verify Objenesis performances.
+Here are multiple benchmarks that are meant to verify Objenesis performance.
 
-The source code is available [here](https://github.com/easymock/objenesis/tree/master/benchmark) is you want to challenge it.
+The source code is available [here](https://github.com/easymock/objenesis/tree/master/benchmark) if you want to challenge it.
 
 # Sun implementations (CreateObject)
 
 This benchmark compares two implementations working on HotSpot. They are instantiating the class Object. We have also added an instantiation with the default constructor.
 
-The munged constructor version is using a special constructor HotSpot is using to perform serialization.
+The munged constructor version is a special constructor HotSpot is using to perform serialization.
 
 The unsafe version is using `Unsafe.allocateInstance`. A bit easier to implement in Objenesis but much slower than the munged version. So we kept the later one as the default for HotSpot.
 
