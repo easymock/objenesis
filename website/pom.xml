@@ -9,6 +9,7 @@
   <artifactId>objenesis-website</artifactId>
   <name>Objenesis website</name>
   <packaging>pom</packaging>
+  <version>2.1</version>
 
   <properties>
     <javadoc>apidocs</javadoc>
