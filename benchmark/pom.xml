@@ -6,8 +6,8 @@
     <artifactId>objenesis-parent</artifactId>
     <version>2.2-SNAPSHOT</version>
   </parent>
-  <artifactId>objenesis-benchmark</artifactId>
 
+  <artifactId>objenesis-benchmark</artifactId>
   <name>Objenesis Benchmark</name>
   <description>Objenesis' Benchmark</description>
   <url>http://objenesis.org</url>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-core</artifactId>
-      <version>0.4.2</version>
+      <version>1.8</version>
     </dependency>
 
     <dependency>
@@ -75,7 +75,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.3</version>
         <executions>
           <execution>
             <phase>package</phase>

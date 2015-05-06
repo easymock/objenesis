@@ -29,7 +29,7 @@ import org.objenesis.strategy.InstantiatorStrategy;
 import org.objenesis.strategy.SingleInstantiatorStrategy;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.GenerateMicroBenchmark;
+import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
@@ -38,7 +38,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.logic.BlackHole;
+import org.openjdk.jmh.infra.Blackhole;
 
 /**
  * Benchmark comparing different instantiator strategies
@@ -87,33 +87,33 @@ public class ConcurrentGetInstantiator {
       }
    }
 
-   @GenerateMicroBenchmark
-   public void std(ThreadState state, BlackHole bh) {
+   @Benchmark
+   public void std(ThreadState state, Blackhole bh) {
       ObjectInstantiator<?> inst = std.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
-     bh.consume(inst);
+      bh.consume(inst);
    }
 
-   @GenerateMicroBenchmark
-   public void single(ThreadState state, BlackHole bh) {
+   @Benchmark
+   public void single(ThreadState state, Blackhole bh) {
       ObjectInstantiator<?> inst = single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
       bh.consume(inst);
    }
 
-   @GenerateMicroBenchmark
-   public void custom(ThreadState state, BlackHole bh) {
+   @Benchmark
+   public void custom(ThreadState state, Blackhole bh) {
       ObjectInstantiator<?> inst = single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
       bh.consume(inst);
    }
    
-   @GenerateMicroBenchmark
-   public void cachedStd(ThreadState state, BlackHole bh) {
+   @Benchmark
+   public void cachedStd(ThreadState state, Blackhole bh) {
       ObjectInstantiator<?> inst = cachedStd
          .getInstantiatorOf(toInstantiate[state.index++ % COUNT]);
       bh.consume(inst);
    }
    
-   @GenerateMicroBenchmark
-   public void uncachedStd(ThreadState state, BlackHole bh) {
+   @Benchmark
+   public void uncachedStd(ThreadState state, Blackhole bh) {
       ObjectInstantiator<?> inst = uncachedStd.getInstantiatorOf(toInstantiate[state.index++
          % COUNT]);
       bh.consume(inst);

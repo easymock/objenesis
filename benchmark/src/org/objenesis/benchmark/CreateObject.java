@@ -20,7 +20,6 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
 import org.objenesis.instantiator.sun.UnsafeFactoryInstantiator;
 import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.logic.BlackHole;
 import sun.misc.Unsafe;
 import sun.reflect.ReflectionFactory;
 
@@ -51,6 +50,7 @@ public class CreateObject {
 
    Class<Object> type = Object.class;
 
+   @SuppressWarnings("unchecked")
    private Constructor<Object> getConstructor() {
       try {
          ReflectionFactory factory = ReflectionFactory.getReflectionFactory();
@@ -85,52 +85,52 @@ public class CreateObject {
       constructor = getConstructor();
    }
 
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithConstructor() {
       return new Object();
    }
 
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithMungedConstructor() {
       return sunInstantiator.newInstance();
    }
    
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithMungedConstructorRaw() throws Exception {
       return constructor.newInstance();
    }
 
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithMungedConstructorRawAndCast() throws Exception {
       return type.cast(constructor.newInstance());
    }
 
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithUnsafe() {
       return unsafeInstantiator.newInstance();
    }
 
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithUnsafeRaw() throws Exception {
       return unsafe.allocateInstance(type);
    }
    
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithUnsafeRawInline() throws Exception {
       return unsafe.allocateInstance(Object.class);
    }
 
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithUnsafeRawAndCast() throws Exception{
       return type.cast(unsafe.allocateInstance(type));
    }
 
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithUnsafeRawAndCastInline() throws Exception {
       return type.cast(unsafe.allocateInstance(Object.class));
    }
      
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithUnsafeRawException() {
       try {
          return unsafe.allocateInstance(type);
@@ -140,7 +140,7 @@ public class CreateObject {
       }
    }
    
-   @GenerateMicroBenchmark
+   @Benchmark
    public Object createObjectWithUnsafeRawExceptionInline() {
       try {
          return unsafe.allocateInstance(Object.class);
