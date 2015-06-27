@@ -114,22 +114,12 @@ public class CreateObject {
    public Object createObjectWithUnsafeRaw() throws Exception {
       return unsafe.allocateInstance(type);
    }
-   
-   @Benchmark
-   public Object createObjectWithUnsafeRawInline() throws Exception {
-      return unsafe.allocateInstance(Object.class);
-   }
 
    @Benchmark
    public Object createObjectWithUnsafeRawAndCast() throws Exception{
       return type.cast(unsafe.allocateInstance(type));
    }
 
-   @Benchmark
-   public Object createObjectWithUnsafeRawAndCastInline() throws Exception {
-      return type.cast(unsafe.allocateInstance(Object.class));
-   }
-     
    @Benchmark
    public Object createObjectWithUnsafeRawException() {
       try {
@@ -139,14 +129,4 @@ public class CreateObject {
          throw new ObjenesisException(e);
       }
    }
-   
-   @Benchmark
-   public Object createObjectWithUnsafeRawExceptionInline() {
-      try {
-         return unsafe.allocateInstance(Object.class);
-      }
-      catch(InstantiationException e) {
-         throw new ObjenesisException(e);
-      }
-   }   
 }
