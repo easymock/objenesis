@@ -15,11 +15,8 @@
  */
 package org.objenesis.benchmark;
 
-import java.util.concurrent.TimeUnit;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
-
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 import org.objenesis.instantiator.ObjectInstantiator;
@@ -28,17 +25,9 @@ import org.objenesis.strategy.BaseInstantiatorStrategy;
 import org.objenesis.strategy.InstantiatorStrategy;
 import org.objenesis.strategy.SingleInstantiatorStrategy;
 import org.objenesis.strategy.StdInstantiatorStrategy;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.Threads;
-import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.infra.Blackhole;
+import org.openjdk.jmh.annotations.*;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Benchmark comparing different instantiator strategies
@@ -47,8 +36,9 @@ import org.openjdk.jmh.infra.Blackhole;
  */
 @BenchmarkMode(Mode.AverageTime)
 @Threads(32)
-@Warmup(iterations = 2, time = 5000, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 2, time = 10000, timeUnit = TimeUnit.MILLISECONDS)
+@Fork(2)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 10, time = 1)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Benchmark)
 public class ConcurrentGetInstantiator {
@@ -88,34 +78,27 @@ public class ConcurrentGetInstantiator {
    }
 
    @Benchmark
-   public void std(ThreadState state, Blackhole bh) {
-      ObjectInstantiator<?> inst = std.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
-      bh.consume(inst);
+   public ObjectInstantiator<?> std(ThreadState state) {
+      return std.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
    }
 
    @Benchmark
-   public void single(ThreadState state, Blackhole bh) {
-      ObjectInstantiator<?> inst = single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
-      bh.consume(inst);
+   public ObjectInstantiator<?> single(ThreadState state) {
+      return single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
    }
 
    @Benchmark
-   public void custom(ThreadState state, Blackhole bh) {
-      ObjectInstantiator<?> inst = single.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
-      bh.consume(inst);
+   public ObjectInstantiator<?> custom(ThreadState state) {
+      return custom.newInstantiatorOf(toInstantiate[state.index++ % COUNT]);
    }
    
    @Benchmark
-   public void cachedStd(ThreadState state, Blackhole bh) {
-      ObjectInstantiator<?> inst = cachedStd
-         .getInstantiatorOf(toInstantiate[state.index++ % COUNT]);
-      bh.consume(inst);
+   public ObjectInstantiator<?> cachedStd(ThreadState state) {
+      return cachedStd.getInstantiatorOf(toInstantiate[state.index++ % COUNT]);
    }
    
    @Benchmark
-   public void uncachedStd(ThreadState state, Blackhole bh) {
-      ObjectInstantiator<?> inst = uncachedStd.getInstantiatorOf(toInstantiate[state.index++
-         % COUNT]);
-      bh.consume(inst);
+   public ObjectInstantiator<?> uncachedStd(ThreadState state) {
+      return uncachedStd.getInstantiatorOf(toInstantiate[state.index++ % COUNT]);
    }
 }

@@ -1,4 +1,7 @@
-:: org.objenesis.benchmark.CreateObject.*
-:: org.objenesis.benchmark.ConcurrentGetInstantiator.*
+mvn clean package
 
-java -jar target/microbenchmarks.jar %*
+echo "Possible filters"
+echo "org.objenesis.benchmark.CreateObject.*"
+echo "org.objenesis.benchmark.ConcurrentGetInstantiator.*"
+
+java -jar target/benchmarks.jar %*

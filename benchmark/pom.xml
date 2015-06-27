@@ -16,6 +16,9 @@
     <!-- Minimum for this module is 1.6 -->
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
+
+    <jmh.version>1.10.1</jmh.version>
+    <uberjar.name>benchmarks</uberjar.name>
   </properties>
 
   <dependencies>
@@ -28,13 +31,19 @@
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-core</artifactId>
-      <version>1.8</version>
+      <version>${jmh.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <version>${jmh.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib-nodep</artifactId>
-      <version>2.2.2</version>
+      <version>3.1</version>
     </dependency>
   </dependencies>
 
@@ -52,19 +61,7 @@
         <artifactId>maven-license-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>org.objenesis.tck.Main</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
@@ -75,7 +72,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.3</version>
+        <version>2.4</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -83,17 +80,23 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <finalName>microbenchmarks</finalName>
+              <finalName>${uberjar.name}</finalName>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                    <mainClass>org.openjdk.jmh.Main</mainClass>
+                  <mainClass>org.openjdk.jmh.Main</mainClass>
                 </transformer>
               </transformers>
               <filters>
                 <filter>
+                  <!--
+                      Shading signed JARs will fail without this.
+                      http://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
+                  -->
                   <artifact>*:*</artifact>
                   <excludes>
-                    <exclude>META-INF/services/javax.annotation.processing.Processor</exclude>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
                   </excludes>
                 </filter>
               </filters>

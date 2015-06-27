@@ -33,9 +33,9 @@ import java.util.concurrent.TimeUnit;
  * @author Henri Tremblay
  */
 @BenchmarkMode(Mode.AverageTime)
-@Warmup(iterations = 1, time = 5000, timeUnit = TimeUnit.MILLISECONDS)
-@Fork(1)
-@Measurement(iterations = 2, time = 5000, timeUnit = TimeUnit.MILLISECONDS)
+@Fork(2)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 10, time = 1)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Benchmark)
 public class CreateObject {
