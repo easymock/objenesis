@@ -31,8 +31,11 @@ import java.util.List;
  */
 public class SearchWorkingInstantiator implements Serializable { // implements Serializable just for the test
 
-    @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception {
+        searchForInstantiator(SearchWorkingInstantiator.class);
+    }
+
+    public static void searchForInstantiator(Class<?> toInstantiate) {
         List<Class<?>> classes = ClassEnumerator.getClassesForPackage(ObjectInstantiator.class.getPackage());
         Collections.sort(classes, new Comparator<Class<?>>() {
             public int compare(Class<?> o1, Class<?> o2) {
@@ -46,12 +49,17 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
                 continue;
             }
 
-            Constructor<?> constructor = c.getConstructor(Class.class);
+            Constructor<?> constructor;
+            try {
+                constructor = c.getConstructor(Class.class);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
 
             String result;
             try {
-                ObjectInstantiator<SearchWorkingInstantiator> instantiator =
-                        (ObjectInstantiator<SearchWorkingInstantiator>) constructor.newInstance(SearchWorkingInstantiator.class);
+                ObjectInstantiator<?> instantiator =
+                        (ObjectInstantiator<?>) constructor.newInstance(toInstantiate);
                 instantiator.newInstance();
                 result = "Working!";
             }
