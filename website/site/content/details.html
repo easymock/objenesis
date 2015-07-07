@@ -96,7 +96,7 @@ are determining the best instantiator using a strategy. It might occurs that you
 to implement your own strategy. Two possible reasons I can think of are that</p>
 
 <ul>
-   <li><strong>You want to specialize in a given JVM.</strong> Default strategies are
+   <li><strong>You want to specialize for a given JVM.</strong> Default strategies are
        supporting all JVMs. This has a little performance cost so you might want to
        provide a strategy that is optimized for your JVM.
 <pre>
@@ -124,6 +124,20 @@ public class ObjenesisSun14 extends ObjenesisBase {
     }
 }
 </pre>
+
+<p>Also, if Objenesis can't find the right instantiator to use by itself, this doesn't mean it doesn't bundle
+an instantiator that works on your plaform. To try to find one, we provide a nice tool that will run through
+all the instantiators and tell you which ones work</p>
+
+<pre>java -cp objenesis-${project.version}-tck.jarorg.objenesis.tck.search.SearchWorkingInstantiator</pre>
+
+<p>Some culprits:</p>
+<ul>
+    <li>Some instantiators are made to mimic the Java serialization. It means they will call the default constructor of the first non-serializable class</li>
+    <li>Some instantiators only works if the class is serialiable</li>
+    <li>Some instantiators will in fact call the default constructor</li>
+    <li>Depending on your security manager, classes coming from a low level class loader might not be instantiable</li>
+</ul>
 
 <h1>The Evil ObjenesisHelper</h1>
 
