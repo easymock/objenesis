@@ -15,8 +15,6 @@
  */
 package org.objenesis.strategy;
 
-import static org.objenesis.strategy.PlatformDescription.*;
-
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.Android10Instantiator;
 import org.objenesis.instantiator.android.Android17Instantiator;
@@ -26,6 +24,8 @@ import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
 import org.objenesis.instantiator.sun.UnsafeFactoryInstantiator;
+
+import static org.objenesis.strategy.PlatformDescription.*;
 
 /**
  * Guess the best instantiator for a given class. The instantiator will instantiate the class
@@ -52,7 +52,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
     */
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
-      if(PlatformDescription.isThisJVM(SUN) || PlatformDescription.isThisJVM(OPENJDK)) {
+      if(PlatformDescription.isThisJVM(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
          // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
          // times slower. So I prefer to use this one
          return new SunReflectionFactoryInstantiator<T>(type);

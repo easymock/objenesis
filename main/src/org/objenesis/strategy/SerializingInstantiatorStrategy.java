@@ -15,17 +15,17 @@
  */
 package org.objenesis.strategy;
 
-import static org.objenesis.strategy.PlatformDescription.*;
-
-import java.io.NotSerializableException;
-import java.io.Serializable;
-
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.AndroidSerializationInstantiator;
 import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
 import org.objenesis.instantiator.perc.PercSerializationInstantiator;
+
+import java.io.NotSerializableException;
+import java.io.Serializable;
+
+import static org.objenesis.strategy.PlatformDescription.*;
 
 /**
  * Guess the best serializing instantiator for a given class. The returned instantiator will
@@ -55,7 +55,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
       if(!Serializable.class.isAssignableFrom(type)) {
          throw new ObjenesisException(new NotSerializableException(type+" not serializable"));
       }
-      if(JVM_NAME.startsWith(SUN) || PlatformDescription.isThisJVM(OPENJDK)) {
+      if(JVM_NAME.startsWith(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
          return new ObjectStreamClassInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {

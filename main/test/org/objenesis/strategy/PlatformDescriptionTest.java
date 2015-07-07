@@ -15,11 +15,11 @@
  */
 package org.objenesis.strategy;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.lang.reflect.Method;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Currently the test just check nothing is crashing. A more complex test should play with class
@@ -28,6 +28,11 @@ import org.junit.Test;
  * @author Henri Tremblay
  */
 public class PlatformDescriptionTest {
+
+   @Test
+   public void isJvmName() {
+      PlatformDescription.isThisJVM(PlatformDescription.HOTSPOT);
+   }
 
    @Test
    public void test() {

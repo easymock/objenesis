@@ -15,9 +15,9 @@
  */
 package org.objenesis.strategy;
 
-import java.lang.reflect.Field;
-
 import org.objenesis.ObjenesisException;
+
+import java.lang.reflect.Field;
 
 /**
  * List of constants describing the currently used platform.
@@ -32,8 +32,16 @@ public final class PlatformDescription {
    /** JVM_NAME prefix for GCJ */
    public static final String GNU = "GNU libgcj";
 
-   /** JVM_NAME prefix for Sun Java HotSpot */
-   public static final String SUN = "Java HotSpot";
+   /** JVM_NAME prefix for Java HotSpot */
+   public static final String HOTSPOT = "Java HotSpot";
+
+   /**
+    * JVM_NAME prefix for Java HotSpot
+    *
+    * @deprecated Use {@link #HOTSPOT} instead
+    */
+   @Deprecated
+   public static final String SUN = HOTSPOT;
 
    /** JVM_NAME prefix for the OpenJDK */
    public static final String OPENJDK = "OpenJDK";
