@@ -523,6 +523,7 @@
       <modules>
         <module>benchmark</module>
         <module>tck-android</module>
+        <module>gae</module>
         <module>website</module>
       </modules>
     </profile>
