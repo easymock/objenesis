@@ -89,6 +89,10 @@ public class ClassEnumerator {
     }
 
     public static List<Class<?>> getClassesForPackage(Package pkg) {
+        return getClassesForPackage(pkg, ClassEnumerator.class.getClassLoader());
+    }
+
+    public static List<Class<?>> getClassesForPackage(Package pkg, ClassLoader classLoader) {
         List<Class<?>> classes = new ArrayList<Class<?>>();
 
         String pkgname = pkg.getName();
@@ -97,7 +101,7 @@ public class ClassEnumerator {
         // Get a File object for the package
         Enumeration<URL> resources;
         try {
-            resources = ClassLoader.getSystemClassLoader().getResources(relPath);
+            resources = classLoader.getResources(relPath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
