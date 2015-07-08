@@ -17,6 +17,7 @@ package org.objenesis.tck.search;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.PlatformDescription;
+import org.objenesis.tck.candidates.SerializableNoConstructor;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -32,15 +33,22 @@ import java.util.List;
  */
 public class SearchWorkingInstantiator implements Serializable { // implements Serializable just for the test
 
+    private SearchWorkingInstantiatorListener listener;
+
     public static void main(String[] args) throws Exception {
         System.out.println();
         System.out.println(PlatformDescription.describePlatform());
         System.out.println();
 
-        searchForInstantiator(SearchWorkingInstantiator.class);
+        SearchWorkingInstantiator searchWorkingInstantiator = new SearchWorkingInstantiator(new SystemOutListener());
+        searchWorkingInstantiator.searchForInstantiator(SerializableNoConstructor.class);
     }
 
-    public static void searchForInstantiator(Class<?> toInstantiate) {
+    public SearchWorkingInstantiator(SearchWorkingInstantiatorListener listener) {
+        this.listener = listener;
+    }
+
+    public void searchForInstantiator(Class<?> toInstantiate) {
         List<Class<?>> classes = ClassEnumerator.getClassesForPackage(ObjectInstantiator.class.getPackage());
         Collections.sort(classes, new Comparator<Class<?>>() {
             public int compare(Class<?> o1, Class<?> o2) {
@@ -61,19 +69,16 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
                 throw new RuntimeException(e);
             }
 
-            String result;
             try {
                 ObjectInstantiator<?> instantiator =
                         (ObjectInstantiator<?>) constructor.newInstance(toInstantiate);
                 instantiator.newInstance();
-                result = "Working!";
+                listener.instantiatorSupported(c);
             }
             catch(Exception e) {
                 Throwable t = (e instanceof InvocationTargetException) ? e.getCause() : e;
-                result = "KO - " + t;
+                listener.instantiatorUnsupported(c, t);
             }
-
-            System.out.printf("%-50s: %s%n", c.getSimpleName(), result);
         }
     }
 }
