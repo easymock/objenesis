@@ -15,13 +15,13 @@
  */
 package org.objenesis.tck;
 
+import org.objenesis.Objenesis;
+import org.objenesis.strategy.PlatformDescription;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.objenesis.Objenesis;
-import org.objenesis.strategy.PlatformDescription;
 
 /**
  * <b>Technology Compatibility Kit</b> (TCK) for {@link Objenesis}s.
@@ -86,7 +86,7 @@ public class TCK {
     */
    public void runTests(Reporter reporter) {
       reporter.startTests(describePlatform(), findAllDescriptions(candidates, descriptions),
-         findAllDescriptions(objenesisInstances, descriptions));
+              findAllDescriptions(objenesisInstances, descriptions));
 
       for(Class<?> candidateClass : candidates) {
          String candidateDescription = descriptions.get(candidateClass);
@@ -135,25 +135,11 @@ public class TCK {
    /**
     * Describes the platform. Outputs Java version and vendor. To change this behavior, override
     * this method.
-    * 
+    *
     * @return Description of the current platform
     */
    protected String describePlatform() {
-      String desc = "Java " + PlatformDescription.SPECIFICATION_VERSION + " ("
-         + "vendor=\"" + PlatformDescription.VENDOR + "\", "
-         + "vendor version=" + PlatformDescription.VENDOR_VERSION + ", "
-         + "JVM name=\"" + PlatformDescription.JVM_NAME + "\", "
-         + "JVM version=" + PlatformDescription.VM_VERSION + ", "
-         + "JVM info=" + PlatformDescription.VM_INFO;
-      
-      // Add the API level is it's an Android platform
-      int androidVersion = PlatformDescription.ANDROID_VERSION;
-      if(androidVersion != 0) {
-         desc += ", API level=" + PlatformDescription.ANDROID_VERSION;
-      }
-      desc += ")";
-
-      return desc;
+      return PlatformDescription.describePlatform();
    }
 
 }

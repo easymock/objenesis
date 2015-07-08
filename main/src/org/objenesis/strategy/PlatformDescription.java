@@ -75,6 +75,29 @@ public final class PlatformDescription {
    public static final int ANDROID_VERSION = getAndroidVersion();
 
    /**
+    * Describes the platform. Outputs Java version and vendor.
+    *
+    * @return Description of the current platform
+    */
+   public static String describePlatform() {
+      String desc = "Java " + SPECIFICATION_VERSION + " ("
+              + "vendor=\"" + VENDOR + "\", "
+              + "vendor version=" + VENDOR_VERSION + ", "
+              + "JVM name=\"" + JVM_NAME + "\", "
+              + "JVM version=" + VM_VERSION + ", "
+              + "JVM info=" + VM_INFO;
+
+      // Add the API level is it's an Android platform
+      int androidVersion = ANDROID_VERSION;
+      if(androidVersion != 0) {
+         desc += ", API level=" + ANDROID_VERSION;
+      }
+      desc += ")";
+
+      return desc;
+   }
+
+   /**
     * Check if the current JVM is of the type passed in parameter. Normally, this will be a constant
     * from this class. We basically do
     * <code>System.getProperty("java.vm.name").startWith(name)</code>.

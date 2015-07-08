@@ -16,6 +16,7 @@
 package org.objenesis.tck.search;
 
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.strategy.PlatformDescription;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -32,6 +33,10 @@ import java.util.List;
 public class SearchWorkingInstantiator implements Serializable { // implements Serializable just for the test
 
     public static void main(String[] args) throws Exception {
+        System.out.println();
+        System.out.println(PlatformDescription.describePlatform());
+        System.out.println();
+
         searchForInstantiator(SearchWorkingInstantiator.class);
     }
 
