@@ -15,16 +15,16 @@
  */
 package org.objenesis.tck;
 
-import java.io.IOException;
-import java.io.Serializable;
-
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
 
+import java.io.IOException;
+import java.io.Serializable;
+
 /**
  * Command line launcher for Technology Compatibility Kit (TCK).
- * 
+ *
  * @author Joe Walnes
  * @see TCK
  */
@@ -44,7 +44,7 @@ public class Main {
 
    private static class MockClass extends MockSuperClass implements Serializable {
       private static final long serialVersionUID = 1L;
-      
+
       private final boolean constructorCalled;
 
       @SuppressWarnings("unused")
@@ -59,7 +59,7 @@ public class Main {
 
    /**
     * Main class of the TCK. Can also be called as a normal method from an application server.
-    * 
+    *
     * @param args No parameters are required
     * @throws IOException When the TCK fails to read properties' files.
     */
@@ -78,7 +78,7 @@ public class Main {
 
    /**
     * Run the full test suite using standard Objenesis instances
-    * 
+    *
     * @param reporter result are recorded in the reporter
     * @return if the parent constructor test was successful
     */
@@ -92,7 +92,7 @@ public class Main {
 
    /**
     * Run the serializing suite on the provided Objenesis instance
-    * 
+    *
     * @param reporter result are recorded in the reporter
     * @param objenesis Objenesis instance to test
     */
@@ -103,7 +103,7 @@ public class Main {
 
    /**
     * Run the standard suite on the provided Objenesis instance
-    * 
+    *
     * @param reporter result are recorded in the reporter
     * @param objenesis Objenesis instance to test
     */
@@ -113,7 +113,7 @@ public class Main {
 
    /**
     * A special test making sure the first none serializable class no-args constructor is called
-    * 
+    *
     * @param objenesis Objenesis instance to test
     * @return if the test was successful
     */
@@ -124,7 +124,7 @@ public class Main {
          return mockObject.isSuperConstructorCalled() && !mockObject.isConstructorCalled();
       }
       catch(Exception e) {
-         System.err.println("--- Not serializable parent constructor called ---");
+         System.err.println("--- Not serializable parent constructor called as expected ---");
          e.printStackTrace(System.err);
          return false;
       }
@@ -133,7 +133,7 @@ public class Main {
    /**
     * Run a suite of tests (candidates) on the Objenesis instance, sending the results to the
     * reporter
-    * 
+    *
     * @param objenesis Objenesis instance to test
     * @param reporter result are recorded in the reporter
     * @param description description of the ran suite

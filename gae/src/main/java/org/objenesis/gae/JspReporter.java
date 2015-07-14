@@ -153,7 +153,7 @@ public class JspReporter implements Reporter {
       summary.println("</p>");
 
       // Parent constructor special test
-      summary.println("<p>Not serializable parent constructor called: "
+      summary.println("<p>Not serializable parent constructor called as expected: "
          + (parentConstructorTest ? 'Y' : 'N'));
       summary.println("</p>");
 
