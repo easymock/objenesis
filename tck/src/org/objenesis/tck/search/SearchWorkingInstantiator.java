@@ -22,9 +22,7 @@ import org.objenesis.tck.candidates.SerializableNoConstructor;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class will try every available instantiator on the platform to see which works.
@@ -49,15 +47,10 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
     }
 
     public void searchForInstantiator(Class<?> toInstantiate) {
-        List<Class<?>> classes = ClassEnumerator.getClassesForPackage(ObjectInstantiator.class.getPackage());
-        Collections.sort(classes, new Comparator<Class<?>>() {
-            public int compare(Class<?> o1, Class<?> o2) {
-                return o1.getSimpleName().compareTo(o2.getSimpleName());
-            }
-        });
+        SortedSet<Class<?>> classes = ClassEnumerator.getClassesForPackage(ObjectInstantiator.class.getPackage());
 
-        for (int i = 0; i < classes.size(); i++) {
-            Class<?> c = classes.get(i);
+        for (Iterator<Class<?>> it = classes.iterator(); it.hasNext();) {
+            Class<?> c = it.next();
             if(c.isInterface() || !ObjectInstantiator.class.isAssignableFrom(c)) {
                 continue;
             }

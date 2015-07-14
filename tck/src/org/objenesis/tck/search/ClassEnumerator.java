@@ -18,9 +18,7 @@ package org.objenesis.tck.search;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -40,7 +38,7 @@ public class ClassEnumerator {
         }
     }
 
-    private static void processDirectory(File directory, String pkgname, List<Class<?>> classes) {
+    private static void processDirectory(File directory, String pkgname, SortedSet<Class<?>> classes) {
 
         // Get the list of the files contained in the package
         String[] files = directory.list();
@@ -62,7 +60,7 @@ public class ClassEnumerator {
         }
     }
 
-    private static void processJarfile(URL resource, String pkgname, List<Class<?>> classes) {
+    private static void processJarfile(URL resource, String pkgname, SortedSet<Class<?>> classes) {
         String relPath = pkgname.replace('.', '/');
         String resPath = resource.getPath();
         String jarPath = resPath.replaceFirst("[.]jar[!].*", ".jar").replaceFirst("file:", "");
@@ -88,12 +86,16 @@ public class ClassEnumerator {
         }
     }
 
-    public static List<Class<?>> getClassesForPackage(Package pkg) {
+    public static SortedSet<Class<?>> getClassesForPackage(Package pkg) {
         return getClassesForPackage(pkg, ClassEnumerator.class.getClassLoader());
     }
 
-    public static List<Class<?>> getClassesForPackage(Package pkg, ClassLoader classLoader) {
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+    public static SortedSet<Class<?>> getClassesForPackage(Package pkg, ClassLoader classLoader) {
+        SortedSet<Class<?>> classes = new TreeSet<Class<?>>(new Comparator<Class<?>>() {
+           public int compare(Class<?> o1, Class<?> o2) {
+              return o1.getSimpleName().compareTo(o2.getSimpleName());
+           }
+        });
 
         String pkgname = pkg.getName();
         String relPath = pkgname.replace('.', '/');
