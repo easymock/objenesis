@@ -35,7 +35,6 @@ public class JspWriterListener implements SearchWorkingInstantiatorListener {
 
 
     public void instantiatorSupported(Class<?> c) {
-        System.out.println("allo");
         try {
             writer.println(String.format(PATTERN, c.getSimpleName(), "Working!"));
         } catch (IOException e) {
@@ -44,7 +43,6 @@ public class JspWriterListener implements SearchWorkingInstantiatorListener {
     }
 
     public void instantiatorUnsupported(Class<?> c, Throwable t) {
-        System.out.println("bonjour");
         try {
             writer.println(String.format(PATTERN, c.getSimpleName(), "KO - " + t));
         } catch (IOException e) {
