@@ -59,8 +59,9 @@
     reporter.printResult(result);
   }
   catch(Exception e) {
-    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    out.println("<pre>");
     e.printStackTrace(new PrintWriter(out));
+    out.println("</pre>");
   }
 %>
 </body>
