@@ -15,18 +15,10 @@
  */
 package org.objenesis.instantiator.basic;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectStreamClass;
-import java.io.ObjectStreamConstants;
-import java.io.Serializable;
-
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+
+import java.io.*;
 
 /**
  * Instantiates a class by using a dummy input stream that always feeds data for an empty object of
@@ -34,7 +26,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * defines a "readResolve" method, since it may return objects that have been returned previously
  * (i.e., there's no guarantee that the returned object is a new one), or even objects from a
  * completely different class.
- * 
+ *
  * @author Leonardo Mesquita
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
@@ -164,7 +156,7 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
          }
       }
       else {
-    	  throw new ObjenesisException(new NotSerializableException(clazz+" not serializable"));
+         throw new ObjenesisException(new NotSerializableException(clazz + " not serializable"));
       }
    }
 
@@ -172,7 +164,7 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
    public T newInstance() {
       try {
          return (T) inputStream.readObject();
-      }      
+      }
       catch(ClassNotFoundException e) {
          throw new Error("ClassNotFoundException: " + e.getMessage());
       }
