@@ -18,6 +18,7 @@ package org.objenesis.strategy;
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.AndroidSerializationInstantiator;
+import org.objenesis.instantiator.basic.ObjectInputStreamInstantiator;
 import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
 import org.objenesis.instantiator.perc.PercSerializationInstantiator;
@@ -56,6 +57,9 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          throw new ObjenesisException(new NotSerializableException(type+" not serializable"));
       }
       if(JVM_NAME.startsWith(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
+         if(isGoogleAppEngine()) {
+            return new ObjectInputStreamInstantiator<T>(type);
+         }
          return new ObjectStreamClassInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {

@@ -19,6 +19,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.Android10Instantiator;
 import org.objenesis.instantiator.android.Android17Instantiator;
 import org.objenesis.instantiator.android.Android18Instantiator;
+import org.objenesis.instantiator.basic.ObjectInputStreamInstantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
@@ -53,6 +54,9 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
       if(PlatformDescription.isThisJVM(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
+         if(PlatformDescription.isGoogleAppEngine()) {
+            return new ObjectInputStreamInstantiator<T>(type);
+         }
          // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
          // times slower. So I prefer to use this one
          return new SunReflectionFactoryInstantiator<T>(type);
