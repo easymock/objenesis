@@ -62,10 +62,10 @@ public final class PlatformDescription {
    /** JVM version */
    public static final String VM_INFO = System.getProperty("java.vm.info");
 
-   /** Vendor version */
+   /** VM vendor version */
    public static final String VENDOR_VERSION = System.getProperty("java.vm.version");
 
-   /** Vendor name */
+   /** VM vendor name */
    public static final String VENDOR = System.getProperty("java.vm.vendor");
 
    /** JVM name */
@@ -74,6 +74,9 @@ public final class PlatformDescription {
    /** Android version. Will be 0 for none android platform */
    public static final int ANDROID_VERSION = getAndroidVersion();
 
+   /** Google App Engine version or null is we are not on GAE */
+   public static final String GAE_VERSION = getGaeRuntimeVersion();
+
    /**
     * Describes the platform. Outputs Java version and vendor.
     *
@@ -81,8 +84,8 @@ public final class PlatformDescription {
     */
    public static String describePlatform() {
       String desc = "Java " + SPECIFICATION_VERSION + " ("
-              + "vendor=\"" + VENDOR + "\", "
-              + "vendor version=" + VENDOR_VERSION + ", "
+              + "VM vendor name=\"" + VENDOR + "\", "
+              + "VM vendor version=" + VENDOR_VERSION + ", "
               + "JVM name=\"" + JVM_NAME + "\", "
               + "JVM version=" + VM_VERSION + ", "
               + "JVM info=" + VM_INFO;
@@ -107,6 +110,14 @@ public final class PlatformDescription {
     */
    public static boolean isThisJVM(String name) {
       return JVM_NAME.startsWith(name);
+   }
+
+   public static boolean isGoogleAppEngine() {
+      return getGaeRuntimeVersion() != null;
+   }
+
+   private static String getGaeRuntimeVersion() {
+      return System.getProperty("com.google.appengine.runtime.version");
    }
 
    private static int getAndroidVersion() {
