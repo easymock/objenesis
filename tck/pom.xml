@@ -7,11 +7,11 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
   <artifactId>objenesis-tck</artifactId>
-  
+
   <name>Objenesis TCK</name>
   <description>Objenesis' TCK</description>
-  <url>http://objenesis.org</url>  
-  
+  <url>http://objenesis.org</url>
+
   <properties>
     <!-- These versions are also used to filter boot-bundles.properties -->
     <log4j.version>1.2.17</log4j.version>
@@ -27,7 +27,7 @@
     </dependency>
 
     <!-- Dependencies below are for the OSGi test -->
-  
+
     <dependency>
       <groupId>org.springframework.osgi</groupId>
       <artifactId>spring-osgi-test</artifactId>
@@ -46,7 +46,7 @@
       <version>${spring.osgi.version}</version>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- These are just to have a nice logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -72,23 +72,23 @@
       <version>${log4j.version}</version>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- And this is our Equinox implementation -->
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>org.eclipse.osgi</artifactId>
       <version>3.8.0.v20120529-1548</version>
-      <scope>test</scope>      
-    </dependency>    
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-  
+
   <build>
     <testResources>
       <testResource>
-        <directory>test</directory>   
+        <directory>test</directory>
         <filtering>true</filtering>
       </testResource>
-    </testResources>  
+    </testResources>
     <plugins>
       <plugin>
         <groupId>com.keyboardsamurais.maven</groupId>
@@ -110,13 +110,13 @@
             <manifest>
               <mainClass>org.objenesis.tck.Main</mainClass>
             </manifest>
-          </archive>        
+          </archive>
         </configuration>
-      </plugin>       
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>        
-        <version>2.3</version>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.1</version>
         <configuration>
           <createDependencyReducedPom>false</createDependencyReducedPom>
         </configuration>
@@ -128,7 +128,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin> 
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -188,6 +188,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>    
+    </profile>
   </profiles>
 </project>
