@@ -19,12 +19,15 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.Android10Instantiator;
 import org.objenesis.instantiator.android.Android17Instantiator;
 import org.objenesis.instantiator.android.Android18Instantiator;
+import org.objenesis.instantiator.basic.AccessibleInstantiator;
 import org.objenesis.instantiator.basic.ObjectInputStreamInstantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
 import org.objenesis.instantiator.sun.UnsafeFactoryInstantiator;
+
+import java.io.Serializable;
 
 import static org.objenesis.strategy.PlatformDescription.*;
 
@@ -38,7 +41,7 @@ import static org.objenesis.strategy.PlatformDescription.*;
  * <li>JVM vendor version</li>
  * </ul>
  * However, instantiators are stateful and so dedicated to their class.
- * 
+ *
  * @author Henri Tremblay
  * @see ObjectInstantiator
  */
@@ -47,7 +50,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
    /**
     * Return an {@link ObjectInstantiator} allowing to create instance without any constructor being
     * called.
-    * 
+    *
     * @param type Class to instantiate
     * @return The ObjectInstantiator for the class
     */
@@ -55,7 +58,10 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
 
       if(PlatformDescription.isThisJVM(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
          if(PlatformDescription.isGoogleAppEngine()) {
-            return new ObjectInputStreamInstantiator<T>(type);
+            if(Serializable.class.isAssignableFrom(type)) {
+               return new ObjectInputStreamInstantiator<T>(type);
+            }
+            return new AccessibleInstantiator<T>(type);
          }
          // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
          // times slower. So I prefer to use this one
