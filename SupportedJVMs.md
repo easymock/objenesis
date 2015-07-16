@@ -25,24 +25,24 @@ Objenesis to say the least...
 If someone has a better solution, we are listening. This is the result of the TCK. Remember that 'Y' means
 the class was instantiated without exception. It doesn't mean that no constructor was called.
 
-|Class type|Objenesis serializer|Objenesis std|
-|---|---|
-|Constructor throwing exception|N/A|n|
-|Constructor throwing exception (serializable)|Y|Y|
-|Constructor with arguments|N/A|n|
-|Constructor with arguments (serializable)|Y|Y|
-|Constructor with mandatory arguments|N/A|n|
-|Constructor with mandatory arguments (serializable)|Y|Y|
-|Default package constructor|N/A|Y|
-|Default package constructor (serializable)|Y|Y|
-|Default private constructor|N/A|Y|
-|Default private constructor (serializable)|Y|Y|
-|Default protected constructor|N/A|Y|
-|Default protected constructor (serializable)|Y|Y|
-|Default public constructor|N/A|Y|
-|Default public constructor (serializable)|Y|Y|
-|No constructor|N/A|Y|
-|No constructor (serializable)|Y|Y|
-|Serializable replacing with another class|Y|Y|
-|Serializable resolving to another class|n|n|
-|Serializable with ancestor throwing exception|N/A|n|
+|Class type                                        |Objenesis serializer|Objenesis std|
+|---------------------------------------------------|:-----------------:|:-----------:|
+|Constructor throwing exception                     |N/A                |n            |
+|Constructor throwing exception (serializable)      |Y                  |Y            |
+|Constructor with arguments                         |N/A                |n            |
+|Constructor with arguments (serializable)          |Y                  |Y            |
+|Constructor with mandatory arguments               |N/A                |n            |
+|Constructor with mandatory arguments (serializable)|Y                  |Y            |
+|Default package constructor                        |N/A                |Y            |
+|Default package constructor (serializable)         |Y                  |Y            |
+|Default private constructor                        |N/A                |Y            |
+|Default private constructor (serializable)         |Y                  |Y            |
+|Default protected constructor                      |N/A                |Y            |
+|Default protected constructor (serializable)       |Y                  |Y            |
+|Default public constructor                         |N/A                |Y            |
+|Default public constructor (serializable)          |Y                  |Y            |
+|No constructor                                     |N/A                |Y            |
+|No constructor (serializable)                      |Y                  |Y            |
+|Serializable replacing with another class          |Y                  |Y            |
+|Serializable resolving to another class            |n                  |n            |
+|Serializable with ancestor throwing exception      |N/A                |n            |
