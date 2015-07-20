@@ -9,6 +9,10 @@ import java.io.*;
  */
 public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
 
+   static final byte OPS_aload_0 = 42;
+   static final byte OPS_invokespecial = -73; // as two bytes parameters
+   static final byte OPS_return = -79;
+
    static final int CONSTANT_Utf8 = 1;
    static final int CONSTANT_Integer = 3;
    static final int CONSTANT_Float = 4;

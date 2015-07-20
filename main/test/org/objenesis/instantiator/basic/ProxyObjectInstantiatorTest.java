@@ -136,12 +136,19 @@ public class ProxyObjectInstantiatorTest {
          System.out.println(this +  " " + attribute_name);
 
          if("Code".equals(attribute_name)) {
-            in.read(buffer, 0, attribute_length);
             info = new Code_attribute(in);
          }
          else if("SourceFile".equals(attribute_name)) {
             assertEquals(2, attribute_length); // always 2
             info = new SourceFile_attribute(in);
+         }
+         else if("LineNumberTable".equals(attribute_name)) {
+            // I don't care about that (only used for debugging) so I will skip
+            in.read(buffer, 0, attribute_length);
+         }
+         else if("LocalVariableTable".equals(attribute_name)) {
+            // I don't care about that (only used for debugging) so I will skip
+            in.read(buffer, 0, attribute_length);
          }
          else {
             fail("Unknown attribute: " + attribute_name);
@@ -159,23 +166,39 @@ public class ProxyObjectInstantiatorTest {
       }
    }
 
-   static class Code_attribute {
-//      u2 max_stack;
-//      u2 max_locals;
-//      u4 code_length;
-//      u1 code[code_length];
-//      u2 exception_table_length;
-//      {   u2 start_pc;
-//         u2 end_pc;
-//         u2 handler_pc;
-//         u2 catch_type;
-//      } exception_table[exception_table_length];
-//      u2 attributes_count;
-//      attribute_info attributes[attributes_count];
+   class Code_attribute {
+      int max_stack; // u2
+      int max_locals; // u2
+      int code_length; // u4
+      byte[] code; // length of code_length
+      int exception_table_length; // u2 if will be 0, so we will skip the exception_table
+      int attributes_count; // u2
+      attribute_info[] attributes;
 
-      Code_attribute(DataInputStream in) {
+      Code_attribute(DataInputStream in) throws IOException {
+         max_stack = in.readUnsignedShort();
+         max_locals = in.readUnsignedShort();
+         code_length = in.readInt();
+         code = new byte[code_length];
+         in.read(code);
+         exception_table_length = in.readUnsignedShort();
+         attributes_count = in.readUnsignedShort();
+         attributes = new attribute_info[attributes_count];
+         for (int i = 0; i < attributes_count; i++) {
+            attributes[i] = new attribute_info(in);
+         }
+      }
 
-
+      @Override
+      public String toString() {
+         return "Code_attribute{" +
+            "max_stack=" + max_stack +
+            ", max_locals=" + max_locals +
+            ", code_length=" + code_length +
+            ", code=" + Arrays.toString(code) +
+            ", exception_table_length=" + exception_table_length +
+            ", attributes_count=" + attributes_count +
+            '}';
       }
    }
 
@@ -267,6 +290,19 @@ public class ProxyObjectInstantiatorTest {
       assertEquals(4, methodInfo.name_index); // <init>
       assertEquals(5, methodInfo.descriptor_index); // ()V if specifies the parameters
       assertEquals(1, methodInfo.attributes_count); // only one attributes: the Code
+
+      Code_attribute code = (Code_attribute) methodInfo.attributes[0].info;
+      assertEquals(1, code.max_stack);
+      assertEquals(1, code.max_locals);
+      assertEquals(5, code.code_length);
+      assertEquals(0, code.exception_table_length);
+      assertEquals(2, code.attributes_count);
+
+      // and the code
+      assertEquals(OPS_aload_0, code.code[0]);
+      assertEquals(OPS_invokespecial, code.code[1]);
+      assertEquals(1, code.code[2] << 8 | code.code[3]); // should be one which is the index of the constructor of the superclass
+      assertEquals(OPS_return, code.code[4]);
 
       // reading final class attributes
       System.out.println("Class attributes");
