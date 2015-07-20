@@ -1,2 +1,5 @@
 language: java
 
+branches:
+  only:
+    - master
