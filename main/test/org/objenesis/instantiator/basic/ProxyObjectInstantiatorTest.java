@@ -286,4 +286,15 @@ public class ProxyObjectInstantiatorTest {
          }
       }
    }
+
+   @Test
+   public void loadAClassFromBytes() throws Exception {
+      InputStream resource = getClass().getResourceAsStream("/org/objenesis/instantiator/basic/EmptyClass.class");
+      byte[] b = new byte[319];
+      resource.read(b);
+      resource.close();
+
+      Class<?> c = ReflectUtils.defineClass("org.objenesis.instantiator.basic.EmptyClass", b, getClass().getClassLoader());
+      assertEquals("EmptyClass", c.getSimpleName());
+   }
 }
