@@ -9,6 +9,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * This instantiator creates a class by dynamically extending it. The attepmt is to slip the constructor of the
+ * super class. So that the constructor is indeed not called but you however instantiate a child class, not
+ * the actual class. Currently, there is a verify error if the constructor is skipped (so it is currently not)
+ *
  * @author Henri Tremblay
  */
 public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
@@ -68,7 +72,7 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
       String clazz = parentClazz +"$$$Objenesis";
 
       DataOutputStream in = null;
-      ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough
+      ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
       try {
          in = new DataOutputStream(bIn);
 
