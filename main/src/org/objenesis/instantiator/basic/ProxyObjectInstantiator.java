@@ -14,7 +14,7 @@ import java.io.IOException;
 public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
 
    static final byte OPS_aload_0 = 42;
-   static final byte OPS_invokespecial = -73; // as two bytes parameters
+   static final byte OPS_invokespecial = -73; // has two bytes parameters
    static final byte OPS_return = -79;
 
    static final int CONSTANT_Utf8 = 1;
@@ -64,10 +64,8 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
    private final Class<?> newType;
 
    public ProxyObjectInstantiator(Class<T> type) {
-//      String clazz = type.getName().replace('.', '/');
-//      String parentClazz = type.getSuperclass().getName().replace('.', '/');
       String parentClazz = type.getName().replace('.', '/');
-      String clazz = parentClazz +"Objenesis";
+      String clazz = parentClazz +"$$$Objenesis";
 
       DataOutputStream in = null;
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough

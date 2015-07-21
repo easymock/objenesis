@@ -25,7 +25,7 @@ public class ProxyObjectInstantiatorTest {
    public void testNewInstance() throws Exception {
       ObjectInstantiator<EmptyClass> inst = new ProxyObjectInstantiator<EmptyClass>(EmptyClass.class);
       EmptyClass c = inst.newInstance();
-      assertEquals("EmptyClassObjenesis", c.getClass().getSimpleName());
+      assertEquals("EmptyClass$$$Objenesis", c.getClass().getSimpleName());
    }
 
    static class CONSTANT_Utf8_info {
