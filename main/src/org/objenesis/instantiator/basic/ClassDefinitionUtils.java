@@ -24,18 +24,18 @@ import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
 
 /**
- * @version $Id: ReflectUtils.java,v 1.30 2009/01/11 19:47:49 herbyderby Exp $
+ * Helper class for ProxyObjectInstantiator
  */
-public final class ReflectUtils {
-   private ReflectUtils() { }
+public final class ClassDefinitionUtils {
+   private ClassDefinitionUtils() { }
 
    private static Method DEFINE_CLASS;
    private static final ProtectionDomain PROTECTION_DOMAIN;
 
    static {
-      PROTECTION_DOMAIN = (ProtectionDomain)AccessController.doPrivileged(new PrivilegedAction<ProtectionDomain>() {
+      PROTECTION_DOMAIN = AccessController.doPrivileged(new PrivilegedAction<ProtectionDomain>() {
          public ProtectionDomain run() {
-            return ReflectUtils.class.getProtectionDomain();
+            return ClassDefinitionUtils.class.getProtectionDomain();
          }
       });
 
@@ -60,7 +60,18 @@ public final class ReflectUtils {
       });
    }
 
-   public static Class defineClass(String className, byte[] b, ClassLoader loader) throws Exception {
+   /**
+    * Define a class in the provided class loader from the array of bytes. Inspired by cglib
+    * <code>ReflectUtils.defineClass</code>
+    *
+    * @param className class name in the format <code>org.objenesis.MyClass</code>
+    * @param b bytes representing the class
+    * @param loader the class loader where the class will be loaded
+    * @return the newly loaded class
+    * @throws Exception whenever something goes wrong
+    */
+   public static Class defineClass(String className, byte[] b, ClassLoader loader)
+      throws Exception {
       Object[] args = new Object[]{className, b, new Integer(0), new Integer(b.length), PROTECTION_DOMAIN };
       Class c = (Class)DEFINE_CLASS.invoke(loader, args);
       // Force static initializers to run.

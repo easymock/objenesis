@@ -1,6 +1,7 @@
 package org.objenesis.instantiator.basic;
 
 import org.junit.Test;
+import org.objenesis.instantiator.ObjectInstantiator;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -22,7 +23,9 @@ public class ProxyObjectInstantiatorTest {
 
    @Test
    public void testNewInstance() throws Exception {
-      new ProxyObjectInstantiator<EmptyClass>(EmptyClass.class);
+      ObjectInstantiator<EmptyClass> inst = new ProxyObjectInstantiator<EmptyClass>(EmptyClass.class);
+      EmptyClass c = inst.newInstance();
+      assertEquals("EmptyClassObjenesis", c.getClass().getSimpleName());
    }
 
    static class CONSTANT_Utf8_info {
@@ -330,7 +333,8 @@ public class ProxyObjectInstantiatorTest {
       resource.read(b);
       resource.close();
 
-      Class<?> c = ReflectUtils.defineClass("org.objenesis.instantiator.basic.EmptyClass", b, getClass().getClassLoader());
+      Class<?> c = ClassDefinitionUtils
+         .defineClass("org.objenesis.instantiator.basic.EmptyClass", b, getClass().getClassLoader());
       assertEquals("EmptyClass", c.getSimpleName());
    }
 }

@@ -1,8 +1,12 @@
 package org.objenesis.instantiator.basic;
 
+import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @author Henri Tremblay
@@ -37,71 +41,188 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
    static final int ACC_ANNOTATION = 0x2000; // Declared as an annotation type.
    static final int ACC_ENUM = 0x4000; // Declared as an enum type.
 
-   private static final String CONSTRUCTOR = "<init>";
+   static final int INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR = 1;
+   static final int INDEX_CLASS_THIS = 2;
+   static final int INDEX_CLASS_SUPERCLASS = 3;
+   static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
+   static final int INDEX_UTF8_CONSTRUCTOR_DESC = 5;
+   static final int INDEX_UTF8_CODE_ATTRIBUTE = 6;
+   static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 13;
+   static final int INDEX_UTF8_CLASS = 14;
+   static final int INDEX_UTF8_SUPERCLASS = 15;
+
+   static int CONSTANT_POOL_COUNT = 16;
+
+   static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR, OPS_return};
+
+   static final String CONSTRUCTOR_NAME = "<init>";
+   static final String CONSTRUCTOR_DESC = "()V";
 
    static byte[] MAGIC = { (byte) 0xca, (byte) 0xfe, (byte) 0xba, (byte) 0xbe };
    static byte[] VERSION = { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x31 }; // minor_version, major_version (Java 5)
-   static byte[] CONSTANT_POOL = {
-      CONSTANT_Class, 0x03, // 1. class
-      CONSTANT_Class, 0x04, // 2. superclass
-      CONSTANT_Utf8, 0x05, // 3. name of the class
-      CONSTANT_Utf8, 0x05, // 4. name of the superclass
-      CONSTANT_Utf8, 0x05, // 5. default constructor name
-   };
-   static byte[] CONSTANT_POOL_COUNT = { 0x00, 0x06 };
-   static byte[] ACCESS_FLAGS = { 0x00, ACC_PUBLIC };
-   static byte[] THIS_CLASS = { (byte) 0x00, (byte) 0x01 };
-   static byte[] SUPER_CLASS = { (byte) 0x00, (byte) 0x02 };
-   static byte[] INTERFACES_COUNT = { (byte) 0x00, (byte) 0x00 };
-   static byte[] FIELDS_COUNT = { (byte) 0x00, (byte) 0x00 };
-   static byte[] METHODS_COUNT = { (byte) 0x00, (byte) 0x01 };
-   static byte[] ATTRIBUTES_COUNT = { (byte) 0x00, (byte) 0x00 };
 
+   private final Class<?> newType;
 
    public ProxyObjectInstantiator(Class<T> type) {
-      String clazz = type.getName().replace('.', '/');
-      String parentClazz = type.getSuperclass().getName().replace('.', '/');
+//      String clazz = type.getName().replace('.', '/');
+//      String parentClazz = type.getSuperclass().getName().replace('.', '/');
+      String parentClazz = type.getName().replace('.', '/');
+      String clazz = parentClazz +"Objenesis";
 
-
+      DataOutputStream in = null;
+      ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough
       try {
-         DataOutputStream in = new DataOutputStream(new FileOutputStream("test.dat"));
+         in = new DataOutputStream(bIn);
+
          in.write(MAGIC);
          in.write(VERSION);
-         in.write(CONSTANT_POOL_COUNT);
+         in.writeShort(CONSTANT_POOL_COUNT);
 
-         // class name
-         in.write(CONSTANT_Utf8);
-         in.writeInt(clazz.length());
+         // set all the constant pool here
+
+         // 1. Methodref to the superclass constructor
+         in.writeByte(CONSTANT_Methodref);
+         in.writeShort(INDEX_CLASS_SUPERCLASS);
+         in.writeShort(INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR);
+
+         // 2. class
+         in.writeByte(CONSTANT_Class);
+         in.writeShort(INDEX_UTF8_CLASS);
+
+         // 3. super class
+         in.writeByte(CONSTANT_Class);
+         in.writeShort(INDEX_UTF8_SUPERCLASS);
+
+         // 4. default constructor name
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF(CONSTRUCTOR_NAME);
+
+         // 5. default constructor description
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF(CONSTRUCTOR_DESC);
+
+         // 6. Code
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF("Code");
+
+         // 7. LineNumberTable
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF("LineNumberTable");
+
+         // 8. LocalVariableTable
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF("LocalVariableTable");
+
+         // 9. this
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF("this");
+
+         // 10. Class name
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF("L" + clazz + ";");
+
+         // 11. SourceFile
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF("SourceFile");
+
+         // 12. File
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF(type.getSimpleName() + ".java");
+
+         // 13. Constructor
+         in.writeByte(CONSTANT_NameAndType);
+         in.writeShort(INDEX_UTF8_CONSTRUCTOR_NAME);
+         in.writeShort(INDEX_UTF8_CONSTRUCTOR_DESC);
+
+         // 14. Class name (again)
+         in.writeByte(CONSTANT_Utf8);
          in.writeUTF(clazz);
 
-         // superclass name
-         in.write(CONSTANT_Utf8);
-         in.writeInt(parentClazz.length());
+         // 15. Superclass name
+         in.writeByte(CONSTANT_Utf8);
          in.writeUTF(parentClazz);
 
-         // default constructor
-         in.write(CONSTANT_Utf8);
-         in.writeInt(CONSTRUCTOR.length());
-         in.writeUTF(CONSTRUCTOR);
+         // end of constant pool
 
-         in.write(ACCESS_FLAGS);
-         in.write(THIS_CLASS);
-         in.write(SUPER_CLASS);
-         in.write(INTERFACES_COUNT);
-         in.write(FIELDS_COUNT);
-         in.write(METHODS_COUNT);
+         // access flags: We want public, ACC_SUPER is always there
+         in.writeShort(ACC_PUBLIC | ACC_SUPER);
 
-         in.write(new byte[] { 0x00, ACC_PUBLIC }); // public
+         // this class index in the constant pool
+         in.writeShort(INDEX_CLASS_THIS);
 
-         in.write(ATTRIBUTES_COUNT);
-         in.close();
+         // super class index in the constant pool
+         in.writeShort(INDEX_CLASS_SUPERCLASS);
+
+         // interfaces implemented count (we have none)
+         in.writeShort(0);
+
+         // fields count (we have none)
+         in.writeShort(0);
+
+         // methods count (we have one: the default constructor)
+         in.writeShort(1);
+
+         // default constructor method_info
+         in.writeShort(ACC_PUBLIC);
+         in.writeShort(INDEX_UTF8_CONSTRUCTOR_NAME); // index of the method name (<init>)
+         in.writeShort(INDEX_UTF8_CONSTRUCTOR_DESC); // index of the description
+         in.writeShort(1); // number of attributes: only one, the code
+
+         // code attribute of the default constructor
+         in.writeShort(INDEX_UTF8_CODE_ATTRIBUTE);
+         in.writeInt(17); // attribute length
+         in.writeShort(1); // max_stack
+         in.writeShort(1); // max_locals
+         in.writeInt(CODE.length); // code length
+         in.write(CODE);
+         in.writeShort(0); // exception_table_length = 0
+         in.writeShort(0); // attributes count = 0, no need to have LineNumberTable and LocalVariableTable
+
+         // class attributes
+         in.writeShort(0); // none. No need to have a source file attribute
+
+
       } catch (IOException e) {
-         throw new RuntimeException(e);
+         throw new ObjenesisException(e);
+      } finally {
+         if(in != null) {
+            try {
+               in.close();
+            } catch (IOException e) {
+               throw new ObjenesisException(e);
+            }
+         }
       }
+
+      byte[] classBytes = bIn.toByteArray();
+
+      try {
+         FileOutputStream out = new FileOutputStream("test.dat");
+         out.write(classBytes);
+         out.close();
+      }
+      catch(IOException e) {
+         throw new ObjenesisException(e);
+      }
+      Class<?> result;
+      try {
+         result = ClassDefinitionUtils.defineClass(clazz.replace('/', '.'), classBytes, type.getClassLoader());
+      } catch (Exception e) {
+         throw new ObjenesisException(e);
+      }
+
+      newType = result;
    }
 
+   @SuppressWarnings("unchecked")
    public T newInstance() {
-      return null;
+      try {
+         return (T) newType.newInstance();
+      } catch (InstantiationException e) {
+         throw new ObjenesisException(e);
+      } catch (IllegalAccessException e) {
+         throw new ObjenesisException(e);
+      }
    }
 
 }
