@@ -20,7 +20,6 @@ import org.objenesis.instantiator.ObjectInstantiator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
@@ -172,14 +171,6 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
 
       byte[] classBytes = bIn.toByteArray();
 
-      try {
-         FileOutputStream out = new FileOutputStream("test.dat");
-         out.write(classBytes);
-         out.close();
-      }
-      catch(IOException e) {
-         throw new ObjenesisException(e);
-      }
       Class<?> result;
       try {
          result = ClassDefinitionUtils.defineClass(clazz.replace('/', '.'), classBytes, type.getClassLoader());
