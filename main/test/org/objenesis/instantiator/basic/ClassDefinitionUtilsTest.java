@@ -18,9 +18,8 @@ package org.objenesis.instantiator.basic;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author Henri Tremblay
@@ -45,6 +44,8 @@ public class ClassDefinitionUtilsTest {
       finally {
          in.close();
       }
-      return Arrays.copyOf(b, length);
+      byte[] copy = new byte[length];
+      System.arraycopy(b, 0, copy, 0, length);
+      return copy;
    }
 }

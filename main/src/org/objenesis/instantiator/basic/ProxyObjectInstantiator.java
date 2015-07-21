@@ -23,8 +23,9 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
 /**
- * This instantiator creates a class by dynamically extending it. The attepmt is to slip the constructor of the
+ * This instantiator creates a class by dynamically extending it. The attempt is to slip the constructor of the
  * super class. So that the constructor is indeed not called but you however instantiate a child class, not
  * the actual class. Currently, there is a verify error if the constructor is skipped (so it is currently not)
  *
@@ -32,53 +33,11 @@ import java.io.IOException;
  */
 public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
 
-   static final byte OPS_aload_0 = 42;
-   static final byte OPS_invokespecial = -73; // has two bytes parameters
-   static final byte OPS_return = -79;
-
-   static final int CONSTANT_Utf8 = 1;
-   static final int CONSTANT_Integer = 3;
-   static final int CONSTANT_Float = 4;
-   static final int CONSTANT_Long = 5;
-   static final int CONSTANT_Double = 6;
-   static final int CONSTANT_Class = 7;
-   static final int CONSTANT_String = 8;
-   static final int CONSTANT_Fieldref = 9;
-   static final int CONSTANT_Methodref = 10;
-   static final int CONSTANT_InterfaceMethodref = 11;
-   static final int CONSTANT_NameAndType = 12;
-   static final int CONSTANT_MethodHandle = 15;
-   static final int CONSTANT_MethodType = 16;
-   static final int CONSTANT_InvokeDynamic = 18;
-
-   static final int ACC_PUBLIC = 0x0001; // Declared public; may be accessed from outside its package.
-   static final int ACC_FINAL = 0x0010; // Declared final; no subclasses allowed.
-   static final int ACC_SUPER = 0x0020; // Treat superclass methods specially when invoked by the invokespecial instruction.
-   static final int ACC_INTERFACE = 0x0200; // Is an interface, not a class.
-   static final int ACC_ABSTRACT = 0x0400; // Declared abstract; must not be instantiated.
-   static final int ACC_SYNTHETIC = 0x1000; // Declared synthetic; not present in the source code.
-   static final int ACC_ANNOTATION = 0x2000; // Declared as an annotation type.
-   static final int ACC_ENUM = 0x4000; // Declared as an enum type.
-
-   static final int INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR = 1;
-   static final int INDEX_CLASS_THIS = 2;
-   static final int INDEX_CLASS_SUPERCLASS = 3;
-   static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
-   static final int INDEX_UTF8_CONSTRUCTOR_DESC = 5;
-   static final int INDEX_UTF8_CODE_ATTRIBUTE = 6;
-   static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 13;
-   static final int INDEX_UTF8_CLASS = 14;
-   static final int INDEX_UTF8_SUPERCLASS = 15;
-
-   static int CONSTANT_POOL_COUNT = 16;
-
-   static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR, OPS_return};
+   private static int CONSTANT_POOL_COUNT = 16;
+   private static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR, OPS_return};
 
    static final String CONSTRUCTOR_NAME = "<init>";
    static final String CONSTRUCTOR_DESC = "()V";
-
-   static byte[] MAGIC = { (byte) 0xca, (byte) 0xfe, (byte) 0xba, (byte) 0xbe };
-   static byte[] VERSION = { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x31 }; // minor_version, major_version (Java 5)
 
    private final Class<?> newType;
 

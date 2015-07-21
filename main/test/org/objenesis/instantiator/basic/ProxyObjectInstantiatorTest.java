@@ -25,11 +25,9 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
-import static org.objenesis.instantiator.basic.ProxyObjectInstantiator.*;
+import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
 
 /**
- * http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html
- *
  * @author Henri Tremblay
  */
 public class ProxyObjectInstantiatorTest {

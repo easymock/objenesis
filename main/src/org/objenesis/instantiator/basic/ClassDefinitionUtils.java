@@ -39,9 +39,54 @@ import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
 
 /**
- * Helper class for ProxyObjectInstantiator
+ * Helper class for ProxyObjectInstantiator. We can see the details of a class specification
+ * <a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html">here</a>
+ *
+ * @author Henri Tremblay
  */
 public final class ClassDefinitionUtils {
+
+   public static final byte OPS_aload_0 = 42;
+   public static final byte OPS_invokespecial = -73; // has two bytes parameters
+   public static final byte OPS_return = -79;
+
+   public static final int CONSTANT_Utf8 = 1;
+   public static final int CONSTANT_Integer = 3;
+   public static final int CONSTANT_Float = 4;
+   public static final int CONSTANT_Long = 5;
+   public static final int CONSTANT_Double = 6;
+   public static final int CONSTANT_Class = 7;
+   public static final int CONSTANT_String = 8;
+   public static final int CONSTANT_Fieldref = 9;
+   public static final int CONSTANT_Methodref = 10;
+   public static final int CONSTANT_InterfaceMethodref = 11;
+   public static final int CONSTANT_NameAndType = 12;
+   public static final int CONSTANT_MethodHandle = 15;
+   public static final int CONSTANT_MethodType = 16;
+   public static final int CONSTANT_InvokeDynamic = 18;
+
+   public static final int ACC_PUBLIC = 0x0001; // Declared public; may be accessed from outside its package.
+   public static final int ACC_FINAL = 0x0010; // Declared final; no subclasses allowed.
+   public static final int ACC_SUPER = 0x0020; // Treat superclass methods specially when invoked by the invokespecial instruction.
+   public static final int ACC_INTERFACE = 0x0200; // Is an interface, not a class.
+   public static final int ACC_ABSTRACT = 0x0400; // Declared abstract; must not be instantiated.
+   public static final int ACC_SYNTHETIC = 0x1000; // Declared synthetic; not present in the source code.
+   public static final int ACC_ANNOTATION = 0x2000; // Declared as an annotation type.
+   public static final int ACC_ENUM = 0x4000; // Declared as an enum type.
+
+   public static final int INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR = 1;
+   public static final int INDEX_CLASS_THIS = 2;
+   public static final int INDEX_CLASS_SUPERCLASS = 3;
+   public static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
+   public static final int INDEX_UTF8_CONSTRUCTOR_DESC = 5;
+   public static final int INDEX_UTF8_CODE_ATTRIBUTE = 6;
+   public static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 13;
+   public static final int INDEX_UTF8_CLASS = 14;
+   public static final int INDEX_UTF8_SUPERCLASS = 15;
+
+   public static final byte[] MAGIC = { (byte) 0xca, (byte) 0xfe, (byte) 0xba, (byte) 0xbe };
+   public static final byte[] VERSION = { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x31 }; // minor_version, major_version (Java 5)
+
    private ClassDefinitionUtils() { }
 
    private static Method DEFINE_CLASS;
