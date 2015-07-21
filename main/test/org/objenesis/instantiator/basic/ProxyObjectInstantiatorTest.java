@@ -1,6 +1,7 @@
 package org.objenesis.instantiator.basic;
 
 import org.junit.Test;
+import org.objenesis.EmptyClass;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 import java.io.DataInputStream;
