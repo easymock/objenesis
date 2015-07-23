@@ -23,10 +23,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
+
 /**
- * This instantiator creates a class by dynamically extending it. The attempt is to slip the constructor of the
- * super class. So that the constructor is indeed not called but you however instantiate a child class, not
- * the actual class. Currently, there is a verify error if the constructor is skipped (so it is currently not)
+ * This instantiator creates a class by dynamically extending it. It will skip the call to the parent constructor
+ * in the bytecode. So that the constructor is indeed not called but you however instantiate a child class, not
+ * the actual class. The class loader will normally throw a {@code VerifyError} is you do that. However, using
+ * {@code -Xverify:none} shoud make it work
  *
  * @author Henri Tremblay
  */
@@ -43,7 +45,9 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_UTF8_SUPERCLASS = 10;
 
    private static int CONSTANT_POOL_COUNT = 11;
-   private static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR, OPS_return};
+
+   private static final byte[] CODE = { OPS_aload_0, OPS_return};
+   private static final int CODE_ATTRIBUTE_LENGTH = 12 + CODE.length;
 
    private static final String SUFFIX = "$$$Objenesis";
 
@@ -168,7 +172,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
          // code attribute of the default constructor
          in.writeShort(INDEX_UTF8_CODE_ATTRIBUTE);
-         in.writeInt(17); // attribute length
+         in.writeInt(CODE_ATTRIBUTE_LENGTH); // attribute length
          in.writeShort(1); // max_stack
          in.writeShort(1); // max_locals
          in.writeInt(CODE.length); // code length
