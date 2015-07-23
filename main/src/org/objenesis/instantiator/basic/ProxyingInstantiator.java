@@ -30,7 +30,7 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  *
  * @author Henri Tremblay
  */
-public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
+public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
    private static final int INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR = 1;
    private static final int INDEX_CLASS_THIS = 2;
@@ -52,7 +52,7 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
 
    private final Class<?> newType;
 
-   public ProxyObjectInstantiator(Class<T> type) {
+   public ProxyingInstantiator(Class<T> type) {
 
       byte[] classBytes = writeExtendingClass(type, SUFFIX);
 

@@ -24,11 +24,11 @@ import static org.junit.Assert.*;
 /**
  * @author Henri Tremblay
  */
-public class ProxyObjectInstantiatorTest {
+public class ProxyingInstantiatorTest {
 
    @Test
    public void testNewInstance() throws Exception {
-      ObjectInstantiator<EmptyClass> inst = new ProxyObjectInstantiator<EmptyClass>(EmptyClass.class);
+      ObjectInstantiator<EmptyClass> inst = new ProxyingInstantiator<EmptyClass>(EmptyClass.class);
       EmptyClass c = inst.newInstance();
       assertEquals("EmptyClass$$$Objenesis", c.getClass().getSimpleName());
    }
