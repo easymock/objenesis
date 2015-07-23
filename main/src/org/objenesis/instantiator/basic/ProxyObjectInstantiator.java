@@ -38,11 +38,11 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
    private static final int INDEX_UTF8_CONSTRUCTOR_DESC = 5;
    private static final int INDEX_UTF8_CODE_ATTRIBUTE = 6;
-   private static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 9;
-   private static final int INDEX_UTF8_CLASS = 10;
-   private static final int INDEX_UTF8_SUPERCLASS = 11;
+   private static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 8;
+   private static final int INDEX_UTF8_CLASS = 9;
+   private static final int INDEX_UTF8_SUPERCLASS = 10;
 
-   private static int CONSTANT_POOL_COUNT = 12;
+   private static int CONSTANT_POOL_COUNT = 11;
    private static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR, OPS_return};
 
    private static final String SUFFIX = "$$$Objenesis";
@@ -123,24 +123,20 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF("Code");
 
-         // 7 was 9. this
-         in.writeByte(CONSTANT_Utf8);
-         in.writeUTF("this");
-
-         // 8 was 10. Class name
+         // 7. Class name
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF("L" + clazz + ";");
 
-         // 9 was 13. Constructor
+         // 8. Constructor
          in.writeByte(CONSTANT_NameAndType);
          in.writeShort(INDEX_UTF8_CONSTRUCTOR_NAME);
          in.writeShort(INDEX_UTF8_CONSTRUCTOR_DESC);
 
-         // 10 was 14. Class name (again)
+         // 9. Class name (again)
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(clazz);
 
-         // 11 was 15. Superclass name
+         // 10. Superclass name
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(parentClazz);
 
