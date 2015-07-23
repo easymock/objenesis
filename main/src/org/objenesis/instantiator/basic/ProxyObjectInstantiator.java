@@ -32,6 +32,16 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  */
 public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
 
+   private static final int INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR = 1;
+   private static final int INDEX_CLASS_THIS = 2;
+   private static final int INDEX_CLASS_SUPERCLASS = 3;
+   private static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
+   private static final int INDEX_UTF8_CONSTRUCTOR_DESC = 5;
+   private static final int INDEX_UTF8_CODE_ATTRIBUTE = 6;
+   private static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 13;
+   private static final int INDEX_UTF8_CLASS = 14;
+   private static final int INDEX_UTF8_SUPERCLASS = 15;
+
    private static int CONSTANT_POOL_COUNT = 16;
    private static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR, OPS_return};
 

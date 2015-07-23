@@ -76,16 +76,6 @@ public final class ClassDefinitionUtils {
    public static final int ACC_ANNOTATION = 0x2000; // Declared as an annotation type.
    public static final int ACC_ENUM = 0x4000; // Declared as an enum type.
 
-   public static final int INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR = 1;
-   public static final int INDEX_CLASS_THIS = 2;
-   public static final int INDEX_CLASS_SUPERCLASS = 3;
-   public static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
-   public static final int INDEX_UTF8_CONSTRUCTOR_DESC = 5;
-   public static final int INDEX_UTF8_CODE_ATTRIBUTE = 6;
-   public static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 13;
-   public static final int INDEX_UTF8_CLASS = 14;
-   public static final int INDEX_UTF8_SUPERCLASS = 15;
-
    public static final byte[] MAGIC = { (byte) 0xca, (byte) 0xfe, (byte) 0xba, (byte) 0xbe };
    public static final byte[] VERSION = { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x31 }; // minor_version, major_version (Java 5)
 
