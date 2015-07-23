@@ -17,8 +17,6 @@ package org.objenesis.instantiator.basic;
 
 import org.junit.Test;
 
-import java.io.InputStream;
-
 import static org.junit.Assert.*;
 
 /**
@@ -26,26 +24,25 @@ import static org.junit.Assert.*;
  */
 public class ClassDefinitionUtilsTest {
 
+   String className = "org.objenesis.EmptyClass";
+
    @Test
    public void testDefineClass() throws Exception {
-      String className = "org.objenesis.EmptyClass";
-      byte[] b = readClass();
+      byte[] b = ClassDefinitionUtils.readClass(className);
       Class<?> c = ClassDefinitionUtils.defineClass(className, b, getClass().getClassLoader());
       assertEquals(c.getName(), className);
    }
 
-   private byte[] readClass() throws Exception {
-      byte[] b = new byte[1000];
-      int length;
-      InputStream in = getClass().getResourceAsStream("/org/objenesis/EmptyClass.class");
-      try {
-         length = in.read(b);
-      }
-      finally {
-         in.close();
-      }
-      byte[] copy = new byte[length];
-      System.arraycopy(b, 0, copy, 0, length);
-      return copy;
+   @Test
+   public void testClassNameToInternalClassName() {
+      String actual = ClassDefinitionUtils.classNameToInternalClassName(className);
+      assertEquals("org/objenesis/EmptyClass", actual);
    }
+
+   @Test
+   public void testClassNameToResource() {
+      String actual = ClassDefinitionUtils.classNameToResource(className);
+      assertEquals("org/objenesis/EmptyClass.class", actual);
+   }
+
 }

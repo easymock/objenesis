@@ -33,7 +33,9 @@ package org.objenesis.instantiator.basic;
 
 import org.objenesis.ObjenesisException;
 
-import java.lang.reflect.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
@@ -137,5 +139,60 @@ public final class ClassDefinitionUtils {
       // Force static initializers to run.
       Class.forName(className, true, loader);
       return c;
+   }
+
+   /**
+    * Read the bytes of a class from the classpath
+    *
+    * @param className full class name including the package
+    * @return the bytes representing the class
+    * @throws IllegalArgumentException if the class is longer than 2500 bytes
+    * @throws IOException if we fail to read the class
+    */
+   public static byte[] readClass(String className) throws IOException {
+      // convert to a resource
+      className = classNameToResource(className);
+
+      byte[] b = new byte[2500]; // I'm assuming that I'm reading class that are not too big
+
+      int length;
+
+      InputStream in = ClassDefinitionUtils.class.getClassLoader().getResourceAsStream(className);
+      try {
+         length = in.read(b);
+      }
+      finally {
+         in.close();
+      }
+
+      if(length >= 2500) {
+         throw new IllegalArgumentException("The class is longer that 2500 bytes which is currently unsupported");
+      }
+
+      byte[] copy = new byte[length];
+      System.arraycopy(b, 0, copy, 0, length);
+      return copy;
+   }
+
+   /**
+    * Will convert a class name to its name in the class definition format (e.g {@code org.objenesis.EmptyClass}
+    * becomes {@code org/objenesis/EmptyClass})
+    *
+    * @param className full class name including the package
+    * @return the internal name
+    */
+   public static String classNameToInternalClassName(String className) {
+      return className.replace('.', '/');
+   }
+
+   /**
+    * Will convert a class name to its class loader resource name (e.g {@code org.objenesis.EmptyClass}
+    * becomes {@code org/objenesis/EmptyClass.class})
+    *
+    * @param className full class name including the package
+    * @return the resource name
+    */
+   public static String classNameToResource(String className) {
+      return classNameToInternalClassName(className) + ".class";
    }
 }
