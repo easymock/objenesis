@@ -34,21 +34,17 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  */
 public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
-   private static final int INDEX_METHODREF_OBJECT_CONSTRUCTOR = 1;
-   private static final int INDEX_CLASS_THIS = 2;
-   private static final int INDEX_CLASS_SUPERCLASS = 3;
-   private static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
-   private static final int INDEX_UTF8_CONSTRUCTOR_DESC = 5;
-   private static final int INDEX_UTF8_CODE_ATTRIBUTE = 6;
-   private static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 8;
-   private static final int INDEX_UTF8_CLASS = 9;
-   private static final int INDEX_UTF8_SUPERCLASS = 10;
-   private static final int INDEX_CLASS_OBJECT = 11;
-   private static final int INDEX_UTF8_OBJECT = 12;
+   private static final int INDEX_CLASS_THIS = 1;
+   private static final int INDEX_CLASS_SUPERCLASS = 2;
+   private static final int INDEX_UTF8_CONSTRUCTOR_NAME = 3;
+   private static final int INDEX_UTF8_CONSTRUCTOR_DESC = 4;
+   private static final int INDEX_UTF8_CODE_ATTRIBUTE = 5;
+   private static final int INDEX_UTF8_CLASS = 7;
+   private static final int INDEX_UTF8_SUPERCLASS = 8;
 
-   private static int CONSTANT_POOL_COUNT = 13;
+   private static int CONSTANT_POOL_COUNT = 9;
 
-   private static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_OBJECT_CONSTRUCTOR, OPS_return};
+   private static final byte[] CODE = { OPS_aload_0, OPS_return};
    private static final int CODE_ATTRIBUTE_LENGTH = 12 + CODE.length;
 
    private static final String SUFFIX = "$$$Objenesis";
@@ -104,55 +100,37 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
          // set all the constant pool here
 
-         // 1. Methodref to the superclass constructor
-         in.writeByte(CONSTANT_Methodref);
-         in.writeShort(INDEX_CLASS_OBJECT);
-         in.writeShort(INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR);
-
-         // 2. class
+         // 1. class
          in.writeByte(CONSTANT_Class);
          in.writeShort(INDEX_UTF8_CLASS);
 
-         // 3. super class
+         // 2. super class
          in.writeByte(CONSTANT_Class);
          in.writeShort(INDEX_UTF8_SUPERCLASS);
 
-         // 4. default constructor name
+         // 3. default constructor name
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(CONSTRUCTOR_NAME);
 
-         // 5. default constructor description
+         // 4. default constructor description
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(CONSTRUCTOR_DESC);
 
-         // 6. Code
+         // 5. Code
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF("Code");
 
-         // 7. Class name
+         // 6. Class name
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF("L" + clazz + ";");
 
-         // 8. Constructor
-         in.writeByte(CONSTANT_NameAndType);
-         in.writeShort(INDEX_UTF8_CONSTRUCTOR_NAME);
-         in.writeShort(INDEX_UTF8_CONSTRUCTOR_DESC);
-
-         // 9. Class name (again)
+         // 7. Class name (again)
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(clazz);
 
-         // 10. Superclass name
+         // 8. Superclass name
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(parentClazz);
-
-         // 11. Object class
-         in.writeByte(CONSTANT_Class);
-         in.writeShort(INDEX_UTF8_OBJECT);
-
-         // 12. Object class name
-         in.writeByte(CONSTANT_Utf8);
-         in.writeUTF(classNameToInternalClassName(Object.class.getName()));
 
          // end of constant pool
 
