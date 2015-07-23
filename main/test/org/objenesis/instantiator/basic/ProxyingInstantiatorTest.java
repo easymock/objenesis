@@ -15,6 +15,7 @@
  */
 package org.objenesis.instantiator.basic;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.objenesis.EmptyClass;
 import org.objenesis.instantiator.ObjectInstantiator;
@@ -24,6 +25,7 @@ import static org.junit.Assert.*;
 /**
  * @author Henri Tremblay
  */
+@Ignore("Because it doesn't work without -Xverify:none")
 public class ProxyingInstantiatorTest {
 
    @Test
@@ -32,8 +34,5 @@ public class ProxyingInstantiatorTest {
       EmptyClass c = inst.newInstance();
       assertEquals("EmptyClass$$$Objenesis", c.getClass().getSimpleName());
    }
-
-
-
 
 }
