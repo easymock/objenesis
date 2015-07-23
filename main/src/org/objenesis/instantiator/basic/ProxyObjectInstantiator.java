@@ -38,11 +38,11 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
    private static final int INDEX_UTF8_CONSTRUCTOR_DESC = 5;
    private static final int INDEX_UTF8_CODE_ATTRIBUTE = 6;
-   private static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 13;
-   private static final int INDEX_UTF8_CLASS = 14;
-   private static final int INDEX_UTF8_SUPERCLASS = 15;
+   private static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 9;
+   private static final int INDEX_UTF8_CLASS = 10;
+   private static final int INDEX_UTF8_SUPERCLASS = 11;
 
-   private static int CONSTANT_POOL_COUNT = 16;
+   private static int CONSTANT_POOL_COUNT = 12;
    private static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR, OPS_return};
 
    private static final String SUFFIX = "$$$Objenesis";
@@ -123,40 +123,24 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF("Code");
 
-         // 7. LineNumberTable
-         in.writeByte(CONSTANT_Utf8);
-         in.writeUTF("LineNumberTable");
-
-         // 8. LocalVariableTable
-         in.writeByte(CONSTANT_Utf8);
-         in.writeUTF("LocalVariableTable");
-
-         // 9. this
+         // 7 was 9. this
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF("this");
 
-         // 10. Class name
+         // 8 was 10. Class name
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF("L" + clazz + ";");
 
-         // 11. SourceFile
-         in.writeByte(CONSTANT_Utf8);
-         in.writeUTF("SourceFile");
-
-         // 12. File
-         in.writeByte(CONSTANT_Utf8);
-         in.writeUTF(type.getSimpleName() + ".java");
-
-         // 13. Constructor
+         // 9 was 13. Constructor
          in.writeByte(CONSTANT_NameAndType);
          in.writeShort(INDEX_UTF8_CONSTRUCTOR_NAME);
          in.writeShort(INDEX_UTF8_CONSTRUCTOR_DESC);
 
-         // 14. Class name (again)
+         // 10 was 14. Class name (again)
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(clazz);
 
-         // 15. Superclass name
+         // 11 was 15. Superclass name
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(parentClazz);
 
