@@ -37,8 +37,8 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
 
    private static final String SUFFIX = "$$$Objenesis";
 
-   static final String CONSTRUCTOR_NAME = "<init>";
-   static final String CONSTRUCTOR_DESC = "()V";
+   private static final String CONSTRUCTOR_NAME = "<init>";
+   private static final String CONSTRUCTOR_DESC = "()V";
 
    private final Class<?> newType;
 
@@ -46,14 +46,11 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
 
       byte[] classBytes = writeExtendingClass(type, SUFFIX);
 
-      Class<?> result;
       try {
-         result = ClassDefinitionUtils.defineClass(type.getName() + SUFFIX, classBytes, type.getClassLoader());
+         newType = ClassDefinitionUtils.defineClass(type.getName() + SUFFIX, classBytes, type.getClassLoader());
       } catch (Exception e) {
          throw new ObjenesisException(e);
       }
-
-      newType = result;
    }
 
    @SuppressWarnings("unchecked")
