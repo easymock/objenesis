@@ -35,14 +35,50 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
    private static int CONSTANT_POOL_COUNT = 16;
    private static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR, OPS_return};
 
+   private static final String SUFFIX = "$$$Objenesis";
+
    static final String CONSTRUCTOR_NAME = "<init>";
    static final String CONSTRUCTOR_DESC = "()V";
 
    private final Class<?> newType;
 
    public ProxyObjectInstantiator(Class<T> type) {
-      String parentClazz = type.getName().replace('.', '/');
-      String clazz = parentClazz +"$$$Objenesis";
+
+      byte[] classBytes = writeExtendingClass(type, SUFFIX);
+
+      Class<?> result;
+      try {
+         result = ClassDefinitionUtils.defineClass(type.getName() + SUFFIX, classBytes, type.getClassLoader());
+      } catch (Exception e) {
+         throw new ObjenesisException(e);
+      }
+
+      newType = result;
+   }
+
+   @SuppressWarnings("unchecked")
+   public T newInstance() {
+      try {
+         return (T) newType.newInstance();
+      } catch (InstantiationException e) {
+         throw new ObjenesisException(e);
+      } catch (IllegalAccessException e) {
+         throw new ObjenesisException(e);
+      }
+   }
+
+   /**
+    * Will generate the bytes for a class extending the type passed in parameter. This class will
+    * only have an empty default constructor
+    *
+    * @param type type to extend
+    * @param suffix the suffix appended to the class name to create the next extending class name
+    * @return the byte for the class
+    * @throws ObjenesisException is something goes wrong
+    */
+   private static byte[] writeExtendingClass(Class<?> type, String suffix) {
+      String parentClazz = classNameToInternalClassName(type.getName());
+      String clazz = parentClazz + suffix;
 
       DataOutputStream in = null;
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
@@ -169,27 +205,6 @@ public class ProxyObjectInstantiator<T> implements ObjectInstantiator<T> {
          }
       }
 
-      byte[] classBytes = bIn.toByteArray();
-
-      Class<?> result;
-      try {
-         result = ClassDefinitionUtils.defineClass(clazz.replace('/', '.'), classBytes, type.getClassLoader());
-      } catch (Exception e) {
-         throw new ObjenesisException(e);
-      }
-
-      newType = result;
+      return bIn.toByteArray();
    }
-
-   @SuppressWarnings("unchecked")
-   public T newInstance() {
-      try {
-         return (T) newType.newInstance();
-      } catch (InstantiationException e) {
-         throw new ObjenesisException(e);
-      } catch (IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-   }
-
 }
