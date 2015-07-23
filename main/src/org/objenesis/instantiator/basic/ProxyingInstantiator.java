@@ -34,7 +34,7 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  */
 public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
-   private static final int INDEX_METHODREF_SUPERCLASS_CONSTRUCTOR = 1;
+   private static final int INDEX_METHODREF_OBJECT_CONSTRUCTOR = 1;
    private static final int INDEX_CLASS_THIS = 2;
    private static final int INDEX_CLASS_SUPERCLASS = 3;
    private static final int INDEX_UTF8_CONSTRUCTOR_NAME = 4;
@@ -43,10 +43,12 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 8;
    private static final int INDEX_UTF8_CLASS = 9;
    private static final int INDEX_UTF8_SUPERCLASS = 10;
+   private static final int INDEX_CLASS_OBJECT = 11;
+   private static final int INDEX_UTF8_OBJECT = 12;
 
-   private static int CONSTANT_POOL_COUNT = 11;
+   private static int CONSTANT_POOL_COUNT = 13;
 
-   private static final byte[] CODE = { OPS_aload_0, OPS_return};
+   private static final byte[] CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_OBJECT_CONSTRUCTOR, OPS_return};
    private static final int CODE_ATTRIBUTE_LENGTH = 12 + CODE.length;
 
    private static final String SUFFIX = "$$$Objenesis";
@@ -104,7 +106,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
          // 1. Methodref to the superclass constructor
          in.writeByte(CONSTANT_Methodref);
-         in.writeShort(INDEX_CLASS_SUPERCLASS);
+         in.writeShort(INDEX_CLASS_OBJECT);
          in.writeShort(INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR);
 
          // 2. class
@@ -143,6 +145,14 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
          // 10. Superclass name
          in.writeByte(CONSTANT_Utf8);
          in.writeUTF(parentClazz);
+
+         // 11. Object class
+         in.writeByte(CONSTANT_Class);
+         in.writeShort(INDEX_UTF8_OBJECT);
+
+         // 12. Object class name
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF(classNameToInternalClassName(Object.class.getName()));
 
          // end of constant pool
 
