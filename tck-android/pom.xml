@@ -17,7 +17,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.objenesis</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>objenesis-tck</artifactId>
       <version>${project.version}</version>
       <exclusions>
@@ -48,7 +48,7 @@
           <artifactId>hamcrest-core</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>      
+    </dependency>
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -61,7 +61,7 @@
           <version>3.8.2</version>
           <extensions>true</extensions>
           <configuration>
-            <test> 
+            <test>
               <instrumentationPackage>org.objenesis.tck.android</instrumentationPackage>
               <instrumentationRunner>android.test.InstrumentationTestRunner</instrumentationRunner>
             </test>
@@ -102,7 +102,7 @@
         </configuration>
         <extensions>true</extensions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -125,7 +125,7 @@
                 <argument>org.objenesis.tck.android/.TckInstrumentation</argument>
               </arguments>
             </configuration>
-          </execution>          
+          </execution>
         </executions>
       </plugin>
     </plugins>
