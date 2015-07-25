@@ -122,10 +122,11 @@ public final class ClassDefinitionUtils {
     * @return the newly loaded class
     * @throws Exception whenever something goes wrong
     */
-   public static Class defineClass(String className, byte[] b, ClassLoader loader)
+   @SuppressWarnings("unchecked")
+   public static <T> Class<T> defineClass(String className, byte[] b, ClassLoader loader)
       throws Exception {
       Object[] args = new Object[]{className, b, new Integer(0), new Integer(b.length), PROTECTION_DOMAIN };
-      Class c = (Class)DEFINE_CLASS.invoke(loader, args);
+      Class<T> c = (Class<T>) DEFINE_CLASS.invoke(loader, args);
       // Force static initializers to run.
       Class.forName(className, true, loader);
       return c;
