@@ -40,7 +40,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
    private <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       try {
-         String className = type.getName() + "$$Objenesis$$ObjectInstantiator$$" + uniquifier.getAndIncrement();
+         String className = getClass().getName() + "$$" + uniquifier.getAndIncrement();
 
          ClassWriter cw = new ClassWriter(0);
          cw.visit(V1_5, ACC_PUBLIC | ACC_FINAL, className.replace('.', '/'), null, "sun/reflect/MagicAccessorImpl",
