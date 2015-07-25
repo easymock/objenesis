@@ -18,35 +18,38 @@ package main.java.org.objenesis.gae;
 import org.objenesis.tck.search.SearchWorkingInstantiatorListener;
 
 import javax.servlet.jsp.JspWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * @author Henri Tremblay
  */
 public class JspWriterListener implements SearchWorkingInstantiatorListener {
 
-    private static final String PATTERN = "<tr><td>%s</td><td>%s</td></tr>";
+   private static final String PATTERN = "<tr><td>%s</td><td>%s</td></tr>";
 
-    private JspWriter writer;
+   private JspWriter writer;
 
-    public JspWriterListener(JspWriter out) {
-        this.writer = out;
-    }
+   public JspWriterListener(JspWriter out) {
+      this.writer = out;
+   }
 
+   public void instantiatorSupported(Class<?> c) {
+      try {
+         writer.println(String.format(PATTERN, c.getSimpleName(), "Working!"));
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+   }
 
-    public void instantiatorSupported(Class<?> c) {
-        try {
-            writer.println(String.format(PATTERN, c.getSimpleName(), "Working!"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void instantiatorUnsupported(Class<?> c, Throwable t) {
-        try {
-            writer.println(String.format(PATTERN, c.getSimpleName(), "KO - " + t));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+   public void instantiatorUnsupported(Class<?> c, Throwable t) {
+      ByteArrayOutputStream b = new ByteArrayOutputStream();
+      t.printStackTrace(new PrintStream(b));
+      try {
+         writer.println(String.format(PATTERN, c.getSimpleName(), "KO - " + b.toString()));
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+   }
 }
