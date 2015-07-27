@@ -27,6 +27,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.objectweb.asm.Opcodes.*;
 
 /**
+ * This instantiator will correctly bypass the constructors by instantiating the class using the default
+ * constructor from Object. It will be allowed to do so by extending {@code MagicAccessorImpl} which prevents
+ * its children to be verified by the class loader
+ * 
  * @author Henri Tremblay
  */
 public class MagicInstantiator<T> implements ObjectInstantiator<T> {
