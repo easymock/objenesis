@@ -51,6 +51,9 @@ public final class ClassDefinitionUtils {
    public static final byte OPS_aload_0 = 42;
    public static final byte OPS_invokespecial = -73; // has two bytes parameters
    public static final byte OPS_return = -79;
+   public static final byte OPS_new = (byte) 187;
+   public static final byte OPS_dup = 89;
+   public static final byte OPS_areturn = (byte) 176;
 
    public static final int CONSTANT_Utf8 = 1;
    public static final int CONSTANT_Integer = 3;
