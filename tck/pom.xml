@@ -85,7 +85,7 @@
   <build>
     <testResources>
       <testResource>
-        <directory>test</directory>
+        <directory>src/test/resources</directory>
         <filtering>true</filtering>
       </testResource>
     </testResources>
