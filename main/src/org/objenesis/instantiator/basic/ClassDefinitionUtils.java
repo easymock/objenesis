@@ -208,4 +208,21 @@ public final class ClassDefinitionUtils {
    public static String classNameToResource(String className) {
       return classNameToInternalClassName(className) + ".class";
    }
+
+   /**
+    * Check if this class already exists in the class loader and return it if it does
+    *
+    * @param classLoader Class loader where to search the class
+    * @param className Class name with full path
+    * @return the class if it already exists or null
+    */
+   @SuppressWarnings("unchecked")
+   public static <T> Class<T> getExistingClass(ClassLoader classLoader, String className) {
+      try {
+         return (Class<T>) Class.forName(className, true, classLoader);
+      }
+      catch (ClassNotFoundException e) {
+         return null;
+      }
+   }
 }

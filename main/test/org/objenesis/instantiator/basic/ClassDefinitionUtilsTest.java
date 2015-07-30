@@ -45,4 +45,16 @@ public class ClassDefinitionUtilsTest {
       assertEquals("org/objenesis/EmptyClass.class", actual);
    }
 
+   @Test
+   public void testGetExistingClass_existing() {
+      Class<?> actual = ClassDefinitionUtils.getExistingClass(getClass().getClassLoader(),
+         getClass().getName());
+      assertSame(actual, getClass());
+   }
+
+   @Test
+   public void testGetExistingClass_notExisting() {
+      Class<?> actual = ClassDefinitionUtils.getExistingClass(getClass().getClassLoader(), getClass().getName() + "$$$1");
+      assertNull(actual);
+   }
 }

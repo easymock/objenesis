@@ -22,7 +22,6 @@ import org.objenesis.instantiator.basic.ClassDefinitionUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
 
@@ -64,8 +63,6 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    private static final String CONSTRUCTOR_NAME = "<init>";
    private static final String CONSTRUCTOR_DESC = "()V";
 
-   private static final AtomicInteger uniquifier = new AtomicInteger(0);
-
    private ObjectInstantiator<T> instantiator;
 
    public MagicInstantiator(Class<T> type) {
@@ -73,14 +70,19 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    }
 
    private <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
-      int suffix = uniquifier.getAndIncrement();
-      byte[] classBytes = writeExtendingClass(type, suffix);
+      String suffix = type.getSimpleName();
+      String className = getClass().getName() + "$$$" + suffix;
 
-      Class<ObjectInstantiator<T>> clazz;
-      try {
-         clazz = ClassDefinitionUtils.defineClass(getClass().getName() + "$$$" + suffix, classBytes, type.getClassLoader());
-      } catch (Exception e) {
-         throw new ObjenesisException(e);
+      Class<ObjectInstantiator<T>> clazz = getExistingClass(getClass().getClassLoader(), className);
+
+      if(clazz == null) {
+         byte[] classBytes = writeExtendingClass(type, className);
+
+         try {
+            clazz = ClassDefinitionUtils.defineClass(className, classBytes, getClass().getClassLoader());
+         } catch (Exception e) {
+            throw new ObjenesisException(e);
+         }
       }
 
       try {
@@ -97,12 +99,12 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
     * only have an empty default constructor
     *
     * @param type type to extend
-    * @param suffix the suffix appended to the class name to create the next extending class name
+    * @param className name of the wrapped instantiator class
     * @return the byte for the class
     * @throws ObjenesisException is something goes wrong
     */
-   private byte[] writeExtendingClass(Class<?> type, int suffix) {
-      String clazz = classNameToInternalClassName(getClass().getName()) + "$$$" + suffix;
+   private byte[] writeExtendingClass(Class<?> type, String className) {
+      String clazz = classNameToInternalClassName(className);
 
       DataOutputStream in = null;
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
@@ -193,7 +195,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          // end of constant pool
 
          // access flags: We want public, ACC_SUPER is always there
-         in.writeShort(ACC_PUBLIC | ACC_SUPER);
+         in.writeShort(ACC_PUBLIC | ACC_SUPER | ACC_FINAL);
 
          // this class index in the constant pool
          in.writeShort(INDEX_CLASS_THIS);

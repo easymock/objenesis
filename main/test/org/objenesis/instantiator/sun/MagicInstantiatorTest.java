@@ -30,7 +30,10 @@ public class MagicInstantiatorTest {
 
    @Test
    public void testNewInstance() throws Exception {
-      ObjectInstantiator<EmptyClass> o = new MagicInstantiator<EmptyClass>(EmptyClass.class);
-      assertEquals(EmptyClass.class, o.newInstance().getClass());
+      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<EmptyClass>(EmptyClass.class);
+      assertEquals(EmptyClass.class, o1.newInstance().getClass());
+
+      ObjectInstantiator<EmptyClass> o2 = new MagicInstantiator<EmptyClass>(EmptyClass.class);
+      assertEquals(EmptyClass.class, o2.newInstance().getClass());
    }
 }
