@@ -16,6 +16,7 @@
 package org.objenesis;
 
 import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -33,7 +34,7 @@ public class ClassReader {
 
    public static void main(String[] args) throws IOException {
       if(args.length != 1) {
-         System.out.println("Usage: ClassReader class_name_including_package");
+         System.out.println("Usage: ClassReader (path_to_the_class_file|class:complete_class_name)");
       }
 
       ClassReader reader = new ClassReader();
@@ -159,10 +160,12 @@ public class ClassReader {
          }
          else if("LineNumberTable".equals(attribute_name)) {
             // I don't care about that (only used for debugging) so I will skip
+            System.out.println("Attribute LineNumberTable skipped");
             in.read(buffer, 0, attribute_length);
          }
          else if("LocalVariableTable".equals(attribute_name)) {
             // I don't care about that (only used for debugging) so I will skip
+            System.out.println("Attribute LocalVariableTable skipped");
             in.read(buffer, 0, attribute_length);
          }
          else {
@@ -232,11 +235,18 @@ public class ClassReader {
       }
    }
 
-   public void readClass(String className) throws IOException {
-      String resourceName = classNameToResource(className);
-      InputStream resource = getClass().getClassLoader().getResourceAsStream(resourceName);
+   public void readClass(String classPath) throws IOException {
+      InputStream iin;
+      if(classPath.startsWith("classpath:")) {
+         String className = classPath.substring("classpath:".length());
+         String resourceName = classNameToResource(className);
+         iin = getClass().getClassLoader().getResourceAsStream(resourceName);
+      }
+      else {
+         iin = new FileInputStream(classPath);
+      }
 
-      DataInputStream in = new DataInputStream(resource);
+      DataInputStream in = new DataInputStream(iin);
 
       // magic number
       in.read(buffer, 0, MAGIC.length);
@@ -248,7 +258,7 @@ public class ClassReader {
 
       // constant_pool_count
       int constant_pool_count = in.readUnsignedShort();
-      assertEquals(0x10, constant_pool_count);
+      System.out.println("Constant pool count: " + constant_pool_count);
 
       // indexed from 1 (0 will be unused) to constant_pool_count-1
       constant_pool = new Object[constant_pool_count];
@@ -278,55 +288,44 @@ public class ClassReader {
 
       // access flags
       int access_flags = in.readUnsignedShort();
-      assertEquals(ACC_PUBLIC | ACC_SUPER, access_flags); // see http://stackoverflow.com/questions/8949933/what-is-the-purpose-of-the-acc-super-access-flag-on-java-class-files
+      System.out.println("Access flags: " + access_flags); // see http://stackoverflow.com/questions/8949933/what-is-the-purpose-of-the-acc-super-access-flag-on-java-class-files
 
       // this class name
       int this_class = in.readUnsignedShort();
-      assertEquals(2, this_class);
+      System.out.println("This class index: " + this_class);
 
       // super class name
       int super_class = in.readUnsignedShort();
-      assertEquals(3, super_class);
+      System.out.println("This superclass index: " + super_class);
 
       // interfaces implemented count (we have none)
       int interfaces_count = in.readUnsignedShort();
-      assertEquals(0, interfaces_count); // so no interfaces
+      System.out.println("Interfaces count: " + interfaces_count);
+      for (int i = 0; i < interfaces_count; i++) {
+         int index = in.readUnsignedShort();
+         System.out.println("Interface " + i + " index: " + index);
+      }
 
       // fields count (we have none)
       int fields_count = in.readUnsignedShort();
-      assertEquals(0, fields_count); // so no fields
+      System.out.println("Fields count: " + fields_count);
+      assertEquals("Reading fields isn't yet supported", 0, fields_count);
 
       //methods count (we have one)
       int methods_count = in.readUnsignedShort();
-      assertEquals(1, methods_count); // the default constructor
+      System.out.println("Methods count: " + methods_count);
 
-      // reading the declaration of the default constructor
-      method_info methodInfo = new method_info(in);
-      assertEquals(ACC_PUBLIC, methodInfo.access_flags);
-      assertEquals(4, methodInfo.name_index); // <init>
-      assertEquals(5, methodInfo.descriptor_index); // ()V if specifies the parameters
-      assertEquals(1, methodInfo.attributes_count); // only one attributes: the Code
-
-      Code_attribute code = (Code_attribute) methodInfo.attributes[0].info;
-      assertEquals(1, code.max_stack);
-      assertEquals(1, code.max_locals);
-      assertEquals(5, code.code_length);
-      assertEquals(0, code.exception_table_length);
-      assertEquals(2, code.attributes_count);
-
-      // and the code
-      assertEquals(OPS_aload_0, code.code[0]);
-      assertEquals(OPS_invokespecial, code.code[1]);
-      assertEquals(1, code.code[2] << 8 | code.code[3]); // should be one which is the index of the constructor of the superclass
-      assertEquals(OPS_return, code.code[4]);
+      for (int i = 0; i < methods_count; i++) {
+         method_info methodInfo = new method_info(in);
+         System.out.println("for " + methodInfo);
+      }
 
       // reading final class attributes
-      System.out.println("Class attributes");
       int attributes_count = in.readUnsignedShort();
-      assertEquals(1, attributes_count); // we have one, which is the source file name
-
-      attribute_info attributeInfo = new attribute_info(in);
-      assertEquals(12, ((SourceFile_attribute) attributeInfo.info).sourcefile_index);
+      System.out.println("Class attributes count: " + attributes_count);
+      for (int i = 0; i < attributes_count ; i++) {
+         attribute_info attributeInfo = new attribute_info(in);
+      }
 
       in.close();
    }
