@@ -98,8 +98,8 @@ To update the license
 
 To release (to be tested)
 --------------------------------------------------------------------------------------
-`mvn release:prepare -Pfull,android,release`
-`mvn release:perform -Pfull,android,release`
+`mvn release:prepare -Pfull,all,release`
+`mvn release:perform -Pfull,all,release`
 
 Deploy the website
 --------------------------------------------------------------------------------------
