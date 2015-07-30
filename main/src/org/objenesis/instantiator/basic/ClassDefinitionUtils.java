@@ -121,6 +121,7 @@ public final class ClassDefinitionUtils {
     * Define a class in the provided class loader from the array of bytes. Inspired by cglib
     * <code>ReflectUtils.defineClass</code>
     *
+    * @param <T> type of the class returned
     * @param className class name in the format <code>org.objenesis.MyClass</code>
     * @param b bytes representing the class
     * @param loader the class loader where the class will be loaded
@@ -212,6 +213,7 @@ public final class ClassDefinitionUtils {
    /**
     * Check if this class already exists in the class loader and return it if it does
     *
+    * @param <T> type of the class returned
     * @param classLoader Class loader where to search the class
     * @param className Class name with full path
     * @return the class if it already exists or null

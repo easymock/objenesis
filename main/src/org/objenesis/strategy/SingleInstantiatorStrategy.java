@@ -15,11 +15,11 @@
  */
 package org.objenesis.strategy;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Strategy returning only one instantiator type. Useful if you know on which JVM Objenesis
@@ -35,6 +35,7 @@ public class SingleInstantiatorStrategy implements InstantiatorStrategy {
     * Create a strategy that will return always the same instantiator type. We assume this instantiator
     * has one constructor taking the class to instantiate in parameter.
     *
+    * @param <T> the type we want to instantiate
     * @param instantiator the instantiator type
     */
    public <T extends ObjectInstantiator<?>> SingleInstantiatorStrategy(Class<T> instantiator) {
@@ -46,6 +47,14 @@ public class SingleInstantiatorStrategy implements InstantiatorStrategy {
       }
    }
 
+   /**
+    * Return an instantiator for the wanted type and of the one and only type of instantiator returned by this
+    * class.
+    *
+    * @param <T> the type we want to instantiate
+    * @param type Class to instantiate
+    * @return The ObjectInstantiator for the class
+    */
    @SuppressWarnings("unchecked")
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       try {
