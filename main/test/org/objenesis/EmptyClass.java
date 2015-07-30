@@ -23,4 +23,8 @@ import java.util.Date;
  * @author Henri Tremblay
  */
 public class EmptyClass extends Date {
+
+   public EmptyClass() {
+      throw new RuntimeException();
+   }
 }

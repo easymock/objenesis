@@ -12,14 +12,6 @@
   <description>A library for instantiating Java objects</description>
   <url>http://objenesis.org</url>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>5.0.4</version>
-    </dependency>
-   </dependencies>
-
   <build>
     <plugins>
       <plugin>

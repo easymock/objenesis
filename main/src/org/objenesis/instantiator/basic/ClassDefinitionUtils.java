@@ -33,6 +33,8 @@ package org.objenesis.instantiator.basic;
 
 import org.objenesis.ObjenesisException;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -51,9 +53,9 @@ public final class ClassDefinitionUtils {
    public static final byte OPS_aload_0 = 42;
    public static final byte OPS_invokespecial = -73; // has two bytes parameters
    public static final byte OPS_return = -79;
-   public static final byte OPS_new = (byte) 187;
+   public static final byte OPS_new = -69;
    public static final byte OPS_dup = 89;
-   public static final byte OPS_areturn = (byte) 176;
+   public static final byte OPS_areturn = -80;
 
    public static final int CONSTANT_Utf8 = 1;
    public static final int CONSTANT_Integer = 3;
@@ -166,6 +168,23 @@ public final class ClassDefinitionUtils {
       byte[] copy = new byte[length];
       System.arraycopy(b, 0, copy, 0, length);
       return copy;
+   }
+
+   /**
+    * Write all class bytes to a file.
+    *
+    * @param fileName file where the bytes will be written
+    * @param bytes bytes representing the class
+    * @throws IOException if we fail to write the class
+    */
+   public static void writeClass(String fileName, byte[] bytes) throws IOException {
+      BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileName));
+      try {
+         out.write(bytes);
+      }
+      finally {
+         out.close();
+      }
    }
 
    /**

@@ -15,15 +15,17 @@
  */
 package org.objenesis.instantiator.sun;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.objenesis.EmptyClass;
 import org.objenesis.instantiator.ObjectInstantiator;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author Henri Tremblay
  */
+@Ignore("Won't work on every JVM")
 public class MagicInstantiatorTest {
 
    @Test

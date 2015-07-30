@@ -40,23 +40,25 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_UTF8_CONSTRUCTOR_NAME = 3;
    private static final int INDEX_UTF8_CONSTRUCTOR_DESC = 4;
    private static final int INDEX_UTF8_CODE_ATTRIBUTE = 5;
-   private static final int INDEX_UTF8_CLASS = 7;
+   private static final int INDEX_UTF8_INSTANTIATOR_CLASS = 7;
    private static final int INDEX_UTF8_SUPERCLASS = 8;
    private static final int INDEX_CLASS_INTERFACE = 9;
    private static final int INDEX_UTF8_INTERFACE = 10;
    private static final int INDEX_UTF8_NEWINSTANCE_NAME = 11;
    private static final int INDEX_UTF8_NEWINSTANCE_DESC = 12;
-   private static final int INDEX_METHODREF_OBJECT_CONSTRUCTOR = 12;
+   private static final int INDEX_METHODREF_OBJECT_CONSTRUCTOR = 13;
    private static final int INDEX_CLASS_OBJECT = 14;
    private static final int INDEX_UTF8_OBJECT = 15;
    private static final int INDEX_NAMEANDTYPE_DEFAULT_CONSTRUCTOR = 16;
+   private static final int INDEX_CLASS_TYPE = 17;
+   private static final int INDEX_UTF8_TYPE = 18;
 
-   private static int CONSTANT_POOL_COUNT = 17;
+   private static int CONSTANT_POOL_COUNT = 19;
 
    private static final byte[] CONSTRUCTOR_CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_OBJECT_CONSTRUCTOR, OPS_return};
    private static final int CONSTRUCTOR_CODE_ATTRIBUTE_LENGTH = 12 + CONSTRUCTOR_CODE.length;
 
-   private static final byte[] NEWINSTANCE_CODE = { OPS_new, OPS_dup, OPS_invokespecial, 0, INDEX_METHODREF_OBJECT_CONSTRUCTOR, OPS_areturn};
+   private static final byte[] NEWINSTANCE_CODE = { OPS_new, 0, INDEX_CLASS_TYPE, OPS_dup, OPS_invokespecial, 0, INDEX_METHODREF_OBJECT_CONSTRUCTOR, OPS_areturn};
    private static final int NEWINSTANCE_CODE_ATTRIBUTE_LENGTH = 12 + NEWINSTANCE_CODE.length;
 
    private static final String CONSTRUCTOR_NAME = "<init>";
@@ -115,7 +117,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
          // 1. class
          in.writeByte(CONSTANT_Class);
-         in.writeShort(INDEX_UTF8_CLASS);
+         in.writeShort(INDEX_UTF8_INSTANTIATOR_CLASS);
 
          // 2. super class
          in.writeByte(CONSTANT_Class);
@@ -143,6 +145,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
          // 8. Superclass name
          in.writeByte(CONSTANT_Utf8);
+//         in.writeUTF("java/lang/Object");
          in.writeUTF("sun/reflect/MagicAccessorImpl");
 
          // 9. ObjectInstantiator interface
@@ -179,10 +182,18 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          in.writeShort(INDEX_UTF8_CONSTRUCTOR_NAME);
          in.writeShort(INDEX_UTF8_CONSTRUCTOR_DESC);
 
+         // 17. Type to instantiate class
+         in.writeByte(CONSTANT_Class);
+         in.writeShort(INDEX_UTF8_TYPE);
+
+         // 18. Type to instantiate name
+         in.writeByte(CONSTANT_Utf8);
+         in.writeUTF(classNameToInternalClassName(type.getName()));
+
          // end of constant pool
 
          // access flags: We want public, ACC_SUPER is always there
-         in.writeShort(ACC_PUBLIC | ACC_FINAL);
+         in.writeShort(ACC_PUBLIC | ACC_SUPER);
 
          // this class index in the constant pool
          in.writeShort(INDEX_CLASS_THIS);
@@ -209,7 +220,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          // code attribute of the default constructor
          in.writeShort(INDEX_UTF8_CODE_ATTRIBUTE);
          in.writeInt(CONSTRUCTOR_CODE_ATTRIBUTE_LENGTH); // attribute length
-         in.writeShort(1); // max_stack
+         in.writeShort(0); // max_stack
          in.writeShort(1); // max_locals
          in.writeInt(CONSTRUCTOR_CODE.length); // code length
          in.write(CONSTRUCTOR_CODE);
@@ -225,7 +236,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          // code attribute of newInstance
          in.writeShort(INDEX_UTF8_CODE_ATTRIBUTE);
          in.writeInt(NEWINSTANCE_CODE_ATTRIBUTE_LENGTH); // attribute length
-         in.writeShort(1); // max_stack
+         in.writeShort(2); // max_stack
          in.writeShort(1); // max_locals
          in.writeInt(NEWINSTANCE_CODE.length); // code length
          in.write(NEWINSTANCE_CODE);
