@@ -81,28 +81,6 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>${basedir}/src</sourceDirectory>
-    <resources>
-      <resource>
-        <!-- Test resources are in the test source directory -->
-        <directory>${basedir}/src</directory>
-        <excludes>
-          <!-- Everything except java files is considered to be a resource -->
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
-    <testSourceDirectory>${basedir}/test</testSourceDirectory>
-    <testResources>
-      <testResource>
-        <!-- Test resources are in the test source directory -->
-        <directory>${basedir}/test</directory>
-        <excludes>
-          <!-- Everything except java files is considered to be a resource -->
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </testResource>
-    </testResources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
