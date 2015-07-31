@@ -34,7 +34,7 @@
   </organization>
 
   <scm>
-    <url>https://github.com/easymock/easymock</url>
+    <url>https://github.com/easymock/objenesis</url>
     <developerConnection>scm:git:git@github.com:easymock/objenesis.git</developerConnection>
     <connection>scm:git:git://github.com/easymock/objenesis.git</connection>
     <tag>HEAD</tag>
