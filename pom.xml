@@ -36,7 +36,7 @@
   <scm>
     <url>https://github.com/easymock/objenesis</url>
     <developerConnection>scm:git:git@github.com:easymock/objenesis.git</developerConnection>
-    <connection>scm:git:git://github.com/easymock/objenesis.git</connection>
+    <connection>scm:git:https://github.com/easymock/objenesis.git</connection>
     <tag>HEAD</tag>
   </scm>
 
@@ -112,6 +112,12 @@
           <tagNameFormat>@{project.version}</tagNameFormat>
           <!-- Quite annoying in case of error that the changes were pushed -->
           <pushChanges>false</pushChanges>
+          <!-- Do not activate special profile from the superpom. We do it ourselves -->
+          <useReleaseProfile>false</useReleaseProfile>
+          <!-- Profiles required for the release -->
+          <releaseProfiles>release,full,all</releaseProfiles>
+          <!-- To use the same version on the module and the parent -->
+          <autoVersionSubmodules>true</autoVersionSubmodules>
         </configuration>
       </plugin>
       <plugin>
@@ -385,15 +391,10 @@
 
   <distributionManagement>
     <repository>
-      <id>sonatype-nexus-staging</id>
-      <name>Nexus Release Repository</name>
-      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <id>bintray</id>
+      <name>JFrog Bintray</name>
+      <url>https://api.bintray.com/maven/henri-tremblay/maven/objenesis</url>
     </repository>
-    <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
   </distributionManagement>
 
   <profiles>
