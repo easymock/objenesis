@@ -44,12 +44,12 @@
     <developer>
       <id>joe</id>
       <name>Joe Walnes</name>
-      <timezone>0</timezone>
+      <timezone>-5</timezone>
     </developer>
     <developer>
       <id>henri</id>
       <name>Henri Tremblay</name>
-      <timezone>+1</timezone>
+      <timezone>-5</timezone>
     </developer>
     <developer>
       <id>leonardo</id>
