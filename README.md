@@ -96,12 +96,24 @@ To update the license
 --------------------------------------------------------------------------------------
 `mvn validate license:format -Pall`
 
-To release (to be tested)
+To release
 --------------------------------------------------------------------------------------
-`mvn release:prepare -Pfull,all,release`
-`mvn release:perform -Pfull,all,release`
+* Add the release notes in `website/site/content/notes.html`
+* Add this server to your `settings.xml`
+```
+<server>
+   <id>bintray</id>
+   <username>your-user-name</username>
+   <password>your-api-key</password>
+</server> 
+```
+
+* Launch `deploy.sh`
+* Flag the bin, tck and tck-android as "Show in download list" in bintray
+* Add release notes on the tag in GitHub. Also add the bin, tck and tck-android jars to the release
+* Close the milestone in GitHub and create the new one
 
 Deploy the website
 --------------------------------------------------------------------------------------
-- Generate it
-- Copy the result to the gh-pages branch
+* Make sure the pom is at the version you want to release
+* Launch `deploy_website/sh`
