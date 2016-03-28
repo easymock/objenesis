@@ -16,9 +16,8 @@ Environment setup
 -----------------
 
 I'm using:
-- Eclipse 4.3.2 (Kepler Service Release 2)
-- Maven 3.2.3
-- IntelliJ 14 Ultimate (thanks to JetBrains for the license)
+- Maven 3.3.9
+- IntelliJ 15 Ultimate (thanks to JetBrains for the license) (it should also work with Eclipse)
 
 To configure your local workspace:
 - Import the Maven parent project to Eclipse or IntelliJ
