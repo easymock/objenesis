@@ -17,8 +17,8 @@
   <properties>
     <app.id>objenesis</app.id>
     <app.version>2</app.version>
-    <appengine.version>1.9.24</appengine.version>
-    <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
+    <appengine.version>1.9.34</appengine.version>
+    <gcloud.plugin.version>2.0.9.101.v20160316</gcloud.plugin.version>
   </properties>
 
   <dependencies>
