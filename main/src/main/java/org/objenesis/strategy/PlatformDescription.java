@@ -74,6 +74,9 @@ public final class PlatformDescription {
    /** Android version. Will be 0 for none android platform */
    public static final int ANDROID_VERSION = getAndroidVersion();
 
+   /** Boot classpath for detecting OpenJDK on Android */
+   public static final String BOOT_CLASSPATH = System.getProperty("java.boot.class.path");
+
    /** Google App Engine version or null is we are not on GAE */
    public static final String GAE_VERSION = getGaeRuntimeVersion();
 
@@ -110,6 +113,10 @@ public final class PlatformDescription {
     */
    public static boolean isThisJVM(String name) {
       return JVM_NAME.startsWith(name);
+   }
+
+   public static boolean isAndroidOpenJDK() {
+      return BOOT_CLASSPATH != null && BOOT_CLASSPATH.toLowerCase().contains("core-oj.jar");
    }
 
    public static boolean isGoogleAppEngine() {

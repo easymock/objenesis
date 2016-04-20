@@ -63,6 +63,9 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          return new ObjectStreamClassInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {
+         if(PlatformDescription.isAndroidOpenJDK()) {
+            return new ObjectStreamClassInstantiator<T>(type);
+         }
          return new AndroidSerializationInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(GNU)) {

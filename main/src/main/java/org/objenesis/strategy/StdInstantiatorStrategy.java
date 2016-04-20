@@ -21,6 +21,7 @@ import org.objenesis.instantiator.android.Android17Instantiator;
 import org.objenesis.instantiator.android.Android18Instantiator;
 import org.objenesis.instantiator.basic.AccessibleInstantiator;
 import org.objenesis.instantiator.basic.ObjectInputStreamInstantiator;
+import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
@@ -84,6 +85,9 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          return new SunReflectionFactoryInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
+         if(PlatformDescription.isAndroidOpenJDK()) {
+            return new ObjectStreamClassInstantiator<T>(type);
+         }
          if(ANDROID_VERSION <= 10) {
             // Android 2.3 Gingerbread and lower
             return new Android10Instantiator<T>(type);
