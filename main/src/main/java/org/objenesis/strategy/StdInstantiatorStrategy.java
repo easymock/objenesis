@@ -86,7 +86,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
          if(PlatformDescription.isAndroidOpenJDK()) {
-            return new ObjectStreamClassInstantiator<T>(type);
+            return new UnsafeFactoryInstantiator<T>(type);
          }
          if(ANDROID_VERSION <= 10) {
             // Android 2.3 Gingerbread and lower
