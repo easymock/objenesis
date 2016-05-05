@@ -132,6 +132,7 @@
         <artifactId>maven-license-plugin</artifactId>
         <inherited>false</inherited>
         <configuration>
+          <!-- skipping the license check on the parent pom since it's not needed -->
           <skip>true</skip>
         </configuration>
       </plugin>
@@ -272,14 +273,6 @@
               <year>${year}</year>
             </properties>
           </configuration>
-          <executions>
-            <execution>
-              <id>check</id>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -399,7 +392,7 @@
 
   <profiles>
     <profile>
-      <!-- Activate to generate javadoc, sources jars and run findbugs -->
+      <!-- Activate to generate javadoc, sources jars, license check and findbugs -->
       <id>full</id>
       <build>
         <plugins>
@@ -435,6 +428,18 @@
                 <id>findbugs</id>
                 <goals>
                   <goal>findbugs</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.mycila.maven-license-plugin</groupId>
+            <artifactId>maven-license-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>check</id>
+                <goals>
+                  <goal>check</goal>
                 </goals>
               </execution>
             </executions>
