@@ -21,7 +21,6 @@ import org.objenesis.instantiator.android.Android17Instantiator;
 import org.objenesis.instantiator.android.Android18Instantiator;
 import org.objenesis.instantiator.basic.AccessibleInstantiator;
 import org.objenesis.instantiator.basic.ObjectInputStreamInstantiator;
-import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
@@ -86,6 +85,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
          if(PlatformDescription.isAndroidOpenJDK()) {
+            // Starting at Android N which is based on OpenJDK
             return new UnsafeFactoryInstantiator<T>(type);
          }
          if(ANDROID_VERSION <= 10) {
@@ -96,7 +96,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
             // Android 3.0 Honeycomb to 4.2 Jelly Bean
             return new Android17Instantiator<T>(type);
          }
-         // Android 4.3 and higher (hopefully)
+         // Android 4.3 until Android N
          return new Android18Instantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(GNU)) {
