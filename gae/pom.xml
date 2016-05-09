@@ -48,14 +48,14 @@
 
     <dependency>
       <groupId>org.objenesis</groupId>
+      <artifactId>objenesis</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.objenesis</groupId>
       <artifactId>objenesis-tck</artifactId>
       <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>objenesis</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <!-- Test Dependencies -->
