@@ -84,6 +84,10 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          return new SunReflectionFactoryInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
+         if(PlatformDescription.isAndroidOpenJDK()) {
+            // Starting at Android N which is based on OpenJDK
+            return new UnsafeFactoryInstantiator<T>(type);
+         }
          if(ANDROID_VERSION <= 10) {
             // Android 2.3 Gingerbread and lower
             return new Android10Instantiator<T>(type);
@@ -92,7 +96,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
             // Android 3.0 Honeycomb to 4.2 Jelly Bean
             return new Android17Instantiator<T>(type);
          }
-         // Android 4.3 and higher (hopefully)
+         // Android 4.3 until Android N
          return new Android18Instantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(GNU)) {
