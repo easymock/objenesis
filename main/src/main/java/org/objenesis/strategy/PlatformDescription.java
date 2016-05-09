@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 
 /**
  * List of constants describing the currently used platform.
- * 
+ *
  * @author Henri Tremblay
  */
 public final class PlatformDescription {
@@ -74,8 +74,8 @@ public final class PlatformDescription {
    /** Android version. Will be 0 for none android platform */
    public static final int ANDROID_VERSION = getAndroidVersion();
 
-   /** Boot classpath for detecting OpenJDK on Android */
-   public static final String BOOT_CLASSPATH = System.getProperty("java.boot.class.path");
+   /** Flag telling if this version of Android is based on the OpenJDK */
+   public static final boolean IS_ANDROID_OPENJDK = getIsAndroidOpenJDK();
 
    /** Google App Engine version or null is we are not on GAE */
    public static final String GAE_VERSION = getGaeRuntimeVersion();
@@ -107,7 +107,7 @@ public final class PlatformDescription {
     * Check if the current JVM is of the type passed in parameter. Normally, this will be a constant
     * from this class. We basically do
     * <code>System.getProperty("java.vm.name").startWith(name)</code>.
-    * 
+    *
     * @param name jvm name we are looking for
     * @return if it's the requested JVM
     */
@@ -115,12 +115,27 @@ public final class PlatformDescription {
       return JVM_NAME.startsWith(name);
    }
 
+   /**
+    * Check if this JVM is an Android JVM based on OpenJDK.
+    *
+    * @return if it's an Android version based on the OpenJDK. Will return false if this JVM isn't an Android JVM at all
+     */
    public static boolean isAndroidOpenJDK() {
-      return BOOT_CLASSPATH != null && BOOT_CLASSPATH.toLowerCase().contains("core-oj.jar");
+      return IS_ANDROID_OPENJDK;
+   }
+
+   private static boolean getIsAndroidOpenJDK() {
+      if(getAndroidVersion() == 0) {
+         return false; // Not android at all
+      }
+      // Sadly, Android N is still API 23. So we can't base ourselves on the API level to know if it is an OpenJDK
+      // version or not
+      String bootClasspath = System.getProperty("java.boot.class.path");
+      return bootClasspath != null && bootClasspath.toLowerCase().contains("core-oj.jar");
    }
 
    public static boolean isGoogleAppEngine() {
-      return getGaeRuntimeVersion() != null;
+      return GAE_VERSION != null;
    }
 
    private static String getGaeRuntimeVersion() {
