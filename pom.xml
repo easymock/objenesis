@@ -267,6 +267,10 @@
               <exclude>bin/**</exclude>
               <!-- no header on text files -->
               <exclude>**/*.txt</exclude>
+              <!-- no header on Eclipse launch files -->
+              <exclude>**/*.launch</exclude>
+              <!-- no header on markdown files -->
+              <exclude>**/*.md</exclude>
             </excludes>
             <properties>
               <inceptionYear>${project.inceptionYear}</inceptionYear>
