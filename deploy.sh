@@ -38,4 +38,4 @@ curl -XPOST -H "Content-Type: application/json" -u$bintray_user:$bintray_api_key
 
 curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "main/target/objenesis-${version}-bin.zip" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-${version}-bin.zip?publish=1
 curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "tck/target/objenesis-tck-${version}.jar" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-${version}.jar?publish=1
-curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "tck-android/target/objenesis-tck-android-${version}.jar" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-android-${version}.jar?publish=1
+curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "tck-android/target/objenesis-tck-android-${version}.apk" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-android-${version}.apk?publish=1
