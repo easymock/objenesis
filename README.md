@@ -54,7 +54,11 @@ To run special builds
 
 ### Run the benchmarks
 
-`mvn package -Pbenchmark`
+```bash
+mvn package -Pbenchmark
+cd benchmark
+./launch.sh
+```
 
 ### Generate the website
 
