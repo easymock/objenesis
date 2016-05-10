@@ -17,7 +17,7 @@
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
 
-    <jmh.version>1.11.3</jmh.version>
+    <jmh.version>1.12</jmh.version>
     <uberjar.name>benchmarks</uberjar.name>
   </properties>
 
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib-nodep</artifactId>
-      <version>3.1</version>
+      <version>3.2.2</version>
     </dependency>
   </dependencies>
 
