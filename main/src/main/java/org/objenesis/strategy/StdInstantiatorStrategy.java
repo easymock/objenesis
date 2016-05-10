@@ -67,22 +67,6 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          // times slower. So I prefer to use this one
          return new SunReflectionFactoryInstantiator<T>(type);
       }
-      else if(PlatformDescription.isThisJVM(JROCKIT)) {
-         if(VM_VERSION.startsWith("1.4")) {
-            // JRockit vendor version will be RXX where XX is the version
-            // Versions prior to 26 need special handling
-            // From R26 on, java.vm.version starts with R
-            if(!VENDOR_VERSION.startsWith("R")) {
-               // On R25.1 and R25.2, ReflectionFactory should work. Otherwise, we must use the
-               // Legacy instantiator.
-               if(VM_INFO == null || !VM_INFO.startsWith("R25.1") || !VM_INFO.startsWith("R25.2")) {
-                  return new JRockitLegacyInstantiator<T>(type);
-               }
-            }
-         }
-         // After that, JRockit became compliant with HotSpot
-         return new SunReflectionFactoryInstantiator<T>(type);
-      }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
          if(PlatformDescription.isAndroidOpenJDK()) {
             // Starting at Android N which is based on OpenJDK
@@ -98,6 +82,22 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          }
          // Android 4.3 until Android N
          return new Android18Instantiator<T>(type);
+      }
+      else if(PlatformDescription.isThisJVM(JROCKIT)) {
+         if(VM_VERSION.startsWith("1.4")) {
+            // JRockit vendor version will be RXX where XX is the version
+            // Versions prior to 26 need special handling
+            // From R26 on, java.vm.version starts with R
+            if(!VENDOR_VERSION.startsWith("R")) {
+               // On R25.1 and R25.2, ReflectionFactory should work. Otherwise, we must use the
+               // Legacy instantiator.
+               if(VM_INFO == null || !VM_INFO.startsWith("R25.1") || !VM_INFO.startsWith("R25.2")) {
+                  return new JRockitLegacyInstantiator<T>(type);
+               }
+            }
+         }
+         // After that, JRockit became compliant with HotSpot
+         return new SunReflectionFactoryInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(GNU)) {
          return new GCJInstantiator<T>(type);
