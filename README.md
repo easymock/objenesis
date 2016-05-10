@@ -111,7 +111,7 @@ To release
 </server> 
 ```
 
-* Launch `deploy.sh`
+* Launch `./deploy.sh version`
 * Flag the bin, tck and tck-android as "Show in download list" in bintray
 * Add release notes on the tag in GitHub. Also add the bin, tck and tck-android jars to the release
 * Close the milestone in GitHub and create the new one
@@ -119,4 +119,4 @@ To release
 Deploy the website
 --------------------------------------------------------------------------------------
 * Make sure the pom is at the version you want to release
-* Launch `deploy_website/sh`
+* Launch `./deploy_website.sh`
