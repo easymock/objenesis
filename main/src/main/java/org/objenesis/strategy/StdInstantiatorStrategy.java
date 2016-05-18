@@ -22,7 +22,6 @@ import org.objenesis.instantiator.android.Android18Instantiator;
 import org.objenesis.instantiator.basic.AccessibleInstantiator;
 import org.objenesis.instantiator.basic.ObjectInputStreamInstantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
-import org.objenesis.instantiator.jrockit.JRockitLegacyInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
 import org.objenesis.instantiator.sun.UnsafeFactoryInstantiator;
@@ -84,19 +83,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          return new Android18Instantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(JROCKIT)) {
-         if(VM_VERSION.startsWith("1.4")) {
-            // JRockit vendor version will be RXX where XX is the version
-            // Versions prior to 26 need special handling
-            // From R26 on, java.vm.version starts with R
-            if(!VENDOR_VERSION.startsWith("R")) {
-               // On R25.1 and R25.2, ReflectionFactory should work. Otherwise, we must use the
-               // Legacy instantiator.
-               if(VM_INFO == null || !VM_INFO.startsWith("R25.1") || !VM_INFO.startsWith("R25.2")) {
-                  return new JRockitLegacyInstantiator<T>(type);
-               }
-            }
-         }
-         // After that, JRockit became compliant with HotSpot
+         // JRockit is compliant with HotSpot
          return new SunReflectionFactoryInstantiator<T>(type);
       }
       else if(PlatformDescription.isThisJVM(GNU)) {
