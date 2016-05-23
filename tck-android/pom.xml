@@ -59,6 +59,7 @@
           <version>4.4.1</version>
           <extensions>true</extensions>
           <configuration>
+            <testFailSafe>false</testFailSafe>
             <test>
               <instrumentationPackage>org.objenesis.tck.android</instrumentationPackage>
               <instrumentationRunner>android.test.InstrumentationTestRunner</instrumentationRunner>
