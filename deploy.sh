@@ -7,6 +7,7 @@
 
 # to exit in case of error
 set -e
+set -v
 
 function pause {
     echo
