@@ -111,6 +111,8 @@ To release
 </server> 
 ```
 
+* Set `gpg_passphrase`, `bintray_api_key` and `bintray_user` environment variables
+* Launch an Android device (virtual or physical)
 * Launch `./deploy.sh version`
 * Flag the bin, tck and tck-android as "Show in download list" in bintray
 * Add release notes on the tag in GitHub. Also add the bin, tck and tck-android jars to the release
