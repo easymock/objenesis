@@ -88,6 +88,10 @@ public class TextReporter implements Reporter {
       this.log = log;
    }
 
+   public int getErrorCount() {
+      return errorCount;
+   }
+
    public void startTests(String platformDescription, Map<String, Object> allCandidates,
       Map<String, Object> allInstantiators) {
 
