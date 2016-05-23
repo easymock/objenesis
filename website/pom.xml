@@ -9,7 +9,9 @@
   <artifactId>objenesis-website</artifactId>
   <name>Objenesis website</name>
   <packaging>pom</packaging>
-  <version>2.3</version>
+
+  <!-- CHANGE THIS VERSION TO WHAT YOU NEED -->
+  <version>2.4</version>
 
   <properties>
     <javadoc>apidocs</javadoc>
