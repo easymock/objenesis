@@ -119,6 +119,8 @@ To release
 * Flag the bin, tck and tck-android as "Show in download list" in bintray
 * Add the bin, tck and tck-android jars to the release in GitHub
 * Close the milestone in GitHub and create the new one
+* Go to https://bintray.com/easymock/maven/objenesis to publish the Maven artifacts
+* Sync to Maven central
 
 Deploy the website
 --------------------------------------------------------------------------------------
