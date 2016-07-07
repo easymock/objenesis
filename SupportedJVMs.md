@@ -4,6 +4,7 @@
 * OpenJDK 6, 7, 8, 9
 * Android API level 8 to 23 (Serialization support starting from Honeycomb)
 * Azul Zulu (tested on 1.8.0_45-b14)
+* IKVM (tested on 8.1.5717)
 * BEA JRockit R27, R28
 * GCJ version 3.4.4 (tested on Windows/Cygwin)
 * Aonix PERC (no serialization support), tested on version 5.0.0667
