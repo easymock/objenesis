@@ -69,6 +69,17 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
       instantiator = newInstantiatorOf(type);
    }
 
+   /**
+    * Get the underlying instantiator.
+    *
+    * <code>MagicInstantiator</code> is a wrapper around another object
+    * which implements <code>ObjectInstantiator</code> interface.
+    * This method exposes that instantiator.
+    */
+   public ObjectInstantiator<T> getInstantiator() {
+      return instantiator;
+   }
+
    private <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       String suffix = type.getSimpleName();
       String className = getClass().getName() + "$$$" + suffix;
