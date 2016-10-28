@@ -62,9 +62,14 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
             }
             return new AccessibleInstantiator<T>(type);
          }
-         // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
-         // times slower. So I prefer to use this one
-         return new SunReflectionFactoryInstantiator<T>(type);
+         if (PlatformDescription.VM_VERSION.startsWith("9")) {
+            // UnsafeFactoryInstantiator doesn't work on JDK9 anymore
+            return new UnsafeFactoryInstantiator<T>(type);
+         } else {
+            // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
+            // times slower. So I prefer to use this one
+            return new SunReflectionFactoryInstantiator<T>(type);
+         }
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
          if(PlatformDescription.isAndroidOpenJDK()) {
