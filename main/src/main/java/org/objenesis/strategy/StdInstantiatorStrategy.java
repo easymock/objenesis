@@ -63,7 +63,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
             return new AccessibleInstantiator<T>(type);
          }
          if (PlatformDescription.VM_VERSION.startsWith("9")) {
-            // UnsafeFactoryInstantiator doesn't work on JDK9 anymore
+            // SunReflectionFactoryInstantiator doesn't work on JDK9 anymore
             return new UnsafeFactoryInstantiator<T>(type);
          } else {
             // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
