@@ -8,9 +8,10 @@ You can find the website and user documentation at http://objenesis.org.
 Developer information
 =====================
 
-Travis status
+Project status
 -------------
 [![Build Status](https://travis-ci.org/easymock/objenesis.svg?branch=master)](https://travis-ci.org/easymock/objenesis)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.objenesis/objenesis/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.objenesis/objenesis)
 
 Environment setup
 -----------------
