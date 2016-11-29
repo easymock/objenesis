@@ -4,6 +4,7 @@
 * OpenJDK 6, 7, 8, 9
 * Android API level 8 to 23 (Serialization support starting from Honeycomb)
 * Azul Zulu (tested on 1.8.0_45-b14)
+* Azul Zing JDK 1.8 (tested on 1.8.0-zing_16.10.1.0-b2)
 * IKVM (tested on 8.1.5717)
 * BEA JRockit R27, R28
 * GCJ version 3.4.4 (tested on Windows/Cygwin)
