@@ -15,8 +15,8 @@
   <properties>
     <!-- These versions are also used to filter boot-bundles.properties -->
     <log4j.version>1.2.17</log4j.version>
-    <spring.osgi.version>1.2.1</spring.osgi.version>
     <slf4j.version>1.7.22</slf4j.version>
+    <paxexam.version>3.5.0</paxexam.version>
   </properties>
 
   <dependencies>
@@ -29,57 +29,47 @@
     <!-- Dependencies below are for the OSGi test -->
 
     <dependency>
-      <groupId>org.springframework.osgi</groupId>
-      <artifactId>spring-osgi-test</artifactId>
-      <version>${spring.osgi.version}</version>
+      <groupId>org.ops4j.pax.exam</groupId>
+      <artifactId>pax-exam-junit4</artifactId>
+      <version>${paxexam.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <!-- Use the one bundled in Felix -->
+        <exclusion>
+          <groupId>org.osgi</groupId>
+          <artifactId>org.osgi.core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.exam</groupId>
+      <artifactId>pax-exam-container-native</artifactId>
+      <version>${paxexam.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.osgi</groupId>
-      <artifactId>spring-osgi-annotation</artifactId>
-      <version>${spring.osgi.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.osgi</groupId>
-      <artifactId>spring-osgi-extender</artifactId>
-      <version>${spring.osgi.version}</version>
+      <groupId>org.ops4j.pax.exam</groupId>
+      <artifactId>pax-exam-link-mvn</artifactId>
+      <version>${paxexam.version}</version>
       <scope>test</scope>
     </dependency>
 
-    <!-- These are just to have a nice logging -->
+    <!-- And this is our OSGi container -->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-      <version>${slf4j.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>${slf4j.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.framework</artifactId>
+      <version>5.6.1</version>
       <scope>test</scope>
     </dependency>
 
-    <!-- And this is our Equinox implementation -->
+    <!-- This is just to have a nice logging -->
     <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>org.eclipse.osgi</artifactId>
-      <version>3.8.0.v20120529-1548</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.1.7</version>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <build>
