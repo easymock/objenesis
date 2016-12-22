@@ -56,7 +56,7 @@
         <plugin>
           <groupId>com.simpligility.maven.plugins</groupId>
           <artifactId>android-maven-plugin</artifactId>
-          <version>4.4.1</version>
+          <version>4.4.3</version>
           <extensions>true</extensions>
           <configuration>
             <testFailSafe>false</testFailSafe>
@@ -87,7 +87,6 @@
         <artifactId>maven-license-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
       </plugin>
 
@@ -96,7 +95,7 @@
         <artifactId>android-maven-plugin</artifactId>
         <configuration>
           <sdk>
-            <platform>18</platform>
+            <platform>25</platform>
           </sdk>
         </configuration>
         <extensions>true</extensions>
@@ -105,7 +104,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
         <inherited>false</inherited>
         <executions>
           <execution>

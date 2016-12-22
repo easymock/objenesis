@@ -17,8 +17,8 @@
   <properties>
     <app.id>objenesis</app.id>
     <app.version>2</app.version>
-    <appengine.version>1.9.37</appengine.version>
-    <gcloud.plugin.version>2.0.9.101.v20160316</gcloud.plugin.version>
+    <appengine.version>1.9.48</appengine.version>
+    <gcloud.plugin.version>2.0.9.133.v201611104</gcloud.plugin.version>
   </properties>
 
   <dependencies>
@@ -92,7 +92,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.0.0</version>
         <configuration>
           <archiveClasses>true</archiveClasses>
           <webResources>
