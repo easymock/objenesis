@@ -13,9 +13,6 @@
   <url>http://objenesis.org</url>
 
   <properties>
-    <!-- These versions are also used to filter boot-bundles.properties -->
-    <log4j.version>1.2.17</log4j.version>
-    <slf4j.version>1.7.22</slf4j.version>
     <paxexam.version>3.5.0</paxexam.version>
   </properties>
 
@@ -73,12 +70,6 @@
   </dependencies>
 
   <build>
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-        <filtering>true</filtering>
-      </testResource>
-    </testResources>
     <plugins>
       <plugin>
         <groupId>com.keyboardsamurais.maven</groupId>
