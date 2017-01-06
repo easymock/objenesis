@@ -15,15 +15,15 @@
  */
 package org.objenesis;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Base class to extend if you want to have a class providing your own default strategy. Can also be
  * instantiated directly.
- * 
+ *
  * @author Henri Tremblay
  */
 public class ObjenesisBase implements Objenesis {
@@ -36,7 +36,7 @@ public class ObjenesisBase implements Objenesis {
 
    /**
     * Constructor allowing to pick a strategy and using cache
-    * 
+    *
     * @param strategy Strategy to use
     */
    public ObjenesisBase(InstantiatorStrategy strategy) {
@@ -45,7 +45,7 @@ public class ObjenesisBase implements Objenesis {
 
    /**
     * Flexible constructor allowing to pick the strategy and if caching should be used
-    * 
+    *
     * @param strategy Strategy to use
     * @param useCache If {@link ObjectInstantiator}s should be cached
     */
@@ -65,7 +65,7 @@ public class ObjenesisBase implements Objenesis {
 
    /**
     * Will create a new object without any constructor being called
-    * 
+    *
     * @param clazz Class to instantiate
     * @return New instance of clazz
     */
@@ -77,12 +77,15 @@ public class ObjenesisBase implements Objenesis {
     * Will pick the best instantiator for the provided class. If you need to create a lot of
     * instances from the same class, it is way more efficient to create them from the same
     * ObjectInstantiator than calling {@link #newInstance(Class)}.
-    * 
+    *
     * @param clazz Class to instantiate
     * @return Instantiator dedicated to the class
     */
    @SuppressWarnings("unchecked")
    public <T> ObjectInstantiator<T> getInstantiatorOf(Class<T> clazz) {
+      if(clazz.isPrimitive()) {
+         throw new IllegalArgumentException("Primitive types can't be instantiated in Java");
+      }
       if(cache == null) {
          return strategy.newInstantiatorOf(clazz);
       }
