@@ -72,8 +72,8 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    /**
     * Get the underlying instantiator.
     *
-    * <code>MagicInstantiator</code> is a wrapper around another object
-    * which implements <code>ObjectInstantiator</code> interface.
+    * {@link MagicInstantiator} is a wrapper around another object
+    * which implements {@link ObjectInstantiator} interface.
     * This method exposes that instantiator.
     */
    public ObjectInstantiator<T> getInstantiator() {

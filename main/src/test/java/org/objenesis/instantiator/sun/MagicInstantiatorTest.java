@@ -15,18 +15,27 @@
  */
 package org.objenesis.instantiator.sun;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.objenesis.EmptyClass;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.strategy.PlatformDescription;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 
 /**
  * @author Henri Tremblay
  */
-@Ignore("Won't work on every JVM")
 public class MagicInstantiatorTest {
+
+   @Before
+   public void before() {
+      // I know it works one these two. Not sure on others
+      assumeTrue(
+         PlatformDescription.isThisJVM(PlatformDescription.HOTSPOT) ||
+            PlatformDescription.isThisJVM(PlatformDescription.OPENJDK));
+   }
 
    @Test
    public void testNewInstance() throws Exception {
@@ -35,5 +44,11 @@ public class MagicInstantiatorTest {
 
       ObjectInstantiator<EmptyClass> o2 = new MagicInstantiator<EmptyClass>(EmptyClass.class);
       assertEquals(EmptyClass.class, o2.newInstance().getClass());
+   }
+
+   @Test
+   public void testInternalInstantiator() {
+      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<EmptyClass>(EmptyClass.class).getInstantiator();
+      assertEquals(EmptyClass.class, o1.newInstance().getClass());
    }
 }
