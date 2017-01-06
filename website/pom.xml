@@ -14,7 +14,9 @@
   <version>2.4</version>
 
   <properties>
-    <javadoc>apidocs</javadoc>
+    <asciidoctor.maven.plugin.version>1.5.3</asciidoctor.maven.plugin.version>
+    <asciidoctorj.version>1.5.4.1</asciidoctorj.version>
+    <jruby.version>1.7.25</jruby.version>
   </properties>
 
   <dependencies>
@@ -27,11 +29,13 @@
   </dependencies>
 
   <build>
+    <defaultGoal>process-resources</defaultGoal>
     <plugins>
       <plugin>
         <groupId>com.keyboardsamurais.maven</groupId>
         <artifactId>maven-timestamp-plugin</artifactId>
       </plugin>
+
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -72,26 +76,133 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
-        <groupId>org.codehaus.xsite</groupId>
-        <artifactId>xsite-maven-plugin</artifactId>
-        <version>1.3</version>
+        <groupId>org.asciidoctor</groupId>
+        <artifactId>asciidoctor-maven-plugin</artifactId>
+        <version>${asciidoctor.maven.plugin.version}</version>
+        <dependencies>
+          <!-- Comment this section to use the default jruby artifact provided by the plugin -->
+          <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>${jruby.version}</version>
+          </dependency>
+          <!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin -->
+          <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj</artifactId>
+            <version>${asciidoctorj.version}</version>
+          </dependency>
+        </dependencies>
         <configuration>
-          <sourceDirectoryPath>${project.build.directory}/site</sourceDirectoryPath>
-          <sitemapPath>content/sitemap.xml</sitemapPath>
-          <skinPath>templates/skin.html</skinPath>
-          <resourcePaths>resources</resourcePaths>
-          <outputDirectoryPath>${project.build.directory}/xsite</outputDirectoryPath>
+          <sourceDirectory>src/docs/asciidoc</sourceDirectory>
+          <!-- If you set baseDir to ${project.basedir}, top-level includes are resolved relative to the project root -->
+          <!--
+          <baseDir>${project.basedir}</baseDir>
+          -->
+          <!-- Attributes common to all output formats -->
+          <attributes>
+            <endpoint-url>http://example.org</endpoint-url>
+            <sourcedir>${project.build.sourceDirectory}</sourcedir>
+            <project-version>${project.version}</project-version>
+          </attributes>
         </configuration>
         <executions>
           <execution>
-            <phase>package</phase>
+            <id>asciidoc-to-html</id>
+            <phase>generate-resources</phase>
             <goals>
-              <goal>run</goal>
+              <goal>process-asciidoc</goal>
             </goals>
+            <configuration>
+              <backend>html5</backend>
+              <sourceHighlighter>coderay</sourceHighlighter>
+              <!--
+              Scenarios for linking vs embedding assets:
+              Link to both stylesheets and images::
+                - don't set embedAssets option
+                - set linkcss attribute to true
+                - set imagesdir attribute to path relative to AsciiDoc source file
+                <attributes>
+                    <linkcss>true</linkcss>
+                    <imagesdir>./images</imagesdir>
+                </attributes>
+              Embed stylesheets and images::
+
+                - set embedAssets option to true
+                - don't set linkcss attribute
+                - set imagesdir attribute to path relative to project root
+                <embedAssets>true</embedAssets>
+                <attributes>
+                    <imagesdir>src/docs/asciidoc/images</imagesdir>
+                </attributes>
+              Link to stylesheets but embed images::
+
+                - set embedAssets option to true
+                - set linkcss attribute to true
+                - set imagesdir attribute to path relative to project root
+                <embedAssets>true</embedAssets>
+                <attributes>
+                    <linkcss>true</linkcss>
+                    <imagesdir>src/docs/asciidoc/images</imagesdir>
+                </attributes>
+              Embed stylesheets but link images (default)::
+
+                - don't set embedAssets option
+                - don't set linkcss attribute
+                - set imagesdir attribute to path relative to AsciiDoc source file
+                <attributes>
+                    <imagesdir>./images</imagesdir>
+                </attributes>
+              IMPORTANT: When you enable image embedding, you must qualify the path the the imagesdir, as shown above.
+              -->
+              <attributes>
+                <imagesdir>./images</imagesdir>
+                <toc>left</toc>
+                <icons>font</icons>
+                <sectanchors>true</sectanchors>
+                <!-- set the idprefix to blank -->
+                <idprefix/>
+                <idseparator>-</idseparator>
+                <docinfo1>true</docinfo1>
+              </attributes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
+      <!--
+      NOTE: Use the maven-resources-plugin if there are assets outside the AsciiDoc source folder
+            that need to be copied to the generated-docs. The Maven plugin automatically copies
+            non-AsciiDoc files in the AsciiDoc source folder to generated-docs.
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+          <executions>
+              <execution>
+                  <id>copy-asciidoc-resources</id>
+                  <phase>process-resources</phase>
+                  <goals>
+                      <goal>copy-resources</goal>
+                  </goals>
+                  <configuration>
+                      <resources>
+                          <resource>
+                              <directory>src/docs/resources</directory>
+                              <includes>
+                                  <include>**/*.jpg</include>
+                                  <include>**/*.png</include>
+                              </includes>
+                          </resource>
+                      </resources>
+                      <outputDirectory>target/generated-docs</outputDirectory>
+                  </configuration>
+              </execution>
+          </executions>
+      </plugin>
+      -->
+
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
         <configuration>

@@ -1,0 +1,166 @@
+////
+
+    Copyright 2006-2017 the original author or authors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+////
+= The Details
+
+The link:tutorial.html[Tutorial] allows you to perfectly use Objenesis.
+However, if you want implementation details, tools and more power, you're at
+the right place.
+
+== [[testYourEnvironment]]Test your environment
+
+Depending on your JVM and security manager, Objenesis might not be able to
+instantiate some of your classes. If that's the case, first, we are highly
+interested in link:support.html[knowing this limitation].
+
+Then, to prevent this, we provide a TCK to run in your environment. You can
+find it on our link:download.html[download page]. It will print a report
+to the standard output. Exceptions, if they occur, will be printed out to
+the standard error. Tests are run ${javadoc}/org/objenesis/ObjenesisStd.html[ObjenesisStd]</a>
+and ${javadoc}/org/objenesis/ObjenesisSerializer.html[ObjenesisSerializer]
+and are made of every kind of class types you might want to instantiate. So you can check if all
+of them or at least the kind you want are correctly instantiated.
+
+To launch from the command line, just type
+
+[source,bash]
+----
+java -jar objenesis-${project.version}-tck.jar
+----
+
+Note that objenesis jar is bundled in the TCK so no special classpath is needed.
+
+To launch from within an application server, the easiest is to bundle it in your application
+and to call `org.objenesis.tck.Main.main()` from your code.
+
+=== Android
+
+Objenesis also works on Dalvik, the Android VM. So a TCK is also provided for it in the form of an apk. You
+can also find it on link:download.html[download page]. Just use the following command to install and run
+it.
+
+[source,bash]
+----
+adb install -r objenesis-tck-android-${project.version}.apk
+adb shell am instrument -w org.objenesis.tck.android/.TckInstrumentation
+----
+
+== Exception Handling
+
+If something wrong occurs using Objenesis, you will normally get an
+${javadoc}/org/objenesis/ObjenesisException.html[ObjenesisException]
+wrapping the real exception. It is a RuntimeException so you don't have to
+catch it. Some reasons why it fails:
+
+* Using ObjenesisSerializer with a class that isn't `Serializable`.
+* Using ObjenesisSerializer, the constructor of the first parent class that isn't `Serializable` throws an exception.
+* Your SecurityManager prevents Objenesis from working normally.
+* Objenesis isn't able to work for some reason. Please link:support.html[tell us]
+
+== ObjectInstantiator caching
+
+${javadoc}/org/objenesis/ObjenesisBase.html[ObjenesisBase] provides a built-in cache
+that is activated by default. This cache keeps ${javadoc}/org/objenesis/instantiator/ObjectInstantiator.html[ObjectInstantiator]
+instances per Class. This improves performance quite a lot when the same Class
+is frequently instantiated. For this reason, it is recommended to reuse Objenesis instances whenever
+possibly or to keep is as a singleton in your favorite dependency injection framework.
+
+However, you can always disable the cache if needed.
+
+[source,java]
+----
+Objenesis o = new ObjenesisStd(false); // cache disabled
+----
+
+The cache should behave correctly in an application server and not cause any memory leaks.
+
+== Use you own strategy
+
+As you've seen in the link:tutorial.html[Tutorial], Objenesis implementations
+are determining the best instantiator using a strategy. It might occurs that you need
+to implement your own strategy. Two possible reasons I can think of are that
+
+* *You want to specialize for a given JVM.* Default strategies are supporting all JVMs. This has a little performance cost
+so you might want to provide a strategy that is optimized for your JVM.
+
+[source,java]
+----
+public class Sun14Strategy implements InstantiatorStrategy {
+    public ObjectInstantiator newInstantiatorOf(Class type) {
+        // return sun dedicated instantiator
+        return new SunReflectionFactoryInstantiator(type);
+    }
+}
+----
+
+* *Objenesis doesn't support your environment by default.* In that case, we would be really happy to add this support in
+our next version and meanwhile, you can use your own strategy and instantiator to fix this.
+
+From there, you can use this new strategy.
+
+[source,java]
+----
+// Directly
+Objenesis o = new ObjenesisBase(new Sun14Strategy());
+
+// Or inside your Objenesis own implementation
+public class ObjenesisSun14 extends ObjenesisBase {
+    public ObjenesisSun14() {
+       super(new Sun14Strategy());
+    }
+}
+----
+
+Also, if Objenesis can't find the right instantiator to use by itself, this doesn't mean it doesn't bundle
+an instantiator that works on your plaform. To try to find one, we provide a nice tool that will run through
+all the instantiators and tell you which ones work
+
+[source,bash]
+----
+java -cp objenesis-${project.version}-tck.jarorg.objenesis.tck.search.SearchWorkingInstantiator
+----
+
+Some culprits:
+* Some instantiators are made to mimic the Java serialization. It means they will call the default constructor of the first non-serializable class
+* Some instantiators only works if the class is serialiable
+* Some instantiators will in fact call the default constructor
+* Depending on your security manager, classes coming from a low level class loader might not be instantiable
+
+== The Evil ObjenesisHelper
+
+Static methods are considered a really bad practice. They can't be mocked or
+replace easily. Worst, if the class keep a static state, you will fell in
+class loading issues, memory leaks, module dependencies and so on. *We
+strongly recommend you not to use them.*
+
+However, if for some reason that we prefer ignore, you still want to use Objenesis
+in a static way, you can do so. It's called ${javadoc}/org/objenesis/ObjenesisHelper.html[ObjenesisHelper]
+
+We prefer to provide it knowing that some of you will code it anyway. It a wrapper
+over an ${javadoc}/org/objenesis/ObjenesisStd.html[ObjenesisStd]
+and ${javadoc}/org/objenesis/ObjenesisSerializer.html[ObjenesisSerializer]
+instance which are kept statically.
+
+It can't be more straightforward to use:
+
+[source,java]
+----
+Object o1 = ObjenesisHelper.newInstance(MyClass.class);
+Object o2 = ObjenesisHelper.newSerializableInstance(MyClass.class);
+ObjectInstantiator o3 = ObjenesisHelper.getInstantiatorOf(MyClass.class);
+ObjectInstantiator o4 = ObjenesisHelper.getSerializableObjectInstantiatorOf(MyClass.class);
+----

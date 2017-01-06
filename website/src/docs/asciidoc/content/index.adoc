@@ -1,0 +1,75 @@
+////
+
+    Copyright 2006-2017 the original author or authors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+////
+= About
+
+Objenesis is a small Java library that serves one purpose:
+
+* *To instantiate a new object of a particular class.*
+
+== When would you want this?
+
+Java already supports this dynamic instantiation of classes using `Class.newInstance()`. However, this only
+works if the class has an appropriate constructor. There are many times when a class cannot be instantiated
+this way, such as when the class contains:
+
+* Constructors that require arguments.
+* Constructors that have side effects.
+* Constructors that throw exceptions.
+
+As a result, it is common to see restrictions in libraries stating that classes must require a
+default constructor. Objenesis aims to overcome these restrictions by bypassing the constructor on object
+instantiation.
+
+== Typical uses
+
+Needing to instantiate an object without calling the constructor is a fairly specialized task, however
+there are certain cases when this is useful:
+
+* *Serialization, Remoting and Persistence* - Objects need to be instantiated and restored to a specific state, without invoking code.
+* *Proxies, AOP Libraries and Mock Objects* - Classes can be subclassed without needing to worry about the super() constructor.
+* *Container Frameworks* - Objects can be dynamically instantiated in non-standard ways.
+
+== Getting Started
+
+* link:download.html[Download] Objenesis.
+* Read the link:tutorial.html[twenty seconds tutorial].
+
+== How it Works
+
+Objenesis uses a variety of approaches to attempt to instantiate the object, depending on the type of object,
+JVM version, JVM vendor and SecurityManager present. These are described in full in the
+link:details.html[detailed documentation].
+
+== Avoiding the Dependency
+
+For something as straight forward as instantiating an object, it can be a pain introducing yet another
+library dependency into your project. Objenesis is easy to link:embedding.html[embed in your existing library] so
+your end users don't even know it's there.
+
+== Supported JVMs
+
+The list of tested JVMs is available https://github.com/easymock/objenesis/blob/master/SupportedJVMs.md[here].
+Other JVMs might be supported be haven't been tested yet. You can test your environment using the
+anchor:testYourEnvironment[TCK] and we would be glad to have link:support.html[feedback]
+on any supported / unsupported JVM.
+
+== Benchmarking
+
+We do more and more benchmarking to make sure Objenesis has great performance but also to settled the best way to
+use it for multiple use-cases. Results are added https://github.com/easymock/objenesis/blob/master/Benchmarks.md[here]. Please, link:support.html[share your own results].
+Especially, if they differ from ours.

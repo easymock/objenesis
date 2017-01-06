@@ -1,0 +1,80 @@
+////
+
+    Copyright 2006-2017 the original author or authors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+////
+= Embedding
+
+Objenesis is https://code.google.com/p/jarjar[jarjar] and
+http://maven.apache.org/plugins/maven-shade-plugin[maven-shade-plugin] compliant.
+
+== Ant
+
+A jarjar ant task is available. You just need to replace your usual jar task with
+jarjar. Depending on the complexity of your project, you will then have different
+parameters. Here's an example:
+
+[source,xml]
+----
+<jarjar jarfile="${temp directory}/easymockclassextension.jar">
+  <fileset dir="tmp" includes="org/easymock/classextension/*.class
+    org/easymock/classextension/internal/*.class"/>
+  <zipfileset src="lib/objenesis-${project.version}.jar"/>
+  <rule pattern="org.objenesis.**"
+    result="org.easymock.classextension.internal.objenesis.@1"/>
+</jarjar>
+----
+
+== Maven
+
+https://sonatype.github.io/jarjar-maven-plugin/
+For jarjar, multiple unofficial plugins exist (https://sonatype.github.io/jarjar-maven-plugin[here],
+http://boss.bekk.no/maven-jarjar-plugin/[here] and
+http://docs.atlassian.com/jarjar-maven-plugin[here]. However, you can use
+the http://maven.apache.org/plugins/maven-antrun-plugin[antrun plugin] to call
+the jarjar ant task.
+
+Or you can use the http://maven.apache.org/plugins/maven-shade-plugin[maven-shade-plugin].
+
+Here's an example:
+
+[source,xml]
+----
+<plugin>
+  <artifactId>maven-shade-plugin</artifactId>
+  <executions>
+    <execution>
+      <phase>package</phase>
+      <goals>
+        <goal>shade</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
+    <artifactSet>
+      <includes>
+        <include>org.objenesis:objenesis</include>
+      </includes>
+    </artifactSet>
+    <relocations>
+      <relocation>
+        <pattern>org.objenesis</pattern>
+        <shadedPattern>org.easymock.classextension.internal.objenesis</shadedPattern>
+      </relocation>
+    </relocations>
+  </configuration>
+</plugin>
+----

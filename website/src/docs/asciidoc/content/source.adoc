@@ -1,4 +1,4 @@
-<!--
+////
 
     Copyright 2006-2017 the original author or authors.
 
@@ -14,21 +14,9 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
--->
-<html>
-<head>
-    <title>Getting Support</title>
-</head>
-<body>
+////
+= Source Repository
 
-<ul>
-    <li><a href="http://groups.google.com/group/objenesis-dev">Objenesis developers group</a>
-        - Discuss Objenesis with the development team and other users.
-    </li>
-    <li><a href="https://github.com/easymock/objenesis/issues">Issue tracker</a>
-        - Report an issue.
-    </li>
-</ul>
+The source repository for Objenesis is hosted by GitHub.
 
-</body>
-</html>
+* https://github.com/easymock/objenesis
