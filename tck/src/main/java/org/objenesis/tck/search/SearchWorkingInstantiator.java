@@ -47,11 +47,26 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
     }
 
     public void searchForInstantiator(Class<?> toInstantiate) {
-        SortedSet<Class<?>> classes = ClassEnumerator.getClassesForPackage(ObjectInstantiator.class.getPackage());
+        SortedSet<String> classes = ClassEnumerator.getClassesForPackage(ObjectInstantiator.class.getPackage());
 
-        for (Iterator<Class<?>> it = classes.iterator(); it.hasNext();) {
-            Class<?> c = it.next();
-            if(c.isInterface() || !ObjectInstantiator.class.isAssignableFrom(c)) {
+        for (Iterator<String> it = classes.iterator(); it.hasNext();) {
+            String className = it.next();
+
+            // Skip if inner class of isn't named like a instantiator
+            if(className.contains("$") || !className.endsWith("Instantiator")) {
+               continue;
+            }
+
+           Class<?> c = null;
+           try {
+              c = Class.forName(className);
+           }
+           catch(Exception e) {
+              listener.instantiatorUnsupported(c, e);
+              continue;
+           }
+
+           if(c.isInterface() || !ObjectInstantiator.class.isAssignableFrom(c)) {
                 continue;
             }
 

@@ -29,16 +29,7 @@ import java.util.jar.JarFile;
  */
 public class ClassEnumerator {
 
-    private static Class<?> loadClass(String className) {
-        try {
-            return Class.forName(className);
-        }
-        catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unexpected ClassNotFoundException loading class '" + className + "'");
-        }
-    }
-
-    private static void processDirectory(File directory, String pkgname, SortedSet<Class<?>> classes) {
+    private static void processDirectory(File directory, String pkgname, SortedSet<String> classes) {
 
         // Get the list of the files contained in the package
         String[] files = directory.list();
@@ -49,7 +40,7 @@ public class ClassEnumerator {
             if (fileName.endsWith(".class")) {
                 // removes the .class extension
                 String className = pkgname + '.' + fileName.substring(0, fileName.length() - 6);
-                classes.add(loadClass(className));
+                classes.add(className);
                 continue;
             }
 
@@ -60,7 +51,7 @@ public class ClassEnumerator {
         }
     }
 
-    private static void processJarfile(URL resource, String pkgname, SortedSet<Class<?>> classes) {
+    private static void processJarfile(URL resource, String pkgname, SortedSet<String> classes) {
         String relPath = pkgname.replace('.', '/');
         String resPath = resource.getPath();
         String jarPath = resPath.replaceFirst("[.]jar[!].*", ".jar").replaceFirst("file:", "");
@@ -81,21 +72,30 @@ public class ClassEnumerator {
             }
 
             if (className != null) {
-                classes.add(loadClass(className));
+                classes.add(className);
             }
         }
     }
 
-    public static SortedSet<Class<?>> getClassesForPackage(Package pkg) {
+   /**
+    * Return all the classes in this package recursively. The class loader of the {@code ClassEnumerator} class
+    * is used
+    *
+    * @param pkg the searched package
+    * @return list of full class names
+    */
+    public static SortedSet<String> getClassesForPackage(Package pkg) {
         return getClassesForPackage(pkg, ClassEnumerator.class.getClassLoader());
     }
 
-    public static SortedSet<Class<?>> getClassesForPackage(Package pkg, ClassLoader classLoader) {
-        SortedSet<Class<?>> classes = new TreeSet<Class<?>>(new Comparator<Class<?>>() {
-           public int compare(Class<?> o1, Class<?> o2) {
-              return o1.getSimpleName().compareTo(o2.getSimpleName());
-           }
-        });
+   /**
+    * Return all the classes in this package recursively.
+    *
+    * @param pkg the searched package
+    * @return list of full class names
+    */
+    public static SortedSet<String> getClassesForPackage(Package pkg, ClassLoader classLoader) {
+        SortedSet<String> classes = new TreeSet<String>();
 
         String pkgname = pkg.getName();
         String relPath = pkgname.replace('.', '/');
