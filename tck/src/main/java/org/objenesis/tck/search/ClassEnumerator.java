@@ -95,7 +95,17 @@ public class ClassEnumerator {
     * @return list of full class names
     */
     public static SortedSet<String> getClassesForPackage(Package pkg, ClassLoader classLoader) {
-        SortedSet<String> classes = new TreeSet<String>();
+        SortedSet<String> classes = new TreeSet<String>(new Comparator<String>() {
+           public int compare(String o1, String o2) {
+              String simpleName1 = getSimpleName(o1);
+              String simpleName2 = getSimpleName(o2);
+              return simpleName1.compareTo(simpleName2);
+           }
+
+           private String getSimpleName(String className) {
+              return className.substring(className.lastIndexOf('.'));
+           }
+        });
 
         String pkgname = pkg.getName();
         String relPath = pkgname.replace('.', '/');
