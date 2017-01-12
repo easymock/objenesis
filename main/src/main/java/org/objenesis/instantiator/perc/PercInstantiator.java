@@ -20,15 +20,18 @@ import java.lang.reflect.Method;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiates a class by making a call to internal Perc private methods. It is only supposed to
  * work on Perc JVMs. This instantiator will not call any constructors. The code was provided by
  * Aonix Perc support team.
- * 
+ *
  * @author Henri Tremblay
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
+@Instantiator(Typology.STANDARD)
 public class PercInstantiator<T> implements ObjectInstantiator<T> {
 
 	private final Method newInstanceMethod;

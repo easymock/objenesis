@@ -15,12 +15,15 @@
  */
 package org.objenesis.gae;
 
-import org.objenesis.tck.search.SearchWorkingInstantiatorListener;
-
-import javax.servlet.jsp.JspWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
+import org.objenesis.tck.search.SearchWorkingInstantiatorListener;
+
+import javax.servlet.jsp.JspWriter;
 
 /**
  * @author Henri Tremblay
@@ -37,7 +40,7 @@ public class JspWriterListener implements SearchWorkingInstantiatorListener {
 
    public void instantiatorSupported(Class<?> c) {
       try {
-         writer.println(String.format(PATTERN, c.getSimpleName(), "Working!"));
+         writer.println(String.format(PATTERN, c.getSimpleName() + " (" + getTypology(c) + ")", "Working!"));
       } catch (IOException e) {
          throw new RuntimeException(e);
       }
@@ -47,9 +50,14 @@ public class JspWriterListener implements SearchWorkingInstantiatorListener {
       ByteArrayOutputStream b = new ByteArrayOutputStream();
       t.printStackTrace(new PrintStream(b));
       try {
-         writer.println(String.format(PATTERN, c.getSimpleName(), "KO - " + b.toString()));
+         writer.println(String.format(PATTERN, c.getSimpleName() + " (" + getTypology(c) + ")", "KO - " + b.toString()));
       } catch (IOException e) {
          throw new RuntimeException(e);
       }
+   }
+
+   private Typology getTypology(Class<?> c) {
+      Instantiator instantiatorAnn = c.getAnnotation(Instantiator.class);
+      return instantiatorAnn == null ? Typology.UNKNOWN : instantiatorAnn.value();
    }
 }

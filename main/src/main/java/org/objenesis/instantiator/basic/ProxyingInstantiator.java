@@ -17,6 +17,8 @@ package org.objenesis.instantiator.basic;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -32,6 +34,7 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  *
  * @author Henri Tremblay
  */
+@Instantiator(Typology.STANDARD)
 public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
    private static final int INDEX_CLASS_THIS = 1;

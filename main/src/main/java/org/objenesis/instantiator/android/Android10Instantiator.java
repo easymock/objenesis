@@ -20,14 +20,17 @@ import java.lang.reflect.Method;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiator for Android API level 10 and lover which creates objects without driving their
  * constructors, using internal methods on the Dalvik implementation of
  * {@link java.io.ObjectInputStream}.
- * 
+ *
  * @author Piotr 'Qertoip' Włodarek
  */
+@Instantiator(Typology.STANDARD)
 public class Android10Instantiator<T> implements ObjectInstantiator<T> {
    private final Class<T> type;
    private final Method newStaticMethod;

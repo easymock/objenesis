@@ -22,6 +22,7 @@ import org.objenesis.instantiator.basic.ObjectInputStreamInstantiator;
 import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
 import org.objenesis.instantiator.perc.PercSerializationInstantiator;
+import org.objenesis.instantiator.sun.SunReflectionFactorySerializationInstantiator;
 
 import java.io.NotSerializableException;
 import java.io.Serializable;
@@ -39,7 +40,7 @@ import static org.objenesis.strategy.PlatformDescription.*;
  * <li>JVM vendor version</li>
  * </ul>
  * However, instantiators are stateful and so dedicated to their class.
- * 
+ *
  * @author Henri Tremblay
  * @see ObjectInstantiator
  */
@@ -48,7 +49,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
    /**
     * Return an {@link ObjectInstantiator} allowing to create instance following the java
     * serialization framework specifications.
-    * 
+    *
     * @param type Class to instantiate
     * @return The ObjectInstantiator for the class
     */
@@ -59,6 +60,10 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
       if(JVM_NAME.startsWith(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
          if(isGoogleAppEngine()) {
             return new ObjectInputStreamInstantiator<T>(type);
+         }
+         // ObjectStreamClassInstantiator uses setAccessible which isn't supported on JDK9
+         if(PlatformDescription.SPECIFICATION_VERSION.equals("9")) {
+            return new SunReflectionFactorySerializationInstantiator<T>(type);
          }
          return new ObjectStreamClassInstantiator<T>(type);
       }
@@ -74,7 +79,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
       else if(JVM_NAME.startsWith(PERC)) {
          return new PercSerializationInstantiator<T>(type);
       }
-      
+
       return new ObjectStreamClassInstantiator<T>(type);
    }
 

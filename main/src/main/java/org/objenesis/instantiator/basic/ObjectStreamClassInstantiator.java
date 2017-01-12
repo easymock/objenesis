@@ -20,17 +20,20 @@ import java.lang.reflect.Method;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiates a class by using reflection to make a call to private method
  * ObjectStreamClass.newInstance, present in many JVM implementations. This instantiator will create
  * classes in a way compatible with serialization, calling the first non-serializable superclass'
  * no-arg constructor.
- * 
+ *
  * @author Leonardo Mesquita
  * @see ObjectInstantiator
  * @see java.io.Serializable
  */
+@Instantiator(Typology.SERIALIZATION)
 public class ObjectStreamClassInstantiator<T> implements ObjectInstantiator<T> {
 
    private static Method newInstanceMethod;
@@ -46,7 +49,7 @@ public class ObjectStreamClassInstantiator<T> implements ObjectInstantiator<T> {
          }
          catch(NoSuchMethodException e) {
             throw new ObjenesisException(e);
-         }         
+         }
       }
    }
 
@@ -59,14 +62,14 @@ public class ObjectStreamClassInstantiator<T> implements ObjectInstantiator<T> {
 
    @SuppressWarnings("unchecked")
    public T newInstance() {
-	   
+
       try {
          return (T) newInstanceMethod.invoke(objStreamClass);
       }
       catch(Exception e) {
          throw new ObjenesisException(e);
       }
-      
+
    }
 
 }

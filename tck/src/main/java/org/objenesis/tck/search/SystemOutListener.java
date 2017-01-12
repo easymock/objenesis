@@ -15,18 +15,26 @@
  */
 package org.objenesis.tck.search;
 
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
+
 /**
  * @author Henri Tremblay
  */
 public class SystemOutListener implements SearchWorkingInstantiatorListener {
 
-    private static final String PATTERN = "%-50s: %s%n";
+    private static final String PATTERN = "%-65s: %s%n";
 
     public void instantiatorSupported(Class<?> c) {
-        System.out.printf(PATTERN, c.getSimpleName(), "Working!");
+        System.out.printf(PATTERN, c.getSimpleName() + " (" + getTypology(c) + ")", "Working!");
     }
 
     public void instantiatorUnsupported(Class<?> c, Throwable t) {
-        System.out.printf(PATTERN, c.getSimpleName(), "KO - " + t);
+        System.out.printf(PATTERN, c.getSimpleName() + "(" + getTypology(c) + ")", "KO - " + t);
+    }
+
+    private Typology getTypology(Class<?> c) {
+       Instantiator instantiatorAnn = c.getAnnotation(Instantiator.class);
+       return instantiatorAnn == null ? Typology.UNKNOWN : instantiatorAnn.value();
     }
 }

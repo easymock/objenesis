@@ -15,9 +15,11 @@
  */
 package org.objenesis.instantiator.sun;
 
+import sun.misc.Unsafe;
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
-import sun.misc.Unsafe;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 import java.lang.reflect.Field;
 
@@ -30,6 +32,7 @@ import java.lang.reflect.Field;
  * @see ObjectInstantiator
  */
 @SuppressWarnings("restriction")
+@Instantiator(Typology.STANDARD)
 public class UnsafeFactoryInstantiator<T> implements ObjectInstantiator<T> {
 
    private static Unsafe unsafe;

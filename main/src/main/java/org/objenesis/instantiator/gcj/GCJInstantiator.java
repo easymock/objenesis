@@ -18,14 +18,17 @@ package org.objenesis.instantiator.gcj;
 import java.lang.reflect.InvocationTargetException;
 
 import org.objenesis.ObjenesisException;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiates a class by making a call to internal GCJ private methods. It is only supposed to
  * work on GCJ JVMs. This instantiator will not call any constructors.
- * 
+ *
  * @author Leonardo Mesquita
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
+@Instantiator(Typology.STANDARD)
 public class GCJInstantiator<T> extends GCJInstantiatorBase<T> {
    public GCJInstantiator(Class<T> type) {
       super(type);

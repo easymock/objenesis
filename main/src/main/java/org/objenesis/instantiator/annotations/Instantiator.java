@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.basic;
+package org.objenesis.instantiator.annotations;
 
-import org.objenesis.instantiator.ObjectInstantiator;
-import org.objenesis.instantiator.annotations.Instantiator;
-import org.objenesis.instantiator.annotations.Typology;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * The instantiator that always return a null instance
+ * Denote that the class in an instantiator of a given type
  *
  * @author Henri Tremblay
  */
-@Instantiator(Typology.NOT_COMPLIANT)
-public class NullInstantiator<T> implements ObjectInstantiator<T> {
-
-   public NullInstantiator(Class<T> type) {
-   }
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Instantiator {
 
    /**
-    * @return Always null
+    * @return type of instantiator
     */
-   public T newInstance() {
-      return null;
-   }
+   Typology value();
 }

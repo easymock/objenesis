@@ -13,27 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.basic;
-
-import org.objenesis.instantiator.ObjectInstantiator;
-import org.objenesis.instantiator.annotations.Instantiator;
-import org.objenesis.instantiator.annotations.Typology;
+package org.objenesis.instantiator.annotations;
 
 /**
- * The instantiator that always return a null instance
- *
+ * Possible types of instantiator
  * @author Henri Tremblay
  */
-@Instantiator(Typology.NOT_COMPLIANT)
-public class NullInstantiator<T> implements ObjectInstantiator<T> {
-
-   public NullInstantiator(Class<T> type) {
-   }
+public enum Typology {
+   /**
+    * Mark an instantiator used for standard instantiation (not calling a constructor).
+    */
+   STANDARD,
 
    /**
-    * @return Always null
+    * Mark an instantiator used for serialization.
     */
-   public T newInstance() {
-      return null;
-   }
+   SERIALIZATION,
+
+   /**
+    * Mark an instantiator that doesn't behave as a {@link Standard} or {@link Serialization} (calls a constructor, fails
+    * all the time, etc.)
+    */
+   NOT_COMPLIANT,
+
+   /**
+    * No type specified
+    */
+   UNKNOWN
 }

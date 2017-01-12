@@ -17,12 +17,15 @@ package org.objenesis.instantiator.basic;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * The instantiator that always throws an exception. Mainly used for tests
- * 
+ *
  * @author Henri Tremblay
  */
+@Instantiator(Typology.NOT_COMPLIANT)
 public class FailingInstantiator<T> implements ObjectInstantiator<T> {
 
    public FailingInstantiator(Class<T> type) {

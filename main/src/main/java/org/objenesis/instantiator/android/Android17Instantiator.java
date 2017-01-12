@@ -21,13 +21,16 @@ import java.lang.reflect.Method;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiator for Android API level 11 to 17 which creates objects without driving their
  * constructors, using internal methods on the Dalvik implementation of {@link ObjectStreamClass}.
- * 
+ *
  * @author Ian Parkinson (Google Inc.)
  */
+@Instantiator(Typology.STANDARD)
 public class Android17Instantiator<T> implements ObjectInstantiator<T> {
    private final Class<T> type;
    private final Method newInstanceMethod;

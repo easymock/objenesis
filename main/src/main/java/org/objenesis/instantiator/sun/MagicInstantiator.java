@@ -17,6 +17,8 @@ package org.objenesis.instantiator.sun;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 import org.objenesis.instantiator.basic.ClassDefinitionUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -32,6 +34,7 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  *
  * @author Henri Tremblay
  */
+@Instantiator(Typology.STANDARD)
 public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
    private static final int INDEX_CLASS_THIS = 1;

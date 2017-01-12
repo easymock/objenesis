@@ -21,13 +21,16 @@ import java.lang.reflect.Method;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiator for Android API leve 18 and higher. Same as the version 17 but the
  * <code>newInstance</code> now takes a long in parameter
- * 
+ *
  * @author Henri Tremblay
  */
+@Instantiator(Typology.STANDARD)
 public class Android18Instantiator<T> implements ObjectInstantiator<T> {
    private final Class<T> type;
    private final Method newInstanceMethod;

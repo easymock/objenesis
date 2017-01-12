@@ -22,6 +22,8 @@ import java.lang.reflect.Method;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiates a class by making a call to internal Perc private methods. It is only supposed to
@@ -29,10 +31,11 @@ import org.objenesis.instantiator.ObjectInstantiator;
  * calling the first non-serializable superclass' no-arg constructor.
  * <p>
  * Based on code provided by Aonix but <b>doesn't work right now</b>
- * 
+ *
  * @author Henri Tremblay
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
+@Instantiator(Typology.SERIALIZATION)
 public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
 
    private Object[] typeArgs;

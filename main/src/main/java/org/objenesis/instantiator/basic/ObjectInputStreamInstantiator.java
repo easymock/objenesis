@@ -15,10 +15,20 @@
  */
 package org.objenesis.instantiator.basic;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
+import java.io.ObjectStreamConstants;
+import java.io.Serializable;
+
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
-
-import java.io.*;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiates a class by using a dummy input stream that always feeds data for an empty object of
@@ -30,6 +40,7 @@ import java.io.*;
  * @author Leonardo Mesquita
  * @see org.objenesis.instantiator.ObjectInstantiator
  */
+@Instantiator(Typology.SERIALIZATION)
 public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
    private static class MockStream extends InputStream {
 

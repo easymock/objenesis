@@ -22,7 +22,8 @@ import org.objenesis.tck.candidates.SerializableNoConstructor;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.SortedSet;
 
 /**
  * This class will try every available instantiator on the platform to see which works.
@@ -68,7 +69,7 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
 
            if(c.isInterface() || !ObjectInstantiator.class.isAssignableFrom(c)) {
                 continue;
-            }
+           }
 
             Constructor<?> constructor;
             try {

@@ -19,15 +19,18 @@ import java.lang.reflect.Constructor;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * Instantiates a class by grabbing the no args constructor and calling Constructor.newInstance().
  * This can deal with default public constructors, but that's about it.
- * 
+ *
  * @author Joe Walnes
  * @param <T> Type instantiated
  * @see ObjectInstantiator
  */
+@Instantiator(Typology.NOT_COMPLIANT)
 public class ConstructorInstantiator<T> implements ObjectInstantiator<T> {
 
    protected Constructor<T> constructor;

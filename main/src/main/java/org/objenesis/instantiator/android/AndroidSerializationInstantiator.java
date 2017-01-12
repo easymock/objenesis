@@ -21,14 +21,17 @@ import java.lang.reflect.Method;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * {@link ObjectInstantiator} for Android which creates objects using the constructor from the first
  * non-serializable parent class constructor, using internal methods on the Dalvik implementation of
  * {@link ObjectStreamClass}.
- * 
+ *
  * @author Ian Parkinson (Google Inc.)
  */
+@Instantiator(Typology.SERIALIZATION)
 public class AndroidSerializationInstantiator<T> implements ObjectInstantiator<T> {
    private final Class<T> type;
    private final ObjectStreamClass objectStreamClass;

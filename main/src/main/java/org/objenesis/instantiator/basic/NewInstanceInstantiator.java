@@ -17,14 +17,17 @@ package org.objenesis.instantiator.basic;
 
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.instantiator.annotations.Instantiator;
+import org.objenesis.instantiator.annotations.Typology;
 
 /**
  * The simplest instantiator - simply calls Class.newInstance(). This can deal with default public
  * constructors, but that's about it.
- * 
+ *
  * @author Joe Walnes
  * @see ObjectInstantiator
  */
+@Instantiator(Typology.NOT_COMPLIANT)
 public class NewInstanceInstantiator<T> implements ObjectInstantiator<T> {
 
    private final Class<T> type;
@@ -36,7 +39,7 @@ public class NewInstanceInstantiator<T> implements ObjectInstantiator<T> {
    public T newInstance() {
       try {
          return type.newInstance();
-      }      
+      }
       catch(Exception e) {
          throw new ObjenesisException(e);
       }
