@@ -103,13 +103,18 @@ To update the license
 To release
 --------------------------------------------------------------------------------------
 * Add the release notes in `website/site/content/notes.html`
-* Add this server to your `settings.xml`
-```
+* Add these servers to your `settings.xml`
+
+```xml
 <server>
-   <id>bintray</id>
-   <username>your-user-name</username>
-   <password>your-api-key</password>
-</server> 
+  <id>bintray</id>
+  <username>your-user-name</username>
+  <password>your-api-key</password>
+</server>
+<server>
+  <id>gpg.passphrase</id>
+  <passphrase>your-passphrase</passphrase>
+</server>
 ```
 
 * Set `gpg_passphrase`, `bintray_api_key` and `bintray_user` environment variables
