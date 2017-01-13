@@ -1,6 +1,7 @@
 org.objenesis
 org.objenesis.instantiator
 org.objenesis.instantiator.android
+org.objenesis.instantiator.annotations
 org.objenesis.instantiator.basic
 org.objenesis.instantiator.gcj
 org.objenesis.instantiator.perc
