@@ -113,15 +113,10 @@ To release
 ```
 
 * Set `gpg_passphrase`, `bintray_api_key` and `bintray_user` environment variables
-* Launch an Android device (virtual or physical)
-* Add release notes on the tag in GitHub 
+* Launch an Android device (virtual or physical) 
 * Launch `./deploy.sh version`
 * Answer the questions (normally, just acknowledge the proposed default)
-* Flag the bin, tck and tck-android as "Show in download list" in bintray
-* Add the bin, tck and tck-android jars to the release in GitHub
-* Close the milestone in GitHub and create the new one
-* Go to https://bintray.com/easymock/maven/objenesis to publish the Maven artifacts
-* Sync to Maven central
+* Follow the instructions
 
 Deploy the website
 --------------------------------------------------------------------------------------

@@ -32,6 +32,10 @@ git push
 git push --tags
 mvn release:perform -Pall,full,release
 
+echo "Please add the release notes in github"
+open "https://github.com/easymock/objenesis/tags"
+pause
+
 # Create the distribution in bintray
 content="{ \"name\": \"$version\", \"desc\": \"$version\", \"released\": \"${date}T00:00:00.000Z\", \"github_use_tag_release_notes\": true, \"vcs_tag\": \"$version\" }"
 curl -XPOST -H "Content-Type: application/json" -u$bintray_user:$bintray_api_key \
@@ -40,3 +44,25 @@ curl -XPOST -H "Content-Type: application/json" -u$bintray_user:$bintray_api_key
 curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "main/target/objenesis-${version}-bin.zip" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-${version}-bin.zip?publish=1
 curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "tck/target/objenesis-tck-${version}.jar" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-${version}.jar?publish=1
 curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "tck-android/target/objenesis-tck-android-${version}.apk" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-android-${version}.apk?publish=1
+
+echo "Flag the bin, tck and tck-android as 'Show in download list' in bintray"
+open "https://bintray.com/easymock/distributions/objenesis/${version}#files"
+pause
+
+echo "Add the bin, tck and tck-android jars to the release in GitHub"
+pause
+
+echo "Close the milestone in GitHub and create the new one"
+open "https://github.com/easymock/objenesis/milestones"
+pause
+
+echo "Go to bintray and publish the Maven artifacts"
+open "https://bintray.com/easymock/maven/objenesis"
+pause
+
+echo "Sync to Maven central"
+pause
+
+echo
+echo "Job done!"
+echo
