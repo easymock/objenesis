@@ -383,7 +383,7 @@
     <repository>
       <id>bintray</id>
       <name>JFrog Bintray</name>
-      <url>https://api.bintray.com/maven/easymock/maven/objenesis</url>
+      <url>https://api.bintray.com/maven/easymock/maven/objenesis/;publish=1</url>
     </repository>
   </distributionManagement>
 
