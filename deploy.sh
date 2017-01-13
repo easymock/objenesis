@@ -22,14 +22,22 @@ fi
 
 version=$1
 
+if [ "$(git branch | grep $version)" == "$version" ]; then
+   echo "A branch named $version clashes with the version tag"
+   exit 1
+fi
+
 message="should be an environment variable"
 [ -z "$gpg_passphrase" ] && echo "gpg_passphrase $message" && exit 1
 [ -z "$bintray_api_key" ] && echo "bintray_api_key $message" && exit 1
 [ -z "$bintray_user" ] && echo "bintray_user $message" && exit 1
 
 mvn release:prepare -Pall,full,release
+
+# Need to push now because release:perform will checkout the remote tag
 git push
 git push --tags
+
 mvn release:perform -Pall,full,release
 
 echo "Please add the release notes in github"
@@ -50,17 +58,15 @@ open "https://bintray.com/easymock/distributions/objenesis/${version}#files"
 pause
 
 echo "Add the bin, tck and tck-android jars to the release in GitHub"
+open "https://bintray.com/easymock/distributions/objenesis#"
 pause
 
 echo "Close the milestone in GitHub and create the new one"
 open "https://github.com/easymock/objenesis/milestones"
 pause
 
-echo "Go to bintray and publish the Maven artifacts"
-open "https://bintray.com/easymock/maven/objenesis"
-pause
-
 echo "Sync to Maven central"
+open "https://bintray.com/easymock/maven/objenesis/${version}#central"
 pause
 
 echo
