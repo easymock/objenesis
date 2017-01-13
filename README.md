@@ -123,6 +123,14 @@ To release
 * Answer the questions (normally, just acknowledge the proposed default)
 * Follow the instructions
 
+If something fails and you need to rollback a bit, the following commands might help:
+```bash
+mvn release:rollback -Pall
+git tag -d $version
+git push origin :refs/tags/$version
+git reset --hard HEAD~2
+```
+
 Deploy the website
 --------------------------------------------------------------------------------------
 * Make sure the pom is at the version you want to release
