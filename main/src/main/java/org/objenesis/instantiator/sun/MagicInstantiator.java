@@ -15,15 +15,15 @@
  */
 package org.objenesis.instantiator.sun;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
 import org.objenesis.instantiator.basic.ClassDefinitionUtils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
 
@@ -78,6 +78,8 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
     * {@link MagicInstantiator} is a wrapper around another object
     * which implements {@link ObjectInstantiator} interface.
     * This method exposes that instantiator.
+    *
+    * @return the underlying instantiator
     */
    public ObjectInstantiator<T> getInstantiator() {
       return instantiator;

@@ -31,13 +31,13 @@ public enum Typology {
    SERIALIZATION,
 
    /**
-    * Mark an instantiator that doesn't behave as a {@link Standard} or {@link Serialization} (calls a constructor, fails
+    * Mark an instantiator that doesn't behave like a {@link #STANDARD} nor a {@link #SERIALIZATION} (e.g. calls a constructor, fails
     * all the time, etc.)
     */
    NOT_COMPLIANT,
 
    /**
-    * No type specified
+    * No type specified on the instantiator class
     */
    UNKNOWN
 }
