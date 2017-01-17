@@ -15,14 +15,14 @@
  */
 package org.objenesis.instantiator.basic;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
 
@@ -30,7 +30,7 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  * This instantiator creates a class by dynamically extending it. It will skip the call to the parent constructor
  * in the bytecode. So that the constructor is indeed not called but you however instantiate a child class, not
  * the actual class. The class loader will normally throw a {@code VerifyError} is you do that. However, using
- * {@code -Xverify:none} shoud make it work
+ * {@code -Xverify:none} should make it work
  *
  * @author Henri Tremblay
  */
