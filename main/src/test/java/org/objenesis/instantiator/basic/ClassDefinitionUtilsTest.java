@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
  */
 public class ClassDefinitionUtilsTest {
 
-   String className = "org.objenesis.EmptyClass";
+   String className = "org.objenesis.EmptyClassBis";
 
    @Test
    public void testDefineClass() throws Exception {
@@ -36,13 +36,13 @@ public class ClassDefinitionUtilsTest {
    @Test
    public void testClassNameToInternalClassName() {
       String actual = ClassDefinitionUtils.classNameToInternalClassName(className);
-      assertEquals("org/objenesis/EmptyClass", actual);
+      assertEquals("org/objenesis/EmptyClassBis", actual);
    }
 
    @Test
    public void testClassNameToResource() {
       String actual = ClassDefinitionUtils.classNameToResource(className);
-      assertEquals("org/objenesis/EmptyClass.class", actual);
+      assertEquals("org/objenesis/EmptyClassBis.class", actual);
    }
 
    @Test
