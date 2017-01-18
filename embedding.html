@@ -58,7 +58,7 @@ parameters. Here's an example:</p>
 	&lt;jarjar jarfile="${temp directory}/easymockclassextension.jar"&gt;
 	  &lt;fileset dir="tmp" includes="org/easymock/classextension/*.class
 	    org/easymock/classextension/internal/*.class"/&gt;
-	  &lt;zipfileset src="lib/objenesis-2.5.jar"/&gt;
+	  &lt;zipfileset src="lib/objenesis-2.5.1.jar"/&gt;
 	  &lt;rule pattern="org.objenesis.**"
 	    result="org.easymock.classextension.internal.objenesis.@1"/&gt;
 	&lt;/jarjar&gt;

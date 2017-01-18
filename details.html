@@ -65,7 +65,7 @@ of them or at least the kind you want are correctly instantiated.</p>
 
 <p>To launch from the command line, just type</p>
    
-<pre>java -jar objenesis-2.5-tck.jar</pre>
+<pre>java -jar objenesis-2.5.1-tck.jar</pre>
 
 <p>Note that objenesis jar is bundled in the TCK so no special classpath is needed.</p>
 
@@ -79,7 +79,7 @@ can also find it on <a href="download.html">download page</a>. Just use the foll
 it.</p>
 
 <pre>
-adb install -r objenesis-tck-android-2.5.apk
+adb install -r objenesis-tck-android-2.5.1.apk
 adb shell am instrument -w org.objenesis.tck.android/.TckInstrumentation
 </pre>
 
@@ -153,7 +153,7 @@ public class ObjenesisSun14 extends ObjenesisBase {
 an instantiator that works on your plaform. To try to find one, we provide a nice tool that will run through
 all the instantiators and tell you which ones work</p>
 
-<pre>java -cp objenesis-2.5-tck.jarorg.objenesis.tck.search.SearchWorkingInstantiator</pre>
+<pre>java -cp objenesis-2.5.1-tck.jarorg.objenesis.tck.search.SearchWorkingInstantiator</pre>
 
 <p>Some culprits:</p>
 <ul>
