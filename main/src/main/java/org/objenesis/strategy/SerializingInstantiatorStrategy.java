@@ -58,7 +58,8 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          throw new ObjenesisException(new NotSerializableException(type+" not serializable"));
       }
       if(JVM_NAME.startsWith(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
-         if(isGoogleAppEngine()) {
+         // Java 7 GAE was under a security manager so we use a degraded system
+         if(isGoogleAppEngine() && PlatformDescription.SPECIFICATION_VERSION.equals("1.7")) {
             return new ObjectInputStreamInstantiator<T>(type);
          }
          // ObjectStreamClassInstantiator uses setAccessible which isn't supported on JDK9

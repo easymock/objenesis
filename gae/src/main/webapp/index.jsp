@@ -16,8 +16,8 @@
 
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="main.java.org.objenesis.gae.JspReporter" %>
-<%@ page import="main.java.org.objenesis.gae.JspWriterListener" %>
+<%@ page import="org.objenesis.gae.JspReporter" %>
+<%@ page import="org.objenesis.gae.JspWriterListener" %>
 <%@ page import="org.objenesis.strategy.PlatformDescription" %>
 <%@ page import="org.objenesis.tck.Main" %>
 <%@ page import="org.objenesis.tck.candidates.SerializableNoConstructor" %>

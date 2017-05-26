@@ -10,3 +10,5 @@ Deployment
 ----------
 
 `mvn appengine:update`
+
+Open [objenesis.appspot.com](https://objenesis.appspot.com).

@@ -56,7 +56,8 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
       if(PlatformDescription.isThisJVM(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
-         if(PlatformDescription.isGoogleAppEngine()) {
+         // Java 7 GAE was under a security manager so we use a degraded system
+         if(PlatformDescription.isGoogleAppEngine() && PlatformDescription.SPECIFICATION_VERSION.equals("1.7")) {
             if(Serializable.class.isAssignableFrom(type)) {
                return new ObjectInputStreamInstantiator<T>(type);
             }
