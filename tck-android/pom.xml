@@ -71,14 +71,6 @@
 
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>com.keyboardsamurais.maven</groupId>
         <artifactId>maven-timestamp-plugin</artifactId>
       </plugin>
