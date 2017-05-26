@@ -92,6 +92,7 @@ public class ClassEnumerator {
     * Return all the classes in this package recursively.
     *
     * @param pkg the searched package
+    * @param classLoader class loader where to look for classes
     * @return list of full class names
     */
     public static SortedSet<String> getClassesForPackage(Package pkg, ClassLoader classLoader) {
