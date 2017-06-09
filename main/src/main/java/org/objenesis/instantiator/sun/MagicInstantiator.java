@@ -24,6 +24,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
 import org.objenesis.instantiator.basic.ClassDefinitionUtils;
+import org.objenesis.strategy.PlatformDescription;
 
 import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
 
@@ -36,6 +37,8 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  */
 @Instantiator(Typology.STANDARD)
 public class MagicInstantiator<T> implements ObjectInstantiator<T> {
+
+   private static final String MAGIC_ACCESSOR = getMagicClass();
 
    private static final int INDEX_CLASS_THIS = 1;
    private static final int INDEX_CLASS_SUPERCLASS = 2;
@@ -164,7 +167,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          // 8. Superclass name
          in.writeByte(CONSTANT_Utf8);
 //         in.writeUTF("java/lang/Object");
-         in.writeUTF("sun/reflect/MagicAccessorImpl");
+         in.writeUTF(MAGIC_ACCESSOR);
 
          // 9. ObjectInstantiator interface
          in.writeByte(CONSTANT_Class);
@@ -281,5 +284,14 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
    public T newInstance() {
       return instantiator.newInstance();
+   }
+
+   private static String getMagicClass() {
+      try {
+         Class.forName("sun.reflect.MagicAccessorImpl", false, MagicInstantiator.class.getClassLoader());
+         return "sun/reflect/MagicAccessorImpl";
+      } catch (ClassNotFoundException e) {
+         return "jdk/internal/reflect/MagicAccessorImpl";
+      }
    }
 }

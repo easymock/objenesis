@@ -31,10 +31,9 @@ public class MagicInstantiatorTest {
 
    @Before
    public void before() {
-      // I know it works one these two. Not sure on others
-      assumeTrue(
-         PlatformDescription.isThisJVM(PlatformDescription.HOTSPOT) ||
-            PlatformDescription.isThisJVM(PlatformDescription.OPENJDK));
+      // I know it works on Hotspot and OpenJDK. Before JDK 9. Not sure on others
+      assumeTrue((PlatformDescription.isThisJVM(PlatformDescription.HOTSPOT) || PlatformDescription.isThisJVM(PlatformDescription.OPENJDK))
+         && !PlatformDescription.SPECIFICATION_VERSION.equals("9"));
    }
 
    @Test

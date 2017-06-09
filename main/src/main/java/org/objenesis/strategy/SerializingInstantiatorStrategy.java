@@ -62,10 +62,6 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          if(isGoogleAppEngine() && PlatformDescription.SPECIFICATION_VERSION.equals("1.7")) {
             return new ObjectInputStreamInstantiator<T>(type);
          }
-         // ObjectStreamClassInstantiator uses setAccessible which isn't supported on JDK9
-         if(PlatformDescription.SPECIFICATION_VERSION.equals("9")) {
-            return new SunReflectionFactorySerializationInstantiator<T>(type);
-         }
          return new ObjectStreamClassInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {
