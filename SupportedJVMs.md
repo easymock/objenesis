@@ -1,8 +1,8 @@
 # List of currently supported JVMs
 
-* Sun Hotspot VM, versions 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9
+* Sun Hotspot VM, versions 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 9
 * OpenJDK 6, 7, 8, 9
-* Android API level 8 to 23 (Serialization support starting from Honeycomb)
+* Android API level 8 to 26 (Serialization support starting from Honeycomb)
 * Azul Zulu (tested on 1.8.0_45-b14)
 * Azul Zing JDK 1.8 (tested on 1.8.0-zing_16.10.1.0-b2)
 * IKVM (tested on 8.1.5717)
