@@ -13,23 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.basic;
-
-/*
- * Copyright 2003,2004 The Apache Software Foundation
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package org.objenesis.instantiator.util;
 
 import org.objenesis.ObjenesisException;
 
@@ -37,10 +21,12 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
+
+import sun.misc.Unsafe;
 
 /**
  * Helper class for ProxyObjectInstantiator. We can see the details of a class specification
@@ -86,33 +72,13 @@ public final class ClassDefinitionUtils {
 
    private ClassDefinitionUtils() { }
 
-   private static Method DEFINE_CLASS;
+//   private static Method DEFINE_CLASS;
    private static final ProtectionDomain PROTECTION_DOMAIN;
 
    static {
       PROTECTION_DOMAIN = AccessController.doPrivileged(new PrivilegedAction<ProtectionDomain>() {
          public ProtectionDomain run() {
             return ClassDefinitionUtils.class.getProtectionDomain();
-         }
-      });
-
-      AccessController.doPrivileged(new PrivilegedAction<Object>() {
-         public Object run() {
-            try {
-               Class<?> loader = Class.forName("java.lang.ClassLoader"); // JVM crash w/o this
-               DEFINE_CLASS = loader.getDeclaredMethod("defineClass",
-                  new Class[]{ String.class,
-                     byte[].class,
-                     Integer.TYPE,
-                     Integer.TYPE,
-                     ProtectionDomain.class });
-               DEFINE_CLASS.setAccessible(true);
-            } catch (ClassNotFoundException e) {
-               throw new ObjenesisException(e);
-            } catch (NoSuchMethodException e) {
-               throw new ObjenesisException(e);
-            }
-            return null;
          }
       });
    }
@@ -131,8 +97,7 @@ public final class ClassDefinitionUtils {
    @SuppressWarnings("unchecked")
    public static <T> Class<T> defineClass(String className, byte[] b, ClassLoader loader)
       throws Exception {
-      Object[] args = new Object[]{className, b, new Integer(0), new Integer(b.length), PROTECTION_DOMAIN };
-      Class<T> c = (Class<T>) DEFINE_CLASS.invoke(loader, args);
+      Class<T> c = (Class<T>) UnsafeUtils.getUnsafe().defineClass(className, b, 0, b.length, loader, PROTECTION_DOMAIN);
       // Force static initializers to run.
       Class.forName(className, true, loader);
       return c;

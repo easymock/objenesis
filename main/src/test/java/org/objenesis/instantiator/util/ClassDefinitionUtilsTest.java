@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.basic;
+package org.objenesis.instantiator.util;
 
 import org.junit.Test;
+import org.objenesis.instantiator.util.ClassDefinitionUtils;
 
 import static org.junit.Assert.*;
 

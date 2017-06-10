@@ -23,10 +23,9 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
-import org.objenesis.instantiator.basic.ClassDefinitionUtils;
-import org.objenesis.strategy.PlatformDescription;
+import org.objenesis.instantiator.util.ClassDefinitionUtils;
 
-import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
+import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
 
 /**
  * This instantiator will correctly bypass the constructors by instantiating the class using the default

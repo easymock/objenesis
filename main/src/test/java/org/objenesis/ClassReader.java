@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
-import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
+import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
 
 /**
  * @author Henri Tremblay
