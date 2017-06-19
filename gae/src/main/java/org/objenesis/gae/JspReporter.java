@@ -15,13 +15,20 @@
  */
 package org.objenesis.gae;
 
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.objenesis.Objenesis;
+import org.objenesis.tck.Candidate;
 import org.objenesis.tck.Reporter;
 import org.objenesis.tck.TCK;
 
 import javax.servlet.jsp.JspWriter;
-import java.io.PrintWriter;
-import java.util.*;
 
 /**
  * Reports results from TCK in an HTML table.
@@ -34,24 +41,23 @@ public class JspReporter implements Reporter {
 
    private static class Result {
 
-      String objenesisDescription;
+      Candidate candidate;
 
-      String candidateDescription;
+      Candidate.CandidateType type;
 
       boolean result;
 
       Exception exception;
 
       /**
-       * @param objenesisDescription Description of the tested Objenesis instance
-       * @param candidateDescription Description of the tested candidate
+       * @param candidate Candidate tested
+       * @param type Type of test performed
        * @param result If the test is successful or not
-       * @param exception Exception that might have occured during the test
+       * @param exception Exception that might have occurred during the test
        */
-      public Result(String objenesisDescription, String candidateDescription, boolean result,
-         Exception exception) {
-         this.objenesisDescription = objenesisDescription;
-         this.candidateDescription = candidateDescription;
+      public Result(Candidate candidate, Candidate.CandidateType type, boolean result, Exception exception) {
+         this.candidate = candidate;
+         this.type = type;
          this.result = result;
          this.exception = exception;
       }
@@ -63,19 +69,15 @@ public class JspReporter implements Reporter {
 
    private long startTime;
 
-   private long totalTime = 0;
+   private int errorCount;
 
-   private int errorCount = 0;
+   private Objenesis objenesisStandard;
 
-   private SortedMap<String, Object> allCandidates = new TreeMap<String, Object>();
+   private Objenesis objenesisSerializer;
 
-   private SortedMap<String, Object> allInstantiators = new TreeMap<String, Object>();
+   private Candidate currentCandidate;
 
-   private String currentObjenesis;
-
-   private String currentCandidate;
-
-   private Map<Object, Map<String, Result>> objenesisResults = new HashMap<Object, Map<String, Result>>();
+   private final Map<Candidate, Map<Candidate.CandidateType, Result>> results = new TreeMap<>();
 
    private String platformDescription;
 
@@ -88,111 +90,111 @@ public class JspReporter implements Reporter {
       this.log = new PrintWriter(log);
    }
 
-   public void startTests(String platformDescription, Map<String, Object> allCandidates,
-      Map<String, Object> allInstantiators) {
-
-      // HT: in case the same reporter is reused, I'm guessing that it will
-      // always be the same platform
+   @Override
+   public void startTests(String platformDescription, Objenesis objenesisStandard, Objenesis objenesisSerializer) {
       this.platformDescription = platformDescription;
-      this.allCandidates.putAll(allCandidates);
-      this.allInstantiators.putAll(allInstantiators);
-
-      for(String desc : allInstantiators.keySet()) {
-         objenesisResults.put(desc, new HashMap<String, Result>());
-      }
-
-      startTime = System.currentTimeMillis();
+      this.objenesisStandard = objenesisStandard;
+      this.objenesisSerializer = objenesisSerializer;
+      this.currentCandidate = null;
+      this.errorCount = 0;
+      this.results.clear();
+      this.startTime = System.currentTimeMillis();
    }
 
-   public void startTest(String candidateDescription, String objenesisDescription) {
-      currentCandidate = candidateDescription;
-      currentObjenesis = objenesisDescription;
+   @Override
+   public void startTest(Candidate candidate) {
+      currentCandidate = candidate;
    }
 
-   public void result(boolean instantiatedObject) {
-      if(!instantiatedObject) {
+   @Override
+   public void result(Candidate.CandidateType type, boolean success) {
+      addResult(type, success, null);
+   }
+
+   @Override
+   public void exception(Candidate.CandidateType type, Exception exception) {
+      addResult(type, false, exception);
+   }
+
+   private void addResult(Candidate.CandidateType type, boolean success, Exception exception) {
+      if(!success) {
          errorCount++;
       }
-      objenesisResults.get(currentObjenesis).put(currentCandidate,
-         new Result(
-         currentObjenesis, currentCandidate, instantiatedObject, null));
+      Map<Candidate.CandidateType, Result> result = results.get(currentCandidate);
+      if(result == null) {
+         results.put(currentCandidate, result = new HashMap<>());
+      }
+      result.put(type, new Result(currentCandidate, type, success, exception));
    }
 
-   public void exception(Exception exception) {
-
-      errorCount++;
-
-      objenesisResults.get(currentObjenesis).put(currentCandidate,
-         new Result(
-         currentObjenesis, currentCandidate, false, exception));
-   }
-
-   public void endTest() {
-   }
-
+   @Override
    public void endTests() {
-      totalTime += System.currentTimeMillis() - startTime;
+      long totalTime = System.currentTimeMillis() - startTime;
+      printResult(totalTime);
    }
 
    /**
     * Print the final summary report
     *
-    * @param parentConstructorTest If the test checking that the none serializable constructor was called was successful
+    * @param totalTime Time spent running the TCK
     */
-   public void printResult(boolean parentConstructorTest) {
+   private void printResult(long totalTime) {
       // Platform
       summary.println("<p>Running TCK on platform: " + platformDescription + "</p>");
 
       // Instantiator implementations
       summary.println("<p>Instantiators used:<br>");
-      for(Map.Entry<String, Object> o : allInstantiators.entrySet()) {
-         String inst = ((Objenesis) o.getValue()).getInstantiatorOf(String.class).getClass()
-            .getSimpleName();
-         summary.println("   " + o.getKey() + ": " + inst + "<br>");
-      }
+      summary.println("   Objenesis standard: " + objenesisStandard.getInstantiatorOf(String.class).getClass().getName() + "<br>");
+      summary.println("   Objenesis serializer: " + objenesisSerializer.getInstantiatorOf(String.class).getClass().getName() + "<br>");
       summary.println("</p>");
 
-      // Parent constructor special test
-      summary.println("<p>Not serializable parent constructor called as expected: "
-         + (parentConstructorTest ? 'Y' : 'N'));
-      summary.println("</p>");
-
-      if(!parentConstructorTest) {
-         errorCount++;
+      Collection<String> candidateNames = new ArrayList<String>();
+      for(Map.Entry<Candidate, Map<Candidate.CandidateType, Result>> entry : results.entrySet()) {
+         candidateNames.add(entry.getKey().getDescription());
       }
-
-      Set<String> instantiators = this.allInstantiators.keySet();
-      Set<String> candidates = this.allCandidates.keySet();
-
-      int maxObjenesisWidth = lengthOfLongestStringIn(instantiators);
-      int maxCandidateWidth = lengthOfLongestStringIn(candidates);
 
       // Strategy used
       summary.println("<table><tr><th></th>");
-      for(String desc : instantiators) {
-         summary.print("<th>" + desc + "</th>");
-      }
+      summary.print("<th>Objenesis standard</th>");
+      summary.print("<th>Objenesis serializer</th>");
       summary.println("</tr>");
 
       List<Result> exceptions = new ArrayList<Result>();
 
-      // Candidates (and keep the exceptions meanwhile)
-      for(String candidateDesc : candidates) {
-         summary.print("<tr><td>" + candidateDesc + "</td>");
+      // Candidates
+      for(Map.Entry<Candidate, Map<Candidate.CandidateType, Result>> entry : results.entrySet()) {
+         summary.print("<tr><td>" + entry.getKey().getDescription()  + "</td>");
 
-         for(String instDesc : instantiators) {
-            Result result = objenesisResults.get(instDesc).get(candidateDesc);
-            if(result == null) {
-               summary.print("<td style=\"text-align: center\">N/A</td>");
-            }
-            else {
-               summary.print("<td style=\"text-align: center\">" + (result.result ? "Y" : "n") + "</td>");
+         Result standardResult = entry.getValue().get(Candidate.CandidateType.STANDARD);
+         Result serializationResult = entry.getValue().get(Candidate.CandidateType.SERIALIZATION);
 
-               if(result.exception != null) {
-                  exceptions.add(result);
-               }
+         if(standardResult == null && serializationResult == null) {
+            continue;
+         }
+
+         if(standardResult == null) {
+            summary.print("<td style=\"text-align: center\">N/A</td>");
+         }
+         else {
+            summary.print("<td style=\"text-align: center\">" + (standardResult.result ? "Y" : "n") + "</td>");
+
+            if(standardResult.exception != null) {
+               exceptions.add(standardResult);
             }
          }
+
+         if(serializationResult == null) {
+            summary.print("<td style=\"text-align: center\">N/A</td>");
+         }
+         else {
+            summary.print("<td style=\"text-align: center\">" + (serializationResult.result ? "Y" : "n") + "</td>");
+
+            if(serializationResult.exception != null) {
+               exceptions.add(serializationResult);
+            }
+         }
+
+         summary.println();
       }
 
       summary.println("</table>");
@@ -201,8 +203,7 @@ public class JspReporter implements Reporter {
       if(errorCount != 0) {
 
          for(Result element : exceptions) {
-            log.println("<pre>--- Candidate '" + element.candidateDescription + "', Instantiator '"
-               + element.objenesisDescription + "' ---");
+            log.println("<pre>--- Candidate '" + element.candidate.getDescription() + "', Type '" + element.type + "' ---");
             element.exception.printStackTrace(log);
             log.println("</pre>");
          }
@@ -216,20 +217,4 @@ public class JspReporter implements Reporter {
       }
    }
 
-   /**
-    * Return true if the reporter has registered some errors
-    *
-    * @return if there was errors during execution
-    */
-   public boolean hasErrors() {
-      return errorCount != 0;
-   }
-
-   private int lengthOfLongestStringIn(Collection<String> descriptions) {
-      int result = 0;
-      for(Iterator<String> it = descriptions.iterator(); it.hasNext();) {
-         result = Math.max(result, it.next().length());
-      }
-      return result;
-   }
 }

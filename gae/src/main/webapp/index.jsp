@@ -15,16 +15,16 @@
     limitations under the License.
 
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.TreeMap" %>
 <%@ page import="org.objenesis.gae.JspReporter" %>
 <%@ page import="org.objenesis.gae.JspWriterListener" %>
 <%@ page import="org.objenesis.strategy.PlatformDescription" %>
 <%@ page import="org.objenesis.tck.Main" %>
 <%@ page import="org.objenesis.tck.candidates.SerializableNoConstructor" %>
 <%@ page import="org.objenesis.tck.search.SearchWorkingInstantiator" %>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.TreeMap" %>
 <html>
 <head>
   <title>Search Objenesis Working Instantiator</title>
@@ -72,8 +72,7 @@
 <%
   JspReporter reporter = new JspReporter(out, out);
   try {
-    boolean result = Main.run(reporter);
-    reporter.printResult(result);
+    Main.run(reporter);
   }
   catch(Exception e) {
     out.println("<pre>");

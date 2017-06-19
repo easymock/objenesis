@@ -15,15 +15,16 @@
  */
 package org.objenesis.tck.android;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.os.Bundle;
-import org.objenesis.tck.Main;
-import org.objenesis.tck.TextReporter;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import org.objenesis.tck.Main;
+import org.objenesis.tck.TextReporter;
+
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.os.Bundle;
 
 /**
  * Wraps the Objenesis TCK so that it can be invoked on Android as an {@link Instrumentation}.
@@ -53,10 +54,6 @@ public class TckInstrumentation extends Instrumentation {
 
    private void launch() throws IOException {
       TextReporter reporter = new TextReporter(System.out, System.err);
-
-      boolean parentConstructorTestSuccessful = Main.run(reporter);
-
-      reporter.printResult(parentConstructorTestSuccessful);
-
+      Main.run(reporter);
    }
 }

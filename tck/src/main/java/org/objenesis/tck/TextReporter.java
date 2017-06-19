@@ -15,15 +15,19 @@
  */
 package org.objenesis.tck;
 
-import org.objenesis.Objenesis;
-
 import java.io.PrintStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.objenesis.Objenesis;
 
 /**
  * Reports results from TCK as tabulated text, suitable for dumping to the console or a file and
- * being read by a human. It can be reused to provide a summary reports of different candidates as
- * long as the same <code>objenesisDescription</code> is not used twice.
+ * being read by a human.
  *
  * @author Joe Walnes
  * @author Henri Tremblay
@@ -34,24 +38,23 @@ public class TextReporter implements Reporter {
 
    private static class Result {
 
-      String objenesisDescription;
+      Candidate candidate;
 
-      String candidateDescription;
+      Candidate.CandidateType type;
 
       boolean result;
 
       Exception exception;
 
       /**
-       * @param objenesisDescription Description of the tested Objenesis instance
-       * @param candidateDescription Description of the tested candidate
+       * @param candidate Candidate tested
+       * @param type Type of test performed
        * @param result If the test is successful or not
-       * @param exception Exception that might have occured during the test
+       * @param exception Exception that might have occurred during the test
        */
-      public Result(String objenesisDescription, String candidateDescription, boolean result,
-         Exception exception) {
-         this.objenesisDescription = objenesisDescription;
-         this.candidateDescription = candidateDescription;
+      public Result(Candidate candidate, Candidate.CandidateType type, boolean result, Exception exception) {
+         this.candidate = candidate;
+         this.type = type;
          this.result = result;
          this.exception = exception;
       }
@@ -63,19 +66,15 @@ public class TextReporter implements Reporter {
 
    private long startTime;
 
-   private long totalTime = 0;
+   private int errorCount;
 
-   private int errorCount = 0;
+   private Objenesis objenesisStandard;
 
-   private SortedMap<String, Object> allCandidates = new TreeMap<String, Object>();
+   private Objenesis objenesisSerializer;
 
-   private SortedMap<String, Object> allInstantiators = new TreeMap<String, Object>();
+   private Candidate currentCandidate;
 
-   private String currentObjenesis;
-
-   private String currentCandidate;
-
-   private Map<Object, Map<String, Result>> objenesisResults = new HashMap<Object, Map<String, Result>>();
+   private final Map<Candidate, Map<Candidate.CandidateType, Result>> results = new TreeMap<Candidate, Map<Candidate.CandidateType, Result>>();
 
    private String platformDescription;
 
@@ -88,116 +87,114 @@ public class TextReporter implements Reporter {
       this.log = log;
    }
 
-   public int getErrorCount() {
-      return errorCount;
-   }
-
-   public void startTests(String platformDescription, Map<String, Object> allCandidates,
-      Map<String, Object> allInstantiators) {
-
-      // HT: in case the same reporter is reused, I'm guessing that it will
-      // always be the same platform
+   @Override
+   public void startTests(String platformDescription, Objenesis objenesisStandard, Objenesis objenesisSerializer) {
       this.platformDescription = platformDescription;
-      this.allCandidates.putAll(allCandidates);
-      this.allInstantiators.putAll(allInstantiators);
-
-      for(String desc : allInstantiators.keySet()) {
-         objenesisResults.put(desc, new HashMap<String, Result>());
-      }
-
-      startTime = System.currentTimeMillis();
+      this.objenesisStandard = objenesisStandard;
+      this.objenesisSerializer = objenesisSerializer;
+      this.currentCandidate = null;
+      this.errorCount = 0;
+      this.results.clear();
+      this.startTime = System.currentTimeMillis();
    }
 
-   public void startTest(String candidateDescription, String objenesisDescription) {
-      currentCandidate = candidateDescription;
-      currentObjenesis = objenesisDescription;
+   @Override
+   public void startTest(Candidate candidate) {
+      currentCandidate = candidate;
    }
 
-   public void result(boolean instantiatedObject) {
-      if(!instantiatedObject) {
+   @Override
+   public void result(Candidate.CandidateType type, boolean success) {
+      addResult(type, success, null);
+   }
+
+   @Override
+   public void exception(Candidate.CandidateType type, Exception exception) {
+      addResult(type, false, exception);
+   }
+
+   private void addResult(Candidate.CandidateType type, boolean success, Exception exception) {
+      if(!success) {
          errorCount++;
       }
-      objenesisResults.get(currentObjenesis).put(currentCandidate,
-         new Result(
-         currentObjenesis, currentCandidate, instantiatedObject, null));
+      Map<Candidate.CandidateType, Result> result = results.get(currentCandidate);
+      if(result == null) {
+         results.put(currentCandidate, result = new HashMap<Candidate.CandidateType, Result>());
+      }
+      result.put(type, new Result(currentCandidate, type, success, exception));
    }
 
-   public void exception(Exception exception) {
-
-      errorCount++;
-
-      objenesisResults.get(currentObjenesis).put(currentCandidate,
-         new Result(
-         currentObjenesis, currentCandidate, false, exception));
-   }
-
-   public void endTest() {
-   }
-
+   @Override
    public void endTests() {
-      totalTime += System.currentTimeMillis() - startTime;
+      long totalTime = System.currentTimeMillis() - startTime;
+      printResult(totalTime);
    }
 
    /**
     * Print the final summary report
     *
-    * @param parentConstructorTest If the test checking that the none serializable constructor was called was successful
+    * @param totalTime Time spent running the TCK
     */
-   public void printResult(boolean parentConstructorTest) {
+   private void printResult(long totalTime) {
       // Platform
       summary.println("Running TCK on platform: " + platformDescription);
       summary.println();
 
       // Instantiator implementations
       summary.println("Instantiators used: ");
-      for(Map.Entry<String, Object> o : allInstantiators.entrySet()) {
-         String inst = ((Objenesis) o.getValue()).getInstantiatorOf(String.class).getClass()
-            .getSimpleName();
-         summary.println("   " + o.getKey() + ": " + inst);
-      }
+      summary.println("   Objenesis standard  : " + objenesisStandard.getInstantiatorOf(String.class).getClass().getName());
+      summary.println("   Objenesis serializer: " + objenesisSerializer.getInstantiatorOf(String.class).getClass().getName());
       summary.println();
 
-      // Parent constructor special test
-      summary.println("Not serializable parent constructor called as expected: "
-         + (parentConstructorTest ? 'Y' : 'N'));
-      summary.println();
-
-      if(!parentConstructorTest) {
-         errorCount++;
+      Collection<String> candidateNames = new ArrayList<String>();
+      for(Map.Entry<Candidate, Map<Candidate.CandidateType, Result>> entry : results.entrySet()) {
+         candidateNames.add(entry.getKey().getDescription());
       }
 
-      Set<String> instantiators = this.allInstantiators.keySet();
-      Set<String> candidates = this.allCandidates.keySet();
-
-      int maxObjenesisWidth = lengthOfLongestStringIn(instantiators);
-      int maxCandidateWidth = lengthOfLongestStringIn(candidates);
+      int maxObjenesisWidth = "Objenesis serializer".length();
+      int maxCandidateWidth = lengthOfLongestStringIn(candidateNames);
 
       // Strategy used
       summary.print(pad("", maxCandidateWidth) + ' ');
-      for(String desc : instantiators) {
-         summary.print(pad(desc, maxObjenesisWidth) + ' ');
-      }
+      summary.print(pad("Objenesis standard", maxObjenesisWidth) + ' ');
+      summary.print(pad("Objenesis serializer", maxObjenesisWidth));
       summary.println();
 
       List<Result> exceptions = new ArrayList<Result>();
 
-      // Candidates (and keep the exceptions meanwhile)
-      for(String candidateDesc : candidates) {
-         summary.print(pad(candidateDesc, maxCandidateWidth) + ' ');
+      // Candidates
+      for(Map.Entry<Candidate, Map<Candidate.CandidateType, Result>> entry : results.entrySet()) {
+         summary.print(pad(entry.getKey().getDescription(), maxCandidateWidth) + ' ');
 
-         for(String instDesc : instantiators) {
-            Result result = objenesisResults.get(instDesc).get(candidateDesc);
-            if(result == null) {
-               summary.print(pad("N/A", maxObjenesisWidth) + " ");
-            }
-            else {
-               summary.print(pad(result.result ? "Y" : "n", maxObjenesisWidth) + " ");
+         Result standardResult = entry.getValue().get(Candidate.CandidateType.STANDARD);
+         Result serializationResult = entry.getValue().get(Candidate.CandidateType.SERIALIZATION);
 
-               if(result.exception != null) {
-                  exceptions.add(result);
-               }
+         if(standardResult == null && serializationResult == null) {
+            continue;
+         }
+
+         if(standardResult == null) {
+            summary.print(pad("N/A", maxObjenesisWidth) + " ");
+         }
+         else {
+            summary.print(pad(standardResult.result ? "Y" : "n", maxObjenesisWidth) + " ");
+
+            if(standardResult.exception != null) {
+               exceptions.add(standardResult);
             }
          }
+
+         if(serializationResult == null) {
+            summary.print(pad("N/A", maxObjenesisWidth));
+         }
+         else {
+            summary.print(pad(serializationResult.result ? "Y" : "n", maxObjenesisWidth));
+
+            if(serializationResult.exception != null) {
+               exceptions.add(serializationResult);
+            }
+         }
+
          summary.println();
       }
 
@@ -207,15 +204,14 @@ public class TextReporter implements Reporter {
       if(errorCount != 0) {
 
          for(Result element : exceptions) {
-            log.println("--- Candidate '" + element.candidateDescription + "', Instantiator '"
-               + element.objenesisDescription + "' ---");
+            log.println("--- Candidate '" + element.candidate.getDescription() + "', Type '" + element.type + "' ---");
             element.exception.printStackTrace(log);
             log.println();
          }
 
          log.println();
 
-         summary.println("--- FAILED: " + errorCount + " error(s) occured ---");
+         summary.println("--- FAILED: " + errorCount + " error(s) occurred ---");
       }
       else {
          summary.println("--- SUCCESSFUL: TCK tests passed without errors in " + totalTime + " ms");
@@ -251,8 +247,8 @@ public class TextReporter implements Reporter {
 
    private int lengthOfLongestStringIn(Collection<String> descriptions) {
       int result = 0;
-      for(Iterator<String> it = descriptions.iterator(); it.hasNext();) {
-         result = Math.max(result, it.next().length());
+      for(String s : descriptions) {
+         result = Math.max(result, s.length());
       }
       return result;
    }

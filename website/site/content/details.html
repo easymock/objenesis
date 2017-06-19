@@ -34,7 +34,7 @@ interested in <a href="support.html">knowing this limitation</a>.</p>
 <p>Then, to prevent this, we provide a TCK to run in your environment. You can
 find it on our <a href="download.html">download page</a>. It will print a report
 to the standard output. Exceptions, if they occur, will be printed out to
-the standard error. Tests are run <a href="${javadoc}/org/objenesis/ObjenesisStd.html">ObjenesisStd</a>
+the standard error. Tests are run against <a href="${javadoc}/org/objenesis/ObjenesisStd.html">ObjenesisStd</a>
 and <a href="${javadoc}/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a>
 and are made of every kind of class types you might want to instantiate. So you can check if all
 of them or at least the kind you want are correctly instantiated.</p>
@@ -43,7 +43,7 @@ of them or at least the kind you want are correctly instantiated.</p>
 
 <pre>java -jar objenesis-${project.version}-tck.jar</pre>
 
-<p>Note that objenesis jar is bundled in the TCK so no special classpath is needed.</p>
+<p>Note that the Objenesis jar is bundled in the TCK so no special classpath is needed.</p>
 
 <p>To launch from within an application server, the easiest is to bundle it in your application
 and to call <code>org.objenesis.tck.Main.main()</code> from your code.</p>
@@ -162,6 +162,17 @@ instance which are kept statically.</p>
    ObjectInstantiator o3 = ObjenesisHelper.getInstantiatorOf(MyClass.class);
    ObjectInstantiator o4 = ObjenesisHelper.getSerializableObjectInstantiatorOf(MyClass.class);
 </pre>
+
+<h1>Serializing instantiator details</h1>
+
+<p>The instantiator returned by <code>SerializingInstantiatorStrategy</code> will do the following.</p>
+
+<ul>
+  <li>Fail is the class is not serializable</li>
+  <li>Call the no-arg constructor of the first none serializable class. Just like the serialization would do</li>
+  <li><code>Externalizable</code> classes won't have a special treatment. If you want one, implement it yourself</li>
+  <li>No serializable specific method is called (e.g. <code>readResolve, readExternal, readObject, readObjectNoData</code>)</li>
+</ul>
 
 </body>
 </html>

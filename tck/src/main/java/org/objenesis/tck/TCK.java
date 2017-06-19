@@ -15,121 +15,144 @@
  */
 package org.objenesis.tck;
 
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.objenesis.Objenesis;
 import org.objenesis.strategy.PlatformDescription;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.objenesis.tck.features.Feature;
 
 /**
  * <b>Technology Compatibility Kit</b> (TCK) for {@link Objenesis}s.
  * <p>
- * This TCK accepts a set of candidate classes (class it attempts to instantiate) and a set of
- * Objenesis implementations. It then tries instantiating every candidate with every Objenesis
- * implementations, reporting the results to a {@link Reporter}.
- * 
+ * This TCK tests Objenesis implementations against a set of candidate classes (class it attempts to instantiate),
+ * reporting the results to a {@link Reporter}.
+ *
  * <h3>Example usage</h3>
- * 
+ *
  * <pre>
- * TCK tck = new TCK();
- * // register candidate classes.
- * tck.registerCandidate(SomeClass.class, &quot;A basic class&quot;);
- * tck.registerCandidate(SomeEvil.class, &quot;Something evil&quot;);
- * tck.registerCandidate(NotEvil.class, &quot;Something nice&quot;);
- * // register Objenesis instances.
- * tck.registerObjenesisInstance(new ObjenesisStd(), &quot;Objenesis&quot;);
- * tck.registerObjenesisInstance(new ObjenesisSerializaer(), &quot;Objenesis for serialization&quot;);
- * // go!
- * Reporter reporter = new TextReporter(System.out, System.err);
+ * TextReporter reporter = new TextReporter(System.out, System.err);
+ * TCK tck = new TCK(new ObjenesisStd(), new ObjenesisSerializer(), reporter);
  * tck.runTests(reporter);
+ * reporter.printResults();
  * </pre>
- * 
+ *
  * @author Joe Walnes
+ * @author Henri Tremblay
  * @see org.objenesis.instantiator.ObjectInstantiator
  * @see Reporter
  * @see Main
  */
 public class TCK {
 
-   private final List<Objenesis> objenesisInstances = new ArrayList<Objenesis>();
-   private final List<Class<?>> candidates = new ArrayList<Class<?>>();
-   private final Map<Object, String> descriptions = new HashMap<Object, String>();
+   private final Objenesis objenesisStandard;
+   private final Objenesis objenesisSerializer;
+   private final Reporter reporter;
+
+   private final List<Candidate> candidates = new ArrayList<Candidate>();
 
    /**
-    * Register a candidate class to attempt to instantiate.
-    * 
-    * @param candidateClass Class to attempt to instantiate
-    * @param description Description of the class
+    * @param objenesisStandard Objenesis instance used to instantiate classes the standard way (no constructor called)
+    * @param objenesisSerializer Objenesis instance used to instantiate classes in a serialization compliant way (first not serializable constructor called)
+    * @param reporter Where to report the results of the tests to
     */
-   public void registerCandidate(Class<?> candidateClass, String description) {
-      candidates.add(candidateClass);
-      descriptions.put(candidateClass, description);
+   public TCK(Objenesis objenesisStandard, Objenesis objenesisSerializer, Reporter reporter) {
+      this.objenesisStandard = objenesisStandard;
+      this.objenesisSerializer = objenesisSerializer;
+      this.reporter = reporter;
+
+      try {
+         loadCandidates();
+      }
+      catch(IOException e) {
+         throw new RuntimeException(e);
+      }
+
+      Collections.sort(candidates);
+   }
+
+   protected void loadCandidates() throws IOException {
+      CandidateLoader candidateLoader = new CandidateLoader(this, new CandidateLoader.LoggingErrorHandler(System.err));
+      candidateLoader.loadFromResource("org/objenesis/tck/candidates/standard-candidates.properties",
+         Candidate.CandidateType.STANDARD);
+      candidateLoader.loadFromResource("org/objenesis/tck/candidates/serializable-candidates.properties",
+         Candidate.CandidateType.SERIALIZATION);
    }
 
    /**
-    * Register an Objenesis instance to use when attempting to instantiate a class.
-    * 
-    * @param objenesis Tested Objenesis instance
-    * @param description Description of the Objenesis instance
+    * Register a candidate class to attempt to instantiate.
+    *
+    * @param candidateClass Class to attempt to instantiate
+    * @param description Description of the class
     */
-   public void registerObjenesisInstance(Objenesis objenesis, String description) {
-      objenesisInstances.add(objenesis);
-      descriptions.put(objenesis, description);
+   public void registerCandidate(Class<?> candidateClass, String description, Candidate.CandidateType type) {
+      Candidate candidate = new Candidate(candidateClass, description, type);
+      int index = candidates.indexOf(candidate);
+      if(index >= 0) {
+         Candidate existingCandidate = candidates.get(index);
+         if(!description.equals(existingCandidate.getDescription())) {
+            throw new IllegalStateException("Two different descriptions for candidate " + candidateClass.getName());
+         }
+         existingCandidate.getTypes().add(type);
+      }
+      else {
+         candidates.add(candidate);
+      }
    }
 
    /**
     * Run all TCK tests.
-    * 
-    * @param reporter Where to report the results of the test to.
     */
-   public void runTests(Reporter reporter) {
-      reporter.startTests(describePlatform(), findAllDescriptions(candidates, descriptions),
-              findAllDescriptions(objenesisInstances, descriptions));
+   public void runTests() {
+      reporter.startTests(describePlatform(), objenesisStandard, objenesisSerializer);
 
-      for(Class<?> candidateClass : candidates) {
-         String candidateDescription = descriptions.get(candidateClass);
+      for(Candidate candidate : candidates) {
+         reporter.startTest(candidate);
 
-         for(Objenesis objenesis : objenesisInstances) {
-            String objenesisDescription = descriptions.get(objenesis);
-
-            reporter.startTest(candidateDescription, objenesisDescription);
-
-            runTest(reporter, candidateClass, objenesis);
-
-            reporter.endTest();
+         if(candidate.getTypes().contains(Candidate.CandidateType.STANDARD)) {
+            runTest(reporter, candidate.getClazz(), objenesisStandard, Candidate.CandidateType.STANDARD);
+         }
+         if(candidate.getTypes().contains(Candidate.CandidateType.SERIALIZATION)) {
+            runTest(reporter, candidate.getClazz(), objenesisSerializer, Candidate.CandidateType.SERIALIZATION);
          }
       }
+
       reporter.endTests();
    }
 
-   private void runTest(Reporter reporter, Class<?> candidate, Objenesis objenesis) {
-      try {
-         Object instance = objenesis.newInstance(candidate);
-         boolean success = instance != null && instance.getClass() == candidate;
-         reporter.result(success);
+   private void runTest(Reporter reporter, Class<?> candidate, Objenesis objenesis, Candidate.CandidateType type) {
+      if(Feature.class.isAssignableFrom(candidate)) {
+         runFeature(reporter, candidate, objenesis, type);
       }
-      catch(Exception e) {
-         reporter.exception(e);
+      else {
+         runCandidate(reporter, candidate, objenesis, type);
       }
    }
 
-   /**
-    * Return the human readable description for list of TCK items (Objenesis instances or test
-    * candidates)
-    * 
-    * @param keys list of items for which we are searching for a description
-    * @param descriptions all descriptions
-    * @return map of items with their description. Will contain one entry per entry in the original
-    *         key list
-    */
-   private Map<String, Object> findAllDescriptions(List<?> keys, Map<?, String> descriptions) {
-      Map<String, Object> results = new HashMap<String, Object>(keys.size());
-      for(Object o : keys) {
-         results.put(descriptions.get(o), o);
+   private void runFeature(Reporter reporter, Class<?> clazz, Objenesis objenesis, Candidate.CandidateType type) {
+      try {
+         @SuppressWarnings("unchecked") Constructor<Feature> constructor = (Constructor<Feature>) clazz.getConstructor();
+         Feature feature = constructor.newInstance();
+         boolean compliant = feature.isCompliant(objenesis);
+         reporter.result(type, compliant);
       }
-      return results;
+      catch(Exception e) {
+         reporter.exception(type, e);
+      }
+   }
+
+   private void runCandidate(Reporter reporter, Class<?> candidate, Objenesis objenesis, Candidate.CandidateType type) {
+      try {
+         Object instance = objenesis.newInstance(candidate);
+         boolean success = instance != null && instance.getClass() == candidate;
+         reporter.result(type, success);
+      }
+      catch(Exception e) {
+         reporter.exception(type, e);
+      }
    }
 
    /**

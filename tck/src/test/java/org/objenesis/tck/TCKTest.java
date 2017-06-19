@@ -15,13 +15,14 @@
  */
 package org.objenesis.tck;
 
-import static org.junit.Assert.*;
-
-import java.util.Map;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.instantiator.ObjectInstantiator;
+import org.objenesis.tck.features.Feature;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Joe Walnes
@@ -29,17 +30,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
  */
 public class TCKTest {
 
-   public static class StubbedInstantiator1 implements Objenesis {
-      public <T> T newInstance(Class<T> clazz) {
-         return null;
-      }
-
-      public <T> ObjectInstantiator<T> getInstantiatorOf(Class<T> clazz) {
-         return null;
-      }
-   }
-
-   public static class StubbedInstantiator2 implements Objenesis {
+   public static class StubbedInstantiator implements Objenesis {
       public <T> T newInstance(Class<T> clazz) {
          return null;
       }
@@ -51,62 +42,72 @@ public class TCKTest {
 
    @Test
    public void testReportsAllCandidatesAndInstantiatorCombinationsToReporter() {
+      Reporter reporter = new RecordingReporter();
+
       // Given... a TCK with some candidate classes: A, B and C.
-      TCK tck = new TCK();
+      TCK tck = new TCK(new StubbedInstantiator(), new StubbedInstantiator(), reporter) {
+         @Override
+         protected void loadCandidates() throws IOException {
+            registerCandidate(CandidateA.class, "Candidate A", Candidate.CandidateType.STANDARD);
+            registerCandidate(CandidateB.class, "Candidate B", Candidate.CandidateType.STANDARD);
+            registerCandidate(CandidateB.class, "Candidate B", Candidate.CandidateType.SERIALIZATION);
+            registerCandidate(CandidateC.class, "Candidate C", Candidate.CandidateType.STANDARD);
 
-      tck.registerCandidate(CandidateA.class, "Candidate A");
-      tck.registerCandidate(CandidateB.class, "Candidate B");
-      tck.registerCandidate(CandidateC.class, "Candidate C");
-
-      // And... two ObjectInstantiators registered
-      tck.registerObjenesisInstance(new StubbedInstantiator1(), "Instantiator1");
-      tck.registerObjenesisInstance(new StubbedInstantiator2(), "Instantiator2");
+         }
+      };
 
       // When... the TCK tests are run
-      Reporter reporter = new RecordingReporter();
-      tck.runTests(reporter);
+      tck.runTests();
 
       // Expect... the reporter to have received a sequence of calls
       // notifying it of what the TCK is doing.
-      assertEquals("" + "startTests()\n" + "startTest('Candidate A', 'Instantiator1')\n"
-         + "result(false)\n" + "endTest()\n" + "startTest('Candidate A', 'Instantiator2')\n"
-         + "result(false)\n" + "endTest()\n" + "startTest('Candidate B', 'Instantiator1')\n"
-         + "result(false)\n" + "endTest()\n" + "startTest('Candidate B', 'Instantiator2')\n"
-         + "result(false)\n" + "endTest()\n" + "startTest('Candidate C', 'Instantiator1')\n"
-         + "result(false)\n" + "endTest()\n" + "startTest('Candidate C', 'Instantiator2')\n"
-         + "result(false)\n" + "endTest()\n" + "endTests()\n", reporter.toString());
+      assertEquals("" + "startTests()\n"
+         + "startTest('Candidate A')\nresult(STANDARD, false)\n"
+         + "startTest('Candidate B')\nresult(STANDARD, false)\nresult(SERIALIZATION, false)\n"
+         + "startTest('Candidate C')\nresult(STANDARD, false)\n"
+         + "endTests()\n", reporter.toString());
    }
 
    @Test
    public void testReportsSuccessIfCandidateCanBeInstantiated() {
-      // Given... a TCK with some candidate classes: A, B and C.
-      TCK tck = new TCK();
-
-      tck.registerCandidate(CandidateA.class, "Candidate A");
-      tck.registerCandidate(CandidateB.class, "Candidate B");
-
-      // And... a single ObjectInsantiator registered that can instantiate
-      // A but not B.
-      tck.registerObjenesisInstance(new SelectiveInstantiator(), "instantiator");
-
       // When... the TCK tests are run
       Reporter reporter = new RecordingReporter();
-      tck.runTests(reporter);
+
+      // Given... a TCK with some candidate classes: A, B and C.
+      TCK tck = new TCK(new SelectiveInstantiator(), new SelectiveInstantiator(), reporter) {
+         @Override
+         protected void loadCandidates() throws IOException {
+            registerCandidate(CandidateA.class, "Candidate A", Candidate.CandidateType.STANDARD);
+            registerCandidate(CandidateA.class, "Candidate A", Candidate.CandidateType.SERIALIZATION);
+            registerCandidate(CandidateB.class, "Candidate B", Candidate.CandidateType.STANDARD);
+            registerCandidate(CandidateB.class, "Candidate B", Candidate.CandidateType.SERIALIZATION);
+            registerCandidate(CandidateC.class, "Candidate C", Candidate.CandidateType.STANDARD);
+            registerCandidate(CandidateD.class, "Candidate D", Candidate.CandidateType.SERIALIZATION);
+         }
+      };
+      tck.runTests();
 
       // Expect... the reporter to be notified that A succeeded
       // but B failed.
-      assertEquals("" + "startTests()\n" + "startTest('Candidate A', 'instantiator')\n" + // A
-         "result(true)\n" + // true
-         "endTest()\n" + "startTest('Candidate B', 'instantiator')\n" + // B
-         "result(false)\n" + // false
-         "endTest()\n" + "endTests()\n", reporter.toString());
+      assertEquals("" + "startTests()\n"
+         + "startTest('Candidate A')\nresult(STANDARD, true)\nresult(SERIALIZATION, true)\n"
+         + "startTest('Candidate B')\nresult(STANDARD, false)\nresult(SERIALIZATION, false)\n"
+         + "startTest('Candidate C')\nexception(STANDARD)\n"
+         + "startTest('Candidate D')\nresult(SERIALIZATION, true)\n"
+         + "endTests()\n", reporter.toString());
    }
 
    // Some sample classes used for testing.
 
    public static class SelectiveInstantiator implements Objenesis {
       public <T> T newInstance(Class<T> clazz) {
-         return clazz.cast(clazz == CandidateA.class ? new CandidateA() : null);
+         if(clazz == CandidateA.class) {
+            return clazz.cast(new CandidateA());
+         }
+         if(clazz == CandidateC.class) {
+            throw new RuntimeException("fail");
+         }
+         return null;
       }
 
       public <T> ObjectInstantiator<T> getInstantiatorOf(Class<T> clazz) {
@@ -123,38 +124,46 @@ public class TCKTest {
    public static class CandidateC {
    }
 
+   public static class CandidateD implements Feature {
+      @Override
+      public boolean isCompliant(Objenesis objenesis) {
+         return true;
+      }
+   }
+
    /**
     * A poor man's mock. Using a recording test double to verify interactions between the TCK and
-    * the Recorder. <p/> Note: This test case could be simplified by using a mock object library.
-    * However, I wanted to simplify dependencies - particularly as in the future, the mock libraries
+    * the Recorder.
+    * <p>
+    * Note: This test case could be simplified by using a mock object library. However, I wanted to simplify
+    * dependencies - particularly as in the future, the mock libraries
     * may depend on objenesis - getting into an awkward cyclical dependency situation. -Joe.
     */
    private static class RecordingReporter implements Reporter {
 
       private final StringBuilder log = new StringBuilder();
 
-      public void startTests(String platformDescription, Map<String, Object> allCandidates,
-         Map<String, Object> allInstantiators) {
+      @Override
+      public void startTests(String platformDescription, Objenesis objenesisStandard, Objenesis objenesisSerializer) {
          log.append("startTests()\n");
       }
 
-      public void startTest(String candidateDescription, String objenesisDescription) {
-         log.append("startTest('").append(candidateDescription).append("', '").append(
-            objenesisDescription).append("')\n");
+      @Override
+      public void startTest(Candidate candidate) {
+         log.append("startTest('").append(candidate.getDescription()).append("')\n");
       }
 
-      public void result(boolean instantiatedObject) {
-         log.append("result(").append(instantiatedObject).append(")\n");
+      @Override
+      public void result(Candidate.CandidateType type, boolean worked) {
+         log.append("result(").append(type).append(", ").append(worked).append(")\n");
       }
 
-      public void exception(Exception exception) {
-         log.append("exception()\n");
+      @Override
+      public void exception(Candidate.CandidateType type, Exception exception) {
+         log.append("exception(").append(type).append(")\n");
       }
 
-      public void endTest() {
-         log.append("endTest()\n");
-      }
-
+      @Override
       public void endTests() {
          log.append("endTests()\n");
       }

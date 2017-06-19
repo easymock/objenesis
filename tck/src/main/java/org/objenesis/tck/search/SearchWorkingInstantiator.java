@@ -53,7 +53,7 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
         for (Iterator<String> it = classes.iterator(); it.hasNext();) {
             String className = it.next();
 
-            // Skip if inner class of isn't named like a instantiator
+            // Skip if inner class or isn't named like a instantiator
             if(className.contains("$") || !className.endsWith("Instantiator")) {
                continue;
             }
