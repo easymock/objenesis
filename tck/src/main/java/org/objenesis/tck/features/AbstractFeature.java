@@ -18,9 +18,11 @@ package org.objenesis.tck.features;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.objenesis.Objenesis;
+
 /**
  * Base class for features. It provides recording of calls. The recording is static
- * to the class so we expect {@link #isCompliant()} multiple implementations to be called in
+ * to the class so we expect {@link Feature#isCompliant(Objenesis)} multiple implementations to be called in
  * the same thread.
  *
  * @author Henri Tremblay

@@ -24,6 +24,8 @@ import java.io.Serializable;
 import org.objenesis.Objenesis;
 
 /**
+ * {@code Externalizable} methods should not be called during instantiation.
+ *
  * @author Henri Tremblay
  */
 public class ReadExternalNotCalled extends AbstractFeature {

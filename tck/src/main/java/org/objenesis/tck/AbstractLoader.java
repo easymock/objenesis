@@ -74,6 +74,7 @@ public abstract class AbstractLoader {
 
    /**
     * @param inputStream Stream containing the properties
+    * @param type Type of the candidate loaded from the stream
     * @throws IOException If something goes wrong while reading the stream
     */
    public void loadFrom(InputStream inputStream, final Candidate.CandidateType type) throws IOException {
@@ -95,8 +96,8 @@ public abstract class AbstractLoader {
    /**
     * Load a candidate property file
     *
-    * @param cls Class on which <code>getResourceAsStream</code> is called
     * @param resource File name
+    * @param type Type of the candidate loaded from the stream
     * @throws IOException If there's problem reading the file
     */
    public void loadFromResource(String resource, Candidate.CandidateType type) throws IOException {

@@ -19,7 +19,7 @@ import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisException;
 
 /**
- * Not serializable classes can't be instantiated
+ * Not serializable classes can't be instantiated.
  *
  * @author Henri Tremblay
  */

@@ -22,6 +22,8 @@ import java.io.Serializable;
 import org.objenesis.Objenesis;
 
 /**
+ * {@code Serializable} special methods should not be called during instantiation.
+ *
  * @author Henri Tremblay
  */
 public class ReadObjectNotCalled extends AbstractFeature {
