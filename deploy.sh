@@ -32,6 +32,9 @@ message="should be an environment variable"
 [ -z "$bintray_api_key" ] && echo "bintray_api_key $message" && exit 1
 [ -z "$bintray_user" ] && echo "bintray_user $message" && exit 1
 
+# Weird fix required by GPG. See https://github.com/keybase/keybase-issues/issues/1712. You will have to enter the passphrase on screen
+export GPG_TTY=$(tty)
+
 mvn release:prepare -Pall,full,release
 
 # Need to push now because release:perform will checkout the remote tag
