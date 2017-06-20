@@ -128,4 +128,4 @@ git reset --hard HEAD~2
 ## Deploy the website
 
 * Make sure the pom is at the version you want to release
-* Launch `./deploy_website.sh`
+* Launch `./deploy-website.sh`
