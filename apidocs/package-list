@@ -6,4 +6,5 @@ org.objenesis.instantiator.basic
 org.objenesis.instantiator.gcj
 org.objenesis.instantiator.perc
 org.objenesis.instantiator.sun
+org.objenesis.instantiator.util
 org.objenesis.strategy
