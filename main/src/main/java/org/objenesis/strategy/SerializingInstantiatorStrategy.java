@@ -15,6 +15,9 @@
  */
 package org.objenesis.strategy;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
+
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.AndroidSerializationInstantiator;
@@ -23,9 +26,6 @@ import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
 import org.objenesis.instantiator.perc.PercSerializationInstantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactorySerializationInstantiator;
-
-import java.io.NotSerializableException;
-import java.io.Serializable;
 
 import static org.objenesis.strategy.PlatformDescription.*;
 
@@ -62,7 +62,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          if(isGoogleAppEngine() && PlatformDescription.SPECIFICATION_VERSION.equals("1.7")) {
             return new ObjectInputStreamInstantiator<T>(type);
          }
-         return new ObjectStreamClassInstantiator<T>(type);
+         return new SunReflectionFactorySerializationInstantiator<T>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {
          if(PlatformDescription.isAndroidOpenJDK()) {
@@ -77,7 +77,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          return new PercSerializationInstantiator<T>(type);
       }
 
-      return new ObjectStreamClassInstantiator<T>(type);
+      return new SunReflectionFactorySerializationInstantiator<T>(type);
    }
 
 }
