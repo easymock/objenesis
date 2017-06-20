@@ -15,20 +15,40 @@
  */
 package org.objenesis;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serializable;
+
 import org.junit.Test;
 
-import java.io.*;
-import java.util.ArrayList;
+import static org.junit.Assert.*;
 
 /**
- * This test makes sure an issue mentioned is not occurring.
+ * This test makes sure issue #33 is not occurring.
+ *
  * @author Henri Tremblay
  */
 public class ExternalizableTest {
 
-   public static class A extends ArrayList<String> implements Externalizable {
+   public static class C {
+
+      public int val = 33;
+
+      protected C() {}
+   }
+
+   public static class B extends C implements Serializable {
+      public B() {
+         fail("B constructor shouldn't be called");
+      }
+   }
+
+   public static class A extends B implements Externalizable {
 
       public A() {
+         fail("A constructor shouldn't be called");
       }
 
       public void writeExternal(ObjectOutput out) throws IOException {
@@ -43,7 +63,7 @@ public class ExternalizableTest {
    @Test
    public void test() {
       A a = ObjenesisHelper.newSerializableInstance(A.class);
-      // This call should work because the ArrayList constructor as been called. This is required by A implementing Externalizable
-      a.add("Test");
+      // The constructor from C should have been called
+      assertEquals(33, a.val);
    }
 }
