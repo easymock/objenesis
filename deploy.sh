@@ -48,6 +48,7 @@ open "https://github.com/easymock/objenesis/tags"
 pause
 
 # Create the distribution in bintray
+date=$(date "+%Y-%m-%d")
 content="{ \"name\": \"$version\", \"desc\": \"$version\", \"released\": \"${date}T00:00:00.000Z\", \"github_use_tag_release_notes\": true, \"vcs_tag\": \"$version\" }"
 curl -XPOST -H "Content-Type: application/json" -u$bintray_user:$bintray_api_key \
   -d "$content" https://api.bintray.com/packages/easymock/distributions/objenesis/versions
