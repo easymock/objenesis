@@ -15,9 +15,9 @@
  */
 package org.objenesis.strategy;
 
-import org.objenesis.ObjenesisException;
-
 import java.lang.reflect.Field;
+
+import org.objenesis.ObjenesisException;
 
 /**
  * List of constants describing the currently used platform.
@@ -132,6 +132,11 @@ public final class PlatformDescription {
       // version or not
       String bootClasspath = System.getProperty("java.boot.class.path");
       return bootClasspath != null && bootClasspath.toLowerCase().contains("core-oj.jar");
+   }
+
+   public static boolean isAfterJigsaw() {
+      String version = PlatformDescription.SPECIFICATION_VERSION;
+      return version.indexOf('.') < 0; // No dot means the version is 9, 10, 11, ... not 1.6, 1.7, 1.8
    }
 
    public static boolean isGoogleAppEngine() {

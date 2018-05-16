@@ -15,16 +15,16 @@
  */
 package org.objenesis.strategy;
 
-import org.junit.Test;
-
 import java.lang.reflect.Method;
+
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 /**
  * Currently the test just check nothing is crashing. A more complex test should play with class
  * loading an properties
- * 
+ *
  * @author Henri Tremblay
  */
 public class PlatformDescriptionTest {
@@ -47,5 +47,10 @@ public class PlatformDescriptionTest {
       m.setAccessible(true);
       int actual = (Integer) m.invoke(null);
       assertEquals(42, actual);
+   }
+
+   @Test
+   public void isAfterJigsaw() {
+      PlatformDescription.isAfterJigsaw(); // just make sure it doesn't crash
    }
 }
