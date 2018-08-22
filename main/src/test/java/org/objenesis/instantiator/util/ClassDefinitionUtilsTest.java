@@ -16,7 +16,9 @@
 package org.objenesis.instantiator.util;
 
 import org.junit.Test;
-import org.objenesis.instantiator.util.ClassDefinitionUtils;
+import org.objenesis.ObjenesisException;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -57,5 +59,22 @@ public class ClassDefinitionUtilsTest {
    public void testGetExistingClass_notExisting() {
       Class<?> actual = ClassDefinitionUtils.getExistingClass(getClass().getClassLoader(), getClass().getName() + "$$$1");
       assertNull(actual);
+   }
+
+   @Test
+   public void testNewInstance_noArgsContructorPresent() {
+      ArrayList<?> i = ClassDefinitionUtils.newInstance(ArrayList.class);
+      assertTrue(i.isEmpty());
+   }
+
+   @Test
+   public void testNewInstance_noArgsContructorAbsent() {
+      try {
+         ClassDefinitionUtils.newInstance(Integer.class);
+         fail("No arg constructor. It should fail");
+      }
+      catch(ObjenesisException e) {
+         assertEquals(InstantiationException.class, e.getCause().getClass());
+      }
    }
 }

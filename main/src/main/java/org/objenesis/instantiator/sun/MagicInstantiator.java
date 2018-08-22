@@ -103,13 +103,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          }
       }
 
-      try {
-         return clazz.newInstance();
-      } catch (InstantiationException e) {
-         throw new ObjenesisException(e);
-      } catch (IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
+      return ClassDefinitionUtils.newInstance(clazz);
    }
 
    /**

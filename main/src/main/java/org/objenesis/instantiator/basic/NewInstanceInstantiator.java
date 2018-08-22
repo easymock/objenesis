@@ -19,6 +19,7 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
+import org.objenesis.instantiator.util.ClassDefinitionUtils;
 
 /**
  * The simplest instantiator - simply calls Class.newInstance(). This can deal with default public
@@ -37,12 +38,7 @@ public class NewInstanceInstantiator<T> implements ObjectInstantiator<T> {
    }
 
    public T newInstance() {
-      try {
-         return type.newInstance();
-      }
-      catch(Exception e) {
-         throw new ObjenesisException(e);
-      }
+      return ClassDefinitionUtils.newInstance(type);
    }
 
 }

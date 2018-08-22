@@ -56,7 +56,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    private static final String CONSTRUCTOR_NAME = "<init>";
    private static final String CONSTRUCTOR_DESC = "()V";
 
-   private final Class<?> newType;
+   private final Class<? extends T> newType;
 
    public ProxyingInstantiator(Class<T> type) {
 
@@ -69,15 +69,8 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
       }
    }
 
-   @SuppressWarnings("unchecked")
    public T newInstance() {
-      try {
-         return (T) newType.newInstance();
-      } catch (InstantiationException e) {
-         throw new ObjenesisException(e);
-      } catch (IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
+      return ClassDefinitionUtils.newInstance(newType);
    }
 
    /**

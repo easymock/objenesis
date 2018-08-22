@@ -21,12 +21,9 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
-
-import sun.misc.Unsafe;
 
 /**
  * Helper class for ProxyObjectInstantiator. We can see the details of a class specification
@@ -190,6 +187,17 @@ public final class ClassDefinitionUtils {
       }
       catch (ClassNotFoundException e) {
          return null;
+      }
+   }
+
+   @SuppressWarnings("deprecation")
+   public static <T> T newInstance(Class<T> clazz) {
+      try {
+         return clazz.newInstance();
+      } catch (InstantiationException e) {
+         throw new ObjenesisException(e);
+      } catch (IllegalAccessException e) {
+         throw new ObjenesisException(e);
       }
    }
 }
