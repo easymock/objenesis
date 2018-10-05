@@ -18,9 +18,9 @@
  */
 
 #banner {
-    top: 0px;
-    left: 0px;
-    right: 0px;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 90px;
 }
 
@@ -31,8 +31,8 @@
     width: 184px;
     top: 100px;
     bottom: 8px;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 #right {
@@ -42,8 +42,8 @@
     width: 184px;
     top: 100px;
     bottom: 8px;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 .Content3Column {
@@ -64,7 +64,7 @@
 
 #center {
     z-index: 3;
-    margin: 0px;
+    margin: 0;
     border: none;
     padding-bottom: 8px;
 }
@@ -75,9 +75,9 @@
  */
 
 body {
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
+    padding: 0;
+    margin: 0;
+    border: 0;
 
     font-family: helvetica, arial, sans-serif;
     font-size: 12px;
@@ -87,9 +87,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin: 0px;
-    border: 0px;
-    padding: 0px;
+    margin: 0;
+    border: 0;
+    padding: 0;
     font-weight: normal;
 }
 
@@ -101,20 +101,19 @@ a:visited { color: black; }
 iframe {
     width:100%;
     height: 800px;
-    border: 0px;
+    border: 0;
 }
 
 img {
-    border: 0px;
-    padding: 0px;
-    margin: 0px;
+    border: 0;
+    padding: 0;
+    margin: 0;
 }
 
 p {
-    border: 0px;
-    padding: 0px;
-    margin: 0px;
-    margin-bottom: 10px;
+    border: 0;
+    padding: 0;
+    margin: 0px 0px 10px;
 }
 
 blockquote {
@@ -139,9 +138,9 @@ th.Row {
 }
 
 ul, ol {
-    border: 0px;
-    padding: 0px;
-    margin-top: 0px;
+    border: 0;
+    padding: 0;
+    margin-top: 0;
     margin-bottom: 12px;
     margin-left: 20px;
 }
@@ -152,10 +151,10 @@ ul, ol {
  */
 
 #banner {
-    margin: 0px;
-    border: 0px;
+    margin: 0;
+    border: 0;
     border-bottom: 1px solid #c8f;
-    padding: 0px;
+    padding: 0;
     background-color: #e0d0f0;
     color: #606;
     vertical-align: bottom;
@@ -175,8 +174,8 @@ ul, ol {
 #versions {
     position: absolute;
     width: auto;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
     margin: 8px;
     font-weight: normal;
 }
@@ -186,7 +185,7 @@ ul, ol {
  */
 
 #content {
-    margin: 0px;
+    margin: 0;
     background-color: white;
     color: black;
     height: 100%;
@@ -204,7 +203,7 @@ ul, ol {
 }
 
 #content .FirstChild {  /* IE doesn't understand first-child pseudoelement */
-    margin-top: 0px;
+    margin-top: 0;
 }
 
 #content a { text-decoration: underline; }
@@ -258,13 +257,13 @@ pre {
 
 .SidePanel {
     background-color: white;
-    padding: 0px;
+    padding: 0;
     font-size: 11px;
 }
 
 .SidePanel h1 {
-    margin: 0px;
-    border: 0px;
+    margin: 0;
+    border: 0;
     padding: 4px;
 
     color: #6e61ad;
@@ -295,7 +294,7 @@ pre {
 }
 
 .MenuGroup ul {
-    margin: 0px;
+    margin: 0;
     padding-left: 4px;
     list-style-type: none;
 }
@@ -330,13 +329,13 @@ pre {
 
 .NewsDate {
     font-weight: bold;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 .NewsText {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     margin-bottom: 8px;
 }
 
