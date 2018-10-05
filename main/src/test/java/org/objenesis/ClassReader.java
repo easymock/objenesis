@@ -29,8 +29,8 @@ import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
  */
 public class ClassReader {
 
-   byte[] buffer = new byte[256];
-   Object[] constant_pool;
+   private final byte[] buffer = new byte[256];
+   private Object[] constant_pool;
 
    public static void main(String[] args) throws IOException {
       if(args.length != 1) {

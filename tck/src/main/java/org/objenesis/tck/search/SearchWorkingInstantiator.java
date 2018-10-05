@@ -34,7 +34,7 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
 
     private SearchWorkingInstantiatorListener listener;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         System.out.println();
         System.out.println(PlatformDescription.describePlatform());
         System.out.println();

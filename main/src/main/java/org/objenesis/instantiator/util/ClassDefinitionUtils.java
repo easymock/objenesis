@@ -73,11 +73,7 @@ public final class ClassDefinitionUtils {
    private static final ProtectionDomain PROTECTION_DOMAIN;
 
    static {
-      PROTECTION_DOMAIN = AccessController.doPrivileged(new PrivilegedAction<ProtectionDomain>() {
-         public ProtectionDomain run() {
-            return ClassDefinitionUtils.class.getProtectionDomain();
-         }
-      });
+      PROTECTION_DOMAIN = AccessController.doPrivileged((PrivilegedAction<ProtectionDomain>) () -> ClassDefinitionUtils.class.getProtectionDomain());
    }
 
    /**

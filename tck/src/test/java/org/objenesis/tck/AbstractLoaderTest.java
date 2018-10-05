@@ -31,16 +31,12 @@ public class AbstractLoaderTest {
 
    private StringBuilder recordedEvents;
    private AbstractLoader loader;
-   private AbstractLoader.ErrorHandler errorHandler;
 
    @Before
-   public void setUp() throws Exception {
+   public void setUp() {
       recordedEvents = new StringBuilder();
-      AbstractLoader.ErrorHandler errorHandler = new CandidateLoader.ErrorHandler() {
-         public void classNotFound(String name) {
-            recordedEvents.append("classNotFound('").append(name).append("')\n");
-         }
-      };
+      AbstractLoader.ErrorHandler errorHandler = name ->
+         recordedEvents.append("classNotFound('").append(name).append("')\n");
       loader = new AbstractLoader(getClass().getClassLoader(), errorHandler) {
          @Override
          protected void handlePropertyEntry(Class<?> clazz, String description,
@@ -94,7 +90,7 @@ public class AbstractLoaderTest {
    }
 
    @Test
-   public void testThrowsIOExceptionIfResourceNotInClassPath() throws IOException {
+   public void testThrowsIOExceptionIfResourceNotInClassPath() {
       try {
          loader.loadFromResource( "Blatantly-Bogus.properties", Candidate.CandidateType.STANDARD);
          fail("Expected exception");

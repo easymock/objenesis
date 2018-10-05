@@ -72,7 +72,7 @@ public class ObjenesisTest {
    }
 
    @Test
-   public void test() throws Exception {
+   public void test() {
       TCK tck = new TCK(new ObjenesisStd(), new ObjenesisSerializer(), new JUnitReporter());
       tck.runTests();
    }

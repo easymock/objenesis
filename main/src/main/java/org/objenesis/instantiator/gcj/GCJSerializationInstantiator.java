@@ -30,7 +30,7 @@ import org.objenesis.instantiator.annotations.Typology;
  */
 @Instantiator(Typology.SERIALIZATION)
 public class GCJSerializationInstantiator<T> extends GCJInstantiatorBase<T> {
-   private Class<? super T> superType;
+   private final Class<? super T> superType;
 
    public GCJSerializationInstantiator(Class<T> type) {
       super(type);

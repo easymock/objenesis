@@ -32,12 +32,12 @@ public class ReadExternalNotCalled extends AbstractFeature {
 
    public static class ReadExternalAndAll implements Serializable, Externalizable {
       @Override
-      public void writeExternal(ObjectOutput out) throws IOException {
+      public void writeExternal(ObjectOutput out) {
          called.add("writeExternal");
       }
 
       @Override
-      public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+      public void readExternal(ObjectInput in) {
          called.add("readExternal");
       }
    }

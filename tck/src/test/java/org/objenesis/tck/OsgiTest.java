@@ -59,12 +59,12 @@ public class OsgiTest implements Serializable{
    }
 
    @Test
-   public void testCanInstantiate() throws IOException {
+   public void testCanInstantiate() {
       assertSame(OsgiTest.class, ObjenesisHelper.newInstance(getClass()).getClass());
    }
 
    @Test
-   public void testCanInstantiateSerialize() throws IOException {
+   public void testCanInstantiateSerialize() {
       assertSame(OsgiTest.class, ObjenesisHelper.newSerializableInstance(getClass()).getClass());
    }
 

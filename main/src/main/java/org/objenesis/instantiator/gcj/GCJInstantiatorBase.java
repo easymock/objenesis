@@ -41,8 +41,7 @@ public abstract class GCJInstantiatorBase<T> implements ObjectInstantiator<T> {
    private static void initialize() {
       if(newObjectMethod == null) {
          try {
-            newObjectMethod = ObjectInputStream.class.getDeclaredMethod("newObject", new Class[] {
-               Class.class, Class.class});
+            newObjectMethod = ObjectInputStream.class.getDeclaredMethod("newObject", Class.class, Class.class);
             newObjectMethod.setAccessible(true);
             dummyStream = new DummyStream();
          }

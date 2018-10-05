@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 public class ProxyingInstantiatorTest {
 
    @Test
-   public void testNewInstance() throws Exception {
+   public void testNewInstance() {
       ObjectInstantiator<EmptyClass> inst = new ProxyingInstantiator<EmptyClass>(EmptyClass.class);
       EmptyClass c = inst.newInstance();
       assertEquals("EmptyClass$$$Objenesis", c.getClass().getSimpleName());

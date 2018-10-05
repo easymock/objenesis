@@ -38,7 +38,7 @@ public class TextReporterTest {
    private ByteArrayOutputStream summaryBuffer;
 
    @Before
-   public void setUp() throws Exception {
+   public void setUp() {
       summaryBuffer = new ByteArrayOutputStream();
       ByteArrayOutputStream logBuffer = new ByteArrayOutputStream();
       textReporter = new TextReporter(new PrintStream(summaryBuffer), new PrintStream(logBuffer));

@@ -120,7 +120,7 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
       }
 
       @Override
-      public int read() throws IOException {
+      public int read() {
          int result = data[pointer++];
          if(pointer >= data.length) {
             advanceBuffer();
@@ -130,12 +130,12 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
       }
 
       @Override
-      public int available() throws IOException {
+      public int available() {
          return Integer.MAX_VALUE;
       }
 
       @Override
-      public int read(byte[] b, int off, int len) throws IOException {
+      public int read(byte[] b, int off, int len) {
          int left = len;
          int remaining = data.length - pointer;
 

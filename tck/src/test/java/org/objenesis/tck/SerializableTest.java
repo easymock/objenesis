@@ -73,12 +73,12 @@ public class SerializableTest {
       }
 
       @Override
-      public void writeExternal(ObjectOutput out) throws IOException {
+      public void writeExternal(ObjectOutput out) {
          called.add("IsExternalizable.write");
       }
 
       @Override
-      public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+      public void readExternal(ObjectInput in) {
          called.add("IsExternalizable.read");
       }
 
@@ -100,12 +100,12 @@ public class SerializableTest {
       }
 
       @Override
-      public void writeExternal(ObjectOutput out) throws IOException {
+      public void writeExternal(ObjectOutput out) {
          called.add("IsExternalizableAndSerializable.write");
       }
 
       @Override
-      public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+      public void readExternal(ObjectInput in) {
          called.add("IsExternalizableAndSerializable.read");
       }
    }
@@ -116,12 +116,12 @@ public class SerializableTest {
       }
 
       @Override
-      public void writeExternal(ObjectOutput out) throws IOException {
+      public void writeExternal(ObjectOutput out) {
          called.add("IsExternalizableButExtends.write");
       }
 
       @Override
-      public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+      public void readExternal(ObjectInput in) {
          called.add("IsExternalizableButExtends.read");
       }
    }
@@ -195,7 +195,7 @@ public class SerializableTest {
    public void extendsNotSerializable() throws Exception {
       writeRead(new ExtendsNotSerializableButIs());
       assertCalled("NotSerializable.constructor");
-      assertNotCalled("ExtendsNotSeriazableButIs.constructor");
+      assertNotCalled("ExtendsNotSerializableButIs.constructor");
    }
 
    @Test
@@ -220,7 +220,7 @@ public class SerializableTest {
    public void isExternalizableButExtends() throws Exception {
       writeRead(new IsExternalizableButExtends());
       assertCalled("NotSerializable.constructor");
-      assertCalled("ExtendsNotSeriazableButIs.constructor");
+      assertCalled("ExtendsNotSerializableButIs.constructor");
       assertCalled("IsExternalizableButExtends.constructor");
       assertCalled("IsExternalizableButExtends.read");
       assertCalled("IsExternalizableButExtends.write");

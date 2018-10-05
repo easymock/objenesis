@@ -57,7 +57,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_CLASS_TYPE = 17;
    private static final int INDEX_UTF8_TYPE = 18;
 
-   private static int CONSTANT_POOL_COUNT = 19;
+   private static final int CONSTANT_POOL_COUNT = 19;
 
    private static final byte[] CONSTRUCTOR_CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_OBJECT_CONSTRUCTOR, OPS_return};
    private static final int CONSTRUCTOR_CODE_ATTRIBUTE_LENGTH = 12 + CONSTRUCTOR_CODE.length;
@@ -118,11 +118,8 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    private byte[] writeExtendingClass(Class<?> type, String className) {
       String clazz = classNameToInternalClassName(className);
 
-      DataOutputStream in = null;
-      ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
-      try {
-         in = new DataOutputStream(bIn);
-
+      ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000);  // 1000 should be large enough to fit the entire class
+      try(DataOutputStream in = new DataOutputStream(bIn)) {
          in.write(MAGIC);
          in.write(VERSION);
          in.writeShort(CONSTANT_POOL_COUNT);
@@ -262,14 +259,6 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
       } catch (IOException e) {
          throw new ObjenesisException(e);
-      } finally {
-         if(in != null) {
-            try {
-               in.close();
-            } catch (IOException e) {
-               throw new ObjenesisException(e);
-            }
-         }
       }
 
       return bIn.toByteArray();

@@ -53,7 +53,7 @@ public final class ObjenesisHelper {
     * @return New instance of clazz
     */
    public static <T extends Serializable> T newSerializableInstance(Class<T> clazz) {
-      return (T) OBJENESIS_SERIALIZER.newInstance(clazz);
+      return OBJENESIS_SERIALIZER.newInstance(clazz);
    }
 
    /**

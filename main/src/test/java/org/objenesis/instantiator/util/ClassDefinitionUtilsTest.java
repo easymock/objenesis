@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
  */
 public class ClassDefinitionUtilsTest {
 
-   String className = "org.objenesis.EmptyClassBis";
+   private final String className = "org.objenesis.EmptyClassBis";
 
    @Test
    public void testDefineClass() throws Exception {

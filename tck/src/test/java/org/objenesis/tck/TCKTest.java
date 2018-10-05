@@ -47,7 +47,7 @@ public class TCKTest {
       // Given... a TCK with some candidate classes: A, B and C.
       TCK tck = new TCK(new StubbedInstantiator(), new StubbedInstantiator(), reporter) {
          @Override
-         protected void loadCandidates() throws IOException {
+         protected void loadCandidates() {
             registerCandidate(CandidateA.class, "Candidate A", Candidate.CandidateType.STANDARD);
             registerCandidate(CandidateB.class, "Candidate B", Candidate.CandidateType.STANDARD);
             registerCandidate(CandidateB.class, "Candidate B", Candidate.CandidateType.SERIALIZATION);
@@ -76,7 +76,7 @@ public class TCKTest {
       // Given... a TCK with some candidate classes: A, B and C.
       TCK tck = new TCK(new SelectiveInstantiator(), new SelectiveInstantiator(), reporter) {
          @Override
-         protected void loadCandidates() throws IOException {
+         protected void loadCandidates() {
             registerCandidate(CandidateA.class, "Candidate A", Candidate.CandidateType.STANDARD);
             registerCandidate(CandidateA.class, "Candidate A", Candidate.CandidateType.SERIALIZATION);
             registerCandidate(CandidateB.class, "Candidate B", Candidate.CandidateType.STANDARD);
