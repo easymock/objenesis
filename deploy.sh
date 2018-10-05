@@ -22,7 +22,7 @@ fi
 
 version=$1
 
-if [ "$(git branch | grep $version)" == "$version" ]; then
+if [ "$(git branch | grep ${version)" == "${version}" ]; then
    echo "A branch named $version clashes with the version tag"
    exit 1
 fi
@@ -50,12 +50,12 @@ pause
 # Create the distribution in bintray
 date=$(date "+%Y-%m-%d")
 content="{ \"name\": \"$version\", \"desc\": \"$version\", \"released\": \"${date}T00:00:00.000Z\", \"github_use_tag_release_notes\": true, \"vcs_tag\": \"$version\" }"
-curl -XPOST -H "Content-Type: application/json" -u$bintray_user:$bintray_api_key \
+curl -XPOST -H "Content-Type: application/json" -u${bintray_user}:${bintray_api_key} \
   -d "$content" https://api.bintray.com/packages/easymock/distributions/objenesis/versions
 
-curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "main/target/objenesis-${version}-bin.zip" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-${version}-bin.zip?publish=1
-curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "tck/target/objenesis-tck-${version}.jar" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-${version}.jar?publish=1
-curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u$bintray_user:$bintray_api_key -T "tck-android/target/objenesis-tck-android-${version}.apk" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-android-${version}.apk?publish=1
+curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u${bintray_user}:${bintray_api_key} -T "main/target/objenesis-${version}-bin.zip" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-${version}-bin.zip?publish=1
+curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u${bintray_user}:${bintray_api_key} -T "tck/target/objenesis-tck-${version}.jar" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-${version}.jar?publish=1
+curl -v -H "X-GPG-PASSPHRASE: $gpg_passphrase" -u${bintray_user}:${bintray_api_key} -T "tck-android/target/objenesis-tck-android-${version}.apk" https://api.bintray.com/content/easymock/distributions/objenesis/${version}/objenesis-tck-android-${version}.apk?publish=1
 
 echo "Flag the bin, tck and tck-android as 'Show in download list' in bintray"
 open "https://bintray.com/easymock/distributions/objenesis/${version}#files"
