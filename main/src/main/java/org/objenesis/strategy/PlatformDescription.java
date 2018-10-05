@@ -93,9 +93,8 @@ public final class PlatformDescription {
               + "JVM version=" + VM_VERSION + ", "
               + "JVM info=" + VM_INFO;
 
-      // Add the API level is it's an Android platform
-      int androidVersion = ANDROID_VERSION;
-      if(androidVersion != 0) {
+      // Add the API level if it's an Android platform
+      if(ANDROID_VERSION != 0) {
          desc += ", API level=" + ANDROID_VERSION;
       }
       desc += ")";

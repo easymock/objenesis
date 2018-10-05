@@ -45,13 +45,7 @@ public abstract class GCJInstantiatorBase<T> implements ObjectInstantiator<T> {
             newObjectMethod.setAccessible(true);
             dummyStream = new DummyStream();
          }
-         catch(RuntimeException e) {
-            throw new ObjenesisException(e);
-         }
-         catch(NoSuchMethodException e) {
-            throw new ObjenesisException(e);
-         }
-         catch(IOException e) {
+         catch(RuntimeException | NoSuchMethodException | IOException e) {
             throw new ObjenesisException(e);
          }
       }

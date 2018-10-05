@@ -29,7 +29,7 @@ import org.objenesis.Objenesis;
  */
 public abstract class AbstractFeature implements Feature {
 
-   protected static final List<String> called = new ArrayList<String>();
+   protected static final List<String> called = new ArrayList<>();
 
    public AbstractFeature() {
       called.clear();

@@ -54,14 +54,10 @@ public class ObjenesisTest {
       @Override
       public void exception(Candidate.CandidateType type, Exception exception) {
          ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-         PrintStream out = new PrintStream(buffer);
-         try {
+         try (PrintStream out = new PrintStream(buffer)) {
             out.println("Exception when instantiating " + currentCandidate + " for " + type + ": ");
             exception.printStackTrace(out);
             fail(buffer.toString());
-         }
-         finally {
-            out.close();
          }
       }
 

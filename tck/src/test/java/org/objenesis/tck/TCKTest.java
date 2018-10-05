@@ -15,8 +15,6 @@
  */
 package org.objenesis.tck;
 
-import java.io.IOException;
-
 import org.junit.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.instantiator.ObjectInstantiator;

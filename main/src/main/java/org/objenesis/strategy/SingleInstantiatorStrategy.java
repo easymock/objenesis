@@ -59,11 +59,7 @@ public class SingleInstantiatorStrategy implements InstantiatorStrategy {
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       try {
          return (ObjectInstantiator<T>) constructor.newInstance(type);
-      } catch (InstantiationException e) {
-         throw new ObjenesisException(e);
-      } catch (IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      } catch (InvocationTargetException e) {
+      } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }

@@ -39,16 +39,16 @@ public class MagicInstantiatorTest {
 
    @Test
    public void testNewInstance() {
-      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<EmptyClass>(EmptyClass.class);
+      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<>(EmptyClass.class);
       assertEquals(EmptyClass.class, o1.newInstance().getClass());
 
-      ObjectInstantiator<EmptyClass> o2 = new MagicInstantiator<EmptyClass>(EmptyClass.class);
+      ObjectInstantiator<EmptyClass> o2 = new MagicInstantiator<>(EmptyClass.class);
       assertEquals(EmptyClass.class, o2.newInstance().getClass());
    }
 
    @Test
    public void testInternalInstantiator() {
-      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<EmptyClass>(EmptyClass.class).getInstantiator();
+      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<>(EmptyClass.class).getInstantiator();
       assertEquals(EmptyClass.class, o1.newInstance().getClass());
    }
 }

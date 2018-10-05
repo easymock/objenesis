@@ -24,7 +24,6 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -82,12 +81,12 @@ public class SerializableTest {
          called.add("IsExternalizable.read");
       }
 
-      private Object writeReplace() throws ObjectStreamException {
+      private Object writeReplace() {
          called.add("IsExternalizable.writeReplace");
          return this;
       }
 
-      private Object readResolve() throws ObjectStreamException {
+      private Object readResolve() {
          called.add("IsExternalizable.readResolve");
          return this;
       }
@@ -132,12 +131,12 @@ public class SerializableTest {
       }
 
       // Write the object to the stream
-      private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+      private void writeObject(java.io.ObjectOutputStream out) {
          called.add("ReadWriteObject.write");
       }
 
       // Read the object from the stream
-      private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+      private void readObject(java.io.ObjectInputStream in) {
          called.add("ReadWriteObject.read");
       }
    }
@@ -147,18 +146,18 @@ public class SerializableTest {
          called.add("ReadWriteReplace.constructor");
       }
 
-      private Object writeReplace() throws ObjectStreamException {
+      private Object writeReplace() {
          called.add("ReadWriteReplace.write");
          return this;
       }
 
-      private Object readResolve() throws ObjectStreamException {
+      private Object readResolve() {
          called.add("ReadWriteReplace.read");
          return this;
       }
    }
 
-   private static Set<String> called = new HashSet<String>();
+   private static final Set<String> called = new HashSet<>();
 
    @After
    public void verify() {

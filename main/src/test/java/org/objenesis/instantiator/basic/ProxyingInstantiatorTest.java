@@ -30,7 +30,7 @@ public class ProxyingInstantiatorTest {
 
    @Test
    public void testNewInstance() {
-      ObjectInstantiator<EmptyClass> inst = new ProxyingInstantiator<EmptyClass>(EmptyClass.class);
+      ObjectInstantiator<EmptyClass> inst = new ProxyingInstantiator<>(EmptyClass.class);
       EmptyClass c = inst.newInstance();
       assertEquals("EmptyClass$$$Objenesis", c.getClass().getSimpleName());
    }

@@ -73,7 +73,7 @@ public final class ClassDefinitionUtils {
    private static final ProtectionDomain PROTECTION_DOMAIN;
 
    static {
-      PROTECTION_DOMAIN = AccessController.doPrivileged((PrivilegedAction<ProtectionDomain>) () -> ClassDefinitionUtils.class.getProtectionDomain());
+      PROTECTION_DOMAIN = AccessController.doPrivileged((PrivilegedAction<ProtectionDomain>) ClassDefinitionUtils.class::getProtectionDomain);
    }
 
    /**
@@ -112,12 +112,8 @@ public final class ClassDefinitionUtils {
 
       int length;
 
-      InputStream in = ClassDefinitionUtils.class.getClassLoader().getResourceAsStream(className);
-      try {
+      try (InputStream in = ClassDefinitionUtils.class.getClassLoader().getResourceAsStream(className)) {
          length = in.read(b);
-      }
-      finally {
-         in.close();
       }
 
       if(length >= 2500) {
@@ -137,12 +133,8 @@ public final class ClassDefinitionUtils {
     * @throws IOException if we fail to write the class
     */
    public static void writeClass(String fileName, byte[] bytes) throws IOException {
-      BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileName));
-      try {
+      try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileName))) {
          out.write(bytes);
-      }
-      finally {
-         out.close();
       }
    }
 
@@ -190,9 +182,7 @@ public final class ClassDefinitionUtils {
    public static <T> T newInstance(Class<T> clazz) {
       try {
          return clazz.newInstance();
-      } catch (InstantiationException e) {
-         throw new ObjenesisException(e);
-      } catch (IllegalAccessException e) {
+      } catch (InstantiationException | IllegalAccessException e) {
          throw new ObjenesisException(e);
       }
    }

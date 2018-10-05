@@ -54,7 +54,7 @@ public class ObjenesisBase implements Objenesis {
          throw new IllegalArgumentException("A strategy can't be null");
       }
       this.strategy = strategy;
-      this.cache = useCache ? new ConcurrentHashMap<String, ObjectInstantiator<?>>() : null;
+      this.cache = useCache ? new ConcurrentHashMap<>() : null;
    }
 
    @Override

@@ -68,7 +68,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    private static final String CONSTRUCTOR_NAME = "<init>";
    private static final String CONSTRUCTOR_DESC = "()V";
 
-   private ObjectInstantiator<T> instantiator;
+   private final ObjectInstantiator<T> instantiator;
 
    public MagicInstantiator(Class<T> type) {
       instantiator = newInstantiatorOf(type);
@@ -87,7 +87,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
       return instantiator;
    }
 
-   private <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
+   private ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       String suffix = type.getSimpleName();
       String className = getClass().getName() + "$$$" + suffix;
 

@@ -34,21 +34,20 @@ public class ClassEnumerator {
         // Get the list of the files contained in the package
         String[] files = directory.list();
 
-        for (int i = 0; i < files.length; i++) {
-            String fileName = files[i];
-            // we are only interested in .class files
-            if (fileName.endsWith(".class")) {
-                // removes the .class extension
-                String className = pkgname + '.' + fileName.substring(0, fileName.length() - 6);
-                classes.add(className);
-                continue;
-            }
+       for (String fileName : files) {
+          // we are only interested in .class files
+          if (fileName.endsWith(".class")) {
+             // removes the .class extension
+             String className = pkgname + '.' + fileName.substring(0, fileName.length() - 6);
+             classes.add(className);
+             continue;
+          }
 
-            File subdir = new File(directory, fileName);
-            if (subdir.isDirectory()) {
-                processDirectory(subdir, pkgname + '.' + fileName, classes);
-            }
-        }
+          File subdir = new File(directory, fileName);
+          if (subdir.isDirectory()) {
+             processDirectory(subdir, pkgname + '.' + fileName, classes);
+          }
+       }
     }
 
     private static void processJarfile(URL resource, String pkgname, SortedSet<String> classes) {
@@ -96,7 +95,7 @@ public class ClassEnumerator {
     * @return list of full class names
     */
     public static SortedSet<String> getClassesForPackage(Package pkg, ClassLoader classLoader) {
-        SortedSet<String> classes = new TreeSet<String>(new Comparator<String>() {
+        SortedSet<String> classes = new TreeSet<>(new Comparator<String>() {
            public int compare(String o1, String o2) {
               String simpleName1 = getSimpleName(o1);
               String simpleName2 = getSimpleName(o2);

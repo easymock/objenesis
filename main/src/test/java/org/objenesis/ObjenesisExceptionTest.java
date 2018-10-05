@@ -40,7 +40,7 @@ public class ObjenesisExceptionTest {
       // Check null case
       e = new ObjenesisException((Throwable) null);
       assertNull(e.getCause());
-      assertEquals(null, e.getMessage());
+      assertNull(e.getMessage());
    }
 
    @Test

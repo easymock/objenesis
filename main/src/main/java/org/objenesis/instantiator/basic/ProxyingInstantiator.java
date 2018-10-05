@@ -46,7 +46,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_UTF8_CLASS = 7;
    private static final int INDEX_UTF8_SUPERCLASS = 8;
 
-   private static int CONSTANT_POOL_COUNT = 9;
+   private static final int CONSTANT_POOL_COUNT = 9;
 
    private static final byte[] CODE = { OPS_aload_0, OPS_return};
    private static final int CODE_ATTRIBUTE_LENGTH = 12 + CODE.length;
@@ -60,7 +60,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
    public ProxyingInstantiator(Class<T> type) {
 
-      byte[] classBytes = writeExtendingClass(type, SUFFIX);
+      byte[] classBytes = writeExtendingClass(type);
 
       try {
          newType = ClassDefinitionUtils.defineClass(type.getName() + SUFFIX, classBytes, type.getClassLoader());
@@ -78,18 +78,15 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
     * only have an empty default constructor
     *
     * @param type type to extend
-    * @param suffix the suffix appended to the class name to create the next extending class name
     * @return the byte for the class
     * @throws ObjenesisException is something goes wrong
     */
-   private static byte[] writeExtendingClass(Class<?> type, String suffix) {
+   private static byte[] writeExtendingClass(Class<?> type) {
       String parentClazz = classNameToInternalClassName(type.getName());
-      String clazz = parentClazz + suffix;
+      String clazz = parentClazz + SUFFIX;
 
-      DataOutputStream in = null;
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
-      try {
-         in = new DataOutputStream(bIn);
+      try(DataOutputStream in = new DataOutputStream(bIn)) {
 
          in.write(MAGIC);
          in.write(VERSION);
@@ -171,14 +168,6 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
       } catch (IOException e) {
          throw new ObjenesisException(e);
-      } finally {
-         if(in != null) {
-            try {
-               in.close();
-            } catch (IOException e) {
-               throw new ObjenesisException(e);
-            }
-         }
       }
 
       return bIn.toByteArray();

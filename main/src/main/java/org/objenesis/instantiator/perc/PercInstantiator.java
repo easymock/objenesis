@@ -47,13 +47,10 @@ public class PercInstantiator<T> implements ObjectInstantiator<T> {
             Boolean.TYPE);
 			newInstanceMethod.setAccessible(true);
 		}
-      catch(RuntimeException e) {
+      catch(RuntimeException | NoSuchMethodException e) {
 			throw new ObjenesisException(e);
 		}
-      catch(NoSuchMethodException e) {
-         throw new ObjenesisException(e);
-      }
-	}
+   }
 
 	@SuppressWarnings("unchecked")
    public T newInstance() {

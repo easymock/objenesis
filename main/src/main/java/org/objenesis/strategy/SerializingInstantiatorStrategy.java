@@ -60,24 +60,24 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
       if(JVM_NAME.startsWith(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
          // Java 7 GAE was under a security manager so we use a degraded system
          if(isGoogleAppEngine() && PlatformDescription.SPECIFICATION_VERSION.equals("1.7")) {
-            return new ObjectInputStreamInstantiator<T>(type);
+            return new ObjectInputStreamInstantiator<>(type);
          }
-         return new SunReflectionFactorySerializationInstantiator<T>(type);
+         return new SunReflectionFactorySerializationInstantiator<>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {
          if(PlatformDescription.isAndroidOpenJDK()) {
-            return new ObjectStreamClassInstantiator<T>(type);
+            return new ObjectStreamClassInstantiator<>(type);
          }
-         return new AndroidSerializationInstantiator<T>(type);
+         return new AndroidSerializationInstantiator<>(type);
       }
       else if(JVM_NAME.startsWith(GNU)) {
-         return new GCJSerializationInstantiator<T>(type);
+         return new GCJSerializationInstantiator<>(type);
       }
       else if(JVM_NAME.startsWith(PERC)) {
-         return new PercSerializationInstantiator<T>(type);
+         return new PercSerializationInstantiator<>(type);
       }
 
-      return new SunReflectionFactorySerializationInstantiator<T>(type);
+      return new SunReflectionFactorySerializationInstantiator<>(type);
    }
 
 }

@@ -15,8 +15,6 @@
  */
 package org.objenesis.tck.features;
 
-import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 import org.objenesis.Objenesis;
@@ -29,16 +27,16 @@ import org.objenesis.Objenesis;
 public class ReadObjectNotCalled extends AbstractFeature {
 
    public static class ReadObjectAndAll implements Serializable {
-      private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+      private void readObject(java.io.ObjectInputStream in) {
          called.add("readObject");
       }
 
-      private Object readResolve() throws ObjectStreamException {
+      private Object readResolve() {
          called.add("readResolve");
          return this;
       }
 
-      private void readObjectNoData() throws ObjectStreamException {
+      private void readObjectNoData() {
          called.add("readObjectNoData");
       }
    }

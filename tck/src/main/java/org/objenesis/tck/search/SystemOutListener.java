@@ -33,7 +33,12 @@ public class SystemOutListener implements SearchWorkingInstantiatorListener {
         System.out.printf(PATTERN, c.getSimpleName() + "(" + getTypology(c) + ")", "KO - " + t);
     }
 
-    private Typology getTypology(Class<?> c) {
+    @Override
+   public void instantiatorNotFound(String className, Throwable t) {
+       System.out.printf(PATTERN, className + " not found", "KO - " + t);
+   }
+
+   private Typology getTypology(Class<?> c) {
        Instantiator instantiatorAnn = c.getAnnotation(Instantiator.class);
        return instantiatorAnn == null ? Typology.UNKNOWN : instantiatorAnn.value();
     }

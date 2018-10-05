@@ -44,10 +44,7 @@ public class ObjectStreamClassInstantiator<T> implements ObjectInstantiator<T> {
             newInstanceMethod = ObjectStreamClass.class.getDeclaredMethod("newInstance");
             newInstanceMethod.setAccessible(true);
          }
-         catch(RuntimeException e) {
-            throw new ObjenesisException(e);
-         }
-         catch(NoSuchMethodException e) {
+         catch(RuntimeException | NoSuchMethodException e) {
             throw new ObjenesisException(e);
          }
       }

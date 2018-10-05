@@ -47,7 +47,7 @@
         <th>Value</th>
     </tr>
 <%
-  for(Map.Entry<Object, Object> property : new TreeMap<Object, Object>(System.getProperties()).entrySet()) {
+  for(Map.Entry<Object, Object> property : new TreeMap<>(System.getProperties()).entrySet()) {
 %>
   <%= "<tr><td>" + property.getKey() + "</td><td>" + property.getValue() + "</td></tr>" %>
 <%

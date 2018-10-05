@@ -22,8 +22,6 @@ import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
 import org.objenesis.instantiator.util.UnsafeUtils;
 
-import java.lang.reflect.Field;
-
 /**
  * Instantiates an object, WITHOUT calling it's constructor, using
  * {@code sun.misc.Unsafe.allocateInstance()}. Unsafe and its methods are implemented by most

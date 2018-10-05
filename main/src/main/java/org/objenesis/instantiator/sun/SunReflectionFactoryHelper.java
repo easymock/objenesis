@@ -44,13 +44,7 @@ class SunReflectionFactoryHelper {
          return (Constructor<T>) newConstructorForSerializationMethod.invoke(
             reflectionFactory, type, constructor);
       }
-      catch(IllegalArgumentException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }
@@ -70,16 +64,7 @@ class SunReflectionFactoryHelper {
             "getReflectionFactory");
          return method.invoke(null);
       }
-      catch(NoSuchMethodException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalArgumentException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
          throw new ObjenesisException(e);
       }
    }

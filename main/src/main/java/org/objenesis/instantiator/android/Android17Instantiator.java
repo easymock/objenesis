@@ -58,10 +58,7 @@ public class Android17Instantiator<T> implements ObjectInstantiator<T> {
          newInstanceMethod.setAccessible(true);
          return newInstanceMethod;
       }
-      catch(RuntimeException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(NoSuchMethodException e) {
+      catch(RuntimeException | NoSuchMethodException e) {
          throw new ObjenesisException(e);
       }
    }
@@ -74,16 +71,7 @@ public class Android17Instantiator<T> implements ObjectInstantiator<T> {
 
          return (Integer) newInstanceMethod.invoke(null, Object.class);
       }
-      catch(RuntimeException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(NoSuchMethodException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(RuntimeException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
          throw new ObjenesisException(e);
       }
    }

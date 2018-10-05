@@ -52,7 +52,7 @@ public class TCK {
    private final Objenesis objenesisSerializer;
    private final Reporter reporter;
 
-   private final List<Candidate> candidates = new ArrayList<Candidate>();
+   private final List<Candidate> candidates = new ArrayList<>();
 
    /**
     * @param objenesisStandard Objenesis instance used to instantiate classes the standard way (no constructor called)

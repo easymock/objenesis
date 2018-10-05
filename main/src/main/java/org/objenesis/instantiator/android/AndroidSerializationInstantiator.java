@@ -40,7 +40,7 @@ public class AndroidSerializationInstantiator<T> implements ObjectInstantiator<T
    public AndroidSerializationInstantiator(Class<T> type) {
       this.type = type;
       newInstanceMethod = getNewInstanceMethod();
-      Method m = null;
+      Method m;
       try {
          m = ObjectStreamClass.class.getMethod("lookupAny", Class.class);
       } catch (NoSuchMethodException e) {
@@ -48,9 +48,7 @@ public class AndroidSerializationInstantiator<T> implements ObjectInstantiator<T
       }
       try {
          objectStreamClass = (ObjectStreamClass) m.invoke(null, type);
-      } catch (IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      } catch (InvocationTargetException e) {
+      } catch (IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }
@@ -59,13 +57,7 @@ public class AndroidSerializationInstantiator<T> implements ObjectInstantiator<T
       try {
          return type.cast(newInstanceMethod.invoke(objectStreamClass, type));
       }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalArgumentException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }
@@ -77,10 +69,7 @@ public class AndroidSerializationInstantiator<T> implements ObjectInstantiator<T
          newInstanceMethod.setAccessible(true);
          return newInstanceMethod;
       }
-      catch(RuntimeException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(NoSuchMethodException e) {
+      catch(RuntimeException | NoSuchMethodException e) {
          throw new ObjenesisException(e);
       }
    }

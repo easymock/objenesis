@@ -23,4 +23,6 @@ public interface SearchWorkingInstantiatorListener {
     void instantiatorSupported(Class<?> c);
 
     void instantiatorUnsupported(Class<?> c, Throwable t);
+
+    void instantiatorNotFound(String className, Throwable t);
 }

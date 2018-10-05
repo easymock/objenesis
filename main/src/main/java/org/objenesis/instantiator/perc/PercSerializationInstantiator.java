@@ -70,16 +70,7 @@ public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
          typeArgs = new Object[] {unserializableType, type, percMethod};
 
       }
-      catch(ClassNotFoundException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(NoSuchMethodException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalAccessException e) {
+      catch(ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }
@@ -89,10 +80,7 @@ public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
       try {
          return (T) newInstanceMethod.invoke(null, typeArgs);
       }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }

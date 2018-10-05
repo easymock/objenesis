@@ -38,13 +38,13 @@ public class TextReporter implements Reporter {
 
    private static class Result {
 
-      Candidate candidate;
+      private final Candidate candidate;
 
-      Candidate.CandidateType type;
+      private final Candidate.CandidateType type;
 
-      boolean result;
+      private final boolean result;
 
-      Exception exception;
+      private final Exception exception;
 
       /**
        * @param candidate Candidate tested
@@ -74,7 +74,7 @@ public class TextReporter implements Reporter {
 
    private Candidate currentCandidate;
 
-   private final Map<Candidate, Map<Candidate.CandidateType, Result>> results = new TreeMap<Candidate, Map<Candidate.CandidateType, Result>>();
+   private final Map<Candidate, Map<Candidate.CandidateType, Result>> results = new TreeMap<>();
 
    private String platformDescription;
 
@@ -117,10 +117,7 @@ public class TextReporter implements Reporter {
       if(!success) {
          errorCount++;
       }
-      Map<Candidate.CandidateType, Result> result = results.get(currentCandidate);
-      if(result == null) {
-         results.put(currentCandidate, result = new HashMap<Candidate.CandidateType, Result>());
-      }
+      Map<Candidate.CandidateType, Result> result = results.computeIfAbsent(currentCandidate, k -> new HashMap<>());
       result.put(type, new Result(currentCandidate, type, success, exception));
    }
 
@@ -146,7 +143,7 @@ public class TextReporter implements Reporter {
       summary.println("   Objenesis serializer: " + objenesisSerializer.getInstantiatorOf(String.class).getClass().getName());
       summary.println();
 
-      Collection<String> candidateNames = new ArrayList<String>();
+      Collection<String> candidateNames = new ArrayList<>();
       for(Map.Entry<Candidate, Map<Candidate.CandidateType, Result>> entry : results.entrySet()) {
          candidateNames.add(entry.getKey().getDescription());
       }
@@ -160,7 +157,7 @@ public class TextReporter implements Reporter {
       summary.print(pad("Objenesis serializer", maxObjenesisWidth));
       summary.println();
 
-      List<Result> exceptions = new ArrayList<Result>();
+      List<Result> exceptions = new ArrayList<>();
 
       // Candidates
       for(Map.Entry<Candidate, Map<Candidate.CandidateType, Result>> entry : results.entrySet()) {

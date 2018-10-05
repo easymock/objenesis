@@ -56,10 +56,7 @@ public class Android10Instantiator<T> implements ObjectInstantiator<T> {
          newStaticMethod.setAccessible(true);
          return newStaticMethod;
       }
-      catch(RuntimeException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(NoSuchMethodException e) {
+      catch(RuntimeException | NoSuchMethodException e) {
          throw new ObjenesisException(e);
       }
    }

@@ -39,13 +39,7 @@ public class GCJInstantiator<T> extends GCJInstantiatorBase<T> {
       try {
          return type.cast(newObjectMethod.invoke(dummyStream, type, Object.class));
       }
-      catch(RuntimeException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(RuntimeException | IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }

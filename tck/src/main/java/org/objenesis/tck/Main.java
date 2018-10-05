@@ -15,8 +15,6 @@
  */
 package org.objenesis.tck;
 
-import java.io.IOException;
-
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
 

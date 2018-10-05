@@ -15,7 +15,6 @@
  */
 package org.objenesis.instantiator.basic;
 
-import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
