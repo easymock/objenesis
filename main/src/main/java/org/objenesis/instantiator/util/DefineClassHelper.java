@@ -13,19 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.tck.candidates;
-
-import java.io.Serializable;
+package org.objenesis.instantiator.util;
 
 /**
- * @author Joe Walnes
+ * @author Henri Tremblay
  */
-public class SerializableWithAncestorThrowingException extends ConstructorThrowingException
-   implements Serializable {
-
-   private static final long serialVersionUID = 1L;
-   
-   public SerializableWithAncestorThrowingException() {
-
-   }
+public class DefineClassHelper {
 }
