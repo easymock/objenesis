@@ -33,7 +33,7 @@ It is a basic compilation of the application.
 
 ### Full build
 
-This build will create the source and javadoc jars and run findbugs.
+This build will create the source and javadoc jars and run spotbugs.
 
 `mvn install -Pfull`
 

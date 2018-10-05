@@ -60,7 +60,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <findbugs-maven-plugin.version>3.0.5</findbugs-maven-plugin.version>
+    <spotbugs-maven-plugin.version>3.1.6</spotbugs-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -298,9 +298,9 @@
           <version>2.4</version>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>findbugs-maven-plugin</artifactId>
-          <version>${findbugs-maven-plugin.version}</version>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>${spotbugs-maven-plugin.version}</version>
           <configuration>
             <xmlOutput>true</xmlOutput>
             <omitVisitors>Naming</omitVisitors>
@@ -341,11 +341,11 @@
                 </pluginExecution>
                 <pluginExecution>
                   <pluginExecutionFilter>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
                     <versionRange>[2.5.5,)</versionRange>
                     <goals>
-                      <goal>findbugs</goal>
+                      <goal>spotbugs</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
@@ -363,16 +363,16 @@
     <plugins>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.9</version>
+        <version>3.0.0</version>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>${findbugs-maven-plugin.version}</version>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs-maven-plugin.version}</version>
       </plugin>
       <plugin>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.8</version>
+        <version>3.10.0</version>
         <configuration>
           <targetJdk>1.6</targetJdk>
         </configuration>
@@ -390,7 +390,7 @@
 
   <profiles>
     <profile>
-      <!-- Activate to generate javadoc, sources jars, license check and findbugs -->
+      <!-- Activate to generate javadoc, sources jars, license check and spotbugs -->
       <id>full</id>
       <build>
         <plugins>
@@ -417,13 +417,13 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>findbugs-maven-plugin</artifactId>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>findbugs</id>
+                <id>spotbugs</id>
                 <goals>
-                  <goal>findbugs</goal>
+                  <goal>spotbugs</goal>
                 </goals>
               </execution>
             </executions>
