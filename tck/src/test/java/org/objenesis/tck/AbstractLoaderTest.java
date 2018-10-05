@@ -69,14 +69,14 @@ public class AbstractLoaderTest {
    @Test
    public void testReportsMissingClassesToErrorHandler() throws IOException {
       String input = "" + "org.objenesis.tck.AbstractLoaderTest$A = A candidate\n"
-         + "org.objenesis.tck.AbstractLoaderTest$NonExistant = Dodgy candidate\n"
+         + "org.objenesis.tck.AbstractLoaderTest$NonExistent = Dodgy candidate\n"
          + "org.objenesis.tck.AbstractLoaderTest$C = C candidate\n";
 
       loader.loadFrom(new ByteArrayInputStream(input.getBytes()), Candidate.CandidateType.STANDARD);
 
       assertEquals(""
          + "registerCandidate('class org.objenesis.tck.AbstractLoaderTest$A', 'A candidate')\n"
-         + "classNotFound('org.objenesis.tck.AbstractLoaderTest$NonExistant')\n"
+         + "classNotFound('org.objenesis.tck.AbstractLoaderTest$NonExistent')\n"
          + "registerCandidate('class org.objenesis.tck.AbstractLoaderTest$C', 'C candidate')\n",
          recordedEvents.toString());
    }
@@ -96,7 +96,7 @@ public class AbstractLoaderTest {
    @Test
    public void testThrowsIOExceptionIfResourceNotInClassPath() throws IOException {
       try {
-         loader.loadFromResource( "Blatently-Bogus.properties", Candidate.CandidateType.STANDARD);
+         loader.loadFromResource( "Blatantly-Bogus.properties", Candidate.CandidateType.STANDARD);
          fail("Expected exception");
       }
       catch(IOException expectedException) {

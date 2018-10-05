@@ -25,7 +25,7 @@ import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
 
 /**
- * Instantiator for Android API leve 18 and higher. Same as the version 17 but the
+ * Instantiator for Android API level 18 and higher. Same as the version 17 but the
  * <code>newInstance</code> now takes a long in parameter
  *
  * @author Henri Tremblay

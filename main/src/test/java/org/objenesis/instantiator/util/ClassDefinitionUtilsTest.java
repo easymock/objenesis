@@ -62,13 +62,13 @@ public class ClassDefinitionUtilsTest {
    }
 
    @Test
-   public void testNewInstance_noArgsContructorPresent() {
+   public void testNewInstance_noArgsConstructorPresent() {
       ArrayList<?> i = ClassDefinitionUtils.newInstance(ArrayList.class);
       assertTrue(i.isEmpty());
    }
 
    @Test
-   public void testNewInstance_noArgsContructorAbsent() {
+   public void testNewInstance_noArgsConstructorAbsent() {
       try {
          ClassDefinitionUtils.newInstance(Integer.class);
          fail("No arg constructor. It should fail");

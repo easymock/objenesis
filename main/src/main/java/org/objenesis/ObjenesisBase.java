@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ObjenesisBase implements Objenesis {
 
-   /** Strategy used by this Objenesi implementation to create classes */
+   /** Strategy used by this Objenesis implementation to create classes */
    protected final InstantiatorStrategy strategy;
 
    /** Strategy cache. Key = Class, Value = InstantiatorStrategy */

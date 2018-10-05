@@ -62,7 +62,7 @@ public class SerializableTest {
 
    public static class ExtendsNotSerializableButIs extends NotSerializable implements Serializable {
       public ExtendsNotSerializableButIs() {
-         called.add("ExtendsNotSeriazableButIs.constructor");
+         called.add("ExtendsNotSerializableButIs.constructor");
       }
    }
 
