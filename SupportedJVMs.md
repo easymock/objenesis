@@ -10,9 +10,11 @@
 * GCJ version 3.4.4 (tested on Windows/Cygwin)
 * Aonix PERC (no serialization support), tested on version 5.0.0667
 
-* Version 1.x supports Java 1.3 to 1.7
-* Version 2.x supports Java 1.5 to 10
-* Version 3.x supports Java 1.8 to 11
+Support per Objenesis versions:
+
+* 1.x supports Java 1.3 to 1.7
+* 2.x supports Java 1.5 to 10
+* 3.x supports Java 1.8 to 11
  
 ## Google App Engine 
 
