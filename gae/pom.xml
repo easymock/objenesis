@@ -34,7 +34,7 @@
   <properties>
     <app.id>objenesis</app.id>
     <app.version>2</app.version>
-    <appengine.version>1.9.64</appengine.version>
+    <appengine.version>1.9.65</appengine.version>
     <gcloud.plugin.version>2.0.9.133.v201611104</gcloud.plugin.version>
   </properties>
 
@@ -95,13 +95,6 @@
     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
         <configuration>
           <skip>true</skip>
@@ -109,7 +102,6 @@
       </plugin>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>3.2.0</version>
         <configuration>
           <archiveClasses>true</archiveClasses>
           <webResources>
