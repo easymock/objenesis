@@ -83,10 +83,6 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
          // Android 4.3 until Android N
          return new Android18Instantiator<>(type);
       }
-      else if(PlatformDescription.isThisJVM(JROCKIT)) {
-         // JRockit is compliant with HotSpot
-         return new SunReflectionFactoryInstantiator<>(type);
-      }
       else if(PlatformDescription.isThisJVM(GNU)) {
          return new GCJInstantiator<>(type);
       }

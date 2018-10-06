@@ -26,9 +26,6 @@ import org.objenesis.ObjenesisException;
  */
 public final class PlatformDescription {
 
-   /** JVM_NAME prefix for JRockit */
-   public static final String JROCKIT = "BEA";
-
    /** JVM_NAME prefix for GCJ */
    public static final String GNU = "GNU libgcj";
 
