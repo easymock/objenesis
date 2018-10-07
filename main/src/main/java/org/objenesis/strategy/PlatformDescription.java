@@ -130,9 +130,27 @@ public final class PlatformDescription {
       return bootClasspath != null && bootClasspath.toLowerCase().contains("core-oj.jar");
    }
 
+   /**
+    * Tells if the current JVM is running Java 9 or above
+    *
+    * @return if the current JVM is Java 9 or above
+    */
    public static boolean isAfterJigsaw() {
       String version = PlatformDescription.SPECIFICATION_VERSION;
       return version.indexOf('.') < 0; // No dot means the version is 9, 10, 11, ... not 1.6, 1.7, 1.8
+   }
+
+   /**
+    * Tells if the current JVM is running Java 11 or above
+    *
+    * @return if the current JVM is Java 11 or above
+    */
+   public static boolean isAfterJava11() {
+      if(!isAfterJigsaw()) {
+         return false;
+      }
+      int version = Integer.parseInt(PlatformDescription.SPECIFICATION_VERSION);
+      return version >= 11;
    }
 
    public static boolean isGoogleAppEngine() {

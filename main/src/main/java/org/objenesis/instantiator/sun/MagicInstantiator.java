@@ -97,7 +97,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          byte[] classBytes = writeExtendingClass(type, className);
 
          try {
-            clazz = ClassDefinitionUtils.defineClass(className, classBytes, getClass().getClassLoader());
+            clazz = ClassDefinitionUtils.defineClass(className, classBytes, type, getClass().getClassLoader());
          } catch (Exception e) {
             throw new ObjenesisException(e);
          }

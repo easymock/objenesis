@@ -63,7 +63,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
       byte[] classBytes = writeExtendingClass(type);
 
       try {
-         newType = ClassDefinitionUtils.defineClass(type.getName() + SUFFIX, classBytes, type.getClassLoader());
+         newType = ClassDefinitionUtils.defineClass(type.getName() + SUFFIX, classBytes, type, type.getClassLoader());
       } catch (Exception e) {
          throw new ObjenesisException(e);
       }

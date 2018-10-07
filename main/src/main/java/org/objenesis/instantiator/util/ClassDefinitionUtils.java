@@ -69,7 +69,6 @@ public final class ClassDefinitionUtils {
 
    private ClassDefinitionUtils() { }
 
-//   private static Method DEFINE_CLASS;
    private static final ProtectionDomain PROTECTION_DOMAIN;
 
    static {
@@ -83,14 +82,15 @@ public final class ClassDefinitionUtils {
     * @param <T> type of the class returned
     * @param className class name in the format <code>org.objenesis.MyClass</code>
     * @param b bytes representing the class
+    * @param neighbor a class in the same package as the loaded class
     * @param loader the class loader where the class will be loaded
     * @return the newly loaded class
     * @throws Exception whenever something goes wrong
     */
    @SuppressWarnings("unchecked")
-   public static <T> Class<T> defineClass(String className, byte[] b, ClassLoader loader)
+   public static <T> Class<T> defineClass(String className, byte[] b, Class<?> neighbor, ClassLoader loader)
       throws Exception {
-      Class<T> c = (Class<T>) UnsafeUtils.getUnsafe().defineClass(className, b, 0, b.length, loader, PROTECTION_DOMAIN);
+      Class<T> c = (Class<T>) DefineClassHelper.defineClass(className, b, 0, b.length, neighbor, loader, PROTECTION_DOMAIN);
       // Force static initializers to run.
       Class.forName(className, true, loader);
       return c;

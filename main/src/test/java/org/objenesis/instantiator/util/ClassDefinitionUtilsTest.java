@@ -16,6 +16,7 @@
 package org.objenesis.instantiator.util;
 
 import org.junit.Test;
+import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisException;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class ClassDefinitionUtilsTest {
    @Test
    public void testDefineClass() throws Exception {
       byte[] b = ClassDefinitionUtils.readClass(className);
-      Class<?> c = ClassDefinitionUtils.defineClass(className, b, getClass().getClassLoader());
+      Class<?> c = ClassDefinitionUtils.defineClass(className, b, Objenesis.class, getClass().getClassLoader());
       assertEquals(c.getName(), className);
    }
 

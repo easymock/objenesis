@@ -53,4 +53,9 @@ public class PlatformDescriptionTest {
    public void isAfterJigsaw() {
       PlatformDescription.isAfterJigsaw(); // just make sure it doesn't crash
    }
+
+   @Test
+   public void isAfterJava11() {
+      PlatformDescription.isAfterJava11(); // just make sure it doesn't crash
+   }
 }
