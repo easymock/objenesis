@@ -15,6 +15,8 @@
  */
 package org.objenesis;
 
+import org.objenesis.instantiator.util.ClassUtils;
+
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -239,7 +241,7 @@ public class ClassReader {
       InputStream iin;
       if(classPath.startsWith("classpath:")) {
          String className = classPath.substring("classpath:".length());
-         String resourceName = classNameToResource(className);
+         String resourceName = ClassUtils.classNameToResource(className);
          iin = getClass().getClassLoader().getResourceAsStream(resourceName);
       }
       else {

@@ -24,6 +24,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
 import org.objenesis.instantiator.util.ClassDefinitionUtils;
+import org.objenesis.instantiator.util.ClassUtils;
 
 import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
 
@@ -91,7 +92,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
       String suffix = type.getSimpleName();
       String className = getClass().getName() + "$$$" + suffix;
 
-      Class<ObjectInstantiator<T>> clazz = getExistingClass(getClass().getClassLoader(), className);
+      Class<ObjectInstantiator<T>> clazz = ClassUtils.getExistingClass(getClass().getClassLoader(), className);
 
       if(clazz == null) {
          byte[] classBytes = writeExtendingClass(type, className);
@@ -103,7 +104,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          }
       }
 
-      return ClassDefinitionUtils.newInstance(clazz);
+      return ClassUtils.newInstance(clazz);
    }
 
    /**
@@ -116,7 +117,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
     * @throws ObjenesisException is something goes wrong
     */
    private byte[] writeExtendingClass(Class<?> type, String className) {
-      String clazz = classNameToInternalClassName(className);
+      String clazz = ClassUtils.classNameToInternalClassName(className);
 
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000);  // 1000 should be large enough to fit the entire class
       try(DataOutputStream in = new DataOutputStream(bIn)) {
@@ -199,7 +200,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
          // 18. Type to instantiate name
          in.writeByte(CONSTANT_Utf8);
-         in.writeUTF(classNameToInternalClassName(type.getName()));
+         in.writeUTF(ClassUtils.classNameToInternalClassName(type.getName()));
 
          // end of constant pool
 

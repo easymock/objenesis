@@ -106,7 +106,7 @@ public final class ClassDefinitionUtils {
     */
    public static byte[] readClass(String className) throws IOException {
       // convert to a resource
-      className = classNameToResource(className);
+      className = ClassUtils.classNameToResource(className);
 
       byte[] b = new byte[2500]; // I'm assuming that I'm reading class that are not too big
 
@@ -135,55 +135,6 @@ public final class ClassDefinitionUtils {
    public static void writeClass(String fileName, byte[] bytes) throws IOException {
       try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileName))) {
          out.write(bytes);
-      }
-   }
-
-   /**
-    * Will convert a class name to its name in the class definition format (e.g {@code org.objenesis.EmptyClass}
-    * becomes {@code org/objenesis/EmptyClass})
-    *
-    * @param className full class name including the package
-    * @return the internal name
-    */
-   public static String classNameToInternalClassName(String className) {
-      return className.replace('.', '/');
-   }
-
-   /**
-    * Will convert a class name to its class loader resource name (e.g {@code org.objenesis.EmptyClass}
-    * becomes {@code org/objenesis/EmptyClass.class})
-    *
-    * @param className full class name including the package
-    * @return the resource name
-    */
-   public static String classNameToResource(String className) {
-      return classNameToInternalClassName(className) + ".class";
-   }
-
-   /**
-    * Check if this class already exists in the class loader and return it if it does
-    *
-    * @param <T> type of the class returned
-    * @param classLoader Class loader where to search the class
-    * @param className Class name with full path
-    * @return the class if it already exists or null
-    */
-   @SuppressWarnings("unchecked")
-   public static <T> Class<T> getExistingClass(ClassLoader classLoader, String className) {
-      try {
-         return (Class<T>) Class.forName(className, true, classLoader);
-      }
-      catch (ClassNotFoundException e) {
-         return null;
-      }
-   }
-
-   @SuppressWarnings("deprecation")
-   public static <T> T newInstance(Class<T> clazz) {
-      try {
-         return clazz.newInstance();
-      } catch (InstantiationException | IllegalAccessException e) {
-         throw new ObjenesisException(e);
       }
    }
 }

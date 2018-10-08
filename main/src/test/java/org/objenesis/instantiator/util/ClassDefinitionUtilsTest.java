@@ -37,45 +37,4 @@ public class ClassDefinitionUtilsTest {
       assertEquals(c.getName(), className);
    }
 
-   @Test
-   public void testClassNameToInternalClassName() {
-      String actual = ClassDefinitionUtils.classNameToInternalClassName(className);
-      assertEquals("org/objenesis/EmptyClassBis", actual);
-   }
-
-   @Test
-   public void testClassNameToResource() {
-      String actual = ClassDefinitionUtils.classNameToResource(className);
-      assertEquals("org/objenesis/EmptyClassBis.class", actual);
-   }
-
-   @Test
-   public void testGetExistingClass_existing() {
-      Class<?> actual = ClassDefinitionUtils.getExistingClass(getClass().getClassLoader(),
-         getClass().getName());
-      assertSame(actual, getClass());
-   }
-
-   @Test
-   public void testGetExistingClass_notExisting() {
-      Class<?> actual = ClassDefinitionUtils.getExistingClass(getClass().getClassLoader(), getClass().getName() + "$$$1");
-      assertNull(actual);
-   }
-
-   @Test
-   public void testNewInstance_noArgsConstructorPresent() {
-      ArrayList<?> i = ClassDefinitionUtils.newInstance(ArrayList.class);
-      assertTrue(i.isEmpty());
-   }
-
-   @Test
-   public void testNewInstance_noArgsConstructorAbsent() {
-      try {
-         ClassDefinitionUtils.newInstance(Integer.class);
-         fail("No arg constructor. It should fail");
-      }
-      catch(ObjenesisException e) {
-         assertEquals(InstantiationException.class, e.getCause().getClass());
-      }
-   }
 }

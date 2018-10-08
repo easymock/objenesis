@@ -24,6 +24,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
 import org.objenesis.instantiator.util.ClassDefinitionUtils;
+import org.objenesis.instantiator.util.ClassUtils;
 
 import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
 
@@ -70,7 +71,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    }
 
    public T newInstance() {
-      return ClassDefinitionUtils.newInstance(newType);
+      return ClassUtils.newInstance(newType);
    }
 
    /**
@@ -82,7 +83,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
     * @throws ObjenesisException is something goes wrong
     */
    private static byte[] writeExtendingClass(Class<?> type) {
-      String parentClazz = classNameToInternalClassName(type.getName());
+      String parentClazz = ClassUtils.classNameToInternalClassName(type.getName());
       String clazz = parentClazz + SUFFIX;
 
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
