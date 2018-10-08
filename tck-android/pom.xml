@@ -106,6 +106,7 @@
           <sdk>
             <platform>27</platform>
           </sdk>
+          <dexArguments>--min-sdk-version=26</dexArguments>
         </configuration>
         <extensions>true</extensions>
       </plugin>
