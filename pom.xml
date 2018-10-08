@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.objenesis</groupId>
   <artifactId>objenesis-parent</artifactId>
-  <version>3.0-SNAPSHOT</version>
+  <version>3.0</version>
   <packaging>pom</packaging>
 
   <name>Objenesis parent project</name>
@@ -54,7 +54,7 @@
     <url>https://github.com/easymock/objenesis</url>
     <developerConnection>scm:git:git@github.com:easymock/objenesis.git</developerConnection>
     <connection>scm:git:https://github.com/easymock/objenesis.git</connection>
-    <tag>HEAD</tag>
+    <tag>3.0</tag>
   </scm>
 
   <developers>
@@ -492,6 +492,13 @@
       <id>benchmark</id>
       <modules>
         <module>benchmark</module>
+      </modules>
+    </profile>
+    <profile>
+      <!-- Activate to run to include Google App Engine test -->
+      <id>gae</id>
+      <modules>
+        <module>gae</module>
       </modules>
     </profile>
     <profile>
