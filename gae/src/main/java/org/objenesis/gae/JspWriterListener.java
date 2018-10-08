@@ -56,6 +56,17 @@ public class JspWriterListener implements SearchWorkingInstantiatorListener {
       }
    }
 
+   @Override
+   public void instantiatorNotFound(String className, Throwable t) {
+      ByteArrayOutputStream b = new ByteArrayOutputStream();
+      t.printStackTrace(new PrintStream(b));
+      try {
+         writer.println(String.format(PATTERN, className + " not found", "KO - " + t));
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+   }
+
    private Typology getTypology(Class<?> c) {
       Instantiator instantiatorAnn = c.getAnnotation(Instantiator.class);
       return instantiatorAnn == null ? Typology.UNKNOWN : instantiatorAnn.value();
