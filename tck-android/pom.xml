@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis-parent</artifactId>
-    <version>3.0</version>
+    <version>3.1-SNAPSHOT</version>
   </parent>
   <artifactId>objenesis-tck-android</artifactId>
   <name>Objenesis Android TCK</name>
