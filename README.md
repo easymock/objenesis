@@ -41,10 +41,10 @@ This build will create the source and javadoc jars and run spotbugs.
 
 ### Run the Android TCK
 
-- Install the Android SDK
-- Configure a device (real or simulated)
-- Add an `ANDROID_HOME` to target the Android SDK
-- Add `$ANDROID_HOME/platform-tools` to your path
+- Install the Android SDK (`brew cask install android-sdk`)
+- Install `platform-tools` and `build-tools` using the sdkmanager (`sdkmanager "platform-tools" "build-tools"`)
+- Add an `ANDROID_HOME` to target the Android SDK (`export ANDROID_HOME=$(realpath $(echo "$(dirname $(readlink $(which sdkmanager)))/../.."))`)
+- Configure a device (real or simulated) and launch it
 - Activate the debug mode if it's a real device
 - `mvn package -Pandroid`
 
