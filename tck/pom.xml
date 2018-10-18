@@ -106,6 +106,9 @@
             <manifest>
               <mainClass>org.objenesis.tck.Main</mainClass>
             </manifest>
+            <manifestEntries>
+              <Automatic-Module-Name>org.objenesis.tck</Automatic-Module-Name>
+            </manifestEntries>
           </archive>
         </configuration>
       </plugin>
