@@ -22,7 +22,7 @@ fi
 
 version=$1
 
-if [ "$(git branch | grep ${version)" == "${version}" ]; then
+if [ "$(git branch | grep ${version})" == "${version}" ]; then
    echo "A branch named $version clashes with the version tag"
    exit 1
 fi
