@@ -113,7 +113,7 @@ img {
 p {
     border: 0;
     padding: 0;
-    margin: 0px 0px 10px;
+    margin: 0 0 10px;
 }
 
 blockquote {
@@ -196,9 +196,8 @@ ul, ol {
     font-size: 18px;
     background-color: #6e61ad;
     color: white;
-    padding: 2px;
-    padding-left: 6px;
-    margin-top: 24px;
+   padding: 2px 2px 2px 6px;
+   margin-top: 24px;
     margin-bottom: 12px;
 }
 

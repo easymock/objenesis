@@ -15,8 +15,6 @@
  */
 package org.objenesis.instantiator.util;
 
-import org.objenesis.ObjenesisException;
-
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;

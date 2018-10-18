@@ -48,7 +48,7 @@ public class ConcurrentGetInstantiator {
    public static class SunInstantiatorStrategy extends BaseInstantiatorStrategy {
       @Override
       public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
-         return new SunReflectionFactoryInstantiator<T>(type);
+         return new SunReflectionFactoryInstantiator<>(type);
       }
    }
 

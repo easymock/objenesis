@@ -17,14 +17,6 @@ package org.objenesis.instantiator.util;
 
 import org.objenesis.ObjenesisException;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.security.ProtectionDomain;
-
 /**
  * Helper class for to play with classes. It contains everything needed to play with a class
  * except the dodgy (Java 8) code you will find in {@link ClassDefinitionUtils}.

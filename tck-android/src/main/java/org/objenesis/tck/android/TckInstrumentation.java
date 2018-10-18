@@ -52,7 +52,7 @@ public class TckInstrumentation extends Instrumentation {
       finish(Activity.RESULT_OK, bundle);
    }
 
-   private void launch() throws IOException {
+   private void launch() {
       TextReporter reporter = new TextReporter(System.out, System.err);
       Main.run(reporter);
    }

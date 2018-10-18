@@ -120,10 +120,7 @@ public class JspReporter implements Reporter {
       if(!success) {
          errorCount++;
       }
-      Map<Candidate.CandidateType, Result> result = results.get(currentCandidate);
-      if(result == null) {
-         results.put(currentCandidate, result = new HashMap<>());
-      }
+      Map<Candidate.CandidateType, Result> result = results.computeIfAbsent(currentCandidate, k -> new HashMap<>());
       result.put(type, new Result(currentCandidate, type, success, exception));
    }
 
@@ -148,7 +145,7 @@ public class JspReporter implements Reporter {
       summary.println("   Objenesis serializer: " + objenesisSerializer.getInstantiatorOf(String.class).getClass().getName() + "<br>");
       summary.println("</p>");
 
-      Collection<String> candidateNames = new ArrayList<String>();
+      Collection<String> candidateNames = new ArrayList<>();
       for(Map.Entry<Candidate, Map<Candidate.CandidateType, Result>> entry : results.entrySet()) {
          candidateNames.add(entry.getKey().getDescription());
       }
@@ -159,7 +156,7 @@ public class JspReporter implements Reporter {
       summary.print("<th>Objenesis serializer</th>");
       summary.println("</tr>");
 
-      List<Result> exceptions = new ArrayList<Result>();
+      List<Result> exceptions = new ArrayList<>();
 
       // Candidates
       for(Map.Entry<Candidate, Map<Candidate.CandidateType, Result>> entry : results.entrySet()) {

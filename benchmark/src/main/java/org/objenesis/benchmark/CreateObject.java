@@ -79,8 +79,8 @@ public class CreateObject {
 
    @Setup
    public void prepare() {
-      sunInstantiator = new SunReflectionFactoryInstantiator<Object>(type);
-      unsafeInstantiator = new UnsafeFactoryInstantiator<Object>(type);
+      sunInstantiator = new SunReflectionFactoryInstantiator<>(type);
+      unsafeInstantiator = new UnsafeFactoryInstantiator<>(type);
       unsafe = getUnsafe();
       constructor = getConstructor();
    }

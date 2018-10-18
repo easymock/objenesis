@@ -17,9 +17,6 @@ package org.objenesis.instantiator.util;
 
 import org.junit.Test;
 import org.objenesis.Objenesis;
-import org.objenesis.ObjenesisException;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
