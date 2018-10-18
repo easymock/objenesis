@@ -23,7 +23,7 @@
   <parent>
     <artifactId>objenesis-parent</artifactId>
     <groupId>org.objenesis</groupId>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>gae</artifactId>
