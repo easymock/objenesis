@@ -100,11 +100,11 @@ http://www.sonatype.com/people/2010/01/how-to-generate-pgp-signatures-with-maven
 
 ```bash
 # Get the milestone matching the version
-milestone=$(curl -s -u "${github_user}:${github_password}" "https://api.github.com/repos/easymock/easymock/milestones" | jq ".[] | select(.title==\"$version\") | .number")
+milestone=$(curl -s "https://api.github.com/repos/easymock/objenesis/milestones" | jq ".[] | select(.title==\"$version\") | .number")
 echo "<h1>Version $version ($(date '+%Y-%m-%d'))</h1>"
 echo
 echo "<ul>"  
-curl -s -u "${github_user}:${github_password}" "https://api.github.com/repos/easymock/objenesis/issues?milestone=11&state=all" | jq -r '.[] | ("  <li>" + .title + " ("# +(.number|tostring) + ")</li>")'
+curl -s "https://api.github.com/repos/easymock/objenesis/issues?milestone=${milestone}&state=all" | jq -r '.[] | "  <li>" + .title + " (#" + (.number|tostring) + ")</li>"'
 echo "</ul>"
 ```
 
