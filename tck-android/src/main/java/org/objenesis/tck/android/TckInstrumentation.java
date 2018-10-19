@@ -40,11 +40,7 @@ public class TckInstrumentation extends Instrumentation {
       System.setOut(printStream);
       System.setErr(printStream);
 
-      try {
-         launch();
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
+      launch();
 
       Bundle bundle = new Bundle();
       String fromStdout = outputStream.toString();
