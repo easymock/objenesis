@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+
+    Copyright 2006-2019 the original author or authors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis-parent</artifactId>
-    <version>2.6-SNAPSHOT</version>
+    <version>3.1-SNAPSHOT</version>
   </parent>
   <artifactId>objenesis-tck</artifactId>
 
@@ -13,7 +30,7 @@
   <url>http://objenesis.org</url>
 
   <properties>
-    <paxexam.version>3.5.0</paxexam.version>
+    <paxexam.version>4.12.0</paxexam.version>
   </properties>
 
   <dependencies>
@@ -55,7 +72,7 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.framework</artifactId>
-      <version>5.6.1</version>
+      <version>6.0.1</version>
       <scope>test</scope>
     </dependency>
 
@@ -63,7 +80,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.1.7</version>
+      <version>1.2.3</version>
       <scope>test</scope>
     </dependency>
 
@@ -76,8 +93,8 @@
         <artifactId>maven-timestamp-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>com.mycila.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <artifactId>maven-remote-resources-plugin</artifactId>
@@ -89,6 +106,9 @@
             <manifest>
               <mainClass>org.objenesis.tck.Main</mainClass>
             </manifest>
+            <manifestEntries>
+              <Automatic-Module-Name>org.objenesis.tck</Automatic-Module-Name>
+            </manifestEntries>
           </archive>
         </configuration>
       </plugin>

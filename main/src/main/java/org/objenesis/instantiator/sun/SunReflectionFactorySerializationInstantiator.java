@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class SunReflectionFactorySerializationInstantiator<T> implements ObjectI
       Constructor<? super T> nonSerializableAncestorConstructor;
       try {
          nonSerializableAncestorConstructor = nonSerializableAncestor
-            .getConstructor((Class[]) null);
+            .getDeclaredConstructor((Class[]) null);
       }
       catch(NoSuchMethodException e) {
          throw new ObjenesisException(new NotSerializableException(type+" has no suitable superclass constructor"));

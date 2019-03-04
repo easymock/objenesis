@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package org.objenesis.instantiator.basic;
 
-import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
+import org.objenesis.instantiator.util.ClassUtils;
 
 /**
  * The simplest instantiator - simply calls Class.newInstance(). This can deal with default public
@@ -37,12 +37,7 @@ public class NewInstanceInstantiator<T> implements ObjectInstantiator<T> {
    }
 
    public T newInstance() {
-      try {
-         return type.newInstance();
-      }
-      catch(Exception e) {
-         throw new ObjenesisException(e);
-      }
+      return ClassUtils.newInstance(type);
    }
 
 }

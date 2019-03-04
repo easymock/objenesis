@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,10 +58,7 @@ public class Android17Instantiator<T> implements ObjectInstantiator<T> {
          newInstanceMethod.setAccessible(true);
          return newInstanceMethod;
       }
-      catch(RuntimeException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(NoSuchMethodException e) {
+      catch(RuntimeException | NoSuchMethodException e) {
          throw new ObjenesisException(e);
       }
    }
@@ -74,16 +71,7 @@ public class Android17Instantiator<T> implements ObjectInstantiator<T> {
 
          return (Integer) newInstanceMethod.invoke(null, Object.class);
       }
-      catch(RuntimeException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(NoSuchMethodException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(RuntimeException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
          throw new ObjenesisException(e);
       }
    }

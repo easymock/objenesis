@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
          Class<?> percMethodClass = Class.forName("COM.newmonics.PercClassLoader.Method");
 
          newInstanceMethod = ObjectInputStream.class.getDeclaredMethod("noArgConstruct",
-            new Class[] {Class.class, Object.class, percMethodClass});
+            Class.class, Object.class, percMethodClass);
          newInstanceMethod.setAccessible(true);
 
          // Create invoke params
@@ -64,22 +64,13 @@ public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
          Method getPercClassMethod = percClassClass.getDeclaredMethod("getPercClass", Class.class);
          Object someObject = getPercClassMethod.invoke(null, unserializableType);
          Method findMethodMethod = someObject.getClass().getDeclaredMethod("findMethod",
-            new Class[] {String.class});
+            String.class);
          Object percMethod = findMethodMethod.invoke(someObject, "<init>()V");
 
          typeArgs = new Object[] {unserializableType, type, percMethod};
 
       }
-      catch(ClassNotFoundException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(NoSuchMethodException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalAccessException e) {
+      catch(ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }
@@ -89,10 +80,7 @@ public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
       try {
          return (T) newInstanceMethod.invoke(null, typeArgs);
       }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }

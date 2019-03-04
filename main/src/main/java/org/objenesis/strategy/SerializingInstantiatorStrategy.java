@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
  */
 package org.objenesis.strategy;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
+
 import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.android.AndroidSerializationInstantiator;
@@ -23,9 +26,6 @@ import org.objenesis.instantiator.basic.ObjectStreamClassInstantiator;
 import org.objenesis.instantiator.gcj.GCJSerializationInstantiator;
 import org.objenesis.instantiator.perc.PercSerializationInstantiator;
 import org.objenesis.instantiator.sun.SunReflectionFactorySerializationInstantiator;
-
-import java.io.NotSerializableException;
-import java.io.Serializable;
 
 import static org.objenesis.strategy.PlatformDescription.*;
 
@@ -58,29 +58,26 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          throw new ObjenesisException(new NotSerializableException(type+" not serializable"));
       }
       if(JVM_NAME.startsWith(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
-         if(isGoogleAppEngine()) {
-            return new ObjectInputStreamInstantiator<T>(type);
+         // Java 7 GAE was under a security manager so we use a degraded system
+         if(isGoogleAppEngine() && PlatformDescription.SPECIFICATION_VERSION.equals("1.7")) {
+            return new ObjectInputStreamInstantiator<>(type);
          }
-         // ObjectStreamClassInstantiator uses setAccessible which isn't supported on JDK9
-         if(PlatformDescription.SPECIFICATION_VERSION.equals("9")) {
-            return new SunReflectionFactorySerializationInstantiator<T>(type);
-         }
-         return new ObjectStreamClassInstantiator<T>(type);
+         return new SunReflectionFactorySerializationInstantiator<>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {
          if(PlatformDescription.isAndroidOpenJDK()) {
-            return new ObjectStreamClassInstantiator<T>(type);
+            return new ObjectStreamClassInstantiator<>(type);
          }
-         return new AndroidSerializationInstantiator<T>(type);
+         return new AndroidSerializationInstantiator<>(type);
       }
       else if(JVM_NAME.startsWith(GNU)) {
-         return new GCJSerializationInstantiator<T>(type);
+         return new GCJSerializationInstantiator<>(type);
       }
       else if(JVM_NAME.startsWith(PERC)) {
-         return new PercSerializationInstantiator<T>(type);
+         return new PercSerializationInstantiator<>(type);
       }
 
-      return new ObjectStreamClassInstantiator<T>(type);
+      return new SunReflectionFactorySerializationInstantiator<>(type);
    }
 
 }

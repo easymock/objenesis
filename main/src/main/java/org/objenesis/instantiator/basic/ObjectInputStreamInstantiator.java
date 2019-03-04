@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,7 +120,7 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
       }
 
       @Override
-      public int read() throws IOException {
+      public int read() {
          int result = data[pointer++];
          if(pointer >= data.length) {
             advanceBuffer();
@@ -130,12 +130,12 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
       }
 
       @Override
-      public int available() throws IOException {
+      public int available() {
          return Integer.MAX_VALUE;
       }
 
       @Override
-      public int read(byte[] b, int off, int len) throws IOException {
+      public int read(byte[] b, int off, int len) {
          int left = len;
          int remaining = data.length - pointer;
 

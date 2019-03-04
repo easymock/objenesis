@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import org.objenesis.tck.candidates.SerializableNoConstructor;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
 import java.util.SortedSet;
 
 /**
@@ -32,9 +31,9 @@ import java.util.SortedSet;
  */
 public class SearchWorkingInstantiator implements Serializable { // implements Serializable just for the test
 
-    private SearchWorkingInstantiatorListener listener;
+    private final SearchWorkingInstantiatorListener listener;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         System.out.println();
         System.out.println(PlatformDescription.describePlatform());
         System.out.println();
@@ -50,44 +49,40 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
     public void searchForInstantiator(Class<?> toInstantiate) {
         SortedSet<String> classes = ClassEnumerator.getClassesForPackage(ObjectInstantiator.class.getPackage());
 
-        for (Iterator<String> it = classes.iterator(); it.hasNext();) {
-            String className = it.next();
+       for (String className : classes) {
+          // Skip if inner class or isn't named like a instantiator
+          if (className.contains("$") || !className.endsWith("Instantiator")) {
+             continue;
+          }
 
-            // Skip if inner class of isn't named like a instantiator
-            if(className.contains("$") || !className.endsWith("Instantiator")) {
-               continue;
-            }
+          Class<?> c;
+          try {
+             c = Class.forName(className);
+          } catch (Exception e) {
+             listener.instantiatorNotFound(className, e);
+             continue;
+          }
 
-           Class<?> c = null;
-           try {
-              c = Class.forName(className);
-           }
-           catch(Exception e) {
-              listener.instantiatorUnsupported(c, e);
-              continue;
-           }
+          if (c.isInterface() || !ObjectInstantiator.class.isAssignableFrom(c)) {
+             continue;
+          }
 
-           if(c.isInterface() || !ObjectInstantiator.class.isAssignableFrom(c)) {
-                continue;
-           }
+          Constructor<?> constructor;
+          try {
+             constructor = c.getConstructor(Class.class);
+          } catch (NoSuchMethodException e) {
+             throw new RuntimeException(e);
+          }
 
-            Constructor<?> constructor;
-            try {
-                constructor = c.getConstructor(Class.class);
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
-
-            try {
-                ObjectInstantiator<?> instantiator =
-                        (ObjectInstantiator<?>) constructor.newInstance(toInstantiate);
-                instantiator.newInstance();
-                listener.instantiatorSupported(c);
-            }
-            catch(Exception e) {
-                Throwable t = (e instanceof InvocationTargetException) ? e.getCause() : e;
-                listener.instantiatorUnsupported(c, t);
-            }
-        }
+          try {
+             ObjectInstantiator<?> instantiator =
+                (ObjectInstantiator<?>) constructor.newInstance(toInstantiate);
+             instantiator.newInstance();
+             listener.instantiatorSupported(c);
+          } catch (Exception e) {
+             Throwable t = (e instanceof InvocationTargetException) ? e.getCause() : e;
+             listener.instantiatorUnsupported(c, t);
+          }
+       }
     }
 }

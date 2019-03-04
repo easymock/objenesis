@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,17 @@ public class JspWriterListener implements SearchWorkingInstantiatorListener {
       t.printStackTrace(new PrintStream(b));
       try {
          writer.println(String.format(PATTERN, c.getSimpleName() + " (" + getTypology(c) + ")", "KO - " + b.toString()));
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+   }
+
+   @Override
+   public void instantiatorNotFound(String className, Throwable t) {
+      ByteArrayOutputStream b = new ByteArrayOutputStream();
+      t.printStackTrace(new PrintStream(b));
+      try {
+         writer.println(String.format(PATTERN, className + " not found", "KO - " + t));
       } catch (IOException e) {
          throw new RuntimeException(e);
       }

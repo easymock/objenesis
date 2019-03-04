@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,10 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
-import org.objenesis.instantiator.basic.ClassDefinitionUtils;
+import org.objenesis.instantiator.util.ClassDefinitionUtils;
+import org.objenesis.instantiator.util.ClassUtils;
 
-import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
+import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
 
 /**
  * This instantiator will correctly bypass the constructors by instantiating the class using the default
@@ -36,6 +37,8 @@ import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
  */
 @Instantiator(Typology.STANDARD)
 public class MagicInstantiator<T> implements ObjectInstantiator<T> {
+
+   private static final String MAGIC_ACCESSOR = getMagicClass();
 
    private static final int INDEX_CLASS_THIS = 1;
    private static final int INDEX_CLASS_SUPERCLASS = 2;
@@ -55,7 +58,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_CLASS_TYPE = 17;
    private static final int INDEX_UTF8_TYPE = 18;
 
-   private static int CONSTANT_POOL_COUNT = 19;
+   private static final int CONSTANT_POOL_COUNT = 19;
 
    private static final byte[] CONSTRUCTOR_CODE = { OPS_aload_0, OPS_invokespecial, 0, INDEX_METHODREF_OBJECT_CONSTRUCTOR, OPS_return};
    private static final int CONSTRUCTOR_CODE_ATTRIBUTE_LENGTH = 12 + CONSTRUCTOR_CODE.length;
@@ -66,7 +69,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
    private static final String CONSTRUCTOR_NAME = "<init>";
    private static final String CONSTRUCTOR_DESC = "()V";
 
-   private ObjectInstantiator<T> instantiator;
+   private final ObjectInstantiator<T> instantiator;
 
    public MagicInstantiator(Class<T> type) {
       instantiator = newInstantiatorOf(type);
@@ -85,29 +88,23 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
       return instantiator;
    }
 
-   private <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
+   private ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       String suffix = type.getSimpleName();
       String className = getClass().getName() + "$$$" + suffix;
 
-      Class<ObjectInstantiator<T>> clazz = getExistingClass(getClass().getClassLoader(), className);
+      Class<ObjectInstantiator<T>> clazz = ClassUtils.getExistingClass(getClass().getClassLoader(), className);
 
       if(clazz == null) {
          byte[] classBytes = writeExtendingClass(type, className);
 
          try {
-            clazz = ClassDefinitionUtils.defineClass(className, classBytes, getClass().getClassLoader());
+            clazz = ClassDefinitionUtils.defineClass(className, classBytes, type, getClass().getClassLoader());
          } catch (Exception e) {
             throw new ObjenesisException(e);
          }
       }
 
-      try {
-         return clazz.newInstance();
-      } catch (InstantiationException e) {
-         throw new ObjenesisException(e);
-      } catch (IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
+      return ClassUtils.newInstance(clazz);
    }
 
    /**
@@ -120,13 +117,10 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
     * @throws ObjenesisException is something goes wrong
     */
    private byte[] writeExtendingClass(Class<?> type, String className) {
-      String clazz = classNameToInternalClassName(className);
+      String clazz = ClassUtils.classNameToInternalClassName(className);
 
-      DataOutputStream in = null;
-      ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
-      try {
-         in = new DataOutputStream(bIn);
-
+      ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000);  // 1000 should be large enough to fit the entire class
+      try(DataOutputStream in = new DataOutputStream(bIn)) {
          in.write(MAGIC);
          in.write(VERSION);
          in.writeShort(CONSTANT_POOL_COUNT);
@@ -164,7 +158,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
          // 8. Superclass name
          in.writeByte(CONSTANT_Utf8);
 //         in.writeUTF("java/lang/Object");
-         in.writeUTF("sun/reflect/MagicAccessorImpl");
+         in.writeUTF(MAGIC_ACCESSOR);
 
          // 9. ObjectInstantiator interface
          in.writeByte(CONSTANT_Class);
@@ -206,7 +200,7 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
          // 18. Type to instantiate name
          in.writeByte(CONSTANT_Utf8);
-         in.writeUTF(classNameToInternalClassName(type.getName()));
+         in.writeUTF(ClassUtils.classNameToInternalClassName(type.getName()));
 
          // end of constant pool
 
@@ -266,14 +260,6 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
       } catch (IOException e) {
          throw new ObjenesisException(e);
-      } finally {
-         if(in != null) {
-            try {
-               in.close();
-            } catch (IOException e) {
-               throw new ObjenesisException(e);
-            }
-         }
       }
 
       return bIn.toByteArray();
@@ -281,5 +267,14 @@ public class MagicInstantiator<T> implements ObjectInstantiator<T> {
 
    public T newInstance() {
       return instantiator.newInstance();
+   }
+
+   private static String getMagicClass() {
+      try {
+         Class.forName("sun.reflect.MagicAccessorImpl", false, MagicInstantiator.class.getClassLoader());
+         return "sun/reflect/MagicAccessorImpl";
+      } catch (ClassNotFoundException e) {
+         return "jdk/internal/reflect/MagicAccessorImpl";
+      }
    }
 }

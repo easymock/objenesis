@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,16 @@
  */
 package org.objenesis.tck.android;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.os.Bundle;
-import org.objenesis.tck.Main;
-import org.objenesis.tck.TextReporter;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import org.objenesis.tck.Main;
+import org.objenesis.tck.TextReporter;
+
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.os.Bundle;
 
 /**
  * Wraps the Objenesis TCK so that it can be invoked on Android as an {@link Instrumentation}.
@@ -39,11 +40,7 @@ public class TckInstrumentation extends Instrumentation {
       System.setOut(printStream);
       System.setErr(printStream);
 
-      try {
-         launch();
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
+      launch();
 
       Bundle bundle = new Bundle();
       String fromStdout = outputStream.toString();
@@ -51,12 +48,8 @@ public class TckInstrumentation extends Instrumentation {
       finish(Activity.RESULT_OK, bundle);
    }
 
-   private void launch() throws IOException {
+   private void launch() {
       TextReporter reporter = new TextReporter(System.out, System.err);
-
-      boolean parentConstructorTestSuccessful = Main.run(reporter);
-
-      reporter.printResult(parentConstructorTestSuccessful);
-
+      Main.run(reporter);
    }
 }

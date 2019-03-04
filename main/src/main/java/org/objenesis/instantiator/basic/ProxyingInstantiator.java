@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,10 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
+import org.objenesis.instantiator.util.ClassDefinitionUtils;
+import org.objenesis.instantiator.util.ClassUtils;
 
-import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
+import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
 
 /**
  * This instantiator creates a class by dynamically extending it. It will skip the call to the parent constructor
@@ -45,7 +47,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    private static final int INDEX_UTF8_CLASS = 7;
    private static final int INDEX_UTF8_SUPERCLASS = 8;
 
-   private static int CONSTANT_POOL_COUNT = 9;
+   private static final int CONSTANT_POOL_COUNT = 9;
 
    private static final byte[] CODE = { OPS_aload_0, OPS_return};
    private static final int CODE_ATTRIBUTE_LENGTH = 12 + CODE.length;
@@ -56,7 +58,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    private static final String CONSTRUCTOR_NAME = "<init>";
    private static final String CONSTRUCTOR_DESC = "()V";
 
-   private final Class<?> newType;
+   private final Class<? extends T> newType;
 
    private static String nameForSubclass(Class<?> parent) {
       String parentName = parent.getName();
@@ -69,7 +71,6 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    }
 
    public ProxyingInstantiator(Class<T> type) {
-
       byte[] classBytes = writeExtendingClass(type, SUFFIX);
       ClassLoader loader = type.getClassLoader();
       if (loader == null) {
@@ -82,15 +83,8 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
       }
    }
 
-   @SuppressWarnings("unchecked")
    public T newInstance() {
-      try {
-         return (T) newType.newInstance();
-      } catch (InstantiationException e) {
-         throw new ObjenesisException(e);
-      } catch (IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
+      return ClassUtils.newInstance(newType);
    }
 
    /**
@@ -98,18 +92,15 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
     * only have an empty default constructor
     *
     * @param type type to extend
-    * @param suffix the suffix appended to the class name to create the next extending class name
     * @return the byte for the class
     * @throws ObjenesisException is something goes wrong
     */
-   private static byte[] writeExtendingClass(Class<?> type, String suffix) {
-      String parentClazz = classNameToInternalClassName(type.getName());
-      String clazz = classNameToInternalClassName(nameForSubclass(type));
+   private static byte[] writeExtendingClass(Class<?> type) {
+      String parentClazz = ClassUtils.classNameToInternalClassName(type.getName());
+      String clazz = parentClazz + SUFFIX;
 
-      DataOutputStream in = null;
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
-      try {
-         in = new DataOutputStream(bIn);
+      try(DataOutputStream in = new DataOutputStream(bIn)) {
 
          in.write(MAGIC);
          in.write(VERSION);
@@ -191,14 +182,6 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
       } catch (IOException e) {
          throw new ObjenesisException(e);
-      } finally {
-         if(in != null) {
-            try {
-               in.close();
-            } catch (IOException e) {
-               throw new ObjenesisException(e);
-            }
-         }
       }
 
       return bIn.toByteArray();

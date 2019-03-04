@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,13 +39,7 @@ public class GCJInstantiator<T> extends GCJInstantiatorBase<T> {
       try {
          return type.cast(newObjectMethod.invoke(dummyStream, type, Object.class));
       }
-      catch(RuntimeException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(IllegalAccessException e) {
-         throw new ObjenesisException(e);
-      }
-      catch(InvocationTargetException e) {
+      catch(RuntimeException | IllegalAccessException | InvocationTargetException e) {
          throw new ObjenesisException(e);
       }
    }

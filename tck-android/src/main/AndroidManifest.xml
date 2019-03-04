@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 
-    Copyright 2006-2017 the original author or authors.
+    Copyright 2006-2019 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="1"
-        android:targetSdkVersion="25" />
+        android:minSdkVersion="26"
+        android:targetSdkVersion="27" />
 
     <application android:allowBackup="false">
         <uses-library android:name="android.test.runner" />

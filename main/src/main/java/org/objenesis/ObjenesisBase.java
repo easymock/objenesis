@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ObjenesisBase implements Objenesis {
 
-   /** Strategy used by this Objenesi implementation to create classes */
+   /** Strategy used by this Objenesis implementation to create classes */
    protected final InstantiatorStrategy strategy;
 
    /** Strategy cache. Key = Class, Value = InstantiatorStrategy */
@@ -54,7 +54,7 @@ public class ObjenesisBase implements Objenesis {
          throw new IllegalArgumentException("A strategy can't be null");
       }
       this.strategy = strategy;
-      this.cache = useCache ? new ConcurrentHashMap<String, ObjectInstantiator<?>>() : null;
+      this.cache = useCache ? new ConcurrentHashMap<>() : null;
    }
 
    @Override

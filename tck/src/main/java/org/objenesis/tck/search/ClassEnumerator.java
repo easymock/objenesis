@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,21 +34,20 @@ public class ClassEnumerator {
         // Get the list of the files contained in the package
         String[] files = directory.list();
 
-        for (int i = 0; i < files.length; i++) {
-            String fileName = files[i];
-            // we are only interested in .class files
-            if (fileName.endsWith(".class")) {
-                // removes the .class extension
-                String className = pkgname + '.' + fileName.substring(0, fileName.length() - 6);
-                classes.add(className);
-                continue;
-            }
+       for (String fileName : files) {
+          // we are only interested in .class files
+          if (fileName.endsWith(".class")) {
+             // removes the .class extension
+             String className = pkgname + '.' + fileName.substring(0, fileName.length() - 6);
+             classes.add(className);
+             continue;
+          }
 
-            File subdir = new File(directory, fileName);
-            if (subdir.isDirectory()) {
-                processDirectory(subdir, pkgname + '.' + fileName, classes);
-            }
-        }
+          File subdir = new File(directory, fileName);
+          if (subdir.isDirectory()) {
+             processDirectory(subdir, pkgname + '.' + fileName, classes);
+          }
+       }
     }
 
     private static void processJarfile(URL resource, String pkgname, SortedSet<String> classes) {
@@ -92,10 +91,11 @@ public class ClassEnumerator {
     * Return all the classes in this package recursively.
     *
     * @param pkg the searched package
+    * @param classLoader class loader where to look for classes
     * @return list of full class names
     */
     public static SortedSet<String> getClassesForPackage(Package pkg, ClassLoader classLoader) {
-        SortedSet<String> classes = new TreeSet<String>(new Comparator<String>() {
+        SortedSet<String> classes = new TreeSet<>(new Comparator<String>() {
            public int compare(String o1, String o2) {
               String simpleName1 = getSimpleName(o1);
               String simpleName2 = getSimpleName(o2);

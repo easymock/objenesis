@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2006-2017 the original author or authors.
+    Copyright 2006-2019 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -47,16 +47,16 @@
 JVM version, SecurityManager and type of class being instantiated.</p>
 
 <p>We have defined that two different kinds of instantiation are required:</p>
-   
+
 <ul>
     <li><strong>Stardard</strong> - No constructor will be called</li>
-    <li><strong>Serializable compliant</strong> - Acts like an object instantiated by java standard 
-        serialization. It means that the constructor of the first non-serializable parent class will
-        be called. However, readResolve is not called and we never check if the object is serializable.</li>
+    <li><strong>Serializable compliant</strong> - Acts like an object instantiated by java standard
+       serialization. It means that the constructor of the first non-serializable parent class will
+       be called. However, specific implementation methods (e.g. <code>readResolve()</code>) are not called and we never check if the object is serializable.</li>
 </ul>
 
-<p>The simplest way to use Objenesis is by using <a href="${javadoc}/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> (Standard) and 
-<a href="${javadoc}/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a> (Serializable compliant). By default, 
+<p>The simplest way to use Objenesis is by using <a href="${javadoc}/org/objenesis/ObjenesisStd.html">ObjenesisStd</a> (Standard) and
+<a href="${javadoc}/org/objenesis/ObjenesisSerializer.html">ObjenesisSerializer</a> (Serializable compliant). By default,
 automatically determines the best strategy - so you don't have to.</p>
 
 <pre>Objenesis objenesis = new ObjenesisStd(); // or ObjenesisSerializer</pre>

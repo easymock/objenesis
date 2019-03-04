@@ -1,6 +1,6 @@
 <%--
 
-    Copyright 2006-2017 the original author or authors.
+    Copyright 2006-2019 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
     limitations under the License.
 
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="main.java.org.objenesis.gae.JspReporter" %>
-<%@ page import="main.java.org.objenesis.gae.JspWriterListener" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.TreeMap" %>
+<%@ page import="org.objenesis.gae.JspReporter" %>
+<%@ page import="org.objenesis.gae.JspWriterListener" %>
 <%@ page import="org.objenesis.strategy.PlatformDescription" %>
 <%@ page import="org.objenesis.tck.Main" %>
 <%@ page import="org.objenesis.tck.candidates.SerializableNoConstructor" %>
 <%@ page import="org.objenesis.tck.search.SearchWorkingInstantiator" %>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.TreeMap" %>
 <html>
 <head>
   <title>Search Objenesis Working Instantiator</title>
@@ -47,7 +47,7 @@
         <th>Value</th>
     </tr>
 <%
-  for(Map.Entry<Object, Object> property : new TreeMap<Object, Object>(System.getProperties()).entrySet()) {
+  for(Map.Entry<Object, Object> property : new TreeMap<>(System.getProperties()).entrySet()) {
 %>
   <%= "<tr><td>" + property.getKey() + "</td><td>" + property.getValue() + "</td></tr>" %>
 <%
@@ -72,8 +72,7 @@
 <%
   JspReporter reporter = new JspReporter(out, out);
   try {
-    boolean result = Main.run(reporter);
-    reporter.printResult(result);
+    Main.run(reporter);
   }
   catch(Exception e) {
     out.println("<pre>");

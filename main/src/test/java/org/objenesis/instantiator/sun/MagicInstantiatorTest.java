@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,24 +31,24 @@ public class MagicInstantiatorTest {
 
    @Before
    public void before() {
-      // I know it works one these two. Not sure on others
-      assumeTrue(
-         PlatformDescription.isThisJVM(PlatformDescription.HOTSPOT) ||
-            PlatformDescription.isThisJVM(PlatformDescription.OPENJDK));
+      // I know it works on Hotspot and OpenJDK. Before JDK 9. Not sure on others
+      assumeTrue((PlatformDescription.isThisJVM(PlatformDescription.HOTSPOT) || PlatformDescription.isThisJVM(PlatformDescription.OPENJDK))
+         && !PlatformDescription.isAfterJigsaw()
+      );
    }
 
    @Test
-   public void testNewInstance() throws Exception {
-      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<EmptyClass>(EmptyClass.class);
+   public void testNewInstance() {
+      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<>(EmptyClass.class);
       assertEquals(EmptyClass.class, o1.newInstance().getClass());
 
-      ObjectInstantiator<EmptyClass> o2 = new MagicInstantiator<EmptyClass>(EmptyClass.class);
+      ObjectInstantiator<EmptyClass> o2 = new MagicInstantiator<>(EmptyClass.class);
       assertEquals(EmptyClass.class, o2.newInstance().getClass());
    }
 
    @Test
    public void testInternalInstantiator() {
-      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<EmptyClass>(EmptyClass.class).getInstantiator();
+      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<>(EmptyClass.class).getInstantiator();
       assertEquals(EmptyClass.class, o1.newInstance().getClass());
    }
 }

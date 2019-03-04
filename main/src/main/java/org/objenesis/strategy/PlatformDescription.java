@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package org.objenesis.strategy;
 
-import org.objenesis.ObjenesisException;
-
 import java.lang.reflect.Field;
+
+import org.objenesis.ObjenesisException;
 
 /**
  * List of constants describing the currently used platform.
@@ -25,9 +25,6 @@ import java.lang.reflect.Field;
  * @author Henri Tremblay
  */
 public final class PlatformDescription {
-
-   /** JVM_NAME prefix for JRockit */
-   public static final String JROCKIT = "BEA";
 
    /** JVM_NAME prefix for GCJ */
    public static final String GNU = "GNU libgcj";
@@ -93,9 +90,8 @@ public final class PlatformDescription {
               + "JVM version=" + VM_VERSION + ", "
               + "JVM info=" + VM_INFO;
 
-      // Add the API level is it's an Android platform
-      int androidVersion = ANDROID_VERSION;
-      if(androidVersion != 0) {
+      // Add the API level if it's an Android platform
+      if(ANDROID_VERSION != 0) {
          desc += ", API level=" + ANDROID_VERSION;
       }
       desc += ")";
@@ -132,6 +128,29 @@ public final class PlatformDescription {
       // version or not
       String bootClasspath = System.getProperty("java.boot.class.path");
       return bootClasspath != null && bootClasspath.toLowerCase().contains("core-oj.jar");
+   }
+
+   /**
+    * Tells if the current JVM is running Java 9 or above
+    *
+    * @return if the current JVM is Java 9 or above
+    */
+   public static boolean isAfterJigsaw() {
+      String version = PlatformDescription.SPECIFICATION_VERSION;
+      return version.indexOf('.') < 0; // No dot means the version is 9, 10, 11, ... not 1.6, 1.7, 1.8
+   }
+
+   /**
+    * Tells if the current JVM is running Java 11 or above
+    *
+    * @return if the current JVM is Java 11 or above
+    */
+   public static boolean isAfterJava11() {
+      if(!isAfterJigsaw()) {
+         return false;
+      }
+      int version = Integer.parseInt(PlatformDescription.SPECIFICATION_VERSION);
+      return version >= 11;
    }
 
    public static boolean isGoogleAppEngine() {

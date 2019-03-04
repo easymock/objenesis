@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,19 @@
  */
 package org.objenesis.tck;
 
-import java.util.Map;
+import org.objenesis.Objenesis;
 
 /**
  * Reports results from the TCK back to the user.
  * <p>
  * The sequence these methods are called is described below:
- * </p>
- * 
+ *
  * <pre>
- * startTests(startObjenesis(result | exception) * endObjenesis) * endTests
+ * startTests(startTest(result | exception)) * endTests
  * </pre>
- * 
+ *
  * @author Joe Walnes
+ * @author Henri Tremblay
  * @see TCK
  * @see TextReporter
  */
@@ -35,44 +35,35 @@ public interface Reporter {
 
    /**
     * Report that the tests are starting. Provides information that is useful to be reported.
-    * 
-    * @param platformDescription Description the platform being run on (i.e. JVM version, vendor,
-    *        etc).
-    * @param allCandidates Descriptions (String) of all candidates (Object) being used in tests.
-    * @param allObjenesisInstances Descriptions (String) of all Objenesis instances (Object) being
-    *        used in tests.
+    *
+    * @param platformDescription Description the platform being run on (i.e. JVM version, vendor, etc)
+    * @param objenesisStandard Standard Objenesis instance used
+    * @param objenesisSerializer Serialization Objenesis instance used
     */
-   void startTests(String platformDescription, Map<String, Object> allCandidates,
-      Map<String, Object> allObjenesisInstances);
+   void startTests(String platformDescription, Objenesis objenesisStandard, Objenesis objenesisSerializer);
 
    /**
-    * Report that a test between a candidate and an objenesis instance if about to start.
-    * 
-    * @param candidateDescription Description of the candidate class.
-    * @param objenesisDescription Description of the objenesis instance.
+    * Report that a test between a candidate and an objenesis instance is about to start.
+    *
+    * @param candidate Starting to test this candidate.
     */
-   void startTest(String candidateDescription, String objenesisDescription);
+   void startTest(Candidate candidate);
 
    /**
-    * Report details about what happened when an Objenesis instance tried to instantiate the current
-    * candidate.
-    * 
-    * @param instantiatedObject Whether the ObjectInstantiator successfully instantiated the
-    *        candidate class.
+    * Report details about what happened when performing an instantiation test or a serialization feature test.
+    *
+    * @param type type of test
+    * @param worked Whether the test was successful or not
     */
-   void result(boolean instantiatedObject);
+   void result(Candidate.CandidateType type, boolean worked);
 
    /**
     * Report that something bad happened during the test.
-    * 
-    * @param exception Exception thrown by instantiator.
+    *
+    * @param type type of test
+    * @param exception Exception thrown
     */
-   void exception(Exception exception);
-
-   /**
-    * Report that tests have been completed for a particular Objenesis instance and candidate.
-    */
-   void endTest();
+   void exception(Candidate.CandidateType type, Exception exception);
 
    /**
     * Report that all tests have finished. Nothing will be called after this method.

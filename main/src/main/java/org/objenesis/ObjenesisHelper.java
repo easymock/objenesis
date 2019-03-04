@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public final class ObjenesisHelper {
     * @return New instance of clazz
     */
    public static <T extends Serializable> T newSerializableInstance(Class<T> clazz) {
-      return (T) OBJENESIS_SERIALIZER.newInstance(clazz);
+      return OBJENESIS_SERIALIZER.newInstance(clazz);
    }
 
    /**

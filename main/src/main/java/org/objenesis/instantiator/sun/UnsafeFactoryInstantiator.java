@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
-
-import java.lang.reflect.Field;
+import org.objenesis.instantiator.util.UnsafeUtils;
 
 /**
  * Instantiates an object, WITHOUT calling it's constructor, using
- * sun.misc.Unsafe.allocateInstance(). Unsafe and its methods are implemented by most
+ * {@code sun.misc.Unsafe.allocateInstance()}. Unsafe and its methods are implemented by most
  * modern JVMs.
  *
  * @author Henri Tremblay
@@ -35,24 +34,11 @@ import java.lang.reflect.Field;
 @Instantiator(Typology.STANDARD)
 public class UnsafeFactoryInstantiator<T> implements ObjectInstantiator<T> {
 
-   private static Unsafe unsafe;
+   private final Unsafe unsafe;
    private final Class<T> type;
 
    public UnsafeFactoryInstantiator(Class<T> type) {
-      if (unsafe == null) {
-         Field f;
-         try {
-            f = Unsafe.class.getDeclaredField("theUnsafe");
-         } catch (NoSuchFieldException e) {
-            throw new ObjenesisException(e);
-         }
-         f.setAccessible(true);
-         try {
-            unsafe = (Unsafe) f.get(null);
-         } catch (IllegalAccessException e) {
-            throw new ObjenesisException(e);
-         }
-      }
+      this.unsafe = UnsafeUtils.getUnsafe(); // retrieve it to fail right away at instantiator creation if not there
       this.type = type;
    }
 

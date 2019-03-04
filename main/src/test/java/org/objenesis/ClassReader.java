@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.objenesis;
 
+import org.objenesis.instantiator.util.ClassUtils;
+
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,15 +24,15 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
-import static org.objenesis.instantiator.basic.ClassDefinitionUtils.*;
+import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
 
 /**
  * @author Henri Tremblay
  */
 public class ClassReader {
 
-   byte[] buffer = new byte[256];
-   Object[] constant_pool;
+   private final byte[] buffer = new byte[256];
+   private Object[] constant_pool;
 
    public static void main(String[] args) throws IOException {
       if(args.length != 1) {
@@ -239,7 +241,7 @@ public class ClassReader {
       InputStream iin;
       if(classPath.startsWith("classpath:")) {
          String className = classPath.substring("classpath:".length());
-         String resourceName = classNameToResource(className);
+         String resourceName = ClassUtils.classNameToResource(className);
          iin = getClass().getClassLoader().getResourceAsStream(resourceName);
       }
       else {

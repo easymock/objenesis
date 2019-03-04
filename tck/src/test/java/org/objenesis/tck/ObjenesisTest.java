@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,76 +15,61 @@
  */
 package org.objenesis.tck;
 
-import static org.junit.Assert.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Map;
 
 import org.junit.Test;
+import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
+
+import static org.junit.Assert.*;
 
 /**
  * Integration test for Objenesis. Should pass successfully on every supported JVM for all Objenesis
  * interface implementation.
- * 
+ *
  * @author Henri Tremblay
  */
 public class ObjenesisTest {
 
    public static class JUnitReporter implements Reporter {
 
-      private String currentObjenesis;
+      private Candidate currentCandidate;
 
-      private String currentCandidate;
-
-      public void startTests(String platformDescription, Map<String, Object> allCandidates,
-         Map<String, Object> allInstantiators) {
+      @Override
+      public void startTests(String platformDescription, Objenesis objenesisStandard, Objenesis objenesisSerializer) {
       }
 
-      public void startTest(String candidateDescription, String objenesisDescription) {
-         currentCandidate = candidateDescription;
-         currentObjenesis = objenesisDescription;
+      @Override
+      public void startTest(Candidate candidate) {
+         currentCandidate = candidate;
       }
 
-      public void endObjenesis(String description) {
+      @Override
+      public void result(Candidate.CandidateType type, boolean worked) {
+         assertTrue("Instantiating " + currentCandidate + " for " + type + " failed", worked);
       }
 
+      @Override
+      public void exception(Candidate.CandidateType type, Exception exception) {
+         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+         try (PrintStream out = new PrintStream(buffer)) {
+            out.println("Exception when instantiating " + currentCandidate + " for " + type + ": ");
+            exception.printStackTrace(out);
+            fail(buffer.toString());
+         }
+      }
+
+      @Override
       public void endTests() {
       }
 
-      public void exception(Exception exception) {
-         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-         PrintStream out = new PrintStream(buffer);
-         out.println("Exception when instantiating " + currentCandidate + " with "
-            + currentObjenesis + ": ");
-         exception.printStackTrace(out);
-         fail(buffer.toString());
-      }
-
-      public void result(boolean instantiatedObject) {
-         assertTrue("Instantiating " + currentCandidate + " with " + currentObjenesis + " failed",
-            instantiatedObject);
-      }
-
-      public void endTest() {
-      }
    }
 
    @Test
-   public void testObjenesisStd() throws Exception {
-      Main.runStandardTest(new ObjenesisStd(), new JUnitReporter());
-   }
-
-   @Test
-   public void testObjenesisSerializer() throws Exception {
-      Main.runSerializerTest(new ObjenesisSerializer(), new JUnitReporter());
-   }
-
-   @Test
-   public void testObjenesisSerializerParentConstructorCalled() throws Exception {
-      boolean result = Main.runParentConstructorTest(new ObjenesisSerializer());
-      assertTrue(result);
+   public void test() {
+      TCK tck = new TCK(new ObjenesisStd(), new ObjenesisSerializer(), new JUnitReporter());
+      tck.runTests();
    }
 }

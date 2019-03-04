@@ -1,5 +1,5 @@
-/**
- * Copyright 2006-2017 the original author or authors.
+/*
+ * Copyright 2006-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,18 +41,11 @@ public abstract class GCJInstantiatorBase<T> implements ObjectInstantiator<T> {
    private static void initialize() {
       if(newObjectMethod == null) {
          try {
-            newObjectMethod = ObjectInputStream.class.getDeclaredMethod("newObject", new Class[] {
-               Class.class, Class.class});
+            newObjectMethod = ObjectInputStream.class.getDeclaredMethod("newObject", Class.class, Class.class);
             newObjectMethod.setAccessible(true);
             dummyStream = new DummyStream();
          }
-         catch(RuntimeException e) {
-            throw new ObjenesisException(e);
-         }
-         catch(NoSuchMethodException e) {
-            throw new ObjenesisException(e);
-         }
-         catch(IOException e) {
+         catch(RuntimeException | NoSuchMethodException | IOException e) {
             throw new ObjenesisException(e);
          }
       }
