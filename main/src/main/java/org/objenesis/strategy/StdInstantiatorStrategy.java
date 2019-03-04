@@ -57,8 +57,8 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
     */
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
-      if(type.isInterface() || Modifier.isAbstract(type.getModifiers())) {
-         // ProxyingInstantiator is the only one that works with this class.
+      if(Modifier.isAbstract(type.getModifiers())) {
+         // ProxyingInstantiator is the only one that works with an abstract class.
          return new ProxyingInstantiator<T>(type);
       }
 
