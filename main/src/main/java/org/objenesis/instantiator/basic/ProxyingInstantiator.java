@@ -30,10 +30,13 @@ import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
 import static org.objenesis.instantiator.util.ClassUtils.classNameToInternalClassName;
 
 /**
- * This instantiator creates a class by dynamically extending it. It will skip the call to the parent constructor
+ * <p>This instantiator creates a class by dynamically extending it. It will skip the call to the parent constructor
  * in the bytecode. So that the constructor is indeed not called but you however instantiate a child class, not
  * the actual class. The class loader will normally throw a {@code VerifyError} is you do that. However, using
- * {@code -Xverify:none} should make it work
+ * {@code -Xverify:none} should make it work.</p>
+ *
+ * <p>The class must not be an interface. If it has abstract methods, they will throw an {@code AbstractMethodError}
+ * when called.</p>
  *
  * @author Henri Tremblay
  */
