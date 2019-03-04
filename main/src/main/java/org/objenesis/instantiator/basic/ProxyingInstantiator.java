@@ -27,6 +27,7 @@ import org.objenesis.instantiator.util.ClassDefinitionUtils;
 import org.objenesis.instantiator.util.ClassUtils;
 
 import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
+import static org.objenesis.instantiator.util.ClassUtils.classNameToInternalClassName;
 
 /**
  * This instantiator creates a class by dynamically extending it. It will skip the call to the parent constructor
@@ -97,8 +98,8 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
     * @throws ObjenesisException is something goes wrong
     */
    private static byte[] writeExtendingClass(Class<?> type) {
-      String parentClazz = ClassUtils.classNameToInternalClassName(type.getName());
-      String clazz = parentClazz + SUFFIX;
+      String parentClazz = classNameToInternalClassName(type.getName());
+      String clazz = classNameToInternalClassName(nameForSubclass(type));
 
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
       try(DataOutputStream in = new DataOutputStream(bIn)) {
