@@ -50,6 +50,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
    private static final byte[] CODE = { OPS_aload_0, OPS_return};
    private static final int CODE_ATTRIBUTE_LENGTH = 12 + CODE.length;
 
+   private static final String PREFIX = "org.objenesis.subclasses.";
    private static final String SUFFIX = "$$$Objenesis";
 
    private static final String CONSTRUCTOR_NAME = "<init>";
@@ -57,12 +58,25 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
 
    private final Class<?> newType;
 
+   private static String nameForSubclass(Class<?> parent) {
+      String parentName = parent.getName();
+      StringBuilder subclassName = new StringBuilder();
+      if (parentName.startsWith("java")) {
+         subclassName.append(PREFIX);
+      }
+      subclassName.append(parentName).append(SUFFIX);
+      return subclassName.toString();
+   }
+
    public ProxyingInstantiator(Class<T> type) {
 
       byte[] classBytes = writeExtendingClass(type, SUFFIX);
-
+      ClassLoader loader = type.getClassLoader();
+      if (loader == null) {
+         loader = ClassLoader.getSystemClassLoader();
+      }
       try {
-         newType = ClassDefinitionUtils.defineClass(type.getName() + SUFFIX, classBytes, type.getClassLoader());
+         newType = ClassDefinitionUtils.defineClass(nameForSubclass(type), classBytes, loader);
       } catch (Exception e) {
          throw new ObjenesisException(e);
       }
@@ -90,7 +104,7 @@ public class ProxyingInstantiator<T> implements ObjectInstantiator<T> {
     */
    private static byte[] writeExtendingClass(Class<?> type, String suffix) {
       String parentClazz = classNameToInternalClassName(type.getName());
-      String clazz = parentClazz + suffix;
+      String clazz = classNameToInternalClassName(nameForSubclass(type));
 
       DataOutputStream in = null;
       ByteArrayOutputStream bIn = new ByteArrayOutputStream(1000); // 1000 should be large enough to fit the entire class
