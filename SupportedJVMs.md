@@ -6,7 +6,7 @@
 * Azul Zulu (tested on 1.8.0_45-b14)
 * Azul Zing JDK 1.8 (tested on 1.8.0-zing_16.10.1.0-b2)
 * IKVM (tested on 8.1.5717)
-* BEA JRockit R27, R28
+* BEA JRockit R27, R28 (Objenesis version < 3)
 * GCJ version 3.4.4 (tested on Windows/Cygwin)
 * Aonix PERC (no serialization support), tested on version 5.0.0667
 
