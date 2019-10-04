@@ -14,8 +14,8 @@ You can find the website and user documentation at [objenesis.org](http://objene
 ## Environment setup
 
 I'm using:
-- Maven 3.5.3
-- IntelliJ Ultimate 2018.2 (thanks to JetBrains for the license) (it should also work with Eclipse)
+- Maven 3.6.2
+- IntelliJ Ultimate 2019.3 (thanks to JetBrains for the license) (it should also work with Eclipse)
 
 To configure your local workspace:
 - Import the Maven parent project to Eclipse or IntelliJ
@@ -89,6 +89,10 @@ http://www.sonatype.com/people/2010/01/how-to-generate-pgp-signatures-with-maven
 ## To check dependencies and plugins versions
 
 `mvn versions:display-dependency-updates versions:display-plugin-updates -Pall`
+
+## To upgrade the Maven wrapper
+
+`mvn -N io.takari:maven:wrapper -Dmaven=3.6.2`
 
 ## To update the license
 
