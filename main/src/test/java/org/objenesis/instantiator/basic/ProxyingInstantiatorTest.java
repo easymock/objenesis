@@ -32,7 +32,14 @@ public class ProxyingInstantiatorTest {
    public void testNewInstance() {
       ObjectInstantiator<EmptyClass> inst = new ProxyingInstantiator<>(EmptyClass.class);
       EmptyClass c = inst.newInstance();
-      assertEquals("EmptyClass$$$Objenesis", c.getClass().getSimpleName());
+      assertEquals("org.objenesis.EmptyClass$$$Objenesis", c.getClass().getName());
+   }
+
+   @Test
+   public void testJavaLangInstance() {
+      ObjectInstantiator<Object> inst = new ProxyingInstantiator<>(Object.class);
+      Object c = inst.newInstance();
+      assertEquals("org.objenesis.subclasses.java.lang.Object$$$Objenesis", c.getClass().getName());
    }
 
 }
