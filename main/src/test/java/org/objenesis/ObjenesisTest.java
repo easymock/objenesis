@@ -15,9 +15,7 @@
  */
 package org.objenesis;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
 
@@ -27,9 +25,6 @@ import static org.junit.Assert.*;
  * @author Henri Tremblay
  */
 public class ObjenesisTest {
-
-   @Rule
-   public ExpectedException expectedException = ExpectedException.none();
 
    @Test
    public final void testObjenesis() {
@@ -70,8 +65,7 @@ public class ObjenesisTest {
    @Test
    public final void testGetInstantiatorOf_primitive() {
       Objenesis o = new ObjenesisStd();
-      expectedException.expect(IllegalArgumentException.class);
-      o.getInstantiatorOf(long.class);
+      assertThrows(IllegalArgumentException.class, () -> o.getInstantiatorOf(long.class));
    }
 
    @Test
