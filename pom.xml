@@ -28,10 +28,6 @@
   <url>http://objenesis.org</url>
   <inceptionYear>2006</inceptionYear>
 
-  <prerequisites>
-    <maven>3.2.1</maven>
-  </prerequisites>
-
   <modules>
     <module>main</module>
     <module>tck</module>
@@ -153,6 +149,25 @@
           <!-- skipping the license check on the parent pom since it's not needed -->
           <skip>true</skip>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M2</version>
+        <configuration>
+          <rules>
+            <requireMavenVersion>
+              <version>3.2.1</version>
+            </requireMavenVersion>
+          </rules>
+        </configuration>
+        <executions>
+          <execution>
+            <id>enforce-versions</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <extensions>
