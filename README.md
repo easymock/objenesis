@@ -104,6 +104,7 @@ http://www.sonatype.com/people/2010/01/how-to-generate-pgp-signatures-with-maven
 
 ```bash
 # Get the milestone matching the version
+version=???
 milestone=$(curl -s "https://api.github.com/repos/easymock/objenesis/milestones" | jq ".[] | select(.title==\"$version\") | .number")
 echo "<h1>Version $version ($(date '+%Y-%m-%d'))</h1>"
 echo
