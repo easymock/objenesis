@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.objenesis</groupId>
   <artifactId>objenesis-parent</artifactId>
-  <version>3.1-SNAPSHOT</version>
+  <version>3.1</version>
   <packaging>pom</packaging>
 
   <name>Objenesis parent project</name>
@@ -50,7 +50,7 @@
     <url>https://github.com/easymock/objenesis</url>
     <developerConnection>scm:git:git@github.com:easymock/objenesis.git</developerConnection>
     <connection>scm:git:https://github.com/easymock/objenesis.git</connection>
-    <tag>HEAD</tag>
+    <tag>3.1</tag>
   </scm>
 
   <developers>
