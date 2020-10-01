@@ -60,7 +60,7 @@
         <configuration>
           <instructions>
             <Import-Package>
-            COM.newmonics.PercClassloader;resolution:=optional,
+            COM.newmonics.PercClassLoader;resolution:=optional,
             sun.misc;resolution:=optional,
             sun.reflect;resolution:=optional
             </Import-Package>
