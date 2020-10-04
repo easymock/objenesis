@@ -38,6 +38,7 @@
             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
               <Automatic-Module-Name>org.objenesis</Automatic-Module-Name>
+              <Dependencies>jdk.unsupported</Dependencies>
             </manifestEntries>
           </archive>
         </configuration>
