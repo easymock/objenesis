@@ -23,10 +23,10 @@ import org.objenesis.ObjenesisException;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
-import org.objenesis.instantiator.util.ClassDefinitionUtils;
-import org.objenesis.instantiator.util.ClassUtils;
+import org.objenesis.instantiator.exotic.util.ClassDefinitionUtils;
+import org.objenesis.instantiator.exotic.util.ClassUtils;
 
-import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
+import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.*;
 
 /**
  * This instantiator creates a class by dynamically extending it. It will skip the call to the parent constructor

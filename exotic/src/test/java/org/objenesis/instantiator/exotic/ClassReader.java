@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis;
+package org.objenesis.instantiator.exotic;
 
-import org.objenesis.instantiator.util.ClassUtils;
+import org.objenesis.instantiator.exotic.util.ClassUtils;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
-import static org.objenesis.instantiator.util.ClassDefinitionUtils.*;
+import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.*;
 
 /**
  * @author Henri Tremblay

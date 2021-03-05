@@ -18,7 +18,7 @@ package org.objenesis.instantiator.exotic;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
-import org.objenesis.instantiator.util.ClassUtils;
+import org.objenesis.instantiator.exotic.util.ClassUtils;
 
 /**
  * The simplest instantiator - simply calls Class.newInstance(). This can deal with default public

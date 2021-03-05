@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.util;
+package org.objenesis.instantiator.exotic.util;
 
+import org.objenesis.instantiator.util.UnsafeUtils;
 import sun.misc.Unsafe;
 import org.objenesis.ObjenesisException;
 import org.objenesis.strategy.PlatformDescription;
