@@ -20,7 +20,7 @@ createObjectWithUnsafe     |20.382   |0.379     |nsec/op
 
 When the client code ask for the instantiator of a given class, Objenesis creates one and can cache it or not. If it is cached, the next time the instantiator is requested for the same class, the cached instantiator will be returned instead of a new one. Instantiators are thread-safe so there's no need to worry.
 
-During migration to Java 5, the cache implementation using a synchronize was replaced by a concurrent collection. This benchmark shows the difference in performance between the two cache implementations and of Objenesis without cache.
+During migration to Java 5, the cache implementation using a `synchronize` was replaced by a concurrent collection. This benchmark shows the difference in performance between the two cache implementations and of Objenesis without cache.
 
 Type             |Mean       |Units
 -----------------|-----------|-------
@@ -28,7 +28,7 @@ Cached (Java 1.3)|2535.952   |nsec/op
 Cached (Java 5)  |238.946    |nsec/op
 No cache (Java 5)|5253937.944|nsec/op
 
-Then, the standard strategy used by Objenesis deduces the best instantiator for your platform. Another possibility is to decide that you known the platform you are on and you prefer to use the single instantiator that will create always the same type of instantiator using reflection. Finally, if you want to avoid using reflection, you can use a custom strategy returning always one instantiator using "new".
+Then, the standard strategy used by Objenesis deduces the best instantiator for your platform. Another possibility is to decide that you know the platform you are on, and you prefer to use the single instantiator that will always create the same type of instantiator using reflection. Finally, if you want to avoid using reflection, you can use a custom strategy returning always one instantiator using "new".
 
 As you will see, it doesn't really matter which one you use, the performance is similar.
 

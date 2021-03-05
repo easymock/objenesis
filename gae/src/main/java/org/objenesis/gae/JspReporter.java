@@ -207,7 +207,7 @@ public class JspReporter implements Reporter {
 
          log.println();
 
-         summary.println("<p>--- FAILED: " + errorCount + " error(s) occured ---</p>");
+         summary.println("<p>--- FAILED: " + errorCount + " error(s) occurred ---</p>");
       }
       else {
          summary.println("<p>--- SUCCESSFUL: TCK tests passed without errors in " + totalTime + " ms</p>");
