@@ -32,7 +32,7 @@ public class JspWriterListener implements SearchWorkingInstantiatorListener {
 
    private static final String PATTERN = "<tr><td>%s</td><td>%s</td></tr>";
 
-   private JspWriter writer;
+   private final JspWriter writer;
 
    public JspWriterListener(JspWriter out) {
       this.writer = out;

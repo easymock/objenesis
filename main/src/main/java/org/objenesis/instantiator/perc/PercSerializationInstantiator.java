@@ -38,7 +38,7 @@ import org.objenesis.instantiator.annotations.Typology;
 @Instantiator(Typology.SERIALIZATION)
 public class PercSerializationInstantiator<T> implements ObjectInstantiator<T> {
 
-   private Object[] typeArgs;
+   private final Object[] typeArgs;
 
    private final Method newInstanceMethod;
 

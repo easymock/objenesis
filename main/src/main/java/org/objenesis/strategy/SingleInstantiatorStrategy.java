@@ -29,7 +29,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class SingleInstantiatorStrategy implements InstantiatorStrategy {
 
-   private Constructor<?> constructor;
+   private final Constructor<?> constructor;
 
    /**
     * Create a strategy that will return always the same instantiator type. We assume this instantiator

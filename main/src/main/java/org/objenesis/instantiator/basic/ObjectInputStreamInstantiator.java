@@ -48,7 +48,7 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
       private byte[] data;
       private int sequence;
       private static final int[] NEXT = new int[] {1, 2, 2};
-      private byte[][] buffers;
+      private final byte[][] buffers;
 
       private final byte[] FIRST_DATA;
       private static byte[] HEADER;
@@ -155,7 +155,7 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
       }
    }
 
-   private ObjectInputStream inputStream;
+   private final ObjectInputStream inputStream;
 
    public ObjectInputStreamInstantiator(Class<T> clazz) {
       if(Serializable.class.isAssignableFrom(clazz)) {
