@@ -50,7 +50,7 @@ public class JspWriterListener implements SearchWorkingInstantiatorListener {
       ByteArrayOutputStream b = new ByteArrayOutputStream();
       t.printStackTrace(new PrintStream(b));
       try {
-         writer.println(String.format(PATTERN, c.getSimpleName() + " (" + getTypology(c) + ")", "KO - " + b.toString()));
+         writer.println(String.format(PATTERN, c.getSimpleName() + " (" + getTypology(c) + ")", "KO - " + b));
       } catch (IOException e) {
          throw new RuntimeException(e);
       }
