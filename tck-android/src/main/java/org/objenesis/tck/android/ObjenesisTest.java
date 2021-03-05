@@ -70,7 +70,7 @@ public class ObjenesisTest extends AndroidTestCase {
    }
 
    @SmallTest
-   public void testObjenesis() throws Exception {
+   public void testObjenesis() {
       TCK tck = new TCK(new ObjenesisStd(), new ObjenesisSerializer(), new JUnitReporter());
       tck.runTests();
    }
