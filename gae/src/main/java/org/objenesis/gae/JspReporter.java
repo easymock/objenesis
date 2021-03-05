@@ -41,13 +41,13 @@ public class JspReporter implements Reporter {
 
    private static class Result {
 
-      Candidate candidate;
+      final Candidate candidate;
 
-      Candidate.CandidateType type;
+      final Candidate.CandidateType type;
 
-      boolean result;
+      final boolean result;
 
-      Exception exception;
+      final Exception exception;
 
       /**
        * @param candidate Candidate tested
