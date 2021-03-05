@@ -30,11 +30,8 @@ public class SerializingInstantiatorTest {
    @Test
    public void testNotSerializable() {
       ObjenesisSerializer o = new ObjenesisSerializer();
-      try {
-    	  o.newInstance(Object.class);
-    	  fail("Should have thrown an exception");
-      } catch (ObjenesisException e) {
-    	  assertTrue(e.getCause() instanceof NotSerializableException);
-      }
+      ObjenesisException exception = assertThrows(ObjenesisException.class, () -> o.newInstance(Object.class));
+      assertEquals(exception.getCause().getClass(), NotSerializableException.class);
    }
+
 }

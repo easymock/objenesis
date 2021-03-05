@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * @author Henri Tremblay
@@ -66,12 +66,7 @@ public class ClassUtilsTest {
 
    @Test
    public void testNewInstance_noArgsConstructorAbsent() {
-      try {
-         ClassUtils.newInstance(Integer.class);
-         fail("No arg constructor. It should fail");
-      }
-      catch(ObjenesisException e) {
-         assertEquals(InstantiationException.class, e.getCause().getClass());
-      }
+      ObjenesisException exception = assertThrows(ObjenesisException.class, () -> ClassUtils.newInstance(Integer.class));
+      assertEquals(exception.getCause().getClass(), InstantiationException.class);
    }
 }

@@ -179,15 +179,8 @@ public class SerializableTest {
 
    @Test
    public void notSerializable() throws Exception {
-      try {
-         writeRead(new NotSerializable());
-         fail("Class is not serializable so can't be read");
-      } catch(NotSerializableException e) {
-
-      }
-
+      assertThrows(NotSerializableException.class, () -> writeRead(new NotSerializable()));
       assertNotCalled("NotSerializable.constructor");
-
    }
 
    @Test

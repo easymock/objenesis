@@ -91,13 +91,7 @@ public class AbstractLoaderTest {
 
    @Test
    public void testThrowsIOExceptionIfResourceNotInClassPath() {
-      try {
-         loader.loadFromResource( "Blatantly-Bogus.properties", Candidate.CandidateType.STANDARD);
-         fail("Expected exception");
-      }
-      catch(IOException expectedException) {
-         // Good!
-      }
+      assertThrows(IOException.class, () -> loader.loadFromResource( "Blatantly-Bogus.properties", Candidate.CandidateType.STANDARD));
    }
 
    // Sample classes.
