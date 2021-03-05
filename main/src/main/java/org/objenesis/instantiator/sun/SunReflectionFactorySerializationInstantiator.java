@@ -46,7 +46,7 @@ public class SunReflectionFactorySerializationInstantiator<T> implements ObjectI
       Constructor<? super T> nonSerializableAncestorConstructor;
       try {
          nonSerializableAncestorConstructor = nonSerializableAncestor
-            .getDeclaredConstructor((Class[]) null);
+            .getDeclaredConstructor((Class<?>[]) null);
       }
       catch(NoSuchMethodException e) {
          throw new ObjenesisException(new NotSerializableException(type+" has no suitable superclass constructor"));

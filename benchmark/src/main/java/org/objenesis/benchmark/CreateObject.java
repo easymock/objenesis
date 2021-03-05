@@ -54,7 +54,7 @@ public class CreateObject {
    private Constructor<Object> getConstructor() {
       try {
          ReflectionFactory factory = ReflectionFactory.getReflectionFactory();
-         Constructor<Object> objectConstructor =type.getConstructor((Class[]) null);
+         Constructor<Object> objectConstructor =type.getConstructor((Class<?>[]) null);
          Constructor<Object> c = (Constructor<Object>) factory.newConstructorForSerialization(type, objectConstructor);
          return c;
       } catch (Exception e) {
@@ -94,7 +94,7 @@ public class CreateObject {
    public Object createObjectWithMungedConstructor() {
       return sunInstantiator.newInstance();
    }
-   
+
    @Benchmark
    public Object createObjectWithMungedConstructorRaw() throws Exception {
       return constructor.newInstance();

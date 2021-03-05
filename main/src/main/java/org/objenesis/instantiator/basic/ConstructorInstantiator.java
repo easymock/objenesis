@@ -37,7 +37,7 @@ public class ConstructorInstantiator<T> implements ObjectInstantiator<T> {
 
    public ConstructorInstantiator(Class<T> type) {
       try {
-         constructor = type.getDeclaredConstructor((Class[]) null);
+         constructor = type.getDeclaredConstructor((Class<?>[]) null);
       }
       catch(Exception e) {
          throw new ObjenesisException(e);

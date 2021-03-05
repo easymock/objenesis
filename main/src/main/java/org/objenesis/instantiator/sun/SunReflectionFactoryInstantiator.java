@@ -54,7 +54,7 @@ public class SunReflectionFactoryInstantiator<T> implements ObjectInstantiator<T
 
    private static Constructor<Object> getJavaLangObjectConstructor() {
       try {
-         return Object.class.getConstructor((Class[]) null);
+         return Object.class.getConstructor((Class<?>[]) null);
       }
       catch(NoSuchMethodException e) {
          throw new ObjenesisException(e);
