@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.basic;
+package org.objenesis.instantiator.exotic;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
