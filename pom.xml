@@ -29,7 +29,9 @@
   <inceptionYear>2006</inceptionYear>
 
   <modules>
+    <module>test</module>
     <module>main</module>
+    <module>exotic</module>
     <module>tck</module>
   </modules>
 

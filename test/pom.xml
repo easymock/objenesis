@@ -23,19 +23,10 @@
     <artifactId>objenesis-parent</artifactId>
     <version>3.2-SNAPSHOT</version>
   </parent>
-  <artifactId>objenesis</artifactId>
+  <artifactId>objenesis-test</artifactId>
 
-  <name>Objenesis</name>
+  <name>Objenesis Test</name>
   <description>A library for instantiating Java objects</description>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.objenesis</groupId>
-      <artifactId>objenesis-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
   <build>
     <plugins>
@@ -45,8 +36,7 @@
           <archive>
             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
-              <Automatic-Module-Name>org.objenesis</Automatic-Module-Name>
-              <Dependencies>jdk.unsupported</Dependencies>
+              <Automatic-Module-Name>org.objenesis.test</Automatic-Module-Name>
             </manifestEntries>
           </archive>
         </configuration>
@@ -66,15 +56,6 @@
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Import-Package>
-            COM.newmonics.PercClassLoader;resolution:=optional,
-            sun.misc;resolution:=optional,
-            sun.reflect;resolution:=optional
-            </Import-Package>
-          </instructions>
-        </configuration>
         <executions>
           <execution>
             <id>bundle-manifest</id>
@@ -87,33 +68,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <!-- Activate to create the release bundle -->
-      <id>release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-              <attach>false</attach>
-              <descriptors>
-                <descriptor>assembly.xml</descriptor>
-              </descriptors>
-            </configuration>
-            <executions>
-              <execution>
-                <id>make-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

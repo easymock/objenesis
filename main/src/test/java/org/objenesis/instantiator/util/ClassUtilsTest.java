@@ -31,18 +31,18 @@ import static org.junit.Assert.fail;
  */
 public class ClassUtilsTest {
 
-   private final String className = "org.objenesis.EmptyClassBis";
+   private final String className = "org.objenesis.test.EmptyClassBis";
 
    @Test
    public void testClassNameToInternalClassName() {
       String actual = ClassUtils.classNameToInternalClassName(className);
-      assertEquals("org/objenesis/EmptyClassBis", actual);
+      assertEquals("org/objenesis/test/EmptyClassBis", actual);
    }
 
    @Test
    public void testClassNameToResource() {
       String actual = ClassUtils.classNameToResource(className);
-      assertEquals("org/objenesis/EmptyClassBis.class", actual);
+      assertEquals("org/objenesis/test/EmptyClassBis.class", actual);
    }
 
    @Test
