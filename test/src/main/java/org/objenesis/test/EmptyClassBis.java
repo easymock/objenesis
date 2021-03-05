@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis;
+package org.objenesis.test;
 
 import java.util.Date;
 

@@ -27,7 +27,7 @@ public class ClassDefinitionUtilsTest {
 
    @Test
    public void testDefineClass() throws Exception {
-      String className = "org.objenesis.EmptyClassBis";
+      String className = "org.objenesis.test.EmptyClassBis";
       byte[] b = ClassDefinitionUtils.readClass(className);
       Class<?> c = ClassDefinitionUtils.defineClass(className, b, Objenesis.class, getClass().getClassLoader());
       assertEquals(c.getName(), className);
