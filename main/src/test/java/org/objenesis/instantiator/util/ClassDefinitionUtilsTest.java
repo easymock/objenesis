@@ -25,10 +25,9 @@ import static org.junit.Assert.*;
  */
 public class ClassDefinitionUtilsTest {
 
-   private final String className = "org.objenesis.EmptyClassBis";
-
    @Test
    public void testDefineClass() throws Exception {
+      String className = "org.objenesis.EmptyClassBis";
       byte[] b = ClassDefinitionUtils.readClass(className);
       Class<?> c = ClassDefinitionUtils.defineClass(className, b, Objenesis.class, getClass().getClassLoader());
       assertEquals(c.getName(), className);
