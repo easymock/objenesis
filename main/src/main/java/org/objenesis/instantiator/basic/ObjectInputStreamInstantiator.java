@@ -50,7 +50,6 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
       private static final int[] NEXT = new int[] {1, 2, 2};
       private final byte[][] buffers;
 
-      private final byte[] FIRST_DATA;
       private static byte[] HEADER;
       private static byte[] REPEATING_DATA;
 
@@ -109,8 +108,8 @@ public class ObjectInputStreamInstantiator<T> implements ObjectInstantiator<T> {
          catch(IOException e) {
             throw new Error("IOException: " + e.getMessage());
          }
-         this.FIRST_DATA = byteOut.toByteArray();
-         buffers = new byte[][] {HEADER, FIRST_DATA, REPEATING_DATA};
+         byte[] firstData = byteOut.toByteArray();
+         buffers = new byte[][] {HEADER, firstData, REPEATING_DATA};
       }
 
       private void advanceBuffer() {
