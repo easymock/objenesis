@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.exotic;
+package org.objenesis.instantiator.basic;
 
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
-import org.objenesis.instantiator.exotic.util.ClassUtils;
+import org.objenesis.instantiator.util.ClassUtils;
 
 /**
  * The simplest instantiator - simply calls Class.newInstance(). This can deal with default public

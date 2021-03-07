@@ -15,6 +15,8 @@
  */
 package org.objenesis.instantiator.exotic.util;
 
+import org.objenesis.instantiator.util.ClassUtils;
+
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;

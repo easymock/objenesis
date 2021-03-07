@@ -24,7 +24,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.instantiator.annotations.Instantiator;
 import org.objenesis.instantiator.annotations.Typology;
 import org.objenesis.instantiator.exotic.util.ClassDefinitionUtils;
-import org.objenesis.instantiator.exotic.util.ClassUtils;
+import org.objenesis.instantiator.util.ClassUtils;
 
 import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.*;
 

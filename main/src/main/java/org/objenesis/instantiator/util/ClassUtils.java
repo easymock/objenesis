@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.exotic.util;
+package org.objenesis.instantiator.util;
 
 import org.objenesis.ObjenesisException;
 
 /**
- * Helper class for to play with classes. It contains everything needed to play with a class
- * except the dodgy (Java 8) code you will find in {@link ClassDefinitionUtils}.
+ * Helper class for to play with classes.
  *
  * @author Henri Tremblay
  */

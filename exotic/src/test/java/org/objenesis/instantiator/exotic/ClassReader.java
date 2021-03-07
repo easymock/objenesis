@@ -15,7 +15,7 @@
  */
 package org.objenesis.instantiator.exotic;
 
-import org.objenesis.instantiator.exotic.util.ClassUtils;
+import org.objenesis.instantiator.util.ClassUtils;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;

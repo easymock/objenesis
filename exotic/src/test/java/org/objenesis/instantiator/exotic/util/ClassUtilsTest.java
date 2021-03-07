@@ -17,6 +17,7 @@ package org.objenesis.instantiator.exotic.util;
 
 import org.junit.Test;
 import org.objenesis.ObjenesisException;
+import org.objenesis.instantiator.util.ClassUtils;
 
 import java.util.ArrayList;
 
