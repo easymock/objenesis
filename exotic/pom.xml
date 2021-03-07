@@ -50,7 +50,7 @@
             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
               <Automatic-Module-Name>org.objenesis.exotic</Automatic-Module-Name>
-              <Dependencies>jdk.unsupported</Dependencies>
+              <Dependencies>jdk.unsupported,org.objenesis</Dependencies>
             </manifestEntries>
           </archive>
         </configuration>
