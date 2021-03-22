@@ -44,7 +44,7 @@ This build will create the source and javadoc jars and run spotbugs.
 - Install the Android SDK (`brew cask install android-sdk`)
 - Install `platform-tools` and `build-tools` using the sdkmanager (`sdkmanager "platform-tools" "build-tools"`)
 - Add an `ANDROID_HOME` to target the Android SDK (`export ANDROID_HOME=$(realpath $(echo "$(dirname $(readlink $(which sdkmanager)))/../.."))`)
-- Configure a device (real or simulated) and launch it
+- Configure a device (real or simulated) and launch it (use API 26, after that it asks for a signature, that isn't supported yet)
 - Activate the debug mode if it's a real device
 - `mvn package -Pandroid`
 
@@ -70,21 +70,14 @@ cd benchmark
 - You will first need to add something like this to your settings.xml
 ```xml
 <servers>
-  <server>
-    <id>sonatype-nexus-snapshots</id>
-    <username>sonatypeuser</username>
-    <password>sonatypepassword</password>
-  </server>
-  <server>
-    <id>sonatype-nexus-staging</id>
-    <username>sonatypeuser</username>
-    <password>sonatypepassword</password>
-  </server>
+   <server>
+      <id>ossrh</id>
+      <username>sonatypeuser</username>
+      <password>sonatypepassword</password>
+   </server>
 </servers>
 ```
-- Then follow the instructions from the site below to create your key to sign the deployed items
-
-http://www.sonatype.com/people/2010/01/how-to-generate-pgp-signatures-with-maven/
+- Then follow the [instructions](https://central.sonatype.org/pages/working-with-pgp-signatures.html) from the site below to create your key to sign the deployed items
 
 ## To check dependencies and plugins versions
 
@@ -113,21 +106,6 @@ curl -s "https://api.github.com/repos/easymock/objenesis/issues?milestone=${mile
 echo "</ul>"
 ```
 
-* Add these servers to your `settings.xml`
-
-```xml
-<server>
-  <id>bintray</id>
-  <username>your-user-name</username>
-  <password>your-api-key</password>
-</server>
-<server>
-  <id>gpg.passphrase</id>
-  <passphrase>your-passphrase</passphrase>
-</server>
-```
-
-* Set `gpg_passphrase`, `bintray_api_key` and `bintray_user` environment variables
 * Launch an Android device (virtual or physical) 
 * Launch `./deploy.sh version`
 * Answer the questions (normally, just acknowledge the proposed default)
@@ -140,6 +118,8 @@ git tag -d $version
 git push origin :refs/tags/$version
 git reset --hard HEAD~2
 ```
+
+If you find something went wrong you can drop the staging repository with `mvn nexus-staging:drop`.
 
 ## Deploy the website
 
