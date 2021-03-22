@@ -107,7 +107,7 @@ echo "</ul>"
 ```
 
 * Launch an Android device (virtual or physical) 
-* Launch `./deploy.sh version`
+* Launch `./deploy.sh`
 * Answer the questions (normally, just acknowledge the proposed default)
 * Follow the instructions
 

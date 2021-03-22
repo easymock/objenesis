@@ -12,19 +12,6 @@ function pause {
     read -p "Press [enter]  to continue"
 }
 
-# make sure the version is passed in parameter
-if [ "$1" == "" ]; then
-    echo "Version to deploy should be provided"
-    exit 1
-fi
-
-version=$1
-
-if [ "$(git branch | grep ${version})" == "${version}" ]; then
-   echo "A branch named $version clashes with the version tag"
-   exit 1
-fi
-
 # Weird fix required by GPG. See https://github.com/keybase/keybase-issues/issues/1712. You will have to enter the passphrase on screen
 export GPG_TTY=$(tty)
 
