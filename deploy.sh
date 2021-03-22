@@ -23,15 +23,16 @@ git push --tags
 
 mvn release:perform -Pall,full,release
 
-echo "Please add the release notes in github"
+echo "Please add the release notes and copy binaries (main, tck, tck-android, exotic) in github"
 open "https://github.com/easymock/objenesis/tags"
 pause
 
 # Release the jars now on central staging
 echo "Check everything is alright, next step will release to central"
+echo "Right now you need to delete some of the projects from staging"
 open "https://oss.sonatype.org/#welcome"
 pause
-mvn nexus-staging:release
+# mvn nexus-staging:release
 
 echo "Close the milestone in GitHub and create the new one"
 open "https://github.com/easymock/objenesis/milestones"
