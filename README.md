@@ -97,7 +97,7 @@ cd benchmark
 
 ```bash
 # Get the milestone matching the version
-version=???
+version=(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | cut -d'-' -f1)
 milestone=$(curl -s "https://api.github.com/repos/easymock/objenesis/milestones" | jq ".[] | select(.title==\"$version\") | .number")
 echo "<h1>Version $version ($(date '+%Y-%m-%d'))</h1>"
 echo
