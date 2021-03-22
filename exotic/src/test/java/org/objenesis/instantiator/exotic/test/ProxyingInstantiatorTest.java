@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.exotic;
+package org.objenesis.instantiator.exotic.test;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.objenesis.instantiator.basic.ProxyingInstantiator;
 import org.objenesis.test.EmptyClass;
 import org.objenesis.instantiator.ObjectInstantiator;
 
 import static org.junit.Assert.*;
 
 /**
+ * This test is using the original basic.ProxyInstantiator do make sure the bridging to the new class is working.
+ *
  * @author Henri Tremblay
  */
 @Ignore("Because it doesn't work without -Xverify:none")
@@ -32,7 +35,7 @@ public class ProxyingInstantiatorTest {
    public void testNewInstance() {
       ObjectInstantiator<EmptyClass> inst = new ProxyingInstantiator<>(EmptyClass.class);
       EmptyClass c = inst.newInstance();
-      assertEquals("org.objenesis.EmptyClass$$$Objenesis", c.getClass().getName());
+      assertEquals("org.objenesis.test.EmptyClass$$$Objenesis", c.getClass().getName());
    }
 
    @Test

@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.objenesis.instantiator.exotic;
+package org.objenesis.instantiator.exotic.test;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.objenesis.instantiator.sun.MagicInstantiator;
 import org.objenesis.test.EmptyClass;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.PlatformDescription;
@@ -25,6 +26,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.*;
 
 /**
+ * This test is using the original sun.ProxyInstantiator do make sure the bridging to the new class is working.
+ *
  * @author Henri Tremblay
  */
 public class MagicInstantiatorTest {
@@ -46,9 +49,4 @@ public class MagicInstantiatorTest {
       assertEquals(EmptyClass.class, o2.newInstance().getClass());
    }
 
-   @Test
-   public void testInternalInstantiator() {
-      ObjectInstantiator<EmptyClass> o1 = new MagicInstantiator<>(EmptyClass.class).getInstantiator();
-      assertEquals(EmptyClass.class, o1.newInstance().getClass());
-   }
 }

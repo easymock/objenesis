@@ -22,6 +22,7 @@ import org.objenesis.tck.candidates.SerializableNoConstructor;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.SortedSet;
 
 /**
@@ -63,7 +64,7 @@ public class SearchWorkingInstantiator implements Serializable { // implements S
              continue;
           }
 
-          if (c.isInterface() || !ObjectInstantiator.class.isAssignableFrom(c)) {
+          if (c.isInterface() || Modifier.isAbstract(c.getModifiers()) || !ObjectInstantiator.class.isAssignableFrom(c)) {
              continue;
           }
 
