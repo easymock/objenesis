@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
 
   <!-- CHANGE THIS VERSION TO WHAT YOU NEED -->
-  <version>3.1</version>
+  <version>3.2</version>
 
   <properties>
     <javadoc>apidocs</javadoc>
