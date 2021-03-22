@@ -16,7 +16,7 @@
 
 -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Objenesis : Embedding</title>
         <meta charset="utf-8">
@@ -45,12 +45,12 @@
                 <h1 class="FirstChild">Embedding</h1>
                 
 
-Objenesis is <a href="https://code.google.com/p/jarjar/">jarjar</a> and 
-<a href="http://maven.apache.org/plugins/maven-shade-plugin/">maven-shade-plugin</a> compliant.
+Objenesis is <a href="https://github.com/shevek/jarjar">jarjar</a> and
+<a href="https://maven.apache.org/plugins/maven-shade-plugin/">maven-shade-plugin</a> compliant.
 
 <h1>Ant</h1>
 
-<p>A jarjar ant task is available. You just need to replace your usual jar task with 
+<p>A jarjar ant task is available. You just need to replace your usual jar task with
 jarjar. Depending on the complexity of your project, you will then have different
 parameters. Here's an example:</p>
 
@@ -58,21 +58,21 @@ parameters. Here's an example:</p>
 	&lt;jarjar jarfile="${temp directory}/easymockclassextension.jar"&gt;
 	  &lt;fileset dir="tmp" includes="org/easymock/classextension/*.class
 	    org/easymock/classextension/internal/*.class"/&gt;
-	  &lt;zipfileset src="lib/objenesis-3.1.jar"/&gt;
+	  &lt;zipfileset src="lib/objenesis-3.2.jar"/&gt;
 	  &lt;rule pattern="org.objenesis.**"
 	    result="org.easymock.classextension.internal.objenesis.@1"/&gt;
 	&lt;/jarjar&gt;
 </pre>
 
 <h1>Maven</h1>
-   
-<p>For jarjar, multiple unofficial plugins exist (<a href="http://mojo.codehaus.org/">here</a>, 
-<a href="http://boss.bekk.no/maven-jarjar-plugin/">here</a> and 
-<a href="http://docs.atlassian.com/jarjar-maven-plugin/">here</a>). However, you can use 
-the <a href="http://maven.apache.org/plugins/maven-antrun-plugin/">antrun plugin</a> to call 
+
+<p>For jarjar, multiple unofficial plugins exist (<a href="http://mojo.codehaus.org/">here</a>,
+<a href="http://boss.bekk.no/maven-jarjar-plugin/">here</a> and
+<a href="http://docs.atlassian.com/jarjar-maven-plugin/">here</a>). However, you can use
+the <a href="http://maven.apache.org/plugins/maven-antrun-plugin/">antrun plugin</a> to call
 the jarjar ant task.</p>
 
-<p>Or you can use the <a href="http://maven.apache.org/plugins/maven-shade-plugin/">maven-shade-plugin</a>. 
+<p>Or you can use the <a href="https://maven.apache.org/plugins/maven-shade-plugin/">maven-shade-plugin</a>.
 Here's an example:</p>
 
 <pre>

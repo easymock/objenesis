@@ -334,8 +334,7 @@ pre {
 
 .NewsText {
     padding: 0;
-    margin: 0;
-    margin-bottom: 8px;
+    margin: 0 0 8px;
 }
 
 .NewsText a { text-decoration: underline; }
@@ -346,12 +345,10 @@ pre {
 
 .NewsMore {
     font-size: smaller;
-    margin: 4px;
-    margin-top: 8px;
+    margin: 8px 4px 4px;
     text-align: left;
 }
 
 .NewsGroup td {
     font-size: 12px;
 }
-
