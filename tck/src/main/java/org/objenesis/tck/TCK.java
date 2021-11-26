@@ -87,6 +87,7 @@ public class TCK {
     *
     * @param candidateClass Class to attempt to instantiate
     * @param description Description of the class
+    * @param type Type of the candidate
     */
    public void registerCandidate(Class<?> candidateClass, String description, Candidate.CandidateType type) {
       Candidate candidate = new Candidate(candidateClass, description, type);
