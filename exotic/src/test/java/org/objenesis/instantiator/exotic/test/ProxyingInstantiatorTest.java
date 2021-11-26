@@ -15,20 +15,20 @@
  */
 package org.objenesis.instantiator.exotic.test;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.objenesis.instantiator.basic.ProxyingInstantiator;
 import org.objenesis.test.EmptyClass;
 import org.objenesis.instantiator.ObjectInstantiator;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This test is using the original basic.ProxyInstantiator do make sure the bridging to the new class is working.
  *
  * @author Henri Tremblay
  */
-@Ignore("Because it doesn't work without -Xverify:none")
+@Disabled("Because it doesn't work without -Xverify:none")
 public class ProxyingInstantiatorTest {
 
    @Test

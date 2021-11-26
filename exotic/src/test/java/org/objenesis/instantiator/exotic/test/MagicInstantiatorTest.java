@@ -15,15 +15,15 @@
  */
 package org.objenesis.instantiator.exotic.test;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.objenesis.instantiator.sun.MagicInstantiator;
 import org.objenesis.test.EmptyClass;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.PlatformDescription;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * This test is using the original sun.ProxyInstantiator do make sure the bridging to the new class is working.
@@ -32,7 +32,7 @@ import static org.junit.Assume.*;
  */
 public class MagicInstantiatorTest {
 
-   @Before
+   @BeforeEach
    public void before() {
       // I know it works on Hotspot and OpenJDK. Before JDK 9. Not sure on others
       assumeTrue((PlatformDescription.isThisJVM(PlatformDescription.HOTSPOT) || PlatformDescription.isThisJVM(PlatformDescription.OPENJDK))

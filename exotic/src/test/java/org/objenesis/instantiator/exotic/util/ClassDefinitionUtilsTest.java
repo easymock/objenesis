@@ -15,10 +15,10 @@
  */
 package org.objenesis.instantiator.exotic.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.objenesis.Objenesis;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Henri Tremblay

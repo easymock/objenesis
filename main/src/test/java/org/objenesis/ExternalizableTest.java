@@ -15,14 +15,15 @@
  */
 package org.objenesis;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.Externalizable;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This test makes sure issue #33 is not occurring.

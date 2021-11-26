@@ -15,15 +15,15 @@
  */
 package org.objenesis.strategy;
 
+import org.junit.jupiter.api.Test;
+
 import java.lang.reflect.Method;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Currently the test just check nothing is crashing. A more complex test should play with class
- * loading an properties
+ * loading and properties.
  *
  * @author Henri Tremblay
  */

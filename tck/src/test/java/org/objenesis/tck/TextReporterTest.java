@@ -18,15 +18,15 @@ package org.objenesis.tck;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisBase;
 import org.objenesis.instantiator.basic.ConstructorInstantiator;
 import org.objenesis.instantiator.basic.FailingInstantiator;
 import org.objenesis.strategy.SingleInstantiatorStrategy;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Joe Walnes
@@ -37,7 +37,7 @@ public class TextReporterTest {
    private TextReporter textReporter;
    private ByteArrayOutputStream summaryBuffer;
 
-   @Before
+   @BeforeEach
    public void setUp() {
       summaryBuffer = new ByteArrayOutputStream();
       ByteArrayOutputStream logBuffer = new ByteArrayOutputStream();

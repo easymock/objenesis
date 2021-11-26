@@ -15,6 +15,9 @@
  */
 package org.objenesis.tck;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Externalizable;
@@ -28,10 +31,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test showcasing how the normal serialization should behave (constructor and special methods called). You
@@ -159,9 +161,9 @@ public class SerializableTest {
 
    private static final Set<String> called = new HashSet<>();
 
-   @After
+   @AfterEach
    public void verify() {
-      assertTrue(called.toString(), called.isEmpty());
+      assertTrue(called.isEmpty(), called.toString());
    }
 
    @Test
@@ -178,7 +180,7 @@ public class SerializableTest {
    }
 
    @Test
-   public void notSerializable() throws Exception {
+   public void notSerializable() {
       assertThrows(NotSerializableException.class, () -> writeRead(new NotSerializable()));
       assertNotCalled("NotSerializable.constructor");
    }

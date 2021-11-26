@@ -15,12 +15,12 @@
  */
 package org.objenesis.tck;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.tck.features.Feature;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Joe Walnes

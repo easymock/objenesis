@@ -23,8 +23,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
-import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.CONSTANT_Class;
+import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.CONSTANT_Methodref;
+import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.CONSTANT_NameAndType;
+import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.CONSTANT_Utf8;
+import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.MAGIC;
+import static org.objenesis.instantiator.exotic.util.ClassDefinitionUtils.VERSION;
 
 /**
  * @author Henri Tremblay
@@ -311,7 +317,7 @@ public class ClassReader {
       // fields count (we have none)
       int fields_count = in.readUnsignedShort();
       System.out.println("Fields count: " + fields_count);
-      assertEquals("Reading fields isn't yet supported", 0, fields_count);
+      assertEquals(0, fields_count, "Reading fields isn't yet supported");
 
       //methods count (we have one)
       int methods_count = in.readUnsignedShort();
