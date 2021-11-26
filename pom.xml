@@ -76,7 +76,7 @@
   <properties>
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spotbugs-maven-plugin.version>4.0.4</spotbugs-maven-plugin.version>
+    <spotbugs-maven-plugin.version>4.3.0</spotbugs-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -164,7 +164,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version>
+        <version>3.0.0</version>
         <configuration>
           <rules>
             <requireMavenVersion>
@@ -245,7 +245,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
-          <version>3.0.0-M1</version>
+          <version>3.0.0-M4</version>
         </plugin>
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
@@ -265,7 +265,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.3.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
@@ -274,7 +274,7 @@
         <plugin>
           <groupId>org.apache.felix</groupId>
           <artifactId>maven-bundle-plugin</artifactId>
-          <version>5.1.1</version>
+          <version>5.1.2</version>
         </plugin>
         <plugin>
           <groupId>com.keyboardsamurais.maven</groupId>
@@ -296,7 +296,7 @@
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>3.0</version>
+          <version>4.1</version>
           <configuration>
             <header>${project.basedir}/../header.txt</header>
             <strictCheck>true</strictCheck>
@@ -438,7 +438,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>3.14.0</version>
         <configuration>
           <targetJdk>1.8</targetJdk>
         </configuration>
