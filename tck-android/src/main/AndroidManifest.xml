@@ -28,19 +28,9 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk
-        android:minSdkVersion="26"
-        android:targetSdkVersion="30" />
-
     <application android:allowBackup="false">
         <uses-library android:name="android.test.runner" />
     </application>
 
-    <instrumentation
-        android:name=".TckInstrumentation"
-        android:targetPackage="org.objenesis.tck.android" />
 
-    <instrumentation android:name="android.test.InstrumentationTestRunner"
-                     android:targetPackage="org.objenesis.tck.android"
-                     android:label="Objenesis Android TCK."/>
 </manifest>

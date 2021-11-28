@@ -18,6 +18,7 @@ package org.objenesis.tck.android;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import org.junit.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisSerializer;
 import org.objenesis.ObjenesisStd;
@@ -25,15 +26,15 @@ import org.objenesis.tck.Candidate;
 import org.objenesis.tck.Reporter;
 import org.objenesis.tck.TCK;
 
-import android.test.AndroidTestCase;
-import android.test.suitebuilder.annotation.SmallTest;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test case running the entire tck on android.
  *
  * @author Henri Tremblay
  */
-public class ObjenesisTest extends AndroidTestCase {
+public class ObjenesisTest {
 
    public static class JUnitReporter implements Reporter {
 
@@ -69,7 +70,7 @@ public class ObjenesisTest extends AndroidTestCase {
 
    }
 
-   @SmallTest
+   @Test
    public void testObjenesis() {
       TCK tck = new TCK(new ObjenesisStd(), new ObjenesisSerializer(), new JUnitReporter());
       tck.runTests();
