@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '8' ]
+        java: [ '8', '11', '17' ]
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
-        distribution: 'zulu'
+        distribution: 'temurin'
     - name: Build
       run: ./mvnw --no-transfer-progress -B clean verify --file pom.xml
