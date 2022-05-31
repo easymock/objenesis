@@ -198,7 +198,7 @@
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
         <artifactId>wagon-ssh-external</artifactId>
-        <version>2.10</version>
+        <version>3.5.1</version>
       </extension>
     </extensions>
     <pluginManagement>
