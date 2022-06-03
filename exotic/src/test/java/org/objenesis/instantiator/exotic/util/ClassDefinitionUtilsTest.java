@@ -16,7 +16,7 @@
 package org.objenesis.instantiator.exotic.util;
 
 import org.junit.jupiter.api.Test;
-import org.objenesis.Objenesis;
+import org.objenesis.test.EmptyClass;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,7 +29,7 @@ public class ClassDefinitionUtilsTest {
    public void testDefineClass() throws Exception {
       String className = "org.objenesis.test.EmptyClassBis";
       byte[] b = ClassDefinitionUtils.readClass(className);
-      Class<?> c = ClassDefinitionUtils.defineClass(className, b, Objenesis.class, getClass().getClassLoader());
+      Class<?> c = ClassDefinitionUtils.defineClass(className, b, EmptyClass.class, getClass().getClassLoader());
       assertEquals(c.getName(), className);
    }
 
