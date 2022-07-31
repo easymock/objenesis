@@ -99,6 +99,10 @@ cd benchmark
 
 `mvn validate license:format -Pall`
 
+## To run modernizer
+
+`mvn modernizer:modernizer -Pall`
+
 ## To release
 
 * Add the release notes in `website/site/content/notes.html` You use this code to generate it
