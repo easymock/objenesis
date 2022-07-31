@@ -21,14 +21,14 @@
   <parent>
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis-parent</artifactId>
-    <version>3.3</version>
+    <version>3.4-SNAPSHOT</version>
   </parent>
   <artifactId>objenesis-website</artifactId>
   <name>Objenesis website</name>
   <packaging>pom</packaging>
 
   <!-- CHANGE THIS VERSION TO WHAT YOU NEED -->
-  <version>3.3</version>
+  <version>3.2</version>
 
   <properties>
     <javadoc>apidocs</javadoc>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.objenesis</groupId>
       <artifactId>objenesis</artifactId>
-      <version>3.3</version>
+      <version>3.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
