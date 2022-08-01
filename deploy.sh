@@ -29,10 +29,12 @@ pause
 
 # Release the jars now on central staging
 echo "Check everything is alright, next step will release to central"
-echo "Right now you need to delete some of the projects from staging"
+echo "Right now you need to delete some of the projects from staging (i.e. benchmark, gae, website) unless is was fixed by the skipStaging flag"
 open "https://oss.sonatype.org/#welcome"
 pause
-# mvn nexus-staging:release
+pushd target/checkout
+mvn -N nexus-staging:release
+popd
 
 echo "Close the milestone in GitHub and create the new one"
 open "https://github.com/easymock/objenesis/milestones"
