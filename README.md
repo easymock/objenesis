@@ -103,6 +103,21 @@ cd benchmark
 
 `mvn modernizer:modernizer -Pall`
 
+## Reproducible build
+
+We make sure a build will always create the same result with done from the same sources.
+It follows these [guidelines](https://maven.apache.org/guides/mini/guide-reproducible-builds.html).
+
+Useful commands:
+```bash
+# Checks that all plugins are compatible
+mvn artifact:check-buildplan -Pfull,all
+# Build and install the artifact
+mvn clean install -Pfull,all
+# Build and compare the artifact with the installed one
+mvn clean verify artifact:compare -Pfull,all
+```    
+
 ## To release
 
 * Add the release notes in `website/site/content/notes.html` You use this code to generate it
