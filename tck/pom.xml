@@ -27,7 +27,6 @@
 
   <name>Objenesis TCK</name>
   <description>Objenesis' TCK</description>
-  <url>http://objenesis.org</url>
 
   <properties>
     <paxexam.version>4.13.5</paxexam.version>
