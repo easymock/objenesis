@@ -539,13 +539,6 @@
       </modules>
     </profile>
     <profile>
-      <!-- Activate to run to include Google App Engine test -->
-      <id>gae</id>
-      <modules>
-        <module>gae</module>
-      </modules>
-    </profile>
-    <profile>
       <!-- Activate to create a complete release -->
       <id>release</id>
       <build>
@@ -572,7 +565,6 @@
         <!-- testing the android module will be removed for now since the android plugin doesn't work with Java 9+ -->
         <!-- the only way to repair would be to migrate the build or a part of the buil to Gradle and I do not want to do that now -->
         <!--<module>tck-android</module>-->
-        <module>gae</module>
         <module>website</module>
       </modules>
     </profile>
