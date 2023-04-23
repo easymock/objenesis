@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.objenesis.tck;
 
-import java.io.File;
-import java.io.Serializable;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisHelper;
-import org.ops4j.pax.exam.Configuration;
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
-import org.ops4j.pax.exam.spi.reactors.PerMethod;
+import org.objenesis.test.EmptyClass;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
+import org.osgi.framework.launch.Framework;
+import org.osgi.framework.launch.FrameworkFactory;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -35,39 +38,28 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
 
-import static org.junit.Assert.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-/**
- * @author Henri Tremblay
- */
-@RunWith(PaxExam.class)
-@ExamReactorStrategy(PerMethod.class)
-public class OsgiTest implements Serializable{
+public class OsgiTest {
 
-   private static final long serialVersionUID = 1L;
+   private static final List<String> EXTRA_SYSTEMPACKAGES = Arrays.asList("sun.misc", "sun.reflect");
+   private static final FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class).iterator().next();
 
-   @Configuration
-   public Option[] config() {
-      String version = getImplementationVersion(Objenesis.class);
-      return options(
-         bundle("file:../main/target/objenesis-" + version + ".jar"),
-         junitBundles()
-      );
-   }
+   private static Framework framework;
+   private static Bundle objenesisBundle;
+   private static Bundle testBundle;
 
-   @Test
-   public void testCanInstantiate() {
-      assertSame(OsgiTest.class, ObjenesisHelper.newInstance(getClass()).getClass());
-   }
-
-   @Test
-   public void testCanInstantiateSerialize() {
-      assertSame(OsgiTest.class, ObjenesisHelper.newSerializableInstance(getClass()).getClass());
-   }
-
-   private String getImplementationVersion(final Class<?> c) {
+   private static String getImplementationVersion(final Class<?> c) {
       String version = c.getPackage().getImplementationVersion();
       // Null means we are an IDE, not in Maven. So we have an IDE project dependency instead
       // of a Maven dependency with the jar. Which explains why the version is null (no Manifest
@@ -96,4 +88,68 @@ public class OsgiTest implements Serializable{
       }
       return version;
    }
+
+   @BeforeAll
+   static void before(@TempDir Path frameworkStorage) throws Exception {
+      Map<String, String> configuration = new HashMap<>();
+      configuration.put(Constants.FRAMEWORK_STORAGE, frameworkStorage.toString());
+      configuration.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, String.join(",", EXTRA_SYSTEMPACKAGES));
+      framework = frameworkFactory.newFramework(configuration);
+      framework.init();
+
+      BundleContext bundleContext = framework.getBundleContext();
+      String version = getImplementationVersion(Objenesis.class);
+
+      Path objenesisPath = Paths.get("../main/target/objenesis-" + version + ".jar");
+      objenesisBundle = installBundle(bundleContext, objenesisPath);
+
+      Path testPath = Paths.get("../test/target/objenesis-test-" + version + ".jar");
+      testBundle = installBundle(bundleContext, testPath);
+
+      framework.start();
+      // Start the bundle to see right away if something goes wrong
+      objenesisBundle.start();
+      testBundle.start();
+   }
+
+   @AfterAll
+   static void tearDown() throws Exception {
+      if (framework != null) {
+         framework.stop();
+         framework.waitForStop(10_000);
+      }
+   }
+
+   private static Bundle installBundle(BundleContext bundleContext, Path bundlePath) {
+      try {
+         return bundleContext.installBundle(bundlePath.toUri().toString());
+      } catch (BundleException e) {
+         throw new IllegalStateException("Failed to install bundle: " + bundlePath.getFileName(), e);
+      }
+   }
+
+   @Test
+   void testCanInstantiate() throws Exception {
+      instantiate("newInstance");
+   }
+
+   @Test
+   void testCanInstantiateSerialize() throws Exception {
+      instantiate("newSerializableInstance");
+   }
+
+   private void instantiate(String instantiationMethod) throws Exception {
+      // We load a class from an OSGi bundle. We will then instantiate it using Objenesis which is in another bundle
+      Class<?> clazz = loadOsgiClass(testBundle, EmptyClass.class.getName());
+      Class<?> objenesisHelper = loadOsgiClass(objenesisBundle, ObjenesisHelper.class.getName());
+      Method method = objenesisHelper.getMethod(instantiationMethod, Class.class);
+      Object result = method.invoke(null, clazz);
+      assertSame(clazz, result.getClass());
+   }
+
+   private static Class<?> loadOsgiClass(Bundle bundle, String className) throws Exception {
+      return bundle.loadClass(className);
+   }
+
 }
+

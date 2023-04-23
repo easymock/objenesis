@@ -38,40 +38,14 @@
       <artifactId>objenesis</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <!-- Dependencies below are for the OSGi test -->
-
     <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-junit4</artifactId>
-      <version>${paxexam.version}</version>
-      <scope>test</scope>
-      <exclusions>
-        <!-- Use the one bundled in Felix -->
-        <exclusion>
-          <groupId>org.osgi</groupId>
-          <artifactId>org.osgi.core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-container-native</artifactId>
-      <version>${paxexam.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-link-mvn</artifactId>
-      <version>${paxexam.version}</version>
+      <groupId>org.objenesis</groupId>
+      <artifactId>objenesis-test</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
 
-    <!-- And this is our OSGi container -->
+    <!-- Our OSGi container -->
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.framework</artifactId>
