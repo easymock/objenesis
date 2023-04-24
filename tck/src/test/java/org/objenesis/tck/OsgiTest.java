@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class OsgiTest {
@@ -145,6 +146,9 @@ public class OsgiTest {
    private void instantiate(MethodHandle instantiationMethod) throws Throwable {
       // We load a class from an OSGi bundle. We will then instantiate it using Objenesis which is in another bundle
       Class<?> clazz = loadOsgiClass(testBundle, EmptyClass.class.getName());
+      // should be different since one is from OSGi and the other is from the classpath
+      // This is to make sure our test is actually working as expected
+      assertNotSame(clazz, EmptyClass.class);
       Object result = instantiationMethod.invoke(clazz);
       assertSame(clazz, result.getClass());
    }
