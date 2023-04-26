@@ -25,7 +25,7 @@
 
   <name>Objenesis parent project</name>
   <description>A library for instantiating Java objects</description>
-  <url>http://objenesis.org</url>
+  <url>https://objenesis.org</url>
   <inceptionYear>2006</inceptionYear>
 
   <modules>

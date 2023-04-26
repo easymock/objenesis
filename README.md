@@ -2,7 +2,7 @@
 
 Objenesis is a library dedicated to bypass the constructor when creating an object. On any JVM there is.
 
-You can find the website and user documentation at [objenesis.org](http://objenesis.org).
+You can find the website and user documentation at [objenesis.org](https://objenesis.org).
 
 # Developer information
 
