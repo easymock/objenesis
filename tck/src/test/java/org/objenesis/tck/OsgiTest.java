@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,87 +13,149 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.objenesis.tck;
 
-import java.io.File;
-import java.io.Serializable;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisHelper;
-import org.ops4j.pax.exam.Configuration;
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
-import org.ops4j.pax.exam.spi.reactors.PerMethod;
+import org.objenesis.test.EmptyClass;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
+import org.osgi.framework.launch.Framework;
+import org.osgi.framework.launch.FrameworkFactory;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.io.Serializable;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
 
-import static org.junit.Assert.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-/**
- * @author Henri Tremblay
- */
-@RunWith(PaxExam.class)
-@ExamReactorStrategy(PerMethod.class)
-public class OsgiTest implements Serializable{
+public class OsgiTest {
 
-   private static final long serialVersionUID = 1L;
+   private static final List<String> EXTRA_SYSTEMPACKAGES = Arrays.asList("sun.misc", "sun.reflect");
+   private static final FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class).iterator().next();
 
-   @Configuration
-   public Option[] config() {
-      String version = getImplementationVersion(Objenesis.class);
-      return options(
-         bundle("file:../main/target/objenesis-" + version + ".jar"),
-         junitBundles()
-      );
+   private static MethodHandle newInstance;
+   private static MethodHandle newSerializableInstance;
+
+   private static Framework framework;
+   private static Bundle testBundle;
+
+   private static MethodHandle methodHandle(Class<?> objenesisHelper, String name, Class<?> returnType) {
+      MethodHandles.Lookup lookUp  = MethodHandles.publicLookup();
+      try {
+         return lookUp.findStatic(objenesisHelper, name, MethodType.methodType(returnType, Class.class));
+      } catch (NoSuchMethodException | IllegalAccessException e) {
+         throw new RuntimeException(e);
+      }
    }
 
-   @Test
-   public void testCanInstantiate() {
-      assertSame(OsgiTest.class, ObjenesisHelper.newInstance(getClass()).getClass());
-   }
-
-   @Test
-   public void testCanInstantiateSerialize() {
-      assertSame(OsgiTest.class, ObjenesisHelper.newSerializableInstance(getClass()).getClass());
-   }
-
-   private String getImplementationVersion(final Class<?> c) {
+   private static String getImplementationVersion(final Class<?> c) throws Exception {
       String version = c.getPackage().getImplementationVersion();
       // Null means we are an IDE, not in Maven. So we have an IDE project dependency instead
       // of a Maven dependency with the jar. Which explains why the version is null (no Manifest
       // since there's no jar). In that case we get the version from the pom.xml.
       if(version == null) {
-         try {
-            XPathFactory xPathFactory = XPathFactory.newInstance();
-            final XPath xPath = xPathFactory.newXPath();
-            XPathExpression xPathExpression;
-            try {
-               xPathExpression = xPath.compile("/project/parent/version");
-            }
-            catch(final XPathExpressionException e) {
-               throw new RuntimeException(e);
-            }
+         XPathFactory xPathFactory = XPathFactory.newInstance();
+         XPath xPath = xPathFactory.newXPath();
+         XPathExpression xPathExpression = xPath.compile("/project/parent/version");
 
-            final DocumentBuilderFactory xmlFact = DocumentBuilderFactory.newInstance();
-            xmlFact.setNamespaceAware(false);
-            final DocumentBuilder builder = xmlFact.newDocumentBuilder();
-            final Document doc = builder.parse(new File("pom.xml"));
-            version = xPathExpression.evaluate(doc);
-         }
-         catch(final Exception e) {
-            throw new RuntimeException(e);
-         }
+         DocumentBuilderFactory xmlFact = DocumentBuilderFactory.newInstance();
+         xmlFact.setNamespaceAware(false);
+         DocumentBuilder builder = xmlFact.newDocumentBuilder();
+         Document doc = builder.parse(Paths.get("pom.xml").toFile());
+         version = xPathExpression.evaluate(doc);
       }
       return version;
    }
+
+   @BeforeAll
+   static void before(@TempDir Path frameworkStorage) throws Exception {
+      Map<String, String> configuration = new HashMap<>();
+      configuration.put(Constants.FRAMEWORK_STORAGE, frameworkStorage.toString());
+      configuration.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, String.join(",", EXTRA_SYSTEMPACKAGES));
+      framework = frameworkFactory.newFramework(configuration);
+      framework.init();
+
+      BundleContext bundleContext = framework.getBundleContext();
+      String version = getImplementationVersion(Objenesis.class);
+
+      Path objenesisPath = Paths.get("../main/target/objenesis-" + version + ".jar");
+      Bundle objenesisBundle = installBundle(bundleContext, objenesisPath);
+
+      Path testPath = Paths.get("../test/target/objenesis-test-" + version + ".jar");
+      testBundle = installBundle(bundleContext, testPath);
+
+      framework.start();
+      // Start the bundle to see right away if something goes wrong
+      objenesisBundle.start();
+      testBundle.start();
+
+      Class<?> objenesisHelper = loadOsgiClass(objenesisBundle, ObjenesisHelper.class.getName());
+      newInstance = methodHandle(objenesisHelper, "newInstance", Object.class);
+      newSerializableInstance = methodHandle(objenesisHelper, "newSerializableInstance", Serializable.class);
+   }
+
+   @AfterAll
+   static void tearDown() throws Exception {
+      if (framework != null) {
+         framework.stop();
+         framework.waitForStop(10_000);
+      }
+   }
+
+   private static Bundle installBundle(BundleContext bundleContext, Path bundlePath) {
+      try {
+         return bundleContext.installBundle(bundlePath.toUri().toString());
+      } catch (BundleException e) {
+         throw new IllegalStateException("Failed to install bundle: " + bundlePath.getFileName(), e);
+      }
+   }
+
+   @Test
+   void testCanInstantiate() throws Throwable {
+      instantiate(newInstance);
+   }
+
+   @Test
+   void testCanInstantiateSerialize() throws Throwable {
+      instantiate(newSerializableInstance);
+   }
+
+   private void instantiate(MethodHandle instantiationMethod) throws Throwable {
+      // We load a class from an OSGi bundle. We will then instantiate it using Objenesis which is in another bundle
+      Class<?> clazz = loadOsgiClass(testBundle, EmptyClass.class.getName());
+      // should be different since one is from OSGi and the other is from the classpath
+      // This is to make sure our test is actually working as expected
+      assertNotSame(clazz, EmptyClass.class);
+      Object result = instantiationMethod.invoke(clazz);
+      assertSame(clazz, result.getClass());
+   }
+
+   private static Class<?> loadOsgiClass(Bundle bundle, String className) throws Exception {
+      return bundle.loadClass(className);
+   }
+
 }
+

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,11 @@ public final class PlatformDescription {
    /** Flag telling if this version of Android is based on the OpenJDK */
    public static final boolean IS_ANDROID_OPENJDK = getIsAndroidOpenJDK();
 
-   /** Google App Engine version or null is we are not on GAE */
+   /** Google App Engine version or null is we are not on GAE
+    *
+    * @deprecated No need to differentiate GAE anymore since they have stopped using a security manager
+    */
+   @Deprecated
    public static final String GAE_VERSION = getGaeRuntimeVersion();
 
    /**
@@ -153,10 +157,24 @@ public final class PlatformDescription {
       return version >= 11;
    }
 
+   /**
+    * Tells if the platform running the JVM is Google App Engine.
+    *
+    * @return are we running on Google App Engine
+    * @deprecated No need to differentiate GAE anymore since they have stopped using a security manager
+    */
+   @Deprecated
    public static boolean isGoogleAppEngine() {
       return GAE_VERSION != null;
    }
 
+   /**
+    * Give the GAE Java version used. To know if it was before or after the restricting security manager.
+    *
+    * @return Java runtime version on GAE. Null if not on GEA
+    * @deprecated No need to differentiate GAE anymore since they have stopped using a security manager
+    */
+   @Deprecated
    private static String getGaeRuntimeVersion() {
       return System.getProperty("com.google.appengine.runtime.version");
    }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,10 +58,6 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
          throw new ObjenesisException(new NotSerializableException(type+" not serializable"));
       }
       if(JVM_NAME.startsWith(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
-         // Java 7 GAE was under a security manager so we use a degraded system
-         if(isGoogleAppEngine() && PlatformDescription.SPECIFICATION_VERSION.equals("1.7")) {
-            return new ObjectInputStreamInstantiator<>(type);
-         }
          return new SunReflectionFactorySerializationInstantiator<>(type);
       }
       else if(JVM_NAME.startsWith(DALVIK)) {

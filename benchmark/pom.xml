@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
 
-    Copyright 2006-2022 the original author or authors.
+    Copyright 2006-2023 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@
   <artifactId>objenesis-benchmark</artifactId>
   <name>Objenesis Benchmark</name>
   <description>Objenesis' Benchmark</description>
-  <url>http://objenesis.org</url>
 
   <properties>
     <!-- Minimum for this module is 1.8 -->
@@ -58,7 +57,7 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.12.20</version>
+      <version>1.14.4</version>
     </dependency>
   </dependencies>
 

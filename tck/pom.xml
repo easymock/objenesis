@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
 
-    Copyright 2006-2022 the original author or authors.
+    Copyright 2006-2023 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@
 
   <name>Objenesis TCK</name>
   <description>Objenesis' TCK</description>
-  <url>http://objenesis.org</url>
 
   <properties>
     <paxexam.version>4.13.5</paxexam.version>
@@ -39,40 +38,14 @@
       <artifactId>objenesis</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <!-- Dependencies below are for the OSGi test -->
-
     <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-junit4</artifactId>
-      <version>${paxexam.version}</version>
-      <scope>test</scope>
-      <exclusions>
-        <!-- Use the one bundled in Felix -->
-        <exclusion>
-          <groupId>org.osgi</groupId>
-          <artifactId>org.osgi.core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-container-native</artifactId>
-      <version>${paxexam.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-link-mvn</artifactId>
-      <version>${paxexam.version}</version>
+      <groupId>org.objenesis</groupId>
+      <artifactId>objenesis-test</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
 
-    <!-- And this is our OSGi container -->
+    <!-- Our OSGi container -->
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.framework</artifactId>
@@ -80,21 +53,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- This is just to have a nice logging -->
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <!-- Starting with 1.4.x, logback is compiled for Java 11, so we need to stick with 1.3.x -->
-      <version>1.3.1</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- PAX exam doesn't support Jupiter so we use JUnit 4 -->
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>

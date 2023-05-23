@@ -25,7 +25,7 @@
 
   <name>Objenesis parent project</name>
   <description>A library for instantiating Java objects</description>
-  <url>http://objenesis.org</url>
+  <url>https://objenesis.org</url>
   <inceptionYear>2006</inceptionYear>
 
   <modules>
@@ -75,9 +75,10 @@
 
   <properties>
     <java.version>1.8</java.version>
+    <project.build.outputTimestamp>2023-04-19T00:00:00Z</project.build.outputTimestamp>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junit5.version>5.9.1</junit5.version>
-    <spotbugs-maven-plugin.version>4.7.3.0</spotbugs-maven-plugin.version>
+    <junit5.version>5.9.3</junit5.version>
+    <spotbugs-maven-plugin.version>4.7.3.4</spotbugs-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -86,16 +87,6 @@
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter</artifactId>
         <version>${junit5.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.vintage</groupId>
-        <artifactId>junit-vintage-engine</artifactId>
-        <version>${junit5.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.13.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -165,7 +156,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.3.0</version>
         <configuration>
           <rules>
             <requireMavenVersion>
@@ -196,7 +187,7 @@
       <plugin>
         <groupId>org.gaul</groupId>
         <artifactId>modernizer-maven-plugin</artifactId>
-        <version>2.5.0</version>
+        <version>2.6.0</version>
         <configuration>
           <javaVersion>8</javaVersion>
         </configuration>
@@ -206,59 +197,54 @@
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
         <artifactId>wagon-ssh-external</artifactId>
-        <version>3.5.2</version>
+        <version>3.5.3</version>
       </extension>
     </extensions>
     <pluginManagement>
       <plugins>
         <plugin>
+          <artifactId>maven-artifact-plugin</artifactId>
+          <version>3.4.1</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.4.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.3.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M7</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.2.0</version>
         </plugin>
         <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.11.0</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.0.1</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
         <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.1.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.5.0</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-release-plugin</artifactId>
-          <version>3.0.0-M7</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.3.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-shade-plugin</artifactId>
@@ -270,11 +256,11 @@
         </plugin>
         <plugin>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.2.1</version>
+          <version>3.3.0</version>
         </plugin>
         <plugin>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.4.1</version>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.1.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
@@ -283,7 +269,7 @@
         <plugin>
           <groupId>org.apache.felix</groupId>
           <artifactId>maven-bundle-plugin</artifactId>
-          <version>5.1.8</version>
+          <version>5.1.9</version>
         </plugin>
         <plugin>
           <groupId>com.keyboardsamurais.maven</groupId>
@@ -305,7 +291,7 @@
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>4.1</version>
+          <version>4.2</version>
           <configuration>
             <header>${project.basedir}/../header.txt</header>
             <strictCheck>true</strictCheck>
@@ -348,7 +334,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-remote-resources-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.1.0</version>
           <executions>
             <execution>
               <goals>
@@ -370,7 +356,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>versions-maven-plugin</artifactId>
-          <version>2.14.1</version>
+          <version>2.15.0</version>
         </plugin>
         <plugin>
           <groupId>com.github.spotbugs</groupId>
@@ -438,7 +424,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.4.1</version>
+        <version>3.4.3</version>
       </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
@@ -447,7 +433,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.19.0</version>
+        <version>3.21.0</version>
         <configuration>
           <targetJdk>1.8</targetJdk>
         </configuration>
@@ -543,19 +529,21 @@
       </modules>
     </profile>
     <profile>
-      <!-- Activate to run to include Google App Engine test -->
-      <id>gae</id>
-      <modules>
-        <module>gae</module>
-      </modules>
-    </profile>
-    <profile>
       <!-- Activate to create a complete release -->
       <id>release</id>
       <build>
         <plugins>
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -567,7 +555,6 @@
         <!-- testing the android module will be removed for now since the android plugin doesn't work with Java 9+ -->
         <!-- the only way to repair would be to migrate the build or a part of the buil to Gradle and I do not want to do that now -->
         <!--<module>tck-android</module>-->
-        <module>gae</module>
         <module>website</module>
       </modules>
     </profile>

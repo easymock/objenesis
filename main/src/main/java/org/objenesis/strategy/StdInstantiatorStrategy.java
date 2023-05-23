@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2022 the original author or authors.
+ * Copyright 2006-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,13 +56,6 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
       if(PlatformDescription.isThisJVM(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
-         // Java 7 GAE was under a security manager so we use a degraded system
-         if(PlatformDescription.isGoogleAppEngine() && PlatformDescription.SPECIFICATION_VERSION.equals("1.7")) {
-            if(Serializable.class.isAssignableFrom(type)) {
-               return new ObjectInputStreamInstantiator<>(type);
-            }
-            return new AccessibleInstantiator<>(type);
-         }
          // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
          // times slower. So I prefer to use this one
          return new SunReflectionFactoryInstantiator<>(type);

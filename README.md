@@ -2,7 +2,7 @@
 
 Objenesis is a library dedicated to bypass the constructor when creating an object. On any JVM there is.
 
-You can find the website and user documentation at [objenesis.org](http://objenesis.org).
+You can find the website and user documentation at [objenesis.org](https://objenesis.org).
 
 # Developer information
 
@@ -14,8 +14,8 @@ You can find the website and user documentation at [objenesis.org](http://objene
 ## Environment setup
 
 I'm using:
-- Maven 3.8.5
-- IntelliJ Ultimate 2022.1.2 (thanks to JetBrains for the license) (it should also work with Eclipse)
+- Maven 3.8.7
+- IntelliJ Ultimate 2023.1 (thanks to JetBrains for the license) (it should also work with Eclipse)
 
 To configure your local workspace:
 - Import the Maven parent project to Eclipse or IntelliJ
@@ -102,6 +102,21 @@ cd benchmark
 ## To run modernizer
 
 `mvn modernizer:modernizer -Pall`
+
+## Reproducible build
+
+We make sure a build will always create the same result with done from the same sources.
+It follows these [guidelines](https://maven.apache.org/guides/mini/guide-reproducible-builds.html).
+
+Useful commands:
+```bash
+# Checks that all plugins are compatible
+mvn artifact:check-buildplan -Pfull,all
+# Build and install the artifact
+mvn clean install -Pfull,all
+# Build and compare the artifact with the installed one
+mvn clean verify artifact:compare -Pfull,all
+```    
 
 ## To release
 
