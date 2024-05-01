@@ -31,7 +31,7 @@ import org.objenesis.tck.features.Feature;
  * This TCK tests Objenesis implementations against a set of candidate classes (class it attempts to instantiate),
  * reporting the results to a {@link Reporter}.
  *
- * <h3>Example usage</h3>
+ * <h2>Example usage</h2>
  *
  * <pre>
  * TextReporter reporter = new TextReporter(System.out, System.err);
