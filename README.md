@@ -14,8 +14,8 @@ You can find the website and user documentation at [objenesis.org](https://objen
 ## Environment setup
 
 I'm using:
-- Maven 3.8.7
-- IntelliJ Ultimate 2023.1 (thanks to JetBrains for the license) (it should also work with Eclipse)
+- Maven 3.9.6
+- IntelliJ Ultimate 2024.1 (thanks to JetBrains for the license) (it should also work with Eclipse)
 
 To configure your local workspace:
 - Import the Maven parent project to Eclipse or IntelliJ
@@ -42,11 +42,13 @@ This build will create the source and javadoc jars and run spotbugs.
 ### Run the Android TCK
 
 #### Install required tools:
+
 ##### MacOs / *nix
 - Install the Android SDK (`brew cask install android-sdk`)
 - Install `platform-tools` and `build-tools` using the sdkmanager (`sdkmanager "platform-tools" "build-tools"`)
 - Add an `ANDROID_HOME` to target the Android SDK (`export ANDROID_HOME=$(realpath $(echo "$(dirname $(readlink $(which sdkmanager)))/../.."))`)
-#### Windows
+
+##### Windows
 - [Install Android Studio](https://developer.android.com/studio)
 - Launch studio and install SDK and emulator
 - Add an `ANDROID_HOME` to environmental variables (path used to install SDK on previous step)
