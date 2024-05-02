@@ -26,4 +26,4 @@ jobs:
         java-version: ${{ matrix.java }}
         distribution: 'temurin'
     - name: Build
-      run: ./mvnw --no-transfer-progress -B clean verify --file pom.xml
+      run: ./mvnw --no-transfer-progress -B clean verify -Pfull --file pom.xml
