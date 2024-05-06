@@ -30,6 +30,7 @@
 
   <properties>
     <java.version>9</java.version>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <dependencies>
@@ -57,12 +58,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>--add-opens java.base/java.util=org.objenesis</argLine>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>

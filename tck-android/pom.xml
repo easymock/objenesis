@@ -31,6 +31,7 @@
   <properties>
     <android.home>${env.ANDROID_HOME}</android.home>
     <exec.skip>${skipTests}</exec.skip>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <dependencies>
