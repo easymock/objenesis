@@ -135,7 +135,6 @@ curl -s "https://api.github.com/repos/easymock/objenesis/issues?milestone=${mile
 echo "</ul>"
 ```
 
-* Launch an Android device (virtual or physical) 
 * Launch `./deploy.sh`
 * Answer the questions (normally, just acknowledge the proposed default)
 * Follow the instructions

@@ -564,7 +564,7 @@
       <modules>
         <module>benchmark</module>
         <!-- testing the android module will be removed for now since the android plugin doesn't work with Java 9+ -->
-        <!-- the only way to repair would be to migrate the build or a part of the buil to Gradle and I do not want to do that now -->
+        <!-- the only way to repair would be to migrate the build or a part of the build to Gradle and I do not want to do that now -->
         <!--<module>tck-android</module>-->
         <module>website</module>
       </modules>
