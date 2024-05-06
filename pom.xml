@@ -84,9 +84,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
         <version>${junit5.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -94,7 +96,7 @@
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
+      <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -526,6 +528,15 @@
       <id>benchmark</id>
       <modules>
         <module>benchmark</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>module-test</id>
+      <activation>
+        <jdk>[9,</jdk>
+      </activation>
+      <modules>
+        <module>module-test</module>
       </modules>
     </profile>
     <profile>
