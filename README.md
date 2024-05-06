@@ -122,7 +122,7 @@ mvn clean verify artifact:compare -Pfull,all
 
 ## To release
 
-* Add the release notes in `website/site/content/notes.html` You use this code to generate it
+* Add the release notes in `website/site/content/notes.html` You use this code to generate it. If you have more than 100 items, do it again with `&page=2`
 
 ```bash
 # Get the milestone matching the version
@@ -131,7 +131,7 @@ milestone=$(curl -s "https://api.github.com/repos/easymock/objenesis/milestones"
 echo "<h1>Version $version ($(date '+%Y-%m-%d'))</h1>"
 echo
 echo "<ul>"  
-curl -s "https://api.github.com/repos/easymock/objenesis/issues?milestone=${milestone}&state=all" | jq -r '.[] | "  <li>" + .title + " (#" + (.number|tostring) + ")</li>"'
+curl -s "https://api.github.com/repos/easymock/objenesis/issues?milestone=${milestone}&state=all&per_page=100" | jq -r '.[] | "  <li>" + .title + " (#" + (.number|tostring) + ")</li>"'
 echo "</ul>"
 ```
 
