@@ -23,7 +23,7 @@ import org.objenesis.instantiator.annotations.Typology;
 import org.objenesis.instantiator.util.UnsafeUtils;
 
 /**
- * Instantiates an object, WITHOUT calling it's constructor, using
+ * Instantiates an object, WITHOUT calling its constructor, using
  * {@code sun.misc.Unsafe.allocateInstance()}. Unsafe and its methods are implemented by most
  * modern JVMs.
  *
