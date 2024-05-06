@@ -29,7 +29,7 @@ pause
 
 # Release the jars now on central staging
 echo "Check everything is alright, next step will release to central"
-echo "Right now you need to delete some of the projects from staging (i.e. benchmark, gae, website) unless is was fixed by the skipStaging flag"
+echo "Right now you need to delete some of the projects from staging (i.e. benchmark, gae, website) unless it was fixed by the skipStaging flag"
 open "https://oss.sonatype.org/#welcome"
 pause
 pushd target/checkout
