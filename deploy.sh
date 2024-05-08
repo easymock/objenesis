@@ -23,7 +23,7 @@ git push --tags
 
 mvn release:perform -Pall,full,release
 
-echo "Please add the release notes and copy binaries (main, tck, tck-android, exotic) in github"
+echo "Please add the release notes and copy binaries (main, tck, exotic) in github"
 open "https://github.com/easymock/objenesis/tags"
 pause
 
