@@ -135,6 +135,7 @@ curl -s "https://api.github.com/repos/easymock/objenesis/issues?milestone=${mile
 echo "</ul>"
 ```
 
+* Make sure you have Java 9+ in the path
 * Launch `./deploy.sh`
 * Answer the questions (normally, just acknowledge the proposed default)
 * Follow the instructions

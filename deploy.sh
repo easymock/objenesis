@@ -15,6 +15,13 @@ function pause {
 # Weird fix required by GPG. See https://github.com/keybase/keybase-issues/issues/1712. You will have to enter the passphrase on screen
 export GPG_TTY=$(tty)
 
+# Make sure we are running a Java version above 9 to get module-test in the release
+javaVersion=$(mvn -N help:evaluate -Dexpression="java.version" -q -DforceStdout | cut -d'.' -f1)
+if [ $javaVersion -lt 9 ]; then
+   echo "Java version must be 9+ for the release"
+   exit 1
+fi
+
 mvn release:prepare -Pall,full,release
 
 # Need to push now because release:perform will checkout the remote tag
