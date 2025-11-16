@@ -25,8 +25,5 @@ indent_size = 2
 [*.css]
 indent_size = 4
 
-[*.jsp]
-indent_size = 2
-
 [*.xml]
 indent_size = 2

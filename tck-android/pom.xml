@@ -141,18 +141,18 @@
 
   </build>
 
-   <profiles>
-      <profile>
-         <!-- To activate in IntelliJ. This will allow compilation because it seems IntelliJ can't retrieve
-              the objenesis classes shaded in the objenesis-tck jar -->
-         <id>intellij-specific</id>
-         <dependencies>
-            <dependency>
-               <groupId>${project.groupId}</groupId>
-               <artifactId>objenesis</artifactId>
-               <version>${project.version}</version>
-            </dependency>
-         </dependencies>
-      </profile>
-   </profiles>
+  <profiles>
+    <profile>
+      <!-- To activate in IntelliJ. This will allow compilation because it seems IntelliJ can't retrieve
+           the objenesis classes shaded in the objenesis-tck jar -->
+      <id>intellij-specific</id>
+      <dependencies>
+        <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>objenesis</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>
