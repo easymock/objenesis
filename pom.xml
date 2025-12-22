@@ -52,7 +52,7 @@
     <url>https://github.com/easymock/objenesis</url>
     <developerConnection>scm:git:git@github.com:easymock/objenesis.git</developerConnection>
     <connection>scm:git:https://github.com/easymock/objenesis.git</connection>
-    <tag>3.3</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <developers>
