@@ -31,6 +31,7 @@
   <properties>
     <java.version>9</java.version>
     <maven.deploy.skip>true</maven.deploy.skip>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
   </properties>
 
   <dependencies>
