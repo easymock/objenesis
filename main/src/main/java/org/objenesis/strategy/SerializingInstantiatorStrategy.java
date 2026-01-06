@@ -53,6 +53,7 @@ public class SerializingInstantiatorStrategy extends BaseInstantiatorStrategy {
     * @param type Class to instantiate
     * @return The ObjectInstantiator for the class
     */
+   @Override
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
       if(!Serializable.class.isAssignableFrom(type)) {
          throw new ObjenesisException(new NotSerializableException(type+" not serializable"));

@@ -53,6 +53,7 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
     * @param type Class to instantiate
     * @return The ObjectInstantiator for the class
     */
+   @Override
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
       if(PlatformDescription.isThisJVM(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
