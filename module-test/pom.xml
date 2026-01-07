@@ -32,6 +32,9 @@
     <java.version>9</java.version>
     <maven.deploy.skip>true</maven.deploy.skip>
     <maven.javadoc.skip>true</maven.javadoc.skip>
+    <argLine>--add-modules jdk.unsupported --add-opens java.base/java.util=org.objenesis</argLine>
+    <!-- It should be the default, but I just want to make it explicit -->
+    <surefire.useModulePath>true</surefire.useModulePath>
   </properties>
 
   <dependencies>
@@ -56,11 +59,33 @@
         <artifactId>maven-remote-resources-plugin</artifactId>
       </plugin>
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
         <configuration>
-          <argLine>--add-opens java.base/java.util=org.objenesis</argLine>
+          <!-- The AppTest unit test should do the same thing but for some reason, it works without add-modules jdk.unsupported -->
+          <!-- So I add this other test on top of it to make sure it works -->
+          <executable>java</executable>
+          <arguments>
+            <argument>--add-modules</argument>
+            <argument>jdk.unsupported</argument>
+            <argument>--add-opens</argument>
+            <argument>java.base/java.util=org.objenesis</argument>
+            <argument>--module-path</argument>
+            <modulepath/>
+            <argument>-m</argument>
+            <argument>org.mymodule/org.mymodule.App</argument>
+          </arguments>
         </configuration>
+        <executions>
+            <execution>
+                <phase>test</phase>
+                <goals>
+                    <goal>exec</goal>
+                </goals>
+            </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
+
 </project>

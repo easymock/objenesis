@@ -25,7 +25,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 /**
  * Helper methods providing access to {@link sun.reflect.ReflectionFactory} via reflection, for use
  * by the {@link ObjectInstantiator}s that use it.
- * 
+ *
  * @author Henri Tremblay
  */
 @SuppressWarnings("restriction")
@@ -54,7 +54,7 @@ class SunReflectionFactoryHelper {
          return Class.forName("sun.reflect.ReflectionFactory");
       }
       catch(ClassNotFoundException e) {
-         throw new ObjenesisException(e);
+         throw new ObjenesisException("You might need to add the unsupported module with --add-modules jdk.unsupported", e);
       }
    }
 

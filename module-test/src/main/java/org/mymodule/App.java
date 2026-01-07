@@ -32,4 +32,10 @@ public class App {
       Objenesis o = new ObjenesisSerializer(false);
       return o.newInstance(ArrayList.class);
    }
+
+   public static void main(String[] args) {
+      App app = new App();
+      System.out.println(app.newObject());
+      System.out.println(app.newSerializable());
+   }
 }

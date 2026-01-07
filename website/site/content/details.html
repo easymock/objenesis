@@ -48,6 +48,25 @@ of them or at least the kind you want are correctly instantiated.</p>
 <p>To launch from within an application server, the easiest is to bundle it in your application
 and to call <code>org.objenesis.tck.Main.main()</code> from your code.</p>
 
+<h2>Java Platform Module System and Integrity by default</h2>
+
+<p>Objenesis is doing some sneaky things and later versions of Java requires you to approve them to use them.</p>
+
+<ul>
+<li>If you get
+  <pre>Exception in thread "main" java.lang.NoClassDefFoundError: sun/misc/Unsafe</pre>
+  Add
+  <pre>--add-modules jdk.unsupported</pre>
+</li>
+<li>If you get
+  <pre>
+Exception in thread "main" java.lang.reflect.InaccessibleObjectException:
+Unable to make zzz.xxx accessible: module yyy does not "opens zzz" to module org.objenesis</pre>
+  Add
+  <pre>--add-opens yyy/zzz=org.objenesis</pre>
+</li>
+</ul>
+
 <h2>Android</h2>
 
 <p>Objenesis also works on Dalvik, the Android VM. So a TCK is also provided for it in the form of an apk. You

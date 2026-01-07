@@ -54,7 +54,15 @@ public class SunReflectionFactorySerializationInstantiator<T> implements ObjectI
 
       mungedConstructor = SunReflectionFactoryHelper.newConstructorForSerialization(
          type, nonSerializableAncestorConstructor);
-      mungedConstructor.setAccessible(true);
+      try {
+         mungedConstructor.setAccessible(true);
+      }
+      catch (RuntimeException e) {
+         if (e.getClass().getName().equals("java.lang.reflect.InaccessibleObjectException")) {
+            throw new ObjenesisException("Unable to access constructor, try adding --add-opens yyy/zzz=org.objenesis", e);
+         }
+         throw e;
+      }
    }
 
    public T newInstance() {
