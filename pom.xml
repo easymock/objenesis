@@ -556,6 +556,15 @@
       </modules>
     </profile>
     <profile>
+      <id>java-17</id>
+      <activation>
+        <jdk>[17,</jdk>
+      </activation>
+      <properties>
+        <junit5.version>6.0.2</junit5.version>
+      </properties>
+    </profile>
+    <profile>
       <!-- Activate to create a complete release -->
       <id>release</id>
       <build>
