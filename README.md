@@ -14,8 +14,8 @@ You can find the website and user documentation at [objenesis.org](https://objen
 ## Environment setup
 
 I'm using:
-- Maven 3.9.9
-- IntelliJ Ultimate 2024.1 (thanks to JetBrains for the license) (it should also work with Eclipse)
+- Maven 3.9.11
+- IntelliJ Ultimate 2025.3.1 (thanks to JetBrains for the license) (it should also work with Eclipse)
 
 To configure your local workspace:
 - Import the Maven parent project to Eclipse or IntelliJ
