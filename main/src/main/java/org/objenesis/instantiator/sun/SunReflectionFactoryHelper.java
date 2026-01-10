@@ -54,7 +54,12 @@ class SunReflectionFactoryHelper {
          return Class.forName("sun.reflect.ReflectionFactory");
       }
       catch(ClassNotFoundException e) {
-         throw new ObjenesisException("You might need to add the unsupported module with --add-modules jdk.unsupported", e);
+         try {
+            // try the more official version, which doesn't exist in Java 8
+            return Class.forName("jdk.internal.reflect.ReflectionFactory");
+         } catch (ClassNotFoundException ex) {
+            throw new ObjenesisException("You might need to add the unsupported module with --add-modules jdk.unsupported", e);
+         }
       }
    }
 
