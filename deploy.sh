@@ -23,25 +23,17 @@ if [ $javaVersion -lt 9 ]; then
 fi
 
 mvn release:prepare -Pall,full,release
+mvn release:perform -Pall,full,release
+echo "Check deployment to central"
+pause
 
 # Need to push now because release:perform will checkout the remote tag
 git push
 git push --tags
 
-mvn release:perform -Pall,full,release
-
 echo "Please add the release notes and copy binaries (main, tck, exotic) in github"
 open "https://github.com/easymock/objenesis/tags"
 pause
-
-# Release the jars now on central staging
-echo "Check everything is alright, next step will release to central"
-echo "Right now you need to delete some of the projects from staging (i.e. benchmark, gae, website) unless it was fixed by the skipStaging flag"
-open "https://oss.sonatype.org/#welcome"
-pause
-pushd target/checkout
-mvn -N nexus-staging:release
-popd
 
 echo "Close the milestone in GitHub and create the new one"
 open "https://github.com/easymock/objenesis/milestones"
