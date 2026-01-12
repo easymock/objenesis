@@ -1,18 +1,13 @@
 <!--
-To be able to deploy on Sonatype, add the servers below
+To be able to deploy on Maven Central, add the servers below
 -->
 
 <settings>
   <servers>
     <server>
-      <id>sonatype-nexus-snapshots</id>
+      <id>central</id>
       <username>myusername</username>
-      <password>mypassword</password>      
+      <password>token</password>
     </server>
-    <server>
-      <id>sonatype-nexus-staging</id>
-      <username>myusername</username>
-      <password>mypassword</password>      
-    </server>  
-  </servers>  
+  </servers>
 </settings>

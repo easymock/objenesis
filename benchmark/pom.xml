@@ -117,14 +117,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <configuration>
-          <skipStaging>true</skipStaging>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
