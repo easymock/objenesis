@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.objenesis</groupId>
   <artifactId>objenesis-parent</artifactId>
-  <version>3.5-SNAPSHOT</version>
+  <version>3.6-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Objenesis parent project</name>
@@ -75,10 +75,11 @@
 
   <properties>
     <java.version>1.8</java.version>
-    <project.build.outputTimestamp>2024-05-06T03:02:43Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-01-12T05:29:14Z</project.build.outputTimestamp>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit5.version>5.13.4</junit5.version>
     <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
+    <generateBackupPoms>false</generateBackupPoms>
   </properties>
 
   <dependencyManagement>
@@ -121,23 +122,6 @@
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
             </manifest>
           </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <!-- Required to let release with the benchmark project using snapshots. I can't put it directly in the benchmark project. It doesn't work -->
-          <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-          <!-- Renamed because the default would be objenesis-parent-x.y -->
-          <tagNameFormat>@{project.version}</tagNameFormat>
-          <!-- Quite annoying in case of error that the changes were pushed -->
-          <pushChanges>false</pushChanges>
-          <!-- Do not activate special profile from the superpom. We do it ourselves -->
-          <useReleaseProfile>false</useReleaseProfile>
-          <!-- Profiles required for the release -->
-          <releaseProfiles>release,full,all</releaseProfiles>
-          <!-- To use the same version on the module and the parent -->
-          <autoVersionSubmodules>true</autoVersionSubmodules>
         </configuration>
       </plugin>
       <plugin>
@@ -235,12 +219,12 @@
           <version>3.12.0</version>
         </plugin>
         <plugin>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>3.3.1</version>
-        </plugin>
-        <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.4.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-scm-plugin</artifactId>
+          <version>2.2.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-shade-plugin</artifactId>

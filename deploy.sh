@@ -22,12 +22,29 @@ if [ $javaVersion -lt 9 ]; then
    exit 1
 fi
 
-mvn release:prepare -Pall,full,release
-mvn release:perform -Pall,full,release
+echo "Update the Maven version to the release version"
+mvn versions:set -DremoveSnapshot=true -DgenerateBackupPoms=false -Pall
+
+echo "Deploy"
+mvn deploy -Pall,full,release
 echo "Check deployment to central"
 pause
 
-# Need to push now because release:perform will checkout the remote tag
+echo "Commit everything"
+mvn scm:checkin -Dmessage='[release] ${project.version}'
+
+echo "Tag"
+mvn scm:tag -Dtag='${project.version}' -DpushChanges=false
+
+
+echo "Move to the next maven version"
+mvn versions:set -DnextSnapshot=true -DgenerateBackupPoms=false -Pall
+
+echo "Commit everthing"
+git commit -am ""
+echo "Check everything is alright before pushing"
+pause
+
 git push
 git push --tags
 
