@@ -30,18 +30,18 @@ mvn deploy -Pall,full,release
 echo "Check deployment to central"
 pause
 
-echo "Commit everything"
-mvn scm:checkin -Dmessage='[release] ${project.version}'
+echo "Commit release"
+mvn scm:checkin -Dmessage='[release] Release ${project.version}' -DpushChanges=false
 
 echo "Tag"
 mvn scm:tag -Dtag='${project.version}' -DpushChanges=false
 
-
 echo "Move to the next maven version"
 mvn versions:set -DnextSnapshot=true -DgenerateBackupPoms=false -Pall
 
-echo "Commit everthing"
-git commit -am ""
+echo "Commit next version"
+mvn scm:checkin -Dmessage='[release] Start of ${project.version}' -DpushChanges=false
+
 echo "Check everything is alright before pushing"
 pause
 
