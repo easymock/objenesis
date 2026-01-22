@@ -170,6 +170,15 @@
         <artifactId>central-publishing-maven-plugin</artifactId>
         <version>0.10.0</version>
         <extensions>true</extensions>
+        <configuration>
+          <autoPublish>false</autoPublish>
+          <excludeArtifacts>
+            <excludeArtifact>org.objenesis:objenesis-benchmark</excludeArtifact>
+            <excludeArtifact>org.objenesis:objenesis-module-test</excludeArtifact>
+            <excludeArtifact>org.objenesis:objenesis-tck-android</excludeArtifact>
+            <excludeArtifact>org.objenesis:objenesis-website</excludeArtifact>
+          </excludeArtifacts>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.gaul</groupId>
