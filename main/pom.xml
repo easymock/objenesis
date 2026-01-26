@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.objenesis</groupId>
     <artifactId>objenesis-parent</artifactId>
-    <version>3.5-SNAPSHOT</version>
+    <version>3.5</version>
   </parent>
   <artifactId>objenesis</artifactId>
 
