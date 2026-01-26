@@ -88,4 +88,18 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <!-- Activate to create a complete release -->
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
