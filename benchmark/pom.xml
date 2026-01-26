@@ -34,7 +34,6 @@
     <jmh.version>1.37</jmh.version>
     <uberjar.name>benchmarks</uberjar.name>
     <maven.deploy.skip>true</maven.deploy.skip>
-    <maven.javadoc.skip>true</maven.javadoc.skip>
   </properties>
 
   <dependencies>

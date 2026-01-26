@@ -31,7 +31,6 @@
   <properties>
     <java.version>9</java.version>
     <maven.deploy.skip>true</maven.deploy.skip>
-    <maven.javadoc.skip>true</maven.javadoc.skip>
     <argLine>--add-modules jdk.unsupported --add-opens java.base/java.util=org.objenesis</argLine>
     <!-- It should be the default, but I just want to make it explicit -->
     <surefire.useModulePath>true</surefire.useModulePath>
