@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2006-2024 the original author or authors.
+    Copyright 2006-2026 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -70,12 +70,31 @@ of them or at least the kind you want are correctly instantiated.</p>
 
 <p>To launch from the command line, just type</p>
 
-<pre>java -jar objenesis-3.4-tck.jar</pre>
+<pre>java -jar objenesis-3.5-tck.jar</pre>
 
 <p>Note that the Objenesis jar is bundled in the TCK so no special classpath is needed.</p>
 
 <p>To launch from within an application server, the easiest is to bundle it in your application
 and to call <code>org.objenesis.tck.Main.main()</code> from your code.</p>
+
+<h2>Java Platform Module System and Integrity by default</h2>
+
+<p>Objenesis is doing some sneaky things and later versions of Java requires you to approve them to use them.</p>
+
+<ul>
+<li>If you get
+  <pre>Exception in thread "main" java.lang.NoClassDefFoundError: sun/misc/Unsafe</pre>
+  Add
+  <pre>--add-modules jdk.unsupported</pre>
+</li>
+<li>If you get
+  <pre>
+Exception in thread "main" java.lang.reflect.InaccessibleObjectException:
+Unable to make zzz.xxx accessible: module yyy does not "opens zzz" to module org.objenesis</pre>
+  Add
+  <pre>--add-opens yyy/zzz=org.objenesis</pre>
+</li>
+</ul>
 
 <h2>Android</h2>
 
@@ -84,7 +103,7 @@ can also find it on <a href="download.html">download page</a>. Just use the foll
 it.</p>
 
 <pre>
-adb install -r objenesis-tck-android-3.4.apk
+adb install -r objenesis-tck-android-3.5.apk
 adb shell am instrument -w org.objenesis.tck.android/.TckInstrumentation
 </pre>
 
@@ -158,7 +177,7 @@ public class ObjenesisSun14 extends ObjenesisBase {
 an instantiator that works on your platform. To try to find one, we provide a nice tool that will run through
 all the instantiators and tell you which ones work</p>
 
-<pre>java -cp objenesis-3.4-tck.jar org.objenesis.tck.search.SearchWorkingInstantiator</pre>
+<pre>java -cp objenesis-3.5-tck.jar org.objenesis.tck.search.SearchWorkingInstantiator</pre>
 
 <p>Some culprits:</p>
 <ul>

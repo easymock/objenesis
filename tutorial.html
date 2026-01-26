@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2006-2024 the original author or authors.
+    Copyright 2006-2026 the original author or authors.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ JVM version, SecurityManager and type of class being instantiated.</p>
 <p>We have defined that two different kinds of instantiation are required:</p>
 
 <ul>
-    <li><strong>Stardard</strong> - No constructor will be called</li>
+    <li><strong>Standard</strong> - No constructor will be called</li>
     <li><strong>Serializable compliant</strong> - Acts like an object instantiated by java standard
        serialization. It means that the constructor of the first non-serializable parent class will
        be called. However, specific implementation methods (e.g. <code>readResolve()</code>) are not called and we never check if the object is serializable.</li>
