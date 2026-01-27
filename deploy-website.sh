@@ -16,7 +16,7 @@ fi
 
 # clone the website branch
 echo "************** CLONE ************************"
-git clone --depth=1 --branch gh-pages git@github.com:easymock/objenesis.git site
+git clone --depth=1 --branch gh-pages --single-branch git@github.com:easymock/objenesis.git site
 
 pushd site
 
