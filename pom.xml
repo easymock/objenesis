@@ -142,11 +142,11 @@
       </plugin>
       <plugin>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version>
+        <version>3.6.3</version>
         <configuration>
           <rules>
             <requireMavenVersion>
-              <version>3.6.2</version>
+              <version>3.6.3</version>
             </requireMavenVersion>
           </rules>
         </configuration>
