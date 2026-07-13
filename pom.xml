@@ -78,7 +78,7 @@
     <project.build.outputTimestamp>2026-01-26T02:51:03Z</project.build.outputTimestamp>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit5.version>5.13.4</junit5.version>
-    <spotbugs-maven-plugin.version>4.10.2.0</spotbugs-maven-plugin.version>
+    <spotbugs-maven-plugin.version>4.10.3.0</spotbugs-maven-plugin.version>
     <generateBackupPoms>false</generateBackupPoms>
   </properties>
 
