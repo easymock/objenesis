@@ -20,6 +20,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -34,6 +35,11 @@ public class ObjenesisTest {
       assertEquals(
          "org.objenesis.ObjenesisStd using org.objenesis.strategy.StdInstantiatorStrategy with caching",
          o.toString());
+
+      ObjectInstantiator<? extends ObjenesisTest> instantiator = o.getInstantiatorOf(getClass());
+      assertEquals(instantiator.newInstance().getClass(), getClass());
+      ObjectInstantiator<? extends ObjenesisTest> otherInstantiator = o.getInstantiatorOf(getClass());
+      assertSame(instantiator, otherInstantiator);
    }
 
    @Test
@@ -43,25 +49,10 @@ public class ObjenesisTest {
          "org.objenesis.ObjenesisStd using org.objenesis.strategy.StdInstantiatorStrategy without caching",
          o.toString());
 
-      assertEquals(o.getInstantiatorOf(getClass()).newInstance().getClass(), getClass());
-   }
-
-   @Test
-   public final void testNewInstance() {
-      Objenesis o = new ObjenesisStd();
-      assertEquals(getClass(), o.newInstance(getClass()).getClass());
-   }
-
-   @Test
-   public final void testGetInstantiatorOf() {
-      Objenesis o = new ObjenesisStd();
-      ObjectInstantiator<?> i1 = o.getInstantiatorOf(getClass());
-      // Test instance creation
-      assertEquals(getClass(), i1.newInstance().getClass());
-
-      // Test caching
-      ObjectInstantiator<?> i2 = o.getInstantiatorOf(getClass());
-      assertSame(i1, i2);
+      ObjectInstantiator<? extends ObjenesisTest> instantiator = o.getInstantiatorOf(getClass());
+      assertEquals(instantiator.newInstance().getClass(), getClass());
+      ObjectInstantiator<? extends ObjenesisTest> otherInstantiator = o.getInstantiatorOf(getClass());
+      assertNotSame(instantiator, otherInstantiator);
    }
 
    @Test

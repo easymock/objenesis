@@ -18,8 +18,6 @@ package org.objenesis;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * Base class to extend if you want to have a class providing your own default strategy. Can also be
  * instantiated directly.
@@ -32,7 +30,7 @@ public class ObjenesisBase implements Objenesis {
    protected final InstantiatorStrategy strategy;
 
    /** Strategy cache. Key = Class, Value = InstantiatorStrategy */
-   protected ConcurrentHashMap<String, ObjectInstantiator<?>> cache;
+   private final ClassValue<ObjectInstantiator<?>> cache;
 
    /**
     * Constructor allowing to pick a strategy and using cache
@@ -54,7 +52,11 @@ public class ObjenesisBase implements Objenesis {
          throw new IllegalArgumentException("A strategy can't be null");
       }
       this.strategy = strategy;
-      this.cache = useCache ? new ConcurrentHashMap<>() : null;
+      this.cache = useCache ? new ClassValue<ObjectInstantiator<?>>() {
+         @Override protected ObjectInstantiator<?> computeValue(Class<?> type) {
+            return strategy.newInstantiatorOf(type);
+         }
+      } : null;
    }
 
    @Override
@@ -89,14 +91,6 @@ public class ObjenesisBase implements Objenesis {
       if(cache == null) {
          return strategy.newInstantiatorOf(clazz);
       }
-      ObjectInstantiator<?> instantiator = cache.get(clazz.getName());
-      if(instantiator == null) {
-         ObjectInstantiator<?> newInstantiator = strategy.newInstantiatorOf(clazz);
-         instantiator = cache.putIfAbsent(clazz.getName(), newInstantiator);
-         if(instantiator == null) {
-            instantiator = newInstantiator;
-         }
-      }
-      return (ObjectInstantiator<T>) instantiator;
+      return (ObjectInstantiator<T>) cache.get(clazz);
    }
 }
