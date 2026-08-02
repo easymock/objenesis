@@ -78,6 +78,7 @@
     <project.build.outputTimestamp>2026-01-26T02:51:03Z</project.build.outputTimestamp>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit5.version>5.13.4</junit5.version>
+    <license-maven-plugin.version>4.6</license-maven-plugin.version>
     <spotbugs-maven-plugin.version>4.10.3.0</spotbugs-maven-plugin.version>
     <generateBackupPoms>false</generateBackupPoms>
   </properties>
@@ -265,7 +266,7 @@
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>5.1.1</version>
+          <version>${license-maven-plugin.version}</version>
           <configuration>
             <header>${project.basedir}/../header.txt</header>
             <strictCheck>true</strictCheck>
@@ -523,6 +524,15 @@
       <modules>
         <module>module-test</module>
       </modules>
+    </profile>
+    <profile>
+      <id>java-11</id>
+      <activation>
+        <jdk>[11,</jdk>
+      </activation>
+      <properties>
+        <license-maven-plugin.version>5.1.1</license-maven-plugin.version>
+      </properties>
     </profile>
     <profile>
       <id>java-17</id>
