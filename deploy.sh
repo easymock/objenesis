@@ -28,6 +28,7 @@ mvn versions:set -DremoveSnapshot=true -DgenerateBackupPoms=false -Pall
 echo "Deploy"
 mvn deploy -Pall,full,release
 echo "Check deployment to central"
+open "https://central.sonatype.com/publishing/deployments"
 pause
 
 echo "Commit release"
