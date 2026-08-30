@@ -30,7 +30,7 @@
     left: 8px;
     width: 184px;
     top: 100px;
-    bottom: 8px;
+    bottom: 80px;
     margin: 0;
     padding: 0;
 }
@@ -41,7 +41,7 @@
     right: 8px;
     width: 184px;
     top: 100px;
-    bottom: 8px;
+    bottom: 80px;
     margin: 0;
     padding: 0;
 }
@@ -49,7 +49,7 @@
 .Content3Column {
     position: absolute;
     top: 100px;
-    bottom: 8px;
+    bottom: 80px;
     left: 208px;
     right: 216px;
 }
@@ -57,7 +57,7 @@
 .Content2Column {
     position: absolute;
     top: 100px;
-    bottom: 8px;
+    bottom: 80px;
     left: 208px;
     right: 16px;
 }
@@ -75,6 +75,8 @@
  */
 
 body {
+    position: relative;
+    min-height: 100vh;
     padding: 0;
     margin: 0;
     border: 0;
@@ -249,6 +251,29 @@ pre {
 }
 
 
+
+/*---------------------------------------------------------------------------
+ *  Footer
+ */
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 16px;
+    border-top: 1px solid #c8f;
+    background-color: #e0d0f0;
+    color: #606;
+    text-align: center;
+    font-size: 11px;
+}
+
+#footer a { text-decoration: none; }
+#footer a:link { color: #6e61ad; }
+#footer a:visited { color: #6e61ad; }
+#footer a:active { color: red; }
+#footer a:hover { color: red; }
 
 /*---------------------------------------------------------------------------
  *  Side panels
