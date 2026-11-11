@@ -18,6 +18,8 @@ package org.objenesis;
 import org.objenesis.instantiator.ObjectInstantiator;
 import org.objenesis.strategy.InstantiatorStrategy;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Base class to extend if you want to have a class providing your own default strategy. Can also be
  * instantiated directly.
@@ -30,7 +32,10 @@ public class ObjenesisBase implements Objenesis {
    protected final InstantiatorStrategy strategy;
 
    /** Strategy cache. Key = Class, Value = InstantiatorStrategy */
-   private final ClassValue<ObjectInstantiator<?>> cache;
+   private final InstantiatorCache cache;
+
+   /** {@code java.lang.ClassValue} is missing on Android before API 34 */
+   private static final boolean CLASS_VALUE_AVAILABLE = isClassValueAvailable();
 
    /**
     * Constructor allowing to pick a strategy and using cache
@@ -52,11 +57,13 @@ public class ObjenesisBase implements Objenesis {
          throw new IllegalArgumentException("A strategy can't be null");
       }
       this.strategy = strategy;
-      this.cache = useCache ? new ClassValue<ObjectInstantiator<?>>() {
-         @Override protected ObjectInstantiator<?> computeValue(Class<?> type) {
-            return strategy.newInstantiatorOf(type);
-         }
-      } : null;
+      if(!useCache) {
+         this.cache = null;
+      } else if(CLASS_VALUE_AVAILABLE) {
+         this.cache = new ClassValueCache(strategy);
+      } else {
+         this.cache = new MapCache(strategy);
+      }
    }
 
    @Override
@@ -92,5 +99,58 @@ public class ObjenesisBase implements Objenesis {
          return strategy.newInstantiatorOf(clazz);
       }
       return (ObjectInstantiator<T>) cache.get(clazz);
+   }
+
+   private static boolean isClassValueAvailable() {
+      try {
+         Class.forName("java.lang.ClassValue");
+         return true;
+      } catch(ClassNotFoundException e) {
+         return false;
+      }
+   }
+
+   private interface InstantiatorCache {
+      ObjectInstantiator<?> get(Class<?> type);
+   }
+
+   private static final class ClassValueCache implements InstantiatorCache {
+      private final ClassValue<ObjectInstantiator<?>> cache;
+
+      ClassValueCache(InstantiatorStrategy strategy) {
+         cache = new ClassValue<ObjectInstantiator<?>>() {
+            @Override
+            protected ObjectInstantiator<?> computeValue(Class<?> type) {
+               return strategy.newInstantiatorOf(type);
+            }
+         };
+      }
+
+      @Override
+      public ObjectInstantiator<?> get(Class<?> type) {
+         return cache.get(type);
+      }
+   }
+
+   private static final class MapCache implements InstantiatorCache {
+      private final ConcurrentHashMap<Class<?>, ObjectInstantiator<?>> cache = new ConcurrentHashMap<>();
+      private final InstantiatorStrategy strategy;
+
+      MapCache(InstantiatorStrategy strategy) {
+         this.strategy = strategy;
+      }
+
+      @Override
+      public ObjectInstantiator<?> get(Class<?> type) {
+         ObjectInstantiator<?> instantiator = cache.get(type);
+         if(instantiator == null) {
+            ObjectInstantiator<?> newInstantiator = strategy.newInstantiatorOf(type);
+            instantiator = cache.putIfAbsent(type, newInstantiator);
+            if(instantiator == null) {
+               instantiator = newInstantiator;
+            }
+         }
+         return instantiator;
+      }
    }
 }
