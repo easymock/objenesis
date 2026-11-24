@@ -20,7 +20,7 @@ import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 import org.objenesis.instantiator.ObjectInstantiator;
-import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
+import org.objenesis.instantiator.sun.UnsafeFactoryInstantiator;
 import org.objenesis.strategy.BaseInstantiatorStrategy;
 import org.objenesis.strategy.InstantiatorStrategy;
 import org.objenesis.strategy.SingleInstantiatorStrategy;
@@ -45,16 +45,16 @@ public class ConcurrentGetInstantiator {
 
    private static final int COUNT = 1000;
 
-   public static class SunInstantiatorStrategy extends BaseInstantiatorStrategy {
+   public static class UnsafeInstantiatorStrategy extends BaseInstantiatorStrategy {
       @Override
       public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
-         return new SunReflectionFactoryInstantiator<>(type);
+         return new UnsafeFactoryInstantiator<>(type);
       }
    }
 
    InstantiatorStrategy std = new StdInstantiatorStrategy();
-   InstantiatorStrategy single = new SingleInstantiatorStrategy(SunReflectionFactoryInstantiator.class);
-   InstantiatorStrategy custom = new SunInstantiatorStrategy();
+   InstantiatorStrategy single = new SingleInstantiatorStrategy(UnsafeFactoryInstantiator.class);
+   InstantiatorStrategy custom = new UnsafeInstantiatorStrategy();
 
    Objenesis cachedStd = new ObjenesisStd();
    Objenesis uncachedStd = new ObjenesisStd(false);
