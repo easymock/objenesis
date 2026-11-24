@@ -25,12 +25,18 @@ import org.objenesis.instantiator.annotations.Typology;
 /**
  * Instantiates an object, WITHOUT calling it's constructor, using internal
  * sun.reflect.ReflectionFactory - a class only available on JDK's that use Sun's 1.4 (or later)
- * Java implementation. This is the best way to instantiate an object without any side effects
- * caused by the constructor - however it is not available on every platform.
+ * Java implementation.
+ * <p>
+ * The method it relies on is disabled by default since Java 28 and will be removed in a future
+ * version. It can be temporarily re-enabled by running with
+ * {@code -Djdk.reflect.allowNonSerializableConstruction=true}.
  *
  * @author Joe Walnes
  * @see ObjectInstantiator
+ * @deprecated The method it relies on is disabled since Java 28. Use
+ * {@link UnsafeFactoryInstantiator} instead.
  */
+@Deprecated
 @Instantiator(Typology.STANDARD)
 public class SunReflectionFactoryInstantiator<T> implements ObjectInstantiator<T> {
 

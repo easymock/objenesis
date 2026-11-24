@@ -122,7 +122,7 @@ to implement your own strategy. Two possible reasons I can think of are that</p>
 public class Sun14Strategy implements InstantiatorStrategy {
     public ObjectInstantiator newInstantiatorOf(Class type) {
         // return sun dedicated instantiator
-        return new SunReflectionFactoryInstantiator(type);
+        return new UnsafeFactoryInstantiator(type);
     }
 }
 </pre></li>

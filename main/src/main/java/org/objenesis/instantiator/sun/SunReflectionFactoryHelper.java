@@ -47,7 +47,15 @@ class SunReflectionFactoryHelper {
          return (Constructor<T>) newConstructorForSerializationMethod.invoke(
             reflectionFactory, type, constructor);
       }
-      catch(IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+      catch(InvocationTargetException e) {
+         if(e.getCause() instanceof UnsupportedOperationException) {
+            throw new ObjenesisException("ReflectionFactory.newConstructorForSerialization(Class, Constructor) is "
+               + "disabled since Java 28. Use UnsafeFactoryInstantiator instead or temporarily run with "
+               + "-Djdk.reflect.allowNonSerializableConstruction=true", e.getCause());
+         }
+         throw new ObjenesisException(e);
+      }
+      catch(IllegalArgumentException | IllegalAccessException e) {
          throw new ObjenesisException(e);
       }
    }
