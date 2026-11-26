@@ -33,7 +33,8 @@ import java.util.concurrent.TimeUnit;
  * @author Henri Tremblay
  */
 @BenchmarkMode(Mode.AverageTime)
-@Fork(2)
+// The munged constructor is disabled by default since Java 28
+@Fork(value = 2, jvmArgsAppend = "-Djdk.reflect.allowNonSerializableConstruction=true")
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 10, time = 1)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)

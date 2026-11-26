@@ -6,9 +6,27 @@ The source code is available [here](https://github.com/easymock/objenesis/tree/m
 
 This benchmark compares two implementations working on HotSpot. They are instantiating the class Object. We have also added an instantiation with the default constructor.
 
-The munged constructor version is a special constructor HotSpot is using to perform serialization.
+The munged constructor version is a special constructor HotSpot is using to perform serialization. It is created by `ReflectionFactory.newConstructorForSerialization(Class, Constructor)`, which is disabled by default since Java 28.
 
-The unsafe version is using `Unsafe.allocateInstance`. A bit easier to implement in Objenesis but much slower than the munged version. So we kept the later one as the default for HotSpot.
+The unsafe version is using `Unsafe.allocateInstance`. It used to be much slower than the munged version. So we kept the latter one as the default for HotSpot. This isn't the case anymore. It is now faster on the versions we measured, except Java 25 where it is slightly slower. So it is now the default.
+
+Java   |Benchmark                        |Mean |Mean error|Units
+-------|---------------------------------|-----|----------|-------
+8      |createObjectWithConstructor      |2.112|0.013     |nsec/op
+8      |createObjectWithMungedConstructor|2.883|0.037     |nsec/op
+8      |createObjectWithUnsafe           |2.387|0.010     |nsec/op
+25     |createObjectWithConstructor      |2.936|0.030     |nsec/op
+25     |createObjectWithMungedConstructor|3.023|0.041     |nsec/op
+25     |createObjectWithUnsafe           |3.225|0.008     |nsec/op
+28 (EA)|createObjectWithConstructor      |0.775|0.004     |nsec/op
+28 (EA)|createObjectWithMungedConstructor|2.537|0.021     |nsec/op
+28 (EA)|createObjectWithUnsafe           |1.468|0.049     |nsec/op
+
+Java 8 is the oldest version supported by Objenesis 3, Java 25 is the latest LTS and Java 28 is the first version where the munged constructor is disabled by default (the benchmark re-enables it with `-Djdk.reflect.allowNonSerializableConstruction=true`). Java 17 and 21 give results similar to Java 8.
+
+They were executed on macOS using an Apple M4 Max with Zulu 1.8.0_512, Temurin 25.0.5.1 and OpenJDK 28-ea+25.
+
+The previous results, executed on Windows 8 using Java 1.7.0_25 64 bits version, were:
 
 Benchmark                  |Mean     |Mean error|Units
 ---------------------------|---------|----------|-------

@@ -23,7 +23,6 @@ import org.objenesis.instantiator.basic.AccessibleInstantiator;
 import org.objenesis.instantiator.basic.ObjectInputStreamInstantiator;
 import org.objenesis.instantiator.gcj.GCJInstantiator;
 import org.objenesis.instantiator.perc.PercInstantiator;
-import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
 import org.objenesis.instantiator.sun.UnsafeFactoryInstantiator;
 
 import java.io.Serializable;
@@ -57,9 +56,10 @@ public class StdInstantiatorStrategy extends BaseInstantiatorStrategy {
    public <T> ObjectInstantiator<T> newInstantiatorOf(Class<T> type) {
 
       if(PlatformDescription.isThisJVM(HOTSPOT) || PlatformDescription.isThisJVM(OPENJDK)) {
-         // The UnsafeFactoryInstantiator would also work. But according to benchmarks, it is 2.5
-         // times slower. So I prefer to use this one
-         return new SunReflectionFactoryInstantiator<>(type);
+         // We used to prefer the SunReflectionFactoryInstantiator since it was much faster. The
+         // difference is now small and usually in favor of Unsafe. Also, the method it relies on
+         // is disabled by default since Java 28 (#555)
+         return new UnsafeFactoryInstantiator<>(type);
       }
       else if(PlatformDescription.isThisJVM(DALVIK)) {
          if(PlatformDescription.isAndroidOpenJDK()) {

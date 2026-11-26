@@ -31,6 +31,9 @@ import org.objenesis.instantiator.ObjectInstantiator;
 @SuppressWarnings("restriction")
 class SunReflectionFactoryHelper {
 
+   /** {@code null} until {@link #isLegacyNewConstructorForSerializationAvailable()} is called */
+   private static volatile Boolean legacyNewConstructorForSerializationAvailable;
+
    @SuppressWarnings("unchecked")
    public static <T> Constructor<T> newConstructorForSerialization(Class<T> type,
       Constructor<?> constructor) {
@@ -38,13 +41,94 @@ class SunReflectionFactoryHelper {
       Object reflectionFactory = createReflectionFactory(reflectionFactoryClass);
 
       Method newConstructorForSerializationMethod = getNewConstructorForSerializationMethod(
-         reflectionFactoryClass);
+         reflectionFactoryClass, Class.class, Constructor.class);
 
       try {
          return (Constructor<T>) newConstructorForSerializationMethod.invoke(
             reflectionFactory, type, constructor);
       }
+      catch(InvocationTargetException e) {
+         if(e.getCause() instanceof UnsupportedOperationException) {
+            throw new ObjenesisException("ReflectionFactory.newConstructorForSerialization(Class, Constructor) is "
+               + "disabled since Java 28. Use UnsafeFactoryInstantiator instead or temporarily run with "
+               + "-Djdk.reflect.allowNonSerializableConstruction=true", e.getCause());
+         }
+         throw new ObjenesisException(e);
+      }
+      catch(IllegalArgumentException | IllegalAccessException e) {
+         throw new ObjenesisException(e);
+      }
+   }
+
+   /**
+    * Returns a constructor allocating an instance of {@code type} and then calling the no-arg
+    * constructor of its first non-serializable superclass. Unlike
+    * {@link #newConstructorForSerialization(Class, Constructor)}, it fully follows the java
+    * serialization specification. So this no-arg constructor must be accessible from
+    * {@code type}.
+    *
+    * @param type the serializable class to instantiate
+    * @param <T> type to instantiate
+    * @return the constructor or null if {@code type} or its superclasses are not suitable
+    */
+   @SuppressWarnings("unchecked")
+   public static <T> Constructor<T> newConstructorForSerialization(Class<T> type) {
+      Class<?> reflectionFactoryClass = getReflectionFactoryClass();
+      Object reflectionFactory = createReflectionFactory(reflectionFactoryClass);
+
+      Method newConstructorForSerializationMethod = getNewConstructorForSerializationMethod(
+         reflectionFactoryClass, Class.class);
+
+      try {
+         return (Constructor<T>) newConstructorForSerializationMethod.invoke(reflectionFactory, type);
+      }
       catch(IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+         throw new ObjenesisException(e);
+      }
+   }
+
+   /**
+    * Tells if {@link #newConstructorForSerialization(Class, Constructor)} can be used on this JVM.
+    * It is disabled by default since Java 28 and can be temporarily re-enabled with
+    * {@code -Djdk.reflect.allowNonSerializableConstruction=true}. It will be removed in a future
+    * Java version.
+    *
+    * @return if the 2-args newConstructorForSerialization can be used
+    */
+   public static boolean isLegacyNewConstructorForSerializationAvailable() {
+      Boolean available = legacyNewConstructorForSerializationAvailable;
+      if(available == null) {
+         available = probeLegacyNewConstructorForSerialization();
+         legacyNewConstructorForSerializationAvailable = available;
+      }
+      return available;
+   }
+
+   private static boolean probeLegacyNewConstructorForSerialization() {
+      Class<?> reflectionFactoryClass = getReflectionFactoryClass();
+      Object reflectionFactory = createReflectionFactory(reflectionFactoryClass);
+
+      Method newConstructorForSerializationMethod;
+      try {
+         newConstructorForSerializationMethod = reflectionFactoryClass.getDeclaredMethod(
+            "newConstructorForSerialization", Class.class, Constructor.class);
+      }
+      catch(NoSuchMethodException e) {
+         return false; // removed from the JVM
+      }
+
+      try {
+         // Cheap: the constructor is returned as is since it belongs to the instantiated class
+         newConstructorForSerializationMethod.invoke(reflectionFactory, Object.class, Object.class.getConstructor());
+         return true;
+      }
+      catch(InvocationTargetException e) {
+         if(e.getCause() instanceof UnsupportedOperationException) {
+            return false; // disabled, which is the default since Java 28
+         }
+         throw new ObjenesisException(e);
+      }
+      catch(NoSuchMethodException | IllegalAccessException | IllegalArgumentException e) {
          throw new ObjenesisException(e);
       }
    }
@@ -74,10 +158,11 @@ class SunReflectionFactoryHelper {
       }
    }
 
-   private static Method getNewConstructorForSerializationMethod(Class<?> reflectionFactoryClass) {
+   private static Method getNewConstructorForSerializationMethod(Class<?> reflectionFactoryClass,
+      Class<?>... parameterTypes) {
       try {
          return reflectionFactoryClass.getDeclaredMethod(
-            "newConstructorForSerialization", Class.class, Constructor.class);
+            "newConstructorForSerialization", parameterTypes);
       }
       catch(NoSuchMethodException e) {
          throw new ObjenesisException(e);

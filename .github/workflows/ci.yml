@@ -18,12 +18,17 @@ jobs:
     strategy:
       matrix:
         java: [ '8', '11', '17', '21', '25', '26' ]
+        distribution: [ 'temurin' ]
+        include:
+          # Early access builds are provided by jdk.java.net
+          - java: '28-ea'
+            distribution: 'oracle-openjdk'
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
     - name: Set up JDK
       uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 #v6.3.0
       with:
         java-version: ${{ matrix.java }}
-        distribution: 'temurin'
+        distribution: ${{ matrix.distribution }}
     - name: Build
       run: ./mvnw --no-transfer-progress -B clean verify -Pfull,all --file pom.xml

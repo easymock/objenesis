@@ -30,6 +30,11 @@ import org.objenesis.instantiator.annotations.Typology;
  * a way compatible with serialization, calling the first non-serializable superclass' no-arg
  * constructor. This is the best way to instantiate an object without any side effects caused by the
  * constructor - however it is not available on every platform.
+ * <p>
+ * Since Java 28, the no-arg constructor of the first non-serializable superclass must also be
+ * accessible from the instantiated class, as required by the java serialization specification. So
+ * it can't be private nor package-private in another package. This can be temporarily lifted by
+ * running with {@code -Djdk.reflect.allowNonSerializableConstruction=true}.
  *
  * @author Leonardo Mesquita
  * @see ObjectInstantiator
@@ -40,6 +45,37 @@ public class SunReflectionFactorySerializationInstantiator<T> implements ObjectI
    private final Constructor<T> mungedConstructor;
 
    public SunReflectionFactorySerializationInstantiator(Class<T> type) {
+      if(SunReflectionFactoryHelper.isLegacyNewConstructorForSerializationAvailable()) {
+         mungedConstructor = newConstructorCallingAncestorConstructor(type);
+      }
+      else {
+         mungedConstructor = newConstructorFollowingSerializationRules(type);
+      }
+   }
+
+   public T newInstance() {
+      try {
+         return mungedConstructor.newInstance((Object[]) null);
+      }
+      catch(Exception e) {
+         throw new ObjenesisException(e);
+      }
+   }
+
+   private static <T> Constructor<T> newConstructorFollowingSerializationRules(Class<T> type) {
+      // The returned constructor is already accessible
+      Constructor<T> constructor = SunReflectionFactoryHelper.newConstructorForSerialization(type);
+      if(constructor == null) {
+         throw new ObjenesisException(new NotSerializableException(type + " has no suitable superclass constructor. "
+            + "Since Java 28, the no-arg constructor of the first non-serializable superclass must be accessible "
+            + "from the class (not private nor package-private in another package). Value classes and classes "
+            + "with strictly-initialized fields are not supported either. Running with "
+            + "-Djdk.reflect.allowNonSerializableConstruction=true temporarily restores the previous behavior"));
+      }
+      return constructor;
+   }
+
+   private static <T> Constructor<T> newConstructorCallingAncestorConstructor(Class<T> type) {
       Class<? super T> nonSerializableAncestor = SerializationInstantiatorHelper
          .getNonSerializableSuperClass(type);
 
@@ -52,7 +88,7 @@ public class SunReflectionFactorySerializationInstantiator<T> implements ObjectI
          throw new ObjenesisException(new NotSerializableException(type+" has no suitable superclass constructor"));
       }
 
-      mungedConstructor = SunReflectionFactoryHelper.newConstructorForSerialization(
+      Constructor<T> mungedConstructor = SunReflectionFactoryHelper.newConstructorForSerialization(
          type, nonSerializableAncestorConstructor);
       try {
          mungedConstructor.setAccessible(true);
@@ -63,14 +99,6 @@ public class SunReflectionFactorySerializationInstantiator<T> implements ObjectI
          }
          throw e;
       }
-   }
-
-   public T newInstance() {
-      try {
-         return mungedConstructor.newInstance((Object[]) null);
-      }
-      catch(Exception e) {
-         throw new ObjenesisException(e);
-      }
+      return mungedConstructor;
    }
 }
